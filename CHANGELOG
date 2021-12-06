@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.
  - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package & test infrastructure.
 ### Fixed:
 ### Changed:

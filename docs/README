@@ -1,0 +1,6 @@
+To generate the HTML files from the source, one needs to type the following in a terminal:
+
+cd <ampycloud path>/docs
+sh build_docs.sh
+
+This will create all the pages in a new `build` folder.
