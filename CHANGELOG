@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
- - [fpavogt, 2021-12-06] Initial Github upload
+ - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions.
 ### Fixed:
 ### Changed:
 ### Deprecated:
