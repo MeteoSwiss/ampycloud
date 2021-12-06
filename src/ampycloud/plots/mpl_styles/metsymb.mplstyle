@@ -1,0 +1,12 @@
+#
+# Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+#
+# Distributed under the terms of the 3-Clause BSD License.
+#
+# SPDX-License-Identifier: BSD-3-Clause
+#
+# This style enables the use of a system-wide LaTeX, including that of the metsymb LaTeX package.
+
+font.size: 16
+text.usetex: True
+text.latex.preamble: \usepackage{cmbright} \usepackage{amsmath} \usepackage{amssymb} \usepackage{relsize} \usepackage{metsymb}
