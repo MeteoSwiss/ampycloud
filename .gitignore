@@ -1,0 +1,11 @@
+# Python stuff
+__pycache__/
+
+# Python packaging stuff
+build/
+dist/
+eggs/
+*.egg_info/
+
+# MacOS stuff
+*.DS_Store
