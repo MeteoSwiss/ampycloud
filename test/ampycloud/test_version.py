@@ -1,7 +1,7 @@
 """
 Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
 
-Distributed under the terms of the BSD-3-Clause license.
+Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
