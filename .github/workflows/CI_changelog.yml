@@ -1,0 +1,37 @@
+# This Actions checks if the CHANGELOG was modified. If not, raises an error.
+#
+# Inspired from:
+# https://github.community/t5/GitHub-Actions/Get-list-of-files-on-pull-request-merge/td-p/41570
+# https://developer.github.com/changes/2020-02-10-deprecating-auth-through-query-param/
+#
+# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+
+name: CI_changelog
+
+on:
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  changelog:
+
+    runs-on: ubuntu-latest
+    steps:
+
+      - name: Check if changelog was modified
+        shell: bash
+        # Use the magical Github REST API to access all the files in the pull_request
+        # https://developer.github.com/v3/pulls/#list-pull-requests-files
+        run: |
+           URL="https://api.github.com/repos/${{ github.repository }}/pulls/${{ github.event.pull_request.number }}/files"
+           FILES=$(curl -s -X GET -G -H "Authorization: Bearer ${{ secrets.GITHUB_TOKEN }}" $URL | jq -r '.[] | .filename')
+           echo "Files included in commit:"
+           echo $FILES
+           echo " "
+           if echo $FILES | grep -q "CHANGELOG"; then
+             echo "CHANGELOG was modified. Well done."
+             exit 0
+           else
+             echo "CHANGELOG was not modified! Please update it with some info about this PR!"
+             exit 1
+           fi

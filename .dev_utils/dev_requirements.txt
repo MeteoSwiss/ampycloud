@@ -1,0 +1,11 @@
+# This file contains packages that are required for doing dev work with ampycloud.
+# To install them, run:
+# pip install -r dev_requirements.txt
+
+# The following packages are required for compiling the docs from source
+sphinx
+sphinx-rtd-theme
+
+# The following packages are required for running manual code testing
+pylint
+pytest

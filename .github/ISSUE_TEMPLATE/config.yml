@@ -1,0 +1,5 @@
+blank_issues_enabled: true
+contact_links:
+  - name: Questions - Comments - Suggestions
+    url: https://github.com/MeteoSwiss/ampycloud/discussions
+    about: Please ask questions, make comments, and submit suggestions here.
