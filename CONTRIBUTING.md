@@ -24,9 +24,26 @@ branches. At the time being, these include:
 * code linting using `pylint`
 * code testing using `pytest`
 * check that the CHANGELOG was updated
-* check that the SPinx docs compile
+* check that the Sphinx docs compile
 
 Additional CI/CD tasks will be added if this code ever makes it out into the open, including:
 
-* automatic publication of the Shinx docs
+* automatic publication of the Sphinx docs
 * automatic release mechanism, incl. pypi upload
+
+
+### Package documentation
+
+We have a scientific article about the ampycloud **algorithm** in preparation. If you would like
+access to it before it is published, contact @fpavogt.
+
+The Python package documentation is generated using Sphinx, and is anticipated to be hosted using
+Github Pages (with the live site present under the `gh-pages` branch of this repo) -- assuming
+the code ever sees the light of day.
+
+Until then, the doc can be generated manually as follows:
+```
+cd ./where/you/placed/ampycloud/docs
+sh build_docs.sh
+```
+This will create the docs locally under `./build`.

@@ -30,3 +30,7 @@ This will take care of things, including the installation of required dependenci
 ```
 pip install -r ./.dev_utils/dev_requirements.txt
 ```
+
+### Contributing to ampycloud
+
+Please see the [contributing guidelines](CONTRIBUTING.md) for details.
