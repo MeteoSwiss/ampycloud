@@ -47,3 +47,46 @@ cd ./where/you/placed/ampycloud/docs
 sh build_docs.sh
 ```
 This will create the docs locally under `./build`.
+
+### Logging
+
+No handlers/formatters are being defined in ampycloud. Logging is kept as simple as possible, such
+that it is up to the users decide what logging they wish to see, if any.
+
+Specifically:
+
+* a dedicated logger gets instantiated for each module via:
+
+  ```
+  import logging
+  logger = loggging.getLogger(__name__)
+  ```
+* log calls are then simply done via the suitable module logger:
+
+  ```
+  logger.debug('...')
+  logger.info('...')
+  logger.warning('...')
+  logger.error('...')
+  ```
+
+* the function `ampycloud.logger.log_func_call()` can be used to decorate ampycloud functions to log
+  their call at the `INFO` level, and the arguments at the `DEBUG` level, e.g.:
+
+  ```
+  import logging
+  from .logger import log_func_call
+
+  logger=logging.getLogger(__name__)
+
+  @log_func_Call(logger)
+  @some_fct(*args, *kwargs):
+      ...
+  ```
+
+
+
+
+
+Logging is kept simpleat its most simple by not
+specifying

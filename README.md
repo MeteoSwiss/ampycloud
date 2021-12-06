@@ -31,6 +31,27 @@ This will take care of things, including the installation of required dependenci
 pip install -r ./.dev_utils/dev_requirements.txt
 ```
 
+### Logging
+
+A `NullHandler()` is being set by ampycloud, such that no logging will be apparent to the users
+unless they explicitly set it up
+(see [here](https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library) for details).
+
+As an example, to enable ampycloud log messages down to the 'DEBUG' level, users could make the following call before running ampycloud functions:
+```
+import logging
+
+logging.basicConfig()
+logging.getLogger('ampycloud').setlevel('DEBUG')
+```
+Each ampycloud module has a dedicated `logger` based on its `__name__`, such that users can adjust
+the parameter of each ampycloud module however they desire, e.g.:
+```
+logging.getLogger('ampycloud.wmo').setlevel('WARNING')
+logging.getLogger('ampycloud.scaler').setlevel('DEBUG')
+```
+
+
 ### Contributing to ampycloud
 
 Please see the [contributing guidelines](CONTRIBUTING.md) for details.
