@@ -50,18 +50,18 @@ This will create the docs locally under `./build`.
 
 ### Logging
 
-No handlers/formatters are being defined in ampycloud. Logging is kept as simple as possible, such
-that it is up to the users decide what logging they wish to see, if any.
+No handlers/formatters are being defined in ampycloud, with the exception of a `NullHandler()` for
+when users do not specify any logging handler explicitly. In other words, **it is up to the ampycloud users to decide what logging they wish to see**, if any.
 
 Specifically:
 
-* a dedicated logger gets instantiated for each module via:
+* a dedicated logger gets instantiated in each ampycloud module via:
 
   ```
   import logging
   logger = loggging.getLogger(__name__)
   ```
-* log calls are then simply done via the suitable module logger:
+* log calls are simply done via their module logger:
 
   ```
   logger.debug('...')
@@ -79,14 +79,7 @@ Specifically:
 
   logger=logging.getLogger(__name__)
 
-  @log_func_Call(logger)
+  @log_func_call(logger)
   @some_fct(*args, *kwargs):
       ...
   ```
-
-
-
-
-
-Logging is kept simpleat its most simple by not
-specifying
