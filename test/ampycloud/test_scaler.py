@@ -14,7 +14,6 @@ import numpy as np
 # Import from this package
 from ampycloud.scaler import const_scaling, minmax_scaling, step_scaling, scaling
 
-
 def test_const_scaling():
     """ Test the const_scaling routine. """
 
@@ -58,8 +57,7 @@ def test_minmax_scaling():
     assert np.all(np.round(deout[~np.isnan(vals)], 5) == np.round(vals[~np.isnan(vals)], 5))
 
 def test_step_scaling():
-    """ test the step scaling function. """
-
+    """ Test the step scaling function. """
 
     steps = [10, 20]
     scales = [10, 100, 1000]
@@ -82,7 +80,7 @@ def test_step_scaling():
     assert np.all(np.round(deout, 1) == vals)
 
 def test_scaling():
-    """ test the umbrella scaling function, and its ability to correctly summon the different
+    """ Test the umbrella scaling function, and its ability to correctly summon the different
     scaling functions. """
 
     out = scaling(np.ones(1), fct='const', scale=10, mode='scale')
