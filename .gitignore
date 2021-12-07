@@ -6,6 +6,7 @@ build/
 dist/
 eggs/
 *.egg-info/
+docs/source/modules/
 
 # MacOS stuff
 *.DS_Store
