@@ -170,7 +170,7 @@ def step_scaling(vals : np.ndarray,
     return out
 
 @log_func_call(logger)
-def scaling(vals : np.ndarray, fct : str = None, **kwargs) -> np.ndarray:
+def scaling(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:
