@@ -10,6 +10,7 @@ Module contains: wmo-related utilities
 
 # Import from Python
 import logging
+from typing import Union
 import numpy as np
 
 # Import from ampycloud
@@ -20,7 +21,9 @@ from .logger import log_func_call
 logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
-def frac2okta(val : [int, float, np.ndarray], lim0 : [int, float] = 0, lim8 : [int, float] = 100):
+def frac2okta(val : Union[int, float, np.ndarray],
+              lim0 : Union[int, float] = 0,
+              lim8 : Union[int, float] = 100) -> np.ndarray:
     """ Converts a sky coverage fraction into oktas.
 
     One okta corresponds to 1/8 of the sky covered by clouds. The case of 0 and 8 oktas is special,
@@ -29,12 +32,13 @@ def frac2okta(val : [int, float, np.ndarray], lim0 : [int, float] = 0, lim8 : [i
 
     This function allows to tweak the 0 and 8 oktas limits via the `lim0` and `lim8` keyword
     arguments, such that:
-        0 okta  == 0 <= val <= lim0
-        1 okta  == lim0 < val <= 1.5*100/8
-        2 oktas == 1.5*100/8 < val <= 2.5*100/8
-        ...
-        7 oktas == 6.5*100/8 < val < lim8
-        8 oktas == lim8 <= val <= 100
+
+        - 0 okta  == 0 <= val <= lim0
+        - 1 okta  == lim0 < val <= 1.5*100/8
+        - 2 oktas == 1.5*100/8 < val <= 2.5*100/8
+        - ...
+        - 7 oktas == 6.5*100/8 < val < lim8
+        - 8 oktas == lim8 <= val <= 100
 
     Args:
         val (int|float|ndarray): the sky coverage fraction to convert, in percent.
@@ -74,10 +78,11 @@ def frac2okta(val : [int, float, np.ndarray], lim0 : [int, float] = 0, lim8 : [i
     return out.astype(int)
 
 @log_func_call(logger)
-def okta2code(val : int):
+def okta2code(val : int) -> str:
     """ Convert an okta value to a METAR code.
 
     Conversion is as follows:
+
      - 0 okta => NCD
      - 1-2 oktas => FEW
      - 3-4 oktas => SCT
@@ -113,7 +118,7 @@ def okta2code(val : int):
 
 
 @log_func_call(logger)
-def okta2symb(val : int, use_metsymb : bool = False):
+def okta2symb(val : int, use_metsymb : bool = False) -> str:
     """ Convert an okta value to a LaTeX string, possibly using the metsymb LaTeX package.
 
     Args:
@@ -157,7 +162,7 @@ def okta2symb(val : int, use_metsymb : bool = False):
     raise AmpycloudError(f'Ouch ! okta value not understood: {val}')
 
 @log_func_call(logger)
-def alt2code(val : [int, float]):
+def alt2code(val : Union[int, float]) -> str:
     """ Function that converts a given altitude into the corresponding METAR code chunk, in 100 ft.
 
     Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
