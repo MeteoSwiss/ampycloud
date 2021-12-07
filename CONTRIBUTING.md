@@ -48,6 +48,16 @@ sh build_docs.sh
 ```
 This will create the docs locally under `./build`.
 
+### Exceptions
+
+The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
+class, and is meant as a general exception for ampycloud. Using it is straightforward:
+```
+from .errors import AmpycloudError
+
+raise AmpycloudError('...')
+```
+
 ### Logging
 
 No handlers/formatters are being defined in ampycloud, with the exception of a `NullHandler()` for
