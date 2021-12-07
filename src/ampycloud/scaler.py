@@ -69,7 +69,6 @@ def minmax_scaling(vals : np.ndarray,
     Returns:
         ndarray: scaled/descaled values.
 
-
     """
 
     if mode == 'scale':
