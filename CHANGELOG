@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
- - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, and cluster modules.
+ - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, cluster, and utils.mocker modules.
  - [fpavogt, 2021-12-07] Add the AmpycloudError class.
  - [fpavogt, 2021-12-06] Setup logging tools, incl. custom decorator for fcts.
  - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.

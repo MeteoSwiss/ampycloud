@@ -62,14 +62,14 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
         Starting with the first model as the "current best model", the model n will become the
         "current best model" if:
 
-        - `mode == 'prob'`:
+        - `mode='prob'`:
           ::
 
             prob(abics[current_best_model]) < min_prob
             AND
             abics[n] < abics[current_best_model]
 
-        - `mode =='delta'`:
+        - `mode='delta'`:
           ::
 
             abics[n] < delta_mul_gain * abics[current_best_model]
