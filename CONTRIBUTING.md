@@ -47,3 +47,49 @@ cd ./where/you/placed/ampycloud/docs
 sh build_docs.sh
 ```
 This will create the docs locally under `./build`.
+
+### Exceptions
+
+The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
+class, and is meant as a general exception for ampycloud. Using it is straightforward:
+```
+from .errors import AmpycloudError
+
+raise AmpycloudError('...')
+```
+
+### Logging
+
+No handlers/formatters are being defined in ampycloud, with the exception of a `NullHandler()` for
+when users do not specify any logging handler explicitly. In other words, **it is up to the ampycloud users to decide what logging they wish to see**, if any.
+
+Specifically:
+
+* a dedicated logger gets instantiated in each ampycloud module via:
+
+  ```
+  import logging
+  logger = loggging.getLogger(__name__)
+  ```
+* log calls are simply done via their module logger:
+
+  ```
+  logger.debug('...')
+  logger.info('...')
+  logger.warning('...')
+  logger.error('...')
+  ```
+
+* the function `ampycloud.logger.log_func_call()` can be used to decorate ampycloud functions to log
+  their call at the `INFO` level, and the arguments at the `DEBUG` level, e.g.:
+
+  ```
+  import logging
+  from .logger import log_func_call
+
+  logger=logging.getLogger(__name__)
+
+  @log_func_call(logger)
+  @some_fct(*args, *kwargs):
+      ...
+  ```
