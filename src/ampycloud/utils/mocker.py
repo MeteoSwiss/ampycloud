@@ -16,6 +16,7 @@ import pandas as pd
 
 # import from ampycloud
 from ..logger import log_func_call
+from ..errors import AmpycloudError
 
 logger = logging.getLogger(__name__)
 
@@ -115,6 +116,20 @@ def mock_layers(n_ceilos : int, layer_prms : list) -> pd.DataFrame:
         3) hit altitudes in ft, and 4) hit type.
 
     """
+
+    # A simple sanity check of the input type, since it is a bit convoluted.
+    if not isinstance(layer_prms, list):
+        raise AmpycloudError(f'Ouch ! layer_prms should be a list, not: {type(layer_prms)}')
+
+    for (ind, item) in enumerate(layer_prms):
+        if not isinstance(item, dict):
+            raise AmpycloudError(f'Ouch ! Element {ind} from layer_prms should be a dict,' +
+                                  f' not: {type(item)}')
+        if not all(key in item.keys() for key in ['alt', 'alt_std', 'lookback_time', 'hit_rate',
+                                                  'period', 'amplitude']):
+            raise AmpycloudError('Ouch ! One or more of the following dict keys are missing in '+
+                                 f"layer_prms[{ind}]: 'alt', 'alt_std', 'lookback_time',"+
+                                 "'hit_rate','period', 'amplitude'.")
 
     # Let's create the layers individually for eahc ceilometer
     ceilos = []
