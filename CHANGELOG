@@ -6,7 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
- - [fpavogt, 2021-12-08] Add the data and dynamic modules.
+ - [fpavogt, 2021-12-08] Add the MANIFEST.in file, to include parameter and plot style files.
+ - [fpavogt, 2021-12-08] Add the data, dynamic, and core modules, and a new AmpycloudWarning class.
  - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, cluster, and utils.mocker modules.
  - [fpavogt, 2021-12-07] Add the AmpycloudError class.
  - [fpavogt, 2021-12-06] Setup logging tools, incl. custom decorator for fcts.
