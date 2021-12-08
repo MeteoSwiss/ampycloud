@@ -25,6 +25,7 @@ from . import layer
 from . import wmo
 from . import dynamic
 
+# Instantiate the module logger
 logger = logging.getLogger(__name__)
 
 class AbstractChunk(ABC):
@@ -502,7 +503,7 @@ class CeiloChunk(AbstractChunk):
             # Run the clustering
             nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
                                                  algo=dynamic.GROUPING_PRMS['algo'],
-                                                 kwargs=dynamic.GROUPING_PRMS['algo_kwargs']
+                                                 **dynamic.GROUPING_PRMS['algo_kwargs']
                                                  )
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id

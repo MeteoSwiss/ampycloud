@@ -8,13 +8,13 @@ SPDX-License-Identifier: BSD-3-Clause
 Module contains: dynamic parameters, which can be altered during execution.
 """
 
-#: str: Name of matplotlib style to use for the plots. Can be 'base', 'nolatex', 'latex', 'metsymb'
-MPL_STYLE : str = 'nolatex'
+#: str: Style to use for the plots. Can be 'none', 'base', 'nolatex', 'latex', 'metsymb'
+MPL_STYLE : str = 'none'
 
-#: int: Max sky coverage (in %) for which the coverage is considered null.
+#: int: Max sky coverage (in %) up to which the coverage is considered null.
 OKTA_LIM0 : int = 2
 
-#: int: Min sky coverage (in %) for which the coverage is considered full.
+#: int: Min sky coverage (in %) down to which the coverage is considered full.
 OKTA_LIM8 : int = 98
 
 #: float: Fraction of smallest layer points to median to compute the layer altitude for the METAR
@@ -79,13 +79,13 @@ LAYERING_PRMS : dict = {
         # Whether to use 'delta', or 'prob' to find the best model.
         # See ampycloud.layer.best_gmm() for details.
         'mode': 'delta',
-        # minimum model probability computed from the AICS relative likelihood,
+        # minimum model probability computed from the relative likelihood,
         # below which alternative models with more components will be considered.
-        # Only used if mode is in ['AIC', 'BIC', 'AICBIC']
+        # Only used if mode ='prob'
         'min_prob': 0.01,
-        # minimum model probability computed from the BICS relative likelihood,
-        # below which alternative models with more components will be considered.
-        # Only used if mode is in ['AIC', 'BIC', 'AICBIC']
+        # a model with a smaller score will only be considered "valid"
+        # if its score is smaller than delta_mul_gain*current_best_score.
+        # Only used if mode='delta'
         'delta_mul_gain': 0.95,
         # If set, rescale each group between 0 and this value before looking for layers using gmm.
         'rescale_0to': 100,
