@@ -48,7 +48,7 @@ sh build_docs.sh
 ```
 This will create the docs locally under `./build`.
 
-### Exceptions
+### Exceptions and Warnings
 
 The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
 class, and is meant as a general exception for ampycloud. Using it is straightforward:
@@ -56,6 +56,15 @@ class, and is meant as a general exception for ampycloud. Using it is straightfo
 from .errors import AmpycloudError
 
 raise AmpycloudError('...')
+```
+
+There is also a custom `AmpycloudWarning` class for the package, which is a simple child of the
+`Warning` class. Using it is simple:
+```
+import warnings
+from .errors import AmpycloudWarning
+
+warnings.warn('...', AmpycloudWarning)
 ```
 
 ### Logging

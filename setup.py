@@ -31,7 +31,7 @@ setup(
     package_dir={"": "src"},
 
     url="https://github.com/MeteoSwiss/ampycloud",
-    author="Frédéric Vogt",
+    author="Frédéric P.A. Vogt",
     author_email="frederic.vogt@meteoswiss.ch",
     description="Characterization of cloud layers from ceilometer measurements",
     long_description=long_description,
@@ -44,10 +44,6 @@ setup(
         "pandas >= 1.3.1",
         "ruamel.yaml"
     ],
-
-    # Setup entry points to use ampycloud from a terminal
-    #entry_points={'console_scripts':
-    #   ['ampycloud_check_cases=ampycloud.dev.__main__:ampycloud_check_cases']},
 
     classifiers=[
 
@@ -69,7 +65,5 @@ setup(
         'Programming Language :: Python :: 3.8',
 
     ],
-
-    include_package_data=False,  # So that non .py files make it onto pypi, and then back !
 
 )

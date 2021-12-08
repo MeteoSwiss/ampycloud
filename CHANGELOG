@@ -6,13 +6,15 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
- - [fpavogt, 2021-12-08] Add the data and dynamic modules.
+ - [fpavogt, 2021-12-08] Add the MANIFEST.in file, to include parameter and plot style files.
+ - [fpavogt, 2021-12-08] Add the data, dynamic, and core modules, and a new AmpycloudWarning class.
  - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, cluster, and utils.mocker modules.
  - [fpavogt, 2021-12-07] Add the AmpycloudError class.
  - [fpavogt, 2021-12-06] Setup logging tools, incl. custom decorator for fcts.
  - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.
  - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package & test infrastructure.
 ### Fixed:
+ - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
  - [fpavogt, 2012-12-08] Change `mock_layer` to return a pd.DataFrame instead of a np.ndarray.
 ### Deprecated:

@@ -25,6 +25,7 @@ from . import layer
 from . import wmo
 from . import dynamic
 
+# Instantiate the module logger
 logger = logging.getLogger(__name__)
 
 class AbstractChunk(ABC):
@@ -502,7 +503,7 @@ class CeiloChunk(AbstractChunk):
             # Run the clustering
             nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
                                                  algo=dynamic.GROUPING_PRMS['algo'],
-                                                 kwargs=dynamic.GROUPING_PRMS['algo_kwargs']
+                                                 **dynamic.GROUPING_PRMS['algo_kwargs']
                                                  )
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
@@ -637,25 +638,33 @@ class CeiloChunk(AbstractChunk):
         by the layering algorithm. """
         return self._layers
 
-    @property
-    def metar(self) -> str:
-        """ Returns the METAR message from the chunk.
+    def metar_msg(self, synop : bool = False, which : str = 'layers') -> str:
+        """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
-        Requires the full slicing/grouping/layering processing chain to be performed first.
+        The WMO's cloud layer selection rules applicable to METARs will be applied, unless
+        synop = True.
+
+        Args:
+            synop (bool optional): if True, all cloud layers will be reported. Else, the WMO's
+                cloud layer selection rules applicable to METARs will be applied.
+            which (str, optional): whether to look at 'slices', 'groups', or 'layers'. Defaults to
+                'layers'.
 
         Returns:
-            str: the METAR message.
+            str: the METAR-like message.
         """
 
         # Some sanity checks to begin with
-        if self.layers is None:
-            raise AmpycloudError('Ouch ! No layer information found. Have they been computed ?')
+        if (sligrolay := getattr(self, which)) is None:
+            raise AmpycloudError(f'Ouch ! No {which} information found. Have they been computed ?')
 
         # Deal with the 0 layer situation
-        if self.n_layers == 0:
+        if getattr(self, f'n_{which}') == 0:
             return 'NCD'
 
         # Deal with the situation where layers have been found ...
-        msg = self.layers['code'][self.layers['significant']]
+        msg = sligrolay['code']
+        if not synop:
+            msg = sligrolay['code'][sligrolay['significant']]
         msg = ' '.join(msg.to_list())
         return msg

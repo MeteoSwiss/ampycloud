@@ -15,6 +15,7 @@ from matplotlib import pyplot as plt
 
 # Import from this package
 from . import version as vers
+from .core import * # Bring out the core routines for easy access by the user
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
