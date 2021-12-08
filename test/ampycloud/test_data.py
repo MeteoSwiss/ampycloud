@@ -47,7 +47,7 @@ def test_ceilochunk_basic():
     assert all(item is None for item in [chunk.slices, chunk.groups, chunk.layers])
     # Assess the METAR generation when no processing was done
     with raises(AmpycloudError):
-        assert chunk.metar
+        assert chunk.metar_msg()
     # Idem for the individual sli/gro/lay
     with raises(AmpycloudError):
         assert chunk.metarize('slices')
@@ -73,7 +73,9 @@ def test_ceilochunk_basic():
     with raises(AmpycloudError):
         assert chunk.find_groups()
 
-    assert chunk.metar == 'OVC009'
+    # Assert the METAR-like message
+    assert chunk.metar_msg() == 'OVC009'
+    assert chunk.metar_msg(which='groups', synop=True) == 'OVC009'
 
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
@@ -98,4 +100,33 @@ def test_ceilochunk_nocld():
     chunk.find_layers()
 
     # Assert the final METAR code is correct
-    assert chunk.metar == 'NCD'
+    assert chunk.metar_msg() == 'NCD'
+
+def test_ceilochunk_2lay():
+    """ Test the methods of CeiloChunks when 2 layers are seen in the interval. """
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(n_ceilos,
+                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
+                                     'hit_rate': rate, 'sky_cov_frac': 0.5,
+                                     'period': 100, 'amplitude': 0},
+                                    {'alt':2000, 'alt_std': 10, 'lookback_time' : lookback_time,
+                                       'hit_rate': rate, 'sky_cov_frac': 0.5,
+                                       'period': 100, 'amplitude': 0}])
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Assert the final METAR code is correct
+    assert chunk.metar_msg() == 'FEW009'
+    assert chunk.metar_msg(synop=True) == 'FEW009 FEW019'
