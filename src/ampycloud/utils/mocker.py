@@ -16,6 +16,7 @@ import pandas as pd
 
 # import from ampycloud
 from ..logger import log_func_call
+from ..errors import AmpycloudError
 
 logger = logging.getLogger(__name__)
 
@@ -90,19 +91,45 @@ def sin_layer(alt : float, alt_std : float, lookback_time : float,
     return out
 
 
-def mock_layers(n_ceilos : int, layer_prms : list) -> np.ndarray:
+def mock_layers(n_ceilos : int, layer_prms : list) -> pd.DataFrame:
     """ Generate a mock set of cloud layers for a specified number of ceilometers.
 
     TODO:
         - add the possibility to set some VV hits in the mix
         - add the possibility to have multiple hits at the same time steps
-        - all of this could be done much more efficiently with classes ...
+        - all of this could be done much more professionally with classes ...
 
     Args:
         n_ceilos (int): number of ceilometers to simulate.
-        layer_prms (list): list of layer parameters
+        layer_prms (list of dict): list of layer parameters, provided as a dict for each layer.
+            Each dict should specify all the parameters required to generate a sin layer, e.g.:
+            ::
+
+                {'alt':1000, 'alt_std': 100, 'lookback_time' : 1200,
+                'hit_rate': 60, 'sky_cov_frac': 1,
+                'period': 100, 'amplitude': 0}
+
+
+    Returns:
+        DataFrame: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
+        ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time deltas in s,
+        3) hit altitudes in ft, and 4) hit type.
 
     """
+
+    # A simple sanity check of the input type, since it is a bit convoluted.
+    if not isinstance(layer_prms, list):
+        raise AmpycloudError(f'Ouch ! layer_prms should be a list, not: {type(layer_prms)}')
+
+    for (ind, item) in enumerate(layer_prms):
+        if not isinstance(item, dict):
+            raise AmpycloudError(f'Ouch ! Element {ind} from layer_prms should be a dict,' +
+                                  f' not: {type(item)}')
+        if not all(key in item.keys() for key in ['alt', 'alt_std', 'lookback_time', 'hit_rate',
+                                                  'period', 'amplitude']):
+            raise AmpycloudError('Ouch ! One or more of the following dict keys are missing in '+
+                                 f"layer_prms[{ind}]: 'alt', 'alt_std', 'lookback_time',"+
+                                 "'hit_rate','period', 'amplitude'.")
 
     # Let's create the layers individually for eahc ceilometer
     ceilos = []
@@ -112,22 +139,26 @@ def mock_layers(n_ceilos : int, layer_prms : list) -> np.ndarray:
         layers = [sin_layer(**prms) for prms in layer_prms]
 
         # Merge them all into one ...
-        layers = pd.concat(layers).reset_index()
+        layers = pd.concat(layers).reset_index(drop=True)
 
         # Add the type column
         layers['type'] = 99
 
         # Add the ceilo info as an int
-        layers['ceilo'] = ceilo
+        layers['ceilo'] = str(ceilo)
 
         # And store this for later
         ceilos += [layers]
 
     # Merge it all
     out = pd.concat(ceilos)
-    out.reset_index()
-    # Go to numpy, and sort it as a function of lookback_time
-    out = out[['ceilo', 'dt', 'alt', 'type']].to_numpy()
-    out = out[out[:, 1].argsort()]
+    # Sort the timesteps in order, and reset the index
+    out = out.sort_values('dt').reset_index(drop=True)
+
+    # Fix the dtypes
+    out['dt'] = out['dt'].astype(float)
+    out['alt'] = out['alt'].astype(float)
+    out['type'] = out['type'].astype(int)
+    out['ceilo'] = out['ceilo'].astype(str)
 
     return out

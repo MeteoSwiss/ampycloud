@@ -10,6 +10,7 @@ Module content: tests for the mocker module
 
 # Import from Python
 import numpy as np
+import pandas as pd
 
 # Import function to tests
 from ampycloud.utils.mocker import mock_layers
@@ -25,12 +26,16 @@ def test_mock_layers():
                   'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, layer_prms)
 
+    # Correct type ?
+    assert isinstance(out, pd.DataFrame)
+    assert len(out.columns) == 4
     # Correct number of points ?
     assert len(out) == 1200/60
     # No holes ?
-    assert not np.any(np.isnan(out[:, 2]))
+    assert not np.any(out['alt'].isna())
+    assert not np.any(out['dt'].isna())
     # Ordered chronologically ?
-    assert np.all(np.diff(out[:,1])>0)
+    assert out['dt'].is_monotonic_increasing
 
     # Idem, but with holes
     n_ceilos = 2
@@ -38,12 +43,14 @@ def test_mock_layers():
                   'hit_rate': 60, 'sky_cov_frac': 0.5,
                   'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, layer_prms)
+
     # Correct number of points ?
     assert len(out) == 1200/60 * n_ceilos
     # Holes present ?
-    assert np.any(np.isnan(out[:, 2]))
+    assert np.any(out['alt'].isna())
+    assert not np.any(out['dt'].isna())
     # In good numbers ?
-    assert len(out[np.isnan(out[:, 2])]) == len(out)/2
+    assert len(out[out['alt'].isna()]) == len(out)/2
 
     # And finally with more than 1 layer
     n_ceilos = 2
@@ -58,4 +65,5 @@ def test_mock_layers():
     # Correct number of points ?
     assert len(out) == 1200/60 * n_ceilos + 600/60 * n_ceilos
     # Holes present ?
-    assert np.any(np.isnan(out[:, 2]))
+    assert np.any(out['alt'].isna())
+    assert not np.any(out['dt'].isna())
