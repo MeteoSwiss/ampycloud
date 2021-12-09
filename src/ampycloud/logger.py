@@ -10,9 +10,10 @@ Module contains: logging utilities
 
 # Import from Python
 import inspect
+from typing import Callable
 from functools import wraps
 
-def log_func_call(logger):
+def log_func_call(logger) -> Callable:
     """ Intended as a decorator to log function calls.
 
     The first part of the message containing the function name is at the 'INFO' level.
@@ -29,11 +30,11 @@ def log_func_call(logger):
 
     """
 
-    def deco(func):
+    def deco(func : Callable) -> Callable:
         """ This is the actual function decorator. """
 
         @wraps(func)  # This black magic is required for Sphinx to still pickup the func docstrings.
-        def inner_deco(*args, **kwargs):
+        def inner_deco(*args, **kwargs) -> Callable:
             """ The core function, where the magic happens. """
 
             # Extract all the arguments and named-arguments fed to the function.
