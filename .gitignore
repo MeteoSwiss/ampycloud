@@ -11,3 +11,6 @@ docs/source/modules/
 
 # MacOS stuff
 *.DS_Store
+
+# General stuff
+*.pdf
