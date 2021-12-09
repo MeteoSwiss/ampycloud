@@ -5,7 +5,7 @@ Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module content: tests for the mocker module
+Module content: tests for the utils.mocker module
 """
 
 # Import from Python
