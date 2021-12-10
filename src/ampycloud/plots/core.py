@@ -60,14 +60,16 @@ def raw_data(chunk : CeiloChunk, show_ceilos : bool = False, show : bool = False
 
 @set_mplstyle
 @log_func_call(logger)
-def layers(chunk : CeiloChunk, show : bool = False,
-           save_stem : str = None, save_fmts : Union[list, str] = None,
-           ref_name : str = None, ref_metar : str = None) -> None:
+def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show : bool = False,
+               save_stem : str = None, save_fmts : Union[list, str] = None,
+               ref_name : str = None, ref_metar : str = None) -> None:
     """ A function to create the ampycloud diagnostic plot all the way to the layering step
     (included). THis is the ultimate ampycloud plot that shows it all.
 
     Args:
         chunk (CeiloChunk): the CeiloChunk to look at.
+        upto (str, optional): up to which algorithm steps to plot. Can be one of
+            ['slices', 'groups', 'layers']. Defaults to 'layers'.
         show (bool, optional): will show the plot on the screen if True. Defaults to False.
         save_name (str, optional): if set, will save the plot at this location with this name.
         ref_name (str, optional): name of the source of a reference METAR set with ref_metar.
@@ -83,15 +85,18 @@ def layers(chunk : CeiloChunk, show : bool = False,
 
     # Very well, let's start by instantiating a new DiagnosticPlot.
     adp = DiagnosticPlot(chunk)
-    adp.show_slices()
     adp.format_primary_axes()
+    adp.show_slices()
     adp.format_slice_axes()
     adp.add_ceilo_count()
     adp.add_max_hits()
     adp.add_geoloc_and_ref_dt()
-    adp.show_groups(show_points=False)
-    adp.format_group_axes()
-    adp.show_layers()
+    if upto in ['groups', 'layers']:
+        adp.show_groups(show_points= (upto=='groups'))
+        adp.format_group_axes()
+    if upto == 'layers':
+        adp.show_layers()
+
     adp.add_ref_metar(ref_name, ref_metar)
     adp.add_metar(synop=False)
 

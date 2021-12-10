@@ -10,7 +10,7 @@ Module content: tests for the plots.core module
 
 from ampycloud import dynamic
 from ampycloud.core import demo
-from ampycloud.plots.core import raw_data, layers
+from ampycloud.plots.core import raw_data, diagnostic
 
 def test_raw_data(mpls):
     """ Test the raw_data plot."""
@@ -26,7 +26,7 @@ def test_raw_data(mpls):
              ref_name='Test', ref_metar='???')
     """
 
-def test_layers(mpls):
+def test_diagnostic(mpls):
     """ Test the raw_data plot.
 
     Args:
@@ -41,6 +41,15 @@ def test_layers(mpls):
     # Get some demo chunk data
     _, chunk = demo()
 
-    layers(chunk, show=False,
-           save_stem='layers', save_fmts='pdf',
-           ref_name='Test', ref_metar='???')
+    # Create the diagnsotic plots at the three different upto levels
+    diagnostic(chunk, upto='slices', show=False,
+               save_stem='pytest_diagnostic_slices', save_fmts='pdf',
+               ref_name='Mock data', ref_metar='FEW008 BKN037')
+
+    diagnostic(chunk, upto='groups', show=False,
+               save_stem='pytest_diagnostic_groups', save_fmts='pdf',
+               ref_name='Mock data', ref_metar='FEW008 BKN037')
+
+    diagnostic(chunk, upto='layers', show=False,
+               save_stem='pytest_diagnostic_layers', save_fmts='pdf',
+               ref_name='Mock data', ref_metar='FEW008 BKN037')
