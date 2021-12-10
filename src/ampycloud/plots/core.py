@@ -26,9 +26,9 @@ logger = logging.getLogger(__name__)
 def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = False,
                ref_metar : str = None, ref_metar_origin : str = None,
                show : bool = True,
-               save_stem : str = 'ampycloud', save_fmts : Union[list, str] = None) -> None:
+               save_stem : str = None, save_fmts : Union[list, str] = None) -> None:
     """ A function to create the ampycloud diagnostic plot all the way to the layering step
-    (included). This is the ultimate ampycloud plot that shows it all.
+    (included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).
 
     Args:
         chunk (CeiloChunk): the CeiloChunk to look at.
@@ -41,9 +41,27 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
             ref_metar. Defaults to None.
         show (bool, optional): will show the plot on the screen if True. Defaults to False.
         save_stem (str, optional): if set, will save the plot with this stem (which can include a
-            path as well). Deafults to 'ampycloud'.
+            path as well). Deafults to None.
         save_fmts (list|str, optional): a list of file formats to export the plot to. Deafults to
             None = ['pdf'].
+
+
+    Example:
+    ::
+
+        from datetime import datetime
+        import ampycloud
+        from ampycloud.utils import mocker
+        from ampycloud.plots import diagnostic
+
+        # First create some mock data for the example
+        mock_data = mocker.canonical_demo_data()
+
+        # Then run the ampycloud algorithm on it
+        chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+
+        # Create the full ampycloud diagnostic plot
+        diagnostic(chunk, upto='layers', show=True)
 
     """
 
@@ -75,11 +93,13 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
     adp.add_geoloc_and_ref_dt()
 
     # Save it
-    adp.save(save_stem, fmts=save_fmts)
+    if save_stem is not None:
+        adp.save(save_stem, fmts=save_fmts)
 
     # Show it ?
     if show:
         adp.show()
 
     # Close the figure to free the memory
-    adp.close_fig()
+    if not show:
+        adp.close_fig()

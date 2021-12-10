@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2021-12-10] Add Minimum Sector Altitude to the metar_msg() method.
+ - [fpavogt, 2021-12-10] Add detailed examples to the core functions, and link them in the doc.
  - [fpavogt, 2021-12-10] Add the performance module, and a dedicated high level entry point.
  - [fpavogt, 2021-12-10] Improve plots with show, save, close methods, and tweak their look.
  - [fpavogt, 2021-12-10] Add pytest ficture to let users feed 'MPL_STYLE' as a command line argument

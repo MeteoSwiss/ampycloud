@@ -17,7 +17,6 @@ from ampycloud.errors import AmpycloudError
 from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
 
-
 def test_ceilochunk_basic():
     """ Test the basic methods of the CeiloChunk class. """
 

@@ -163,3 +163,30 @@ def mock_layers(n_ceilos : int, layer_prms : list) -> pd.DataFrame:
     out['ceilo'] = out['ceilo'].astype(str)
 
     return out
+
+def canonical_demo_data() -> pd.DataFrame:
+    """ This function creates the canonical ampycloud demonstration dataset, that can be used to
+    illustrate the full behavior of the algorithm.
+    """
+
+    # Create the "famous" mock dataset
+    n_ceilos = 4
+    lookback_time = 1200
+    hit_rate = 30
+
+    lyrs = [{'alt': 1000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 0.8, 'period': 10, 'amplitude': 0},
+            {'alt': 2000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
+            {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1400},
+            {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1400},
+            {'alt': 5100, 'alt_std': 500, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0},
+            {'alt': 5100, 'alt_std': 500, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
+             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0}
+            ]
+
+    # Actually generate the mock data
+    return mock_layers(n_ceilos, lyrs)

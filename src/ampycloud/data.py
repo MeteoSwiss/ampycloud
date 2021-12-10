@@ -360,8 +360,13 @@ class CeiloChunk(AbstractChunk):
 
         # Set the proper column types
         pdf['n_hits'] = pdf['n_hits'].astype(int)
+        pdf['frac'] = pdf['frac'].astype(float)
         pdf['okta'] = pdf['okta'].astype(int)
+        pdf['alt_base'] = pdf['alt_base'].astype(float)
+        pdf['alt_mean'] = pdf['alt_mean'].astype(float)
+        pdf['alt_std'] = pdf['alt_std'].astype(float)
         pdf['code'] = pdf['code'].astype(str)
+        pdf['significant'] = pdf['significant'].astype(bool)
         pdf['original_id'] = pdf['original_id'].astype(int)
         if which == 'slices':
             pdf['isolated'] = pdf['isolated'].astype(bool)
@@ -652,7 +657,8 @@ class CeiloChunk(AbstractChunk):
         by the layering algorithm. """
         return self._layers
 
-    def metar_msg(self, synop : bool = False, which : str = 'layers') -> str:
+    def metar_msg(self, synop : bool = False, msa : Union[int, float] = None,
+                  which : str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
         The WMO's cloud layer selection rules applicable to METARs will be applied, unless
@@ -661,12 +667,18 @@ class CeiloChunk(AbstractChunk):
         Args:
             synop (bool optional): if True, all cloud layers will be reported. Else, the WMO's
                 cloud layer selection rules applicable to METARs will be applied.
+            msa (int|float, optional): Minimum Sector Altitude. If set, layers above it will not be
+                reported. Defaults to None.
             which (str, optional): whether to look at 'slices', 'groups', or 'layers'. Defaults to
                 'layers'.
 
         Returns:
             str: the METAR-like message.
         """
+
+        # Deal with the MSA: set it to infinity if None was specified
+        if msa is None:
+            msa = np.infty
 
         # Some sanity checks to begin with
         if (sligrolay := getattr(self, which)) is None:
@@ -678,7 +690,10 @@ class CeiloChunk(AbstractChunk):
 
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
-        if not synop:
-            msg = sligrolay['code'][sligrolay['significant']]
+        if synop:
+            report = (sligrolay['alt_base']<msa)
+        else:
+            report = sligrolay['significant']*(sligrolay['alt_base']<msa)
+        msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
         return msg

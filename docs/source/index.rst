@@ -28,6 +28,7 @@ also welcome. See :ref:`troubleshooting:Troubleshooting` for more details.
 
     Home <self>
     installation
+    running
     troubleshooting
     acknowledge
     license
