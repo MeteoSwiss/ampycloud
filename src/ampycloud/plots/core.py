@@ -87,6 +87,7 @@ def layers(chunk : CeiloChunk, show : bool = False,
     adp.format_primary_axes()
     adp.format_slice_axes()
     adp.add_ceilo_count()
+    adp.add_max_hits()
     adp.add_geoloc_and_ref_dt()
     adp.show_groups(show_points=False)
     adp.format_group_axes()

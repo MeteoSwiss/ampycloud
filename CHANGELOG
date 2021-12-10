@@ -16,6 +16,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.
  - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package & test infrastructure.
 ### Fixed:
+ - [fpavogt, 2021-12-12] Fix the format_slices() method of the DiagnosticPlot class.
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:

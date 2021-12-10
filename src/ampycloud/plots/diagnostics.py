@@ -194,7 +194,7 @@ class DiagnosticPlot:
             else:
                 alpha = 0
             if self._chunk.slices.iloc[ind]['isolated'] is False:
-                warn = r' $\divideontimes$'
+                warn = r' $\Bumpeq$'
             else:
                 warn = ''
 
@@ -319,8 +319,14 @@ class DiagnosticPlot:
 
     def add_ceilo_count(self) -> None:
         """ Adds the number of ceilometer present in the data. """
-        msg = r' $n_\mathrm{ceilos}$: ' + f'{len(self._chunk.ceilos)}'
-        self._axs[0].text(0, -0.2, texify(msg),
+        msg = r'\smaller $n_\mathrm{ceilos}$: ' + f'{len(self._chunk.ceilos)}'
+        self._axs[0].text(-0.14, -0.14, texify(msg),
+                          transform=self._axs[0].transAxes, ha='left')
+
+    def add_max_hits(self) -> None:
+        """ Adds the max_hit_per_layer info. """
+        msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
+        self._axs[0].text(-0.14, -0.21, texify(msg),
                           transform=self._axs[0].transAxes, ha='left')
 
     def add_geoloc_and_ref_dt(self) -> None:
@@ -330,11 +336,11 @@ class DiagnosticPlot:
         if self._chunk.geoloc is not None:
             msg += [r'{}'.format(self._chunk.geoloc)]
         if self._chunk.ref_dt is not None:
-            msg += [r'$\Delta t=0$: {}'.format(self._chunk.ref_dt)]
+            msg += [r'\smaller $\Delta t=0$: {}'.format(self._chunk.ref_dt)]
 
         if not len(msg)==0:
-            self._axs[0].text(1, -0.2, texify(r'\smaller ' + ' - '.join(msg)),
-                              transform=self._axs[0].transAxes, ha='center')
+            self._axs[2].text(0.5, -0.21, texify(r'\smaller ' + '\n '.join(msg)),
+                              transform=self._axs[2].transAxes, ha='center')
 
     def add_ref_metar(self, name : str, metar : str) -> None:
         """ Display a reference METAR, for example from human observers, different code, etc ...
