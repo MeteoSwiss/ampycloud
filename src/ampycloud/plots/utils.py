@@ -142,5 +142,8 @@ def texify(msg : str) -> str:
     # Next cleanup any LaTeX-specific stuff ...
     else:
         msg = msg.replace(r'\smaller ', '')
+        #msg = msg.replace(r'\bf', r'')
+        #msg = msg.replace(r'{', '')
+        #msg = msg.replace(r'}', '')
 
     return msg

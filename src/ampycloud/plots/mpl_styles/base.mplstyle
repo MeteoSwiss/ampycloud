@@ -10,7 +10,7 @@ lines.linewidth : 0.8
 
 font.family: sans-serif
 font.sans-serif: DejaVu Sans
-font.size: 10
+font.size: 12
 font.weight: medium
 font.variant: normal
 

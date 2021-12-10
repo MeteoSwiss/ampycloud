@@ -135,29 +135,29 @@ def okta2symb(val : int, use_metsymb : bool = False) -> str:
 
     # If metsymb is not available, just return a number.
     if not use_metsymb:
-        return r'{' + str(val) + '}'
+        return str(val)
 
     # If metsymb is available, assign the proper commands !
     if val == 0:
-        return r'{\zerookta}'
+        return r'\zerookta\ '
     if val == 1:
-        return r'{\oneokta}'
+        return r'\oneokta\ '
     if val == 2:
-        return r'{\twooktas}'
+        return r'\twooktas\ '
     if val == 3:
-        return r'{\threeoktas}'
+        return r'\threeoktas\ '
     if val == 4:
-        return r'{\fouroktas}'
+        return r'\fouroktas\ '
     if val == 5:
-        return r'{\fiveoktas}'
+        return r'\fiveoktas\ '
     if val == 6:
-        return r'{\sixoktas}'
+        return r'\sixoktas\ '
     if val == 7:
-        return r'{\sevenoktas}'
+        return r'\sevenoktas\ '
     if val == 8:
-        return r'{\eightoktas}'
+        return r'\eightoktas\ '
     if val == 9:
-        return r'{\nineoktas}'
+        return r'\nineoktas\ '
 
     raise AmpycloudError(f'Ouch ! okta value not understood: {val}')
 

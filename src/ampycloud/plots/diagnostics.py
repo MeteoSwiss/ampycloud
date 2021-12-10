@@ -194,7 +194,7 @@ class DiagnosticPlot:
             else:
                 alpha = 0
             if self._chunk.slices.iloc[ind]['isolated'] is False:
-                warn = r' {$\divideontimes$}'
+                warn = r' $\divideontimes$'
             else:
                 warn = ''
 
@@ -345,7 +345,7 @@ class DiagnosticPlot:
         """
 
         if name is not None and metar is not None:
-            msg = r'\smaller {\bf {%s}}: {%s}' % (name, metar)
+            msg = r'\smaller ${\bf %s}$: %s' % (name, metar)
 
             # Show it if it contains something ...
             self._axs[2].text(0.5, 1.3, texify(msg),
@@ -359,13 +359,13 @@ class DiagnosticPlot:
         """
 
         # Combine it all in one message
-        msg = r'\smaller {\bf ampycloud}: ' + self._chunk.metar_msg(synop=synop)
+        msg = r'\smaller $\bf ampycloud$: ' + self._chunk.metar_msg(synop=synop)
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.2, texify(msg),
                           transform=self._axs[2].transAxes, color='k', ha='center',
                           bbox=dict(facecolor='none', edgecolor='k', alpha=1,
-                                    boxstyle='round, pad=0.25'))
+                                    boxstyle='round, pad=0.4'))
 
     def format_primary_axes(self) -> None:
         """ Deals with the main plot axes """
