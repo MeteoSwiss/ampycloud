@@ -31,7 +31,6 @@ Additional CI/CD tasks will be added if this code ever makes it out into the ope
 * automatic publication of the Sphinx docs
 * automatic release mechanism, incl. pypi upload
 
-
 ### Package documentation
 
 We have a scientific article about the ampycloud **algorithm** in preparation. If you would like
@@ -102,3 +101,15 @@ Specifically:
   @some_fct(*args, *kwargs):
       ...
   ```
+
+### Testing
+
+A series of test functions are implemented under `test`. Their structure mimics that of the module
+itself, and they are meant to be used with pytest. To run them all, simply type `pytest` in a terminal from the package root. If you only want to run a specific set of tests, type `pytest test/ampycloud/module/to/test_...py`.
+
+In order to test the different plotting style without affecting the automated tests on Github (which cannot do so because they have no access to a local LaTeX installation), a nifty fixture is
+defined in `conftext.py`, that allows to feed a specific command line argument to the pytest call:
+```
+pytest --MPL_STYLE=latex
+```
+Doing so, the users can easily test the `dynamic.MPL_STYLE` of their choice, e.g. `base`, `latex`, or `metsymb`. :warning: For this to work, pytest must be called from the package root.

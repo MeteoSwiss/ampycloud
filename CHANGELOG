@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2021-12-10] Add pytest ficture to let users feed 'MPL_STYLE' as a command line argument
  - [fpavogt, 2021-12-09] Add the plots module.
  - [fpavogt, 2021-12-08] Add the MANIFEST.in file, to include parameter and plot style files.
  - [fpavogt, 2021-12-08] Add the data, dynamic, and core modules, and a new AmpycloudWarning class.

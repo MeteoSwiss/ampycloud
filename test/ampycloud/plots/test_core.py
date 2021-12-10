@@ -12,7 +12,7 @@ from ampycloud import dynamic
 from ampycloud.core import demo
 from ampycloud.plots.core import raw_data, layers
 
-def test_raw_data():
+def test_raw_data(mpls):
     """ Test the raw_data plot."""
 
     """
@@ -26,10 +26,17 @@ def test_raw_data():
              ref_name='Test', ref_metar='???')
     """
 
-def test_layers():
-    """ Test the raw_data plot."""
+def test_layers(mpls):
+    """ Test the raw_data plot.
 
-    dynamic.MPL_STYLE = 'metsymb'
+    Args:
+        mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
+            by a fixture that fetches the corresponding command line argument.
+            See conftest.py for details.
+    """
+
+    if mpls:
+        dynamic.MPL_STYLE = mpls
 
     # Get some demo chunk data
     _, chunk = demo()
