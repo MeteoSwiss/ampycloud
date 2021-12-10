@@ -50,7 +50,7 @@ class DiagnosticPlot:
 
         # Use gridspec for a fine control of the figure area.
         fig_gs = gridspec.GridSpec(1, 5,
-                                   height_ratios=[1], width_ratios=[1, 0.22, 0.18, 0.18, 0.18],
+                                   height_ratios=[1], width_ratios=[1, 0.25, 0.18, 0.18, 0.18],
                                    left=0.08, right=0.99, bottom=0.15, top=0.75,
                                    wspace=0.0, hspace=0.05)
 
@@ -383,26 +383,36 @@ class DiagnosticPlot:
         de_alt_scale_kwargs = deepcopy(dynamic.SLICING_PRMS['alt_scale_kwargs'])
         de_alt_scale_kwargs['mode'] = 'descale'
 
+        # Here, I need to add some vital information to the de_alt_scaling parameters
+        # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
+        # and generate the appropriate side-axis.
+        if dynamic.SLICING_PRMS['alt_scale_mode'] == 'minmax':
+            de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
+            de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
+        if dynamic.SLICING_PRMS['dt_scale_mode'] == 'minmax':
+            de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
+            de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
+
         # Here, only proceed if I have actually found some slices !
         if self._chunk.n_slices > 0:
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
-            secax_x = self._axs[0].secondary_xaxis('top',
+            secax_x = self._axs[0].secondary_xaxis(1.06,
                 functions=(partial(scaling, fct=dynamic.SLICING_PRMS['dt_scale_mode'],
                                    **dynamic.SLICING_PRMS['dt_scale_kwargs']),
                            partial(scaling, fct=dynamic.SLICING_PRMS['dt_scale_mode'],
                                    **de_dt_scale_kwargs)))
 
-            secax_y = self._axs[0].secondary_yaxis('right',
+            secax_y = self._axs[0].secondary_yaxis(1.03,
                 functions=(partial(scaling, fct=dynamic.SLICING_PRMS['alt_scale_mode'],
                                    **dynamic.SLICING_PRMS['alt_scale_kwargs']),
                            partial(scaling, fct=dynamic.SLICING_PRMS['alt_scale_mode'],
                                    **de_alt_scale_kwargs)))
 
             # Finally, let's hide the original axes and ticks to avoid "fat" lines ...
-            self._axs[0].spines['top'].set_visible(False)
-            self._axs[0].spines['right'].set_visible(False)
-            self._axs[0].tick_params(axis='both', which='both', top=False, right=False)
+            #self._axs[0].spines['top'].set_visible(False)
+            #self._axs[0].spines['right'].set_visible(False)
+            #self._axs[0].tick_params(axis='both', which='both', top=False, right=False)
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Slicing $\Delta t$'))
@@ -421,18 +431,28 @@ class DiagnosticPlot:
         de_alt_scale_kwargs = deepcopy(dynamic.GROUPING_PRMS['alt_scale_kwargs'])
         de_alt_scale_kwargs['mode'] = 'descale'
 
+        # Here, I need to add some vital information to the de_alt_scaling parameters
+        # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
+        # and generate the appropriate side-axis.
+        if dynamic.GROUPING_PRMS['alt_scale_mode'] == 'minmax':
+            de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
+            de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
+        if dynamic.GROUPING_PRMS['dt_scale_mode'] == 'minmax':
+            de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
+            de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
+
         # Only proceed if I have found some clusters ...
         if self._chunk.n_groups > 0:
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
-            secax_x = self._axs[0].secondary_xaxis(1.22,
+            secax_x = self._axs[0].secondary_xaxis(1.25,
                 functions=(partial(scaling, fct=dynamic.GROUPING_PRMS['dt_scale_mode'],
                                    **dynamic.GROUPING_PRMS['dt_scale_kwargs']),
                            partial(scaling, fct=dynamic.GROUPING_PRMS['dt_scale_mode'],
                                    **de_dt_scale_kwargs)))
 
-            secax_y = self._axs[0].secondary_yaxis(1.12,
+            secax_y = self._axs[0].secondary_yaxis(1.14,
                 functions=(partial(scaling, fct=dynamic.GROUPING_PRMS['alt_scale_mode'],
                                    **dynamic.GROUPING_PRMS['alt_scale_kwargs']),
                            partial(scaling, fct=dynamic.GROUPING_PRMS['alt_scale_mode'],

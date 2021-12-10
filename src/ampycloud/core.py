@@ -141,15 +141,6 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     # First, let's create an CeiloChunk instance ...
     chunk = CeiloChunk(data, geoloc = geoloc, ref_dt = ref_dt)
 
-    # Here, add vital information to the alt_scaling parameters
-    # TODO: this is not necessarily the most elegant, and could be done better.
-    # Side note: this is only required for the duplicated axes of the diagnostic plots ...
-    # Deal with this when I get to the plots
-    #for item in [dynamic.SLICING_PRMS, dynamic.GROUPING_PRMS]:
-    #    if item['alt_scale_mode'] == 'minmax':
-    #        item['alt_scale_kwargs']['min_val'] = np.nanmin(chunk.data['alt'])
-    #        item['alt_scale_kwargs']['max_val'] = np.nanmax(chunk.data['alt'])
-
     # Go through the ampycloud cascade:
     # Run the slicing ...
     chunk.find_slices()
