@@ -22,11 +22,9 @@ from ruamel.yaml import YAML
 # Import from ampycloud
 from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
-from .utils.mocker import mock_layers
+from .utils.mocker import canonical_demo_data
 from .data import CeiloChunk
 from . import dynamic
-#from .plots.primary import DiagnosticPlot
-#from .plots.utils import set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -37,7 +35,6 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
 
     Args:
         save_loc (str, optional): location to save the YML file to. Defaults to './'.
-
         which (str, optional): name of thee parameter file to copy. Defaults to 'defaults'.
 
     """
@@ -120,9 +117,6 @@ def reset_prms() -> None:
 def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
     """ Run the ampycloud algorithm on a given dataset.
 
-    All the scientific parameters are set dynamically in ampycloud.dynamic. To change them, take a
-    look at ampycloud.set_prms().
-
     Args:
         data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
         geoloc (str, optional): the name of the geographic location where the data was taken.
@@ -132,6 +126,70 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
 
     Returns:
         CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
+
+    All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
+    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they be
+    created) at the moment.
+
+    The input ``data`` must be a ``pandas.DataFrame`` with the following column names (types):
+    ::
+
+        'ceilo' (str), 'dt' (float), 'alt' (float), 'type' (int)
+
+    The ``ceilo`` columns contains the names/ids of the ceilometers as ``str``.
+
+    The ``dt`` column contains time deltas, in s, between a given ceilometer observation and
+    ``ref_dt``.
+
+    The ``alt`` column contains the cloud base hit altitudes reported by the ceilometers, in ft
+    above ground.
+
+    The ``type`` column contains integer that are the hit sequence number, if a given ceilometer
+    is reporting multiple hits for a given timestep, or ``-1`` if the hit corresponds to a
+    vertical visibility observations.
+
+    It is possible to obtain an example of the format from the
+    ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, namely:
+    ::
+
+        from ampycloud.utils import mocker
+        mock_data = mocker.canonical_demo_dataset()
+
+    Important:
+        ampycloud treats vertical visibility hits just like any other hit. Hence, it is up to the
+        user to adjust the vertical visibility hit altitude (if they so desire), and/or ignore
+        some of them (if they so desire) prior to feeding them to ampycloud.
+
+
+    All the scientific parameters are set dynamically in ampycloud.dynamic. From within
+    a Python session all these parameters can be changed directly. For example,
+    to change the plotting style to 'latex', one would do:
+    ::
+
+        from ampycloud import dynamic
+        dynamic.MPL_STYLE = 'latex'
+
+    Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
+    file. See ``ampycloud.set_prms()`` for details.
+
+    Example:
+
+        In the following example, we create the canonical mock dataset from ampycloud, and run
+        the algorithm on it:
+        ::
+
+            from datetime import datetime
+            import ampycloud
+            from ampycloud.utils import mocker
+
+            # Generate the canonical demo dataset for ampycloud
+            mock_data = mocker.canonical_demo_data()
+
+            # Run the ampycloud algorithm on it
+            chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+
+            # Get the resulting METAR/SYNOP message
+            print(chunk.metar_msg(synop=False))
 
     """
 
@@ -155,50 +213,68 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
 
 
 @log_func_call(logger)
-def synop(data : pd.DataFrame, geoloc : str = None) -> str:
-    """ Run the ampycloud algorithm on a dataset and extract a synop report of the cloud layers.
-
-    All the scientific parameters are set dynamically in ampycloud.dynamic. To change them, take a
-    look at ampycloud.set_prms().
+def synop(data : pd.DataFrame) -> str:
+    """ Runs the ampycloud algorithm on a dataset and extract a synop report of the cloud layers.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
-        geoloc (str, optional): the name of the geographic location where the data was taken.
-            Defaults to None.
 
     Returns:
         str: the synop message.
 
+    Example:
+    ::
+
+        import ampycloud
+        from ampycloud.utils import mocker
+
+        # Generate the canonical demo dataset for ampycloud
+        mock_data = mocker.canonical_demo_data()
+
+        # Compute the synop message
+        msg = ampycloud.synop(mock_data)
+        print(msg)
+
     """
 
     # First, run the ampycloud algorithm
-    chunk = run(data, geoloc=geoloc)
+    chunk = run(data)
 
     # Then, return the synop message
     return chunk.metar_msg(synop=True, which='layers')
 
 @log_func_call(logger)
-def metar(data : pd.DataFrame, geoloc : str = None) -> str:
+def metar(data : pd.DataFrame, msa : Union[int, float] = None) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
-
-    All the scientific parameters are set dynamically in ampycloud.dynamic. To change them, take a
-    look at ampycloud.set_prms().
 
     Args:
         data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
-        geoloc (str, optional): the name of the geographic location where the data was taken.
-            Defaults to None.
+        msa (int|float, optional): Minimum Sector Altitude. If set, layers above it will not be
+            reported. Defaults to None.
 
     Returns:
-        str: the synop message.
+        str: the metar message.
+
+    Example:
+    ::
+
+        import ampycloud
+        from ampycloud.utils import mocker
+
+        # Generate the canonical demo dataset for ampycloud
+        mock_data = mocker.canonical_demo_data()
+
+        # Compute the METAR message, with Minimnum Sector Altitude of 10'000 ft
+        msg = ampycloud.metar(mock_data, msa=1e5)
+        print(msg)
 
     """
 
     # First, run the ampycloud algorithm
-    chunk = run(data, geoloc=geoloc)
+    chunk = run(data)
 
     # Then, return the synop message
-    return chunk.metar_msg(synop=False, which='layers')
+    return chunk.metar_msg(synop=False, msa=msa, which='layers')
 
 @log_func_call(logger)
 def demo() -> tuple:
@@ -210,27 +286,7 @@ def demo() -> tuple:
 
     """
 
-    # Create the "famous" mock dataset
-    n_ceilos = 4
-    lookback_time = 1200
-    hit_rate = 30
-
-    lyrs = [{'alt': 1000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 0.8, 'period': 10, 'amplitude': 0},
-            {'alt': 2000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
-            {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1400},
-            {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1400},
-            {'alt': 5100, 'alt_std': 500, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0},
-            {'alt': 5100, 'alt_std': 500, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0}
-            ]
-
-    # Actually generate the mock data
-    mock_data = mock_layers(n_ceilos, lyrs)
+    mock_data = canonical_demo_data()
 
     assert isinstance(mock_data, pd.DataFrame)
 
