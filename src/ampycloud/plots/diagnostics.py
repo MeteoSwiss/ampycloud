@@ -10,7 +10,6 @@ Module contains: class for the diagnostic plots
 
 # Import from Python
 import logging
-from typing import Union
 from functools import partial
 from copy import deepcopy
 import numpy as np
@@ -20,7 +19,6 @@ from matplotlib.lines import Line2D
 from matplotlib import rcParams
 
 # Import from this package
-from ..errors import AmpycloudError
 from ..scaler import scaling
 from .hardcoded import WIDTH_TWOCOL, MRKS
 from .utils import texify
@@ -45,8 +43,20 @@ class DiagnosticPlot:
         # Assign the chunk to a class variable, so I can use it everywhere ...
         self._chunk = chunk
 
-        # Create the figure, with a suitable width.
-        self._fig = plt.figure(figsize=(WIDTH_TWOCOL, 5.5))
+        # Create the figure and axes
+        self.new_fig()
+
+    @staticmethod
+    def setup_fig() -> tuple:
+        """ Setups a diagnsotic plot figure.
+
+        Returns:
+            fig, axs: the matplotlib figure, and the axes stored in a list.
+
+        """
+
+        # Create a figure with the proper dimensions.
+        fig = plt.figure(figsize=(WIDTH_TWOCOL, 5.5))
 
         # Use gridspec for a fine control of the figure area.
         fig_gs = gridspec.GridSpec(1, 5,
@@ -55,17 +65,23 @@ class DiagnosticPlot:
                                    wspace=0.0, hspace=0.05)
 
         # Create the individual axes
-        ax0 = self._fig.add_subplot(fig_gs[0, 0])
-        ax1 = self._fig.add_subplot(fig_gs[0, 2], sharey=ax0)
-        ax2 = self._fig.add_subplot(fig_gs[0, 3], sharey=ax0)
-        ax3 = self._fig.add_subplot(fig_gs[0, 4], sharey=ax0)
+        ax0 = fig.add_subplot(fig_gs[0, 0])
+        ax1 = fig.add_subplot(fig_gs[0, 2], sharey=ax0)
+        ax2 = fig.add_subplot(fig_gs[0, 3], sharey=ax0)
+        ax3 = fig.add_subplot(fig_gs[0, 4], sharey=ax0)
 
         # Hide the axis I never want to see ...
         for ax in [ax1, ax2, ax3]:
             ax.axis('off')
 
         # Store this for later use
-        self._axs = [ax0, ax1, ax2, ax3]
+        axs = [ax0, ax1, ax2, ax3]
+
+        return fig, axs
+
+    def new_fig(self) -> None:
+        """ Assign the fig attribute. """
+        self._fig, self._axs = self.setup_fig()
 
     def show_hits_only(self, show_ceilos : bool = False) -> None:
         """ Shows the ceilometer hits alone.
@@ -113,7 +129,7 @@ class DiagnosticPlot:
         if show_ceilos:
             # Create by hand the legend handles
             elmts = [Line2D([0], [0], ls='', marker='o', color=ceilo_clrs[ind],
-                            label=texify(r'\smaller ' + item.replace('_', ' ')), markersize=10)
+                            label=texify(item), markersize=10)
                      for (ind, item) in enumerate(self._chunk.ceilos)]
 
             # And add them to the plot
@@ -350,7 +366,7 @@ class DiagnosticPlot:
             metar (str): the METAR code.
         """
 
-        if name is not None and metar is not None:
+        if name is not None or metar is not None:
             msg = r'\smaller \bf %s: %s' % (name, metar)
 
             # Show it if it contains something ...
@@ -488,4 +504,15 @@ class DiagnosticPlot:
         for fmt in fmts:
             self._fig.savefig(f'{fn_out}.{fmt}')
 
-    # TODO: add a closing routine to close the plot and free memory
+    def show(self) -> None:
+        """ Shows the plot """
+
+        self._fig.show()
+
+    def close_fig(self) -> None:
+        """ Close the figure to free the memory.
+
+        If you need to re-create them, start by generating the figure with the `.new_fig()` method.
+        """
+
+        plt.close(self._fig.number)

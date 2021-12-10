@@ -8,23 +8,12 @@ SPDX-License-Identifier: BSD-3-Clause
 Module content: tests for the plots.core module
 """
 
+# Import from Python
+from pathlib import Path
+
 from ampycloud import dynamic
 from ampycloud.core import demo
-from ampycloud.plots.core import raw_data, diagnostic
-
-def test_raw_data(mpls):
-    """ Test the raw_data plot."""
-
-    """
-    dynamic.MPL_STYLE = 'metsymb'
-
-    # Get some demo chunk data
-    _, chunk = demo()
-
-    raw_data(chunk, show_ceilos=True, show=False,
-             save_stem='raw_data', save_fmts='pdf',
-             ref_name='Test', ref_metar='???')
-    """
+from ampycloud.plots.core import diagnostic
 
 def test_diagnostic(mpls):
     """ Test the raw_data plot.
@@ -41,15 +30,13 @@ def test_diagnostic(mpls):
     # Get some demo chunk data
     _, chunk = demo()
 
-    # Create the diagnsotic plots at the three different upto levels
-    diagnostic(chunk, upto='slices', show=False,
-               save_stem='pytest_diagnostic_slices', save_fmts='pdf',
-               ref_name='Mock data', ref_metar='FEW008 BKN037')
+    base_name = 'pytest_diagnostic_'
+    sufxs = ['raw_data', 'slices', 'groups', 'layers']
 
-    diagnostic(chunk, upto='groups', show=False,
-               save_stem='pytest_diagnostic_groups', save_fmts='pdf',
-               ref_name='Mock data', ref_metar='FEW008 BKN037')
+    # Create the diagnsotic plots at the four different upto levels
+    for sufx in sufxs:
+        diagnostic(chunk, upto=sufx, show_ceilos=True, show=False,
+                   save_stem=base_name+sufx, save_fmts='pdf',
+                   ref_metar_origin='Mock data', ref_metar='FEW008 BKN037')
 
-    diagnostic(chunk, upto='layers', show=False,
-               save_stem='pytest_diagnostic_layers', save_fmts='pdf',
-               ref_name='Mock data', ref_metar='FEW008 BKN037')
+        assert Path(base_name+sufx+'.pdf').exists
