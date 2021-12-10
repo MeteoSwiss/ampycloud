@@ -8,8 +8,8 @@ SPDX-License-Identifier: BSD-3-Clause
 Module contains: dynamic parameters, which can be altered during execution.
 """
 
-#: str: Style to use for the plots. Can be 'none', 'base', 'nolatex', 'latex', 'metsymb'
-MPL_STYLE : str = 'none'
+#: str: Style to use for the plots. Can be on of 'base', 'latex', 'metsymb'
+MPL_STYLE : str = 'base'
 
 #: int: Max sky coverage (in %) up to which the coverage is considered null.
 OKTA_LIM0 : int = 2

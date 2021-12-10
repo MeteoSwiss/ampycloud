@@ -10,8 +10,6 @@ Module contains: highest-level init magic
 
 # Import from Python
 import logging
-from pathlib import Path
-from matplotlib import pyplot as plt
 
 # Import from this package
 from . import version as vers
@@ -26,8 +24,3 @@ logger.addHandler(logging.NullHandler())
 
 # Make the package version easily accessible, with the usual format
 __version__ = vers.VERSION
-
-# Make sure the base plotting style is used at the very least
-# Should this be a warning ?
-logger.info('Setting the base (custom) matplotlib style for ampycloud.')
-plt.style.use(str(Path(__file__).parent / 'plots'/ 'mpl_styles' / 'base.mplstyle'))

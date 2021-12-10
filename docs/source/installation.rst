@@ -43,7 +43,19 @@ Furthermore, ampycloud relies on a few external modules, which will be automatic
     :language: python
     :lines: 41-45
 
-Testing the installation
-------------------------
+Testing the installation & Speed benchmark
+------------------------------------------
 
-WIP.
+ampycloud is shipped with a high-level entry point that allows to run a speed check from the
+command line. To see if your installation was successful, the command ``ampycloud_speed_test -h``
+should return:
+
+.. literalinclude:: ampycloud_speed_test_help_msg.txt
+    :language: none
+
+To actually run the speed test, simply call ``ampycloud_speed_test``, optionally setting a different
+number of executions via the ``-niter`` argument. For comparison purposes, here are the performance on the machine that
+was responsible for compiling this documentation:
+
+.. literalinclude:: ampycloud_speed_test_msg.txt
+    :language: none

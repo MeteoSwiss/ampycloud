@@ -45,6 +45,10 @@ setup(
         "ruamel.yaml"
     ],
 
+    # Setup entry points to use ampycloud directly from a terminal
+    entry_points={'console_scripts':
+        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test']},
+
     classifiers=[
 
         # How mature is this project? Common values are

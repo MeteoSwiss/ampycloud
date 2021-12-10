@@ -18,6 +18,7 @@ import pandas as pd
 from ..logger import log_func_call
 from ..errors import AmpycloudError
 
+# Instantiate the module logger
 logger = logging.getLogger(__name__)
 
 # Define a proper random number generator

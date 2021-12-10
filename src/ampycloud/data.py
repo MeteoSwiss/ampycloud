@@ -42,6 +42,8 @@ class AbstractChunk(ABC):
 
         # Name of the geographic location of the observations
         self._geoloc = None
+        # Date and time at the reference
+        self._ref_dt = None
         # Chunk data and required column names
         self._data = None
         self._data_cols = None
@@ -50,6 +52,11 @@ class AbstractChunk(ABC):
     def geoloc(self) -> str:
         """ The name of the geographic location of the observations. """
         return self._geoloc
+
+    @property
+    def ref_dt(self) -> str:
+        """ The reference date and time for the data, i.e. Delta t = 0. """
+        return self._ref_dt
 
     @property
     def data(self) -> pd.DataFrame:
@@ -70,7 +77,7 @@ class CeiloChunk(AbstractChunk):
     """
 
     @log_func_call(logger)
-    def __init__(self, data : pd.DataFrame, geoloc : str = None) -> None:
+    def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
         """ CeiloChunk init method.
 
         The input data is required to be a pandas DataFrame with 4 columns:
@@ -100,6 +107,12 @@ class CeiloChunk(AbstractChunk):
         Args:
             data (pd.DataFrame): the input data. See above for details.
             geoloc (str, optional): name of the geolocation of the observations.
+            ref_dt (str, optional): reference date and time of the observations, corresponding to
+                Delta t = 0. Defaults to None.
+
+        Note:
+            For now, geoloc and ref_dt serve no purposes other than improving the diagnostic plots.
+            This is also why ref_dt is a str, such that users can specify it however they please.
 
         """
 
@@ -108,6 +121,7 @@ class CeiloChunk(AbstractChunk):
 
         # Assign the geoloc name
         self._geoloc =  geoloc
+        self._ref_dt = ref_dt
 
         # Assign the data after transforming it to a pandas DataFrame
         self._data_cols = {'ceilo': str, 'dt': float, 'alt': float, 'type': int}

@@ -79,7 +79,7 @@ def set_prms(pth : Union[str, Path]) -> None:
 
     """
 
-    # Set the yaml loading mode for the whole module.
+    # Set the yaml loading mode ...
     yaml=YAML(typ='safe')
 
     if isinstance(pth, str):
@@ -108,12 +108,6 @@ def set_prms(pth : Union[str, Path]) -> None:
 
         setattr(dynamic, key, prms[key])
 
-        # For the plotting style, let's set it right away.
-        if key == 'MPL_STYLE':
-            #set_mplstyle(style=dynamic.MPL_STYLE)
-            # TODO
-            pass
-
 @log_func_call(logger)
 def reset_prms() -> None:
     """ Reset the ampycloud dynamic=scientific parameters to their default values. """
@@ -123,7 +117,7 @@ def reset_prms() -> None:
     set_prms(pth)
 
 @log_func_call(logger)
-def run(data : pd.DataFrame, geoloc : str = None) -> CeiloChunk:
+def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
     """ Run the ampycloud algorithm on a given dataset.
 
     All the scientific parameters are set dynamically in ampycloud.dynamic. To change them, take a
@@ -133,6 +127,8 @@ def run(data : pd.DataFrame, geoloc : str = None) -> CeiloChunk:
         data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
         geoloc (str, optional): the name of the geographic location where the data was taken.
             Defaults to None.
+        ref_dt (str, optional): reference date and time of the observations, corresponding to
+            Delta t = 0. Defaults to None.
 
     Returns:
         CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
@@ -143,16 +139,7 @@ def run(data : pd.DataFrame, geoloc : str = None) -> CeiloChunk:
     logger.info('Starting an ampycloud run at %s', starttime)
 
     # First, let's create an CeiloChunk instance ...
-    chunk = CeiloChunk(data, geoloc = geoloc)
-
-    # Here, add vital information to the alt_scaling parameters
-    # TODO: this is not necessarily the most elegant, and could be done better.
-    # Side note: this is only required for the duplicated axes of the diagnostic plots ...
-    # Deal with this when I get to the plots
-    #for item in [dynamic.SLICING_PRMS, dynamic.GROUPING_PRMS]:
-    #    if item['alt_scale_mode'] == 'minmax':
-    #        item['alt_scale_kwargs']['min_val'] = np.nanmin(chunk.data['alt'])
-    #        item['alt_scale_kwargs']['max_val'] = np.nanmax(chunk.data['alt'])
+    chunk = CeiloChunk(data, geoloc = geoloc, ref_dt = ref_dt)
 
     # Go through the ampycloud cascade:
     # Run the slicing ...
@@ -226,12 +213,12 @@ def demo() -> tuple:
     # Create the "famous" mock dataset
     n_ceilos = 4
     lookback_time = 1200
-    hit_rate = 60
+    hit_rate = 30
 
     lyrs = [{'alt': 1000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0},
+             'sky_cov_frac': 0.8, 'period': 10, 'amplitude': 0},
             {'alt': 2000, 'alt_std': 100, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
-             'sky_cov_frac': 1, 'period': 10, 'amplitude': 0},
+             'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
             {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
              'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1400},
             {'alt': 5000, 'alt_std': 300, 'lookback_time': lookback_time, 'hit_rate': hit_rate,
@@ -248,6 +235,6 @@ def demo() -> tuple:
     assert isinstance(mock_data, pd.DataFrame)
 
     # Run the ampycloud algorithm
-    chunk =  run(mock_data, geoloc='ampycloud demo')
+    chunk =  run(mock_data, geoloc='ampycloud demo', ref_dt = str(datetime.now()))
 
     return mock_data, chunk

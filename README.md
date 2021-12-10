@@ -42,12 +42,12 @@ As an example, to enable ampycloud log messages down to the `DEBUG` level, users
 import logging
 
 logging.basicConfig()
-logging.getLogger('ampycloud').setlevel('DEBUG')
+logging.getLogger('ampycloud').setLevel('DEBUG')
 ```
 Each ampycloud module has a dedicated `logger` based on the module `__name__`, such that users can adjust the parameter of each ampycloud module however they desire, e.g.:
 ```
-logging.getLogger('ampycloud.wmo').setlevel('WARNING')
-logging.getLogger('ampycloud.scaler').setlevel('DEBUG')
+logging.getLogger('ampycloud.wmo').setLevel('WARNING')
+logging.getLogger('ampycloud.scaler').setLevel('DEBUG')
 ```
 
 

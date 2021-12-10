@@ -10,12 +10,13 @@ lines.linewidth : 0.8
 
 font.family: sans-serif
 font.sans-serif: DejaVu Sans
-font.size: 10
+font.size: 12
 font.weight: medium
 font.variant: normal
 
 axes.labelweight: normal
 axes.linewidth: 1
+axes.prop_cycle: cycler('color', ['#4c88b3', '#b34c88', '#88b34c', '#bf8a31', '#7d70b4', '#00a7a0', '#d15f56', '#d0d424','#b3b3b3', '#575757'])
 
 xtick.major.pad: 8
 xtick.major.size: 8

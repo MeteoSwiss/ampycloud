@@ -10,8 +10,8 @@
 
 # General parameters
 
-# Plotting style. Can be one of 'none', 'base', 'latex', 'nolatex', 'metsymb'
-MPL_STYLE: 'none'
+# Plotting style. Can be one of 'base', 'latex', 'metsymb'
+MPL_STYLE: 'base'
 
 # Max sky coverage (in %) up to which the coverage is considered null.
 OKTA_LIM0: 2
