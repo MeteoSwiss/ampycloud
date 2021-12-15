@@ -10,6 +10,7 @@ Module contains: class for the diagnostic plots
 
 # Import from Python
 import logging
+from typing import Union
 from functools import partial
 from copy import deepcopy
 import numpy as np
@@ -376,16 +377,25 @@ class DiagnosticPlot:
                               #          boxstyle='round, pad=0.25')
                               )
 
-    def add_metar(self, synop : bool = False) -> None:
+    def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
         """ Display the ampycloud METAR/Synop proposal.
+
+        Args:
+            synop (bool, optional): If True, will display the full synop call. Defaults to False.
+            msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
+                message. Deafaults to None.
         """
 
         # Combine it all in one message
-        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop)
+        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop, msa=msa)
+
+        if msa is not None:
+            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(msa)
 
         # Show the msg ...
-        self._axs[2].text(0.5, 1.2, texify(msg),
+        self._axs[2].text(0.5, 1.25, texify(msg),
                           transform=self._axs[2].transAxes, color='k', ha='center',
+                          va='top',
                           bbox=dict(facecolor='none', edgecolor='k', alpha=1,
                                     boxstyle='round, pad=0.4'))
 
