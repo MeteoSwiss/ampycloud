@@ -34,7 +34,8 @@ def main():
 
     parser.add_argument('--restrict', action='store', metavar='error codes', nargs='+',
                         default=None, help='''List of space-separated error codes to strictly
-                                            restrict the search for.''')
+                                            restrict the search for.
+                                            To see all possible codes: pylint --list-msgs''')
 
     parser.add_argument('--exclude', action='store', metavar='error codes', nargs='+',
                         default=None, help='List of space-separated error codes to ignore.')
