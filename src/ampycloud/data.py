@@ -696,4 +696,9 @@ class CeiloChunk(AbstractChunk):
             report = sligrolay['significant']*(sligrolay['alt_base']<msa)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
+
+        # Here, deal with the situations when all clouds are above the msa
+        if len(msg) ==0:
+            return 'NCD'
+
         return msg
