@@ -48,7 +48,8 @@ setup(
 
     # Setup entry points to use ampycloud directly from a terminal
     entry_points={'console_scripts':
-        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test']},
+        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test',
+         'ampycloud_copy_prm_file=ampycloud.__main__:ampycloud_copy_prm_file']},
 
     classifiers=[
 

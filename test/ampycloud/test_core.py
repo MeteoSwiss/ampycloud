@@ -30,7 +30,7 @@ def test_copy_prm_file():
         save_loc.mkdir()
 
     # Run the routine
-    copy_prm_file(save_loc=save_loc, which='defaults')
+    copy_prm_file(save_loc=save_loc, which='default')
 
     # Clean things up if all went fine
     _ = [os.remove(item) for item in save_loc.glob('*')]

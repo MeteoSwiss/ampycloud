@@ -15,7 +15,7 @@ from yaconfigobject import Config
 def get_default_prms() -> Config:
     """ Extract the default ampycloud parameters from the YAML configuration file. """
 
-    return Config(paths=[str(Path(__file__).parent/ 'prms')], name='ampycloud_defaults_prms.yml')
+    return Config(paths=[str(Path(__file__).parent/ 'prms')], name='ampycloud_default_prms.yml')
 
 
 # Load the defaults ampycloud parameters

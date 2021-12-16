@@ -43,6 +43,14 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
             import ampycloud
             ampycloud.copy_prm_file(save_loc='.', which='default')
 
+    .. note::
+
+        There is also a high-level entry point that allows users to get a local copy of the
+        ampycloud parameter files directly from the command line:
+        ::
+
+            ampycloud_copy_prm_file -which=default
+
     """
 
     # Let's take a look at the path I was given
@@ -61,7 +69,7 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
     logger.info('Available parameter files: %s', ref_files)
 
     if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
-        raise AmpycloudError('Parameter file not found.')
+        raise AmpycloudError(f'Parameter file {fname} not found.')
 
     if (save_loc / fname).exists():
         raise AmpycloudError(f'File {fname} already exists at save_loc={save_loc}')
