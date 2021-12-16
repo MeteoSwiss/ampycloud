@@ -98,7 +98,7 @@ Specifically:
   logger=logging.getLogger(__name__)
 
   @log_func_call(logger)
-  @some_fct(*args, *kwargs):
+  some_fct(*args, *kwargs):
       ...
   ```
 

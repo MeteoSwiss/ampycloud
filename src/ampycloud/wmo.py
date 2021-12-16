@@ -21,14 +21,14 @@ from .logger import log_func_call
 logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
-def frac2okta(val : Union[int, float, np.ndarray],
+def perc2okta(val : Union[int, float, np.ndarray],
               lim0 : Union[int, float] = 0,
               lim8 : Union[int, float] = 100) -> np.ndarray:
-    """ Converts a sky coverage fraction into oktas.
+    """ Converts a sky coverage percentage into oktas.
 
-    One okta corresponds to 1/8 of the sky covered by clouds. The case of 0 and 8 oktas is special,
-    in that these indicate that the sky is covered at *exactly* 0%, respectively 100%. This implies
-    that the 1 okta and 7 okta bins are larger than others.
+    One okta corresponds to 1/8 of the sky covered by clouds. The cases of 0 and 8 oktas are
+    special, in that these indicate that the sky is covered at *exactly* 0%, respectively 100%.
+    This implies that the 1 okta and 7 okta bins are larger than others.
 
     This function allows to tweak the 0 and 8 oktas limits via the `lim0` and `lim8` keyword
     arguments, such that:
@@ -41,7 +41,7 @@ def frac2okta(val : Union[int, float, np.ndarray],
         - 8 oktas == lim8 <= val <= 100
 
     Args:
-        val (int|float|ndarray): the sky coverage fraction to convert, in percent.
+        val (int|float|ndarray): the sky coverage percentage to convert, in percent.
         lim0 (int|float, optional): the upper limit for the 0 okta bin, in percent.
             Defaults to 0.
         lim8 (int|float, optional): the lower limit for the 8 oktas bin, in percent.
@@ -63,7 +63,7 @@ def frac2okta(val : Union[int, float, np.ndarray],
     out = np.full_like(val, -1., dtype=float)
 
     # Deal with the edge cases first
-    out[(val >= 0) * ( val <=lim0)] = 0
+    out[(val>=0) * ( val<=lim0)] = 0
     out[(lim8<=val) * (val<=100)] = 8
 
     # Now deal with the other cases
@@ -163,13 +163,14 @@ def okta2symb(val : int, use_metsymb : bool = False) -> str:
 
 @log_func_call(logger)
 def alt2code(val : Union[int, float]) -> str:
-    """ Function that converts a given altitude into the corresponding METAR code chunk, in 100 ft.
+    """ Function that converts a given altitude in hundreds of ft (3 digit number),
+    e.g. 5000 ft -> 050, 500 ft -> 005.
 
     Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
     floored to the nearest 1000 ft.
 
     Reference: *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*,
-    WMO-No.782, 2020 edition.
+    WMO-No.782, 2020 edition. https://library.wmo.int/?lvl=notice_display&id=716
 
     Args:
         val (int, float): the altitude to convert, in feet.
