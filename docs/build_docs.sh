@@ -3,7 +3,7 @@
 # Adapted to ampycloud in December 2021; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 #
 
-# Step 0: clean the existing apidoc rst files and any previous build folder.
+# Step 0: clean the existing Sphinx apidoc rst files and any previous build folder.
 # Make sure to not delete any important .git info for the CI auto_publish action !
 # Note: "find" crashes if the directory does not exist ... which is the case for some of the
 # Github Actions, hence the if ...  then ... else below. fpavogt, 2020-12-14.
@@ -13,7 +13,7 @@ then
     echo "Smart cleaning of the ./build directory."
     find ./build -not \( -path '*.git*' -o -name '.nojekyll' -o -name '.-gitignore' \) -delete
 else
-    echo "FYI: directory ./build does not exists."
+    echo "FYI: directory ./build does not exists yet and is therefore not cleaned."
 fi
 
 # Step 1: run autodoc to generate all the docstring rst files.
