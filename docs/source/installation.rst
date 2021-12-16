@@ -41,7 +41,7 @@ Furthermore, ampycloud relies on a few external modules, which will be automatic
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 41-45
+    :lines: 41-46
 
 Testing the installation & Speed benchmark
 ------------------------------------------

@@ -17,7 +17,7 @@ from pathlib import Path
 from shutil import copy
 from datetime import datetime
 import pandas as pd
-from ruamel.yaml import YAML
+from yaconfigobject import Config
 
 # Import from ampycloud
 from .errors import AmpycloudError, AmpycloudWarning
@@ -54,7 +54,7 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
     # Log this info, in case users want to know which ones exist.
     logger.info('Available parameter files: %s', ref_files)
 
-    if (fname := f'ampycloud_{which}.yml') not in ref_files:
+    if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
         raise AmpycloudError('Parameter file not found.')
 
     if (save_loc / fname).exists():
@@ -76,9 +76,6 @@ def set_prms(pth : Union[str, Path]) -> None:
 
     """
 
-    # Set the yaml loading mode ...
-    yaml=YAML(typ='safe')
-
     if isinstance(pth, str):
         # Be nice and try to convert this to a Path
         pth = Path(pth)
@@ -95,23 +92,28 @@ def set_prms(pth : Union[str, Path]) -> None:
 
     # Extract all the parameters
     with open(pth) as fil:
-        prms = yaml.load(fil)
+        logger.info('Opening (user) parameter file: %s', fil)
+        user_prms = Config(paths=[str(fil.parent)], name=str(fil.name))
 
     # Now, assign the prms
-    for key in prms:
+    for (key, item) in user_prms.items():
+        if not isinstance(item, dict):
+            logger.info('Setting %s ...', key)
+            logger.debug('... with value: %s', item)
+            dynamic.AMPYCLOUD_PRMS.key = item
 
-        logger.info('Setting %s ...', key)
-        logger.debug('... with value: %s', prms[key])
+        else:
+            for (subkey, subitem) in item.items():
+                logger.info('Setting %s.%s ...', key, subkey)
+                logger.debug('... with value: %s', subitem)
+                dynamic.AMPYCLOUD_PRMS.key.subkey = subitem
 
-        setattr(dynamic, key, prms[key])
 
 @log_func_call(logger)
 def reset_prms() -> None:
     """ Reset the ampycloud dynamic=scientific parameters to their default values. """
 
-    pth = Path(__file__).resolve().parent / 'prms' / 'ampycloud_defaults.yml'
-
-    set_prms(pth)
+    dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
 @log_func_call(logger)
 def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
@@ -167,7 +169,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     ::
 
         from ampycloud import dynamic
-        dynamic.MPL_STYLE = 'latex'
+        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'latex'
 
     Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
     file. See ``ampycloud.set_prms()`` for details.

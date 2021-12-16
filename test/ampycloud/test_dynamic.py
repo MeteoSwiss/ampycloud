@@ -10,7 +10,7 @@ Module content: tests for the dynamic module
 
 
 # Import from ampycloud
-from ampycloud import dynamic
+from ampycloud import dynamic, reset_prms
 
 
 def test_dynamic_module():
@@ -18,10 +18,31 @@ def test_dynamic_module():
     interactively if/when needed. """
 
     # Check that I can set a value and store it just fine.
-    val_orig = dynamic.OKTA_LIM0
-    dynamic.OKTA_LIM8 = -1
-    new_val = dynamic.OKTA_LIM8
+    val_orig = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
+    dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = -1
+    new_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM8
 
     assert 0 <= val_orig <= 100
     assert val_orig != new_val
     assert new_val == -1
+
+    # Check whether I can copy PRMS values and change these without altering the originals
+    # (i.e do I need a depcopy ?)
+    tmp = dynamic.AMPYCLOUD_PRMS.MPL_STYLE
+    assert tmp == dynamic.AMPYCLOUD_PRMS.MPL_STYLE
+    tmp = 'bad'
+    assert dynamic.AMPYCLOUD_PRMS.MPL_STYLE != 'bad'
+    assert tmp == 'bad'
+
+    # Also test with new dictionnary keys, that seems to behave differently
+    # TODO: if issue #24 gets fixed, this may need to be adjusted ...
+    tmp = {}
+    tmp.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
+    tmp['new_entry'] = 'rubbish'
+
+    assert 'new_entry' in tmp.keys()
+    assert 'new_entry' not in dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs.keys()
+
+
+    # Reset everything so as to not break havoc with the other tests
+    reset_prms()

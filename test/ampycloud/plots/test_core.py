@@ -25,7 +25,7 @@ def test_diagnostic(mpls):
     """
 
     if mpls:
-        dynamic.MPL_STYLE = mpls
+        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
     # Get some demo chunk data
     _, chunk = demo()
