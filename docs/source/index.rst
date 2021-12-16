@@ -12,6 +12,14 @@ ampycloud |version| |stars| |watch|
     for the first time. These should also be added to the :ref:`acknowledge:Acknowledging ampycloud`
     page.
 
+
+.. figure:: ./examples/ampycloud_canonical_mock_demo.png
+    :width: 750px
+    :align: center
+    :alt: ampycloud demo diagnostic diagram
+
+    *Figure 1: the ampycloud diagnostic diagram for its canonical mock dataset.*
+
 **Welcome to the ampycloud documentation !**
 
 WIP.

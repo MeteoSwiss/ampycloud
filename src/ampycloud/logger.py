@@ -9,18 +9,19 @@ Module contains: logging utilities
 """
 
 # Import from Python
+import logging
 import inspect
 from typing import Callable
 from functools import wraps
 
-def log_func_call(logger) -> Callable:
+def log_func_call(logger : logging.Logger) -> Callable:
     """ Intended as a decorator to log function calls.
 
     The first part of the message containing the function name is at the 'INFO' level.
     The second part of the message containing the argument values is at the 'DEBUG' level.
 
     Args:
-        logger (logging.logger): a logger to feed info to.
+        logger (logging.Logger): a logger to feed info to.
 
     Note:
         Adapted from the similar dvas function, which itself was adapted from

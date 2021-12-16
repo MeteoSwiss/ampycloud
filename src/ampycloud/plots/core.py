@@ -12,7 +12,7 @@ Module contains: core plotting routines
 import logging
 from typing import Union
 
-# Import from tbhis module
+# Import from this module
 from ..data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
@@ -24,6 +24,7 @@ logger = logging.getLogger(__name__)
 @set_mplstyle
 @log_func_call(logger)
 def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = False,
+               msa : Union[int, float] = None,
                ref_metar : str = None, ref_metar_origin : str = None,
                show : bool = True,
                save_stem : str = None, save_fmts : Union[list, str] = None) -> None:
@@ -36,6 +37,8 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
             ['raw_data', 'slices', 'groups', 'layers']. Defaults to 'layers'.
         show_ceilos (bool, optional): if True, hits will be colored as a function of the
             responsible ceilometer. Defaults to False. No effects unless ``upto='raw data'``.
+        msa (int|float, optional): Apply a Minimum Sector Altitude to the ampycloud METAR message.
+            Deafults to None.
         ref_metar (str, optional): reference METAR message. Defaults to None.
         ref_metar_origin (str, optional): name of the source of the reference METAR set with
             ref_metar. Defaults to None.
@@ -83,7 +86,7 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
         adp.format_group_axes()
     if upto == 'layers':
         adp.show_layers()
-        adp.add_metar(synop=False)
+        adp.add_metar(synop=False, msa=msa)
 
     # And add all the common stuff
     adp.add_ref_metar(ref_metar_origin, ref_metar)

@@ -42,12 +42,14 @@ setup(
         "numpy >= 1.20.3",
         "scikit-learn >= 0.24.2",
         "pandas >= 1.3.1",
-        "ruamel.yaml"
+        "pyyaml",
+        "yaconfigobject"
     ],
 
     # Setup entry points to use ampycloud directly from a terminal
     entry_points={'console_scripts':
-        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test']},
+        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test',
+         'ampycloud_copy_prm_file=ampycloud.__main__:ampycloud_copy_prm_file']},
 
     classifiers=[
 

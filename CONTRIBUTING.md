@@ -98,7 +98,7 @@ Specifically:
   logger=logging.getLogger(__name__)
 
   @log_func_call(logger)
-  @some_fct(*args, *kwargs):
+  some_fct(*args, *kwargs):
       ...
   ```
 
@@ -113,3 +113,27 @@ defined in `conftext.py`, that allows to feed a specific command line argument t
 pytest --MPL_STYLE=latex
 ```
 Doing so, the users can easily test the `dynamic.MPL_STYLE` of their choice, e.g. `base`, `latex`, or `metsymb`. :warning: For this to work, pytest must be called from the package root.
+
+
+### Plotting
+
+Because the devs care about the look of plots, ampycloud ships with specific matplotlib styles that will get used by default. For this to work as intended, any plotting function must be wrapped with the `plots.utils.set_mplstyle` decorator, as follows:
+```
+# Import from Python
+import logging
+
+# Import from this module
+from ..logger import log_func_call
+from .utils import set_mplstyle
+
+# Instantiate the module logger
+logger = logging.getLogger(__name__)
+
+@set_mplstyle
+@log_func_call(logger)
+def some_plot_function(...):
+    ...
+```
+Note how the `@set_mplstyle` decorator goes above the `@log_func_call()` decorator.
+
+With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can be one of the following: `['base', 'latex', 'metsymb']`.

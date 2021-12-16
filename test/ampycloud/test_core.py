@@ -30,7 +30,7 @@ def test_copy_prm_file():
         save_loc.mkdir()
 
     # Run the routine
-    copy_prm_file(save_loc=save_loc, which='defaults')
+    copy_prm_file(save_loc=save_loc, which='default')
 
     # Clean things up if all went fine
     _ = [os.remove(item) for item in save_loc.glob('*')]
@@ -40,14 +40,15 @@ def test_reset_prms():
     """ Test the reset_prms routine. """
 
     # First, let's change one of the dynamic parameter
-    ref_val = dynamic.OKTA_LIM0
-    dynamic.OKTA_LIM0 = -1
-    assert dynamic.OKTA_LIM0 == -1
+    ref_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
+    dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 = -1
+    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == -1
+    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'const'
 
     # Then try to reset it
     reset_prms()
 
-    assert dynamic.OKTA_LIM0 == ref_val
+    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == ref_val
 
 def test_run():
     """ Test the run routine. """

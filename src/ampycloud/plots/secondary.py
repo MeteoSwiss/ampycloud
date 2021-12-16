@@ -40,7 +40,7 @@ def scaling_fcts(show: bool = True, save : bool = False) -> None:
 
     """
 
-    logger.info('Plotting style: %s', dynamic.MPL_STYLE)
+    logger.info('Plotting style: %s', dynamic.AMPYCLOUD_PRMS.MPL_STYLE)
 
     # Create the figure, with a suitable width.
     fig = plt.figure(figsize=(WIDTH_TWOCOL, 4.0))
@@ -64,8 +64,8 @@ def scaling_fcts(show: bool = True, save : bool = False) -> None:
     ax2.plot(alts, scaling(alts, fct='minmax'), c='k', lw=2)
     ax2.set_title(texify(r'\smaller minmax'))
 
-    ax3.plot(alts, scaling(alts, fct='step', **dynamic.GROUPING_PRMS['alt_scale_kwargs']),
-                           c='k', lw=2)
+    ax3.plot(alts, scaling(alts, fct='step',
+        **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS['alt_scale_kwargs']), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step'))
 
     for ax in [ax1, ax2, ax3]:

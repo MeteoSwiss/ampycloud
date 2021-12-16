@@ -10,6 +10,7 @@ Module contains: class for the diagnostic plots
 
 # Import from Python
 import logging
+from typing import Union
 from functools import partial
 from copy import deepcopy
 import numpy as np
@@ -25,6 +26,7 @@ from .utils import texify
 from .. import wmo
 from ..data import CeiloChunk
 from .. import dynamic
+from ..version import VERSION
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -76,6 +78,10 @@ class DiagnosticPlot:
 
         # Store this for later use
         axs = [ax0, ax1, ax2, ax3]
+
+        # Add the copyright
+        fig.text(0.995, 0.01, texify(r'\it\smaller\smaller '+f'Created with ampycloud v{VERSION}'),
+                 ha='right', va='bottom', rotation=0)
 
         return fig, axs
 
@@ -188,7 +194,7 @@ class DiagnosticPlot:
             # Let's also plot the overlap area of the slice
             slice_mean = self._chunk.slices.loc[ind, 'alt_mean']
             slice_std = self._chunk.slices.loc[ind, 'alt_std']
-            overlap = dynamic.GROUPING_PRMS['overlap']
+            overlap = dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap
 
             # Get some fake data spanning the entire data range
             misc = np.arange(np.nanmin(self._chunk.data['dt']),
@@ -216,7 +222,7 @@ class DiagnosticPlot:
 
             # Show the slice METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.slices.iloc[ind]['okta'],
-                                               use_metsymb=(dynamic.MPL_STYLE == 'metsymb')) +\
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
                 ' ' + self._chunk.slices.iloc[ind]['code'] + warn
             self._axs[1].text(0.5, self._chunk.slices.iloc[ind]['alt_base'],
                               texify(msg),
@@ -269,7 +275,7 @@ class DiagnosticPlot:
 
             # Show the group METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.groups.iloc[ind]['okta'],
-                                               use_metsymb=(dynamic.MPL_STYLE == 'metsymb')) +\
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
                 ' ' + self._chunk.groups.iloc[ind]['code'] + warn
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
@@ -319,8 +325,8 @@ class DiagnosticPlot:
 
             # Display the actual METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.layers.iloc[ind]['okta'],
-                                               use_metsymb=(dynamic.MPL_STYLE == 'metsymb')) +\
-                    ' ' + self._chunk.layers.iloc[ind]['code']
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
+                ' ' + self._chunk.layers.iloc[ind]['code']
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='k',
@@ -355,8 +361,8 @@ class DiagnosticPlot:
             msg += [r'\smaller $\Delta t=0$: {}'.format(self._chunk.ref_dt)]
 
         if not len(msg)==0:
-            self._axs[2].text(0.5, -0.21, texify(r'\smaller ' + '\n '.join(msg)),
-                              transform=self._axs[2].transAxes, ha='center')
+            self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
+                              transform=self._axs[2].transAxes, ha='center', va='top')
 
     def add_ref_metar(self, name : str, metar : str) -> None:
         """ Display a reference METAR, for example from human observers, different code, etc ...
@@ -376,16 +382,25 @@ class DiagnosticPlot:
                               #          boxstyle='round, pad=0.25')
                               )
 
-    def add_metar(self, synop : bool = False) -> None:
+    def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
         """ Display the ampycloud METAR/Synop proposal.
+
+        Args:
+            synop (bool, optional): If True, will display the full synop call. Defaults to False.
+            msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
+                message. Deafaults to None.
         """
 
         # Combine it all in one message
-        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop)
+        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop, msa=msa)
+
+        if msa is not None:
+            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(msa)
 
         # Show the msg ...
-        self._axs[2].text(0.5, 1.2, texify(msg),
+        self._axs[2].text(0.5, 1.25, texify(msg),
                           transform=self._axs[2].transAxes, color='k', ha='center',
+                          va='top',
                           bbox=dict(facecolor='none', edgecolor='k', alpha=1,
                                     boxstyle='round, pad=0.4'))
 
@@ -400,18 +415,21 @@ class DiagnosticPlot:
         """ Format the duplicate axes related to the slicing part. """
 
         # First, get the scaling parameters, and switch them over to a 'descale' mode ...
-        de_dt_scale_kwargs = deepcopy(dynamic.SLICING_PRMS['dt_scale_kwargs'])
+        # TODO: Once issue #25 is fixed, maybe update these lines ...
+        de_dt_scale_kwargs = {}
+        de_dt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
         de_dt_scale_kwargs['mode'] = 'descale'
-        de_alt_scale_kwargs = deepcopy(dynamic.SLICING_PRMS['alt_scale_kwargs'])
+        de_alt_scale_kwargs = {}
+        de_alt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
         de_alt_scale_kwargs['mode'] = 'descale'
 
         # Here, I need to add some vital information to the de_alt_scaling parameters
         # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
         # and generate the appropriate side-axis.
-        if dynamic.SLICING_PRMS['alt_scale_mode'] == 'minmax':
+        if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode == 'minmax':
             de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
             de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
-        if dynamic.SLICING_PRMS['dt_scale_mode'] == 'minmax':
+        if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'minmax':
             de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
             de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
 
@@ -420,15 +438,15 @@ class DiagnosticPlot:
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.06,
-                functions=(partial(scaling, fct=dynamic.SLICING_PRMS['dt_scale_mode'],
-                                   **dynamic.SLICING_PRMS['dt_scale_kwargs']),
-                           partial(scaling, fct=dynamic.SLICING_PRMS['dt_scale_mode'],
+                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                   **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs),
+                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
                                    **de_dt_scale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.03,
-                functions=(partial(scaling, fct=dynamic.SLICING_PRMS['alt_scale_mode'],
-                                   **dynamic.SLICING_PRMS['alt_scale_kwargs']),
-                           partial(scaling, fct=dynamic.SLICING_PRMS['alt_scale_mode'],
+                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                   **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs),
+                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
                                    **de_alt_scale_kwargs)))
 
             # Finally, let's hide the original axes and ticks to avoid "fat" lines ...
@@ -448,18 +466,21 @@ class DiagnosticPlot:
         """ Format the duplicate axes related to the clsutering part. """
 
         # First, get the scaling parameters, and switch them over to a 'descale' mode ...
-        de_dt_scale_kwargs = deepcopy(dynamic.GROUPING_PRMS['dt_scale_kwargs'])
+        # TODO: once issue #25 is fixed, maybe update these lines ...
+        de_dt_scale_kwargs = {}
+        de_dt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs)
         de_dt_scale_kwargs['mode'] = 'descale'
-        de_alt_scale_kwargs = deepcopy(dynamic.GROUPING_PRMS['alt_scale_kwargs'])
+        de_alt_scale_kwargs = {}
+        de_alt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
         de_alt_scale_kwargs['mode'] = 'descale'
 
         # Here, I need to add some vital information to the de_alt_scaling parameters
         # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
         # and generate the appropriate side-axis.
-        if dynamic.GROUPING_PRMS['alt_scale_mode'] == 'minmax':
+        if dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode == 'minmax':
             de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
             de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
-        if dynamic.GROUPING_PRMS['dt_scale_mode'] == 'minmax':
+        if dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode == 'minmax':
             de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
             de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
 
@@ -469,15 +490,15 @@ class DiagnosticPlot:
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.25,
-                functions=(partial(scaling, fct=dynamic.GROUPING_PRMS['dt_scale_mode'],
-                                   **dynamic.GROUPING_PRMS['dt_scale_kwargs']),
-                           partial(scaling, fct=dynamic.GROUPING_PRMS['dt_scale_mode'],
+                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                   **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs),
+                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
                                    **de_dt_scale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.14,
-                functions=(partial(scaling, fct=dynamic.GROUPING_PRMS['alt_scale_mode'],
-                                   **dynamic.GROUPING_PRMS['alt_scale_kwargs']),
-                           partial(scaling, fct=dynamic.GROUPING_PRMS['alt_scale_mode'],
+                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                   **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs),
+                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
                                    **de_alt_scale_kwargs)))
 
             # Add the axis labels

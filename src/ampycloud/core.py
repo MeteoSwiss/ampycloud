@@ -17,7 +17,7 @@ from pathlib import Path
 from shutil import copy
 from datetime import datetime
 import pandas as pd
-from ruamel.yaml import YAML
+from yaconfigobject import Config
 
 # Import from ampycloud
 from .errors import AmpycloudError, AmpycloudWarning
@@ -37,6 +37,20 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
         save_loc (str, optional): location to save the YML file to. Defaults to './'.
         which (str, optional): name of thee parameter file to copy. Defaults to 'defaults'.
 
+    Example:
+        ::
+
+            import ampycloud
+            ampycloud.copy_prm_file(save_loc='.', which='default')
+
+    .. note::
+
+        There is also a high-level entry point that allows users to get a local copy of the
+        ampycloud parameter files directly from the command line:
+        ::
+
+            ampycloud_copy_prm_file -which=default
+
     """
 
     # Let's take a look at the path I was given
@@ -54,8 +68,8 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
     # Log this info, in case users want to know which ones exist.
     logger.info('Available parameter files: %s', ref_files)
 
-    if (fname := f'ampycloud_{which}.yml') not in ref_files:
-        raise AmpycloudError('Parameter file not found.')
+    if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
+        raise AmpycloudError(f'Parameter file {fname} not found.')
 
     if (save_loc / fname).exists():
         raise AmpycloudError(f'File {fname} already exists at save_loc={save_loc}')
@@ -66,18 +80,25 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
 
 @log_func_call(logger)
 def set_prms(pth : Union[str, Path]) -> None:
-    """ Sets the dynamic=scientific ampycloud parameters from a suitable YML file.
-
-    It is recommended to first get a copy of the default ampycloud parameter file and edit the
-    parameters as required, to ensure full compliance. See ampycloud.copy_prm_file() for details.
+    """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
         pth (str|Path): path to a YAML parameter file for ampycloud.
 
-    """
+    .. note::
+        It is recommended to first get a copy of the default ampycloud parameter file using
+        ``ampycloud.copy_prm_file()``, and edit its content as required.
 
-    # Set the yaml loading mode ...
-    yaml=YAML(typ='safe')
+        Doing so should ensure full compliance with default structure of ``dynamic.AMPYCLOUD_PRMS``.
+
+    Example:
+        ::
+
+            import ampycloud
+            ampycloud.copy_prm_file(save_loc='.', which='default')
+            ampycloud.set_prms('./ampycloud_default_prms.yml')
+
+    """
 
     if isinstance(pth, str):
         # Be nice and try to convert this to a Path
@@ -95,23 +116,42 @@ def set_prms(pth : Union[str, Path]) -> None:
 
     # Extract all the parameters
     with open(pth) as fil:
-        prms = yaml.load(fil)
+        logger.info('Opening (user) parameter file: %s', fil)
+        user_prms = Config(paths=[str(fil.parent)], name=str(fil.name))
 
     # Now, assign the prms
-    for key in prms:
+    for (key, item) in user_prms.items():
+        if not isinstance(item, dict):
+            logger.info('Setting %s ...', key)
+            logger.debug('... with value: %s', item)
+            dynamic.AMPYCLOUD_PRMS.key = item
 
-        logger.info('Setting %s ...', key)
-        logger.debug('... with value: %s', prms[key])
+        else:
+            for (subkey, subitem) in item.items():
+                logger.info('Setting %s.%s ...', key, subkey)
+                logger.debug('... with value: %s', subitem)
+                dynamic.AMPYCLOUD_PRMS.key.subkey = subitem
 
-        setattr(dynamic, key, prms[key])
 
 @log_func_call(logger)
 def reset_prms() -> None:
-    """ Reset the ampycloud dynamic=scientific parameters to their default values. """
+    """ Reset the ampycloud dynamic=scientific parameters to their default values.
 
-    pth = Path(__file__).resolve().parent / 'prms' / 'ampycloud_defaults.yml'
+    Example:
+        ::
 
-    set_prms(pth)
+            import ampycloud
+            from ampycloud import dynamic
+
+            # Change a parameter
+            dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
+            # Reset them
+            ampycloud.reset_prms()
+            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+
+    """
+
+    dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
 @log_func_call(logger)
 def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
@@ -167,7 +207,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     ::
 
         from ampycloud import dynamic
-        dynamic.MPL_STYLE = 'latex'
+        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'latex'
 
     Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
     file. See ``ampycloud.set_prms()`` for details.
@@ -223,17 +263,17 @@ def synop(data : pd.DataFrame) -> str:
         str: the synop message.
 
     Example:
-    ::
+        ::
 
-        import ampycloud
-        from ampycloud.utils import mocker
+            import ampycloud
+            from ampycloud.utils import mocker
 
-        # Generate the canonical demo dataset for ampycloud
-        mock_data = mocker.canonical_demo_data()
+            # Generate the canonical demo dataset for ampycloud
+            mock_data = mocker.canonical_demo_data()
 
-        # Compute the synop message
-        msg = ampycloud.synop(mock_data)
-        print(msg)
+            # Compute the synop message
+            msg = ampycloud.synop(mock_data)
+            print(msg)
 
     """
 

@@ -88,7 +88,7 @@ class CeiloChunk(AbstractChunk):
         Specifically:
 
             - ``ceilo``: contains names/ids of the ceilometer associated to the measurements,
-              **as str**. This is important to derive correct sky coverage fractions when combining
+              **as str**. This is important to derive correct sky coverage percentage when combining
               data from more than 1 ceilometer, in case ceilometers report multiple hits at the
               same time.
 
@@ -242,7 +242,7 @@ class CeiloChunk(AbstractChunk):
     def metarize(self, which : int = 'slices', base_frac : float = 0.1,
                  lim0 : Union[int, float] = 2, lim8 : Union[int, float] = 98) -> None:
         """ Assembles a dataframe of slice/group/layer METAR properties of interest, including:
-        number of hits, sky coverage fraction, okta count, base altitude, mean altitude, altitude
+        number of hits, sky coverage percentage, okta count, base altitude, mean altitude, altitude
         standard deviation, METAR code, significance, ...
 
         These properties get stored in a self._slices, self._groups, or self._layers class
@@ -255,16 +255,16 @@ class CeiloChunk(AbstractChunk):
                 consider when deriving the slice/group/layer altitude (as a median), expressed as a
                 fraction (0<=base_frac<=1) of the slice/cluster/layer total hit counts.
                 Defaults to 0.1.
-            lim0 (int|float, optional): upper limit of the sky coverage fraction for the 0 okta bin,
-                in %. Defaults to 2.
-            lim8 (int|float, optional): lower limit of the sky coverage fraction for the 8 okta bin,
-                in %. Defaults to 98.
+            lim0 (int|float, optional): upper limit of the sky coverage percentagte for the 0 okta
+                bin, in %. Defaults to 2.
+            lim8 (int|float, optional): lower limit of the sky coverage percentage for the 8 okta
+                bin, in %. Defaults to 98.
 
         """
 
         # What values am I interested in ?
         cols = ['n_hits', # Duplicate-corrected number of hits
-                'frac', # Duplicate-corrected hit fraction in %
+                'perc', # Duplicate-corrected hit percentage (in %)
                 'okta', # Corresponding okta value
                 'alt_base', # Slice/Group/Layer base altitude
                 'alt_mean', # Slice/Group/Layer mean altitude
@@ -336,11 +336,11 @@ class CeiloChunk(AbstractChunk):
                               for ceilo in self.ceilos]
             pdf.iloc[ind]['n_hits'] = np.sum(hits_per_ceilo)
 
-            # Transform this into a fraction
-            pdf.iloc[ind]['frac'] = pdf.iloc[ind]['n_hits']/self.max_hits_per_layer * 100
+            # Transform this into a percentage
+            pdf.iloc[ind]['perc'] = pdf.iloc[ind]['n_hits']/self.max_hits_per_layer * 100
 
             # Compute the corresponding okta level
-            pdf.iloc[ind]['okta'] = int(wmo.frac2okta(pdf.iloc[ind]['frac'], lim0=lim0, lim8=lim8))
+            pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc'], lim0=lim0, lim8=lim8))
 
             # What does XX% of the total hits represent, in terms of absolute hit counts ?
             n_xxp = int(np.ceil(pdf.iloc[ind]['n_hits'] * base_frac))
@@ -360,7 +360,7 @@ class CeiloChunk(AbstractChunk):
 
         # Set the proper column types
         pdf['n_hits'] = pdf['n_hits'].astype(int)
-        pdf['frac'] = pdf['frac'].astype(float)
+        pdf['perc'] = pdf['perc'].astype(float)
         pdf['okta'] = pdf['okta'].astype(int)
         pdf['alt_base'] = pdf['alt_base'].astype(float)
         pdf['alt_mean'] = pdf['alt_mean'].astype(float)
@@ -400,15 +400,16 @@ class CeiloChunk(AbstractChunk):
         the identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in SLICING_PRMS in the dynamic.py module.
+            The "parameters" of this function are defined in AMPYCLOUD_PRMS.SLICING_PRMS in the
+            dynamic.py module.
 
         """
 
         # If warranted, get a scaled **copy** of the data to feed the clustering algorithm
-        tmp = self.data_rescaled(dt_mode=dynamic.SLICING_PRMS['dt_scale_mode'],
-                                 dt_kwargs=dynamic.SLICING_PRMS['dt_scale_kwargs'],
-                                 alt_mode=dynamic.SLICING_PRMS['alt_scale_mode'],
-                                 alt_kwargs=dynamic.SLICING_PRMS['alt_scale_kwargs'],
+        tmp = self.data_rescaled(dt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                 dt_kwargs=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs,
+                                 alt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                 alt_kwargs=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs,
                                  )
 
         # What are the valid points ?
@@ -423,14 +424,15 @@ class CeiloChunk(AbstractChunk):
         if len(valids[valids]) > 0:
             # ... run the clustering on them ...
             _, labels = cluster.clusterize(tmp[['dt','alt']][valids].to_numpy(),
-                                           algo=dynamic.SLICING_PRMS['algo'],
-                                           **dynamic.SLICING_PRMS['algo_kwargs'])
+                                           algo=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.algo,
+                                           **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.algo_kwargs)
 
             # ... and set the labels in the original data
             self.data.loc[self.data['alt'].notna(), ['slice_id']] = labels
 
         # Finally, let's metarize these slices !
-        self.metarize(which='slices', lim0=dynamic.OKTA_LIM0, lim8=dynamic.OKTA_LIM8)
+        self.metarize(which='slices', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
+                      lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
 
     @log_func_call(logger)
     def find_groups(self) -> None:
@@ -438,7 +440,8 @@ class CeiloChunk(AbstractChunk):
         stage towards the identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in GROUPING_PRMS in the dynamic.py module.
+            The "parameters" of this function are defined in AMPYCLOUD_PRMS.GROUPING_PRMS in the
+            dynamic.py module.
 
         """
 
@@ -466,15 +469,16 @@ class CeiloChunk(AbstractChunk):
 
             # Let's get ready to measure the slice separation above and below with respect to the
             # other ones.
-            m_lim = row['alt_mean'] - dynamic.GROUPING_PRMS['overlap'] * row['alt_std']
-            p_lim = row['alt_mean'] + dynamic.GROUPING_PRMS['overlap'] * row['alt_std']
+            m_lim = row['alt_mean'] - dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap * row['alt_std']
+            p_lim = row['alt_mean'] + dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap * row['alt_std']
 
             # For each other slice below and above, figure out if it is overlapping or not
             seps_m = [m_lim < self.slices.iloc[item]['alt_mean'] +
-                      dynamic.GROUPING_PRMS['overlap'] * self.slices.iloc[item]['alt_std']
-                      for item in range(ind)]
+                      dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap *
+                      self.slices.iloc[item]['alt_std'] for item in range(ind)]
             seps_p = [p_lim > self.slices.iloc[item]['alt_mean'] -
-                      dynamic.GROUPING_PRMS['overlap'] * self.slices.iloc[item]['alt_std']
+                      dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap *
+                      self.slices.iloc[item]['alt_std']
                       for item in range(ind+1, len(self.slices), 1)]
 
             # If the slice is isolated, I can stop here and move on ...
@@ -511,19 +515,18 @@ class CeiloChunk(AbstractChunk):
                                                  for ind in grp])
 
             # Rescale these points if requested by the user
-            tmp = self.data_rescaled(dt_mode=dynamic.GROUPING_PRMS['dt_scale_mode'],
-                                     dt_kwargs=dynamic.GROUPING_PRMS['dt_scale_kwargs'],
-                                     alt_mode=dynamic.GROUPING_PRMS['alt_scale_mode'],
-                                     alt_kwargs=dynamic.GROUPING_PRMS['alt_scale_kwargs'])
+            tmp = self.data_rescaled(dt_mode=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                dt_kwargs=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs,
+                alt_mode=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                alt_kwargs=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
 
             # What are the valid points ?
             valids = tmp['alt'].notna() * valids
 
             # Run the clustering
             nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
-                                                 algo=dynamic.GROUPING_PRMS['algo'],
-                                                 **dynamic.GROUPING_PRMS['algo_kwargs']
-                                                 )
+                algo=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.algo,
+                **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.algo_kwargs)
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
             # to which the majority of the identified (clustered) hits belong.
@@ -536,7 +539,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'group_id'] = self.data.loc[to_fill, 'slice_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='groups', lim0=dynamic.OKTA_LIM0, lim8=dynamic.OKTA_LIM8)
+        self.metarize(which='groups', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
+                      lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
 
     @log_func_call(logger)
     def find_layers(self) -> None:
@@ -545,7 +549,8 @@ class CeiloChunk(AbstractChunk):
         identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in LAYERING_RPMS in the dynamic.py module.
+            The "parameters" of this function are defined in AMPYCLOUD_PRMS.LAYERING_RPMS in the
+            dynamic.py module.
 
         """
 
@@ -563,7 +568,7 @@ class CeiloChunk(AbstractChunk):
         for ind in range(len(self.groups)):
 
             # Only look for multiple layers if it is worth it ...
-            if self.groups.at[ind, 'okta'] < dynamic.LAYERING_PRMS['min_okta_to_split']:
+            if self.groups.at[ind, 'okta'] < dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_okta_to_split:
                 # Here, set ncomp to -1 to show clearly that I did NOT actually check it ...
                 self.groups.at[ind, 'ncomp'] = -1
                 continue
@@ -575,7 +580,7 @@ class CeiloChunk(AbstractChunk):
 
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(gro_alts,
-                                                           **dynamic.LAYERING_PRMS['gmm_kwargs'])
+                **dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.gmm_kwargs)
 
             # Add this info to the log
             logger.debug(' Cluster %s  has %i components according to GMM.',
@@ -595,7 +600,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'layer_id'] = self.data.loc[to_fill, 'group_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='layers', lim0=dynamic.OKTA_LIM0, lim8=dynamic.OKTA_LIM8)
+        self.metarize(which='layers', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
+            lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
 
     @property
     def n_slices(self) -> Union[None, int]:
@@ -696,4 +702,9 @@ class CeiloChunk(AbstractChunk):
             report = sligrolay['significant']*(sligrolay['alt_base']<msa)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
+
+        # Here, deal with the situations when all clouds are above the msa
+        if len(msg) ==0:
+            return 'NCD'
+
         return msg
