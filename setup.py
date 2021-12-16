@@ -42,7 +42,7 @@ setup(
         "numpy >= 1.20.3",
         "scikit-learn >= 0.24.2",
         "pandas >= 1.3.1",
-        "pyyaml"
+        "pyyaml",
         "yaconfigobject"
     ],
 
