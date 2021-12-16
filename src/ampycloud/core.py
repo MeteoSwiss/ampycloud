@@ -37,6 +37,12 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
         save_loc (str, optional): location to save the YML file to. Defaults to './'.
         which (str, optional): name of thee parameter file to copy. Defaults to 'defaults'.
 
+    Example:
+        ::
+
+            import ampycloud
+            ampycloud.copy_prm_file(save_loc='.', which='default')
+
     """
 
     # Let's take a look at the path I was given
@@ -66,13 +72,23 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
 
 @log_func_call(logger)
 def set_prms(pth : Union[str, Path]) -> None:
-    """ Sets the dynamic=scientific ampycloud parameters from a suitable YML file.
-
-    It is recommended to first get a copy of the default ampycloud parameter file and edit the
-    parameters as required, to ensure full compliance. See ampycloud.copy_prm_file() for details.
+    """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
         pth (str|Path): path to a YAML parameter file for ampycloud.
+
+    .. note::
+        It is recommended to first get a copy of the default ampycloud parameter file using
+        ``ampycloud.copy_prm_file()``, and edit its content as required.
+
+        Doing so should ensure full compliance with default structure of ``dynamic.AMPYCLOUD_PRMS``.
+
+    Example:
+        ::
+
+            import ampycloud
+            ampycloud.copy_prm_file(save_loc='.', which='default')
+            ampycloud.set_prms('./ampycloud_default_prms.yml')
 
     """
 
@@ -111,7 +127,21 @@ def set_prms(pth : Union[str, Path]) -> None:
 
 @log_func_call(logger)
 def reset_prms() -> None:
-    """ Reset the ampycloud dynamic=scientific parameters to their default values. """
+    """ Reset the ampycloud dynamic=scientific parameters to their default values.
+
+    Example:
+        ::
+
+            import ampycloud
+            from ampycloud import dynamic
+
+            # Change a parameter
+            dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
+            # Reset them
+            ampycloud.reset_prms()
+            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+
+    """
 
     dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
@@ -225,17 +255,17 @@ def synop(data : pd.DataFrame) -> str:
         str: the synop message.
 
     Example:
-    ::
+        ::
 
-        import ampycloud
-        from ampycloud.utils import mocker
+            import ampycloud
+            from ampycloud.utils import mocker
 
-        # Generate the canonical demo dataset for ampycloud
-        mock_data = mocker.canonical_demo_data()
+            # Generate the canonical demo dataset for ampycloud
+            mock_data = mocker.canonical_demo_data()
 
-        # Compute the synop message
-        msg = ampycloud.synop(mock_data)
-        print(msg)
+            # Compute the synop message
+            msg = ampycloud.synop(mock_data)
+            print(msg)
 
     """
 

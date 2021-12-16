@@ -12,7 +12,7 @@ Module contains: core plotting routines
 import logging
 from typing import Union
 
-# Import from tbhis module
+# Import from this module
 from ..data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
