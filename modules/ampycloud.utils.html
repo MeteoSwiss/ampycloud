@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ampycloud.utils package &mdash; ampycloud  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="Documentation todos" href="../doc_todo.html" />
+    <link rel="prev" title="ampycloud.plots package" href="ampycloud.plots.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> ampycloud
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../running.html">Using ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameters.html">The ampycloud scientific parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledge.html">Acknowledging ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License &amp; Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ampycloud.html">ampycloud package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="ampycloud.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="ampycloud.plots.html">ampycloud.plots package</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ampycloud.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.cluster">ampycloud.cluster module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.core">ampycloud.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.data">ampycloud.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.dynamic">ampycloud.dynamic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.errors">ampycloud.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.layer">ampycloud.layer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.logger">ampycloud.logger module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.scaler">ampycloud.scaler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.version">ampycloud.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.wmo">ampycloud.wmo module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../doc_todo.html">Documentation todos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ampycloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+          <li><a href="ampycloud.html">ampycloud package</a> &raquo;</li>
+      <li>ampycloud.utils package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/ampycloud.utils.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ampycloud.utils">
+<span id="ampycloud-utils-package"></span><h1>ampycloud.utils package<a class="headerlink" href="#module-ampycloud.utils" title="Permalink to this headline"></a></h1>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: ampycloud utilities</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-ampycloud.utils.mocker">
+<span id="ampycloud-utils-mocker-module"></span><h2>ampycloud.utils.mocker module<a class="headerlink" href="#module-ampycloud.utils.mocker" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: tools to create mock datasets</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.mocker.flat_layer">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">flat_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.flat_layer" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a mock, flat, Gaussian cloud layer around a given altitude.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alt</strong> (<em>float</em>) – layer mean altitude, in ft.</p></li>
+<li><p><strong>alt_std</strong> (<em>float</em>) – layer altitude standard deviation, in ft.</p></li>
+<li><p><strong>lookback_time</strong> (<em>float</em>) – length of the time interval, in s.</p></li>
+<li><p><strong>hit_rate</strong> (<em>float</em>) – rate of data acquisition, in s.</p></li>
+<li><p><strong>sky_cov_frac</strong> (<em>float</em>) – Sky coverage fraction. Random hits will be set to NaN to
+reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>pd.DataFrame</em> – the simulated layer with columns [‘alt’, ‘dt’].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.mocker.sin_layer">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">sin_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback_time</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">hit_rate</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.sin_layer" title="Permalink to this definition"></a></dt>
+<dd><p>Generates a sinusoidal cloud layer.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>alt</strong> (<em>float</em>) – layer mean altitude, in ft.</p></li>
+<li><p><strong>alt_std</strong> (<em>float</em>) – layer altitude standard deviation, in ft.</p></li>
+<li><p><strong>lookback_time</strong> (<em>float</em>) – length of the time interval, in s.</p></li>
+<li><p><strong>hit_rate</strong> (<em>float</em>) – rate of data acquisition.</p></li>
+<li><p><strong>sky_cov_frac</strong> (<em>float, optional</em>) – Sky coverage fraction. Random hits will be set to NaN to
+reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
+<li><p><strong>period</strong> (<em>int|float</em>) – period of the sine-wave, in s.</p></li>
+<li><p><strong>amplitude</strong> (<em>int|float</em>) – amplitude of the sine-wave, in ft.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>pd.DataFrame</em> – the simulated layer with columns [‘alt’, ‘dt’].</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.mocker.mock_layers">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">mock_layers</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">n_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">layer_prms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.mock_layers" title="Permalink to this definition"></a></dt>
+<dd><p>Generate a mock set of cloud layers for a specified number of ceilometers.</p>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<ul class="simple">
+<li><p>add the possibility to set some VV hits in the mix</p></li>
+<li><p>add the possibility to have multiple hits at the same time steps</p></li>
+<li><p>all of this could be done much more professionally with classes …</p></li>
+</ul>
+</div>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul>
+<li><p><strong>n_ceilos</strong> (<em>int</em>) – number of ceilometers to simulate.</p></li>
+<li><p><strong>layer_prms</strong> (<em>list of dict</em>) – list of layer parameters, provided as a dict for each layer.
+Each dict should specify all the parameters required to generate a sin layer, e.g.:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;alt&#39;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;alt_std&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;lookback_time&#39;</span> <span class="p">:</span> <span class="mi">1200</span><span class="p">,</span>
+<span class="s1">&#39;hit_rate&#39;</span><span class="p">:</span> <span class="mi">60</span><span class="p">,</span> <span class="s1">&#39;sky_cov_frac&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
+</pre></div>
+</div>
+</li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>DataFrame</em> – a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
+[‘ceilo’, ‘dt’, ‘alt’, ‘type’] correspond to 1) ceilo names, 2) time deltas in s,
+3) hit altitudes in ft, and 4) hit type.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.mocker.canonical_demo_data">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">canonical_demo_data</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.canonical_demo_data" title="Permalink to this definition"></a></dt>
+<dd><p>This function creates the canonical ampycloud demonstration dataset, that can be used to
+illustrate the full behavior of the algorithm.</p>
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.utils.performance">
+<span id="ampycloud-utils-performance-module"></span><h2>ampycloud.utils.performance module<a class="headerlink" href="#module-ampycloud.utils.performance" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: tools to assess the performance of ampycloud</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.performance.get_speed_benchmark">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.performance.</span></span><span class="sig-name descname"><span class="pre">get_speed_benchmark</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">niter</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">10</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.utils.performance.get_speed_benchmark" title="Permalink to this definition"></a></dt>
+<dd><p>This function will run and time the ampycloud demo to assess the code’s performance on
+given machine.</p>
+<p>For now, this is a rather dumb and uninspired way to do it. If the need ever arises, this
+could certainly be done better, and (for example) also with a finer step resolution to see
+which step (slicing, grouping, layering) is the slowest, and also separate the generation of
+the mock dataset from its processing.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>int, float, float, float, float, float</em> – niter, mean, std, median, min, max</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ampycloud.plots.html" class="btn btn-neutral float-left" title="ampycloud.plots package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../doc_todo.html" class="btn btn-neutral float-right" title="Documentation todos" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

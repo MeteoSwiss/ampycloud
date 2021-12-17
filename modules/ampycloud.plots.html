@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>ampycloud.plots package &mdash; ampycloud  documentation</title>
+      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+        <script src="../_static/jquery.js"></script>
+        <script src="../_static/underscore.js"></script>
+        <script src="../_static/doctools.js"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="ampycloud.utils package" href="ampycloud.utils.html" />
+    <link rel="prev" title="ampycloud package" href="ampycloud.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../index.html" class="icon icon-home"> ampycloud
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../running.html">Using ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../parameters.html">The ampycloud scientific parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../acknowledge.html">Acknowledging ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License &amp; Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../modules.html">Modules</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="ampycloud.html">ampycloud package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="ampycloud.html#subpackages">Subpackages</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">ampycloud.plots package</a></li>
+<li class="toctree-l4"><a class="reference internal" href="ampycloud.utils.html">ampycloud.utils package</a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#submodules">Submodules</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.cluster">ampycloud.cluster module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.core">ampycloud.core module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.data">ampycloud.data module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.dynamic">ampycloud.dynamic module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.errors">ampycloud.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.layer">ampycloud.layer module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.logger">ampycloud.logger module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.scaler">ampycloud.scaler module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.version">ampycloud.version module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.wmo">ampycloud.wmo module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../doc_todo.html">Documentation todos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">ampycloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../modules.html">Modules</a> &raquo;</li>
+          <li><a href="ampycloud.html">ampycloud package</a> &raquo;</li>
+      <li>ampycloud.plots package</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../_sources/modules/ampycloud.plots.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-ampycloud.plots">
+<span id="ampycloud-plots-package"></span><h1>ampycloud.plots package<a class="headerlink" href="#module-ampycloud.plots" title="Permalink to this headline"></a></h1>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this headline"></a></h2>
+</section>
+<section id="module-ampycloud.plots.core">
+<span id="ampycloud-plots-core-module"></span><h2>ampycloud.plots.core module<a class="headerlink" href="#module-ampycloud.plots.core" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: core plotting routines</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.core.diagnostic">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.core.</span></span><span class="sig-name descname"><span class="pre">diagnostic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">upto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.core.diagnostic" title="Permalink to this definition"></a></dt>
+<dd><p>A function to create the ampycloud diagnostic plot all the way to the layering step
+(included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunk</strong> (<em>CeiloChunk</em>) – the CeiloChunk to look at.</p></li>
+<li><p><strong>upto</strong> (<em>str, optional</em>) – up to which algorithm steps to plot. Can be one of
+[‘raw_data’, ‘slices’, ‘groups’, ‘layers’]. Defaults to ‘layers’.</p></li>
+<li><p><strong>show_ceilos</strong> (<em>bool, optional</em>) – if True, hits will be colored as a function of the
+responsible ceilometer. Defaults to False. No effects unless <code class="docutils literal notranslate"><span class="pre">upto='raw</span> <span class="pre">data'</span></code>.</p></li>
+<li><p><strong>msa</strong> (<em>int|float, optional</em>) – Apply a Minimum Sector Altitude to the ampycloud METAR message.
+Deafults to None.</p></li>
+<li><p><strong>ref_metar</strong> (<em>str, optional</em>) – reference METAR message. Defaults to None.</p></li>
+<li><p><strong>ref_metar_origin</strong> (<em>str, optional</em>) – name of the source of the reference METAR set with
+ref_metar. Defaults to None.</p></li>
+<li><p><strong>show</strong> (<em>bool, optional</em>) – will show the plot on the screen if True. Defaults to False.</p></li>
+<li><p><strong>save_stem</strong> (<em>str, optional</em>) – if set, will save the plot with this stem (which can include a
+path as well). Deafults to None.</p></li>
+<li><p><strong>save_fmts</strong> (<em>list|str, optional</em>) – a list of file formats to export the plot to. Deafults to
+None = [‘pdf’].</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+<span class="kn">from</span> <span class="nn">ampycloud.plots</span> <span class="kn">import</span> <span class="n">diagnostic</span>
+
+<span class="c1"># First create some mock data for the example</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Then run the ampycloud algorithm on it</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">&#39;Mock data&#39;</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Create the full ampycloud diagnostic plot</span>
+<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">&#39;layers&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.plots.diagnostics">
+<span id="ampycloud-plots-diagnostics-module"></span><h2>ampycloud.plots.diagnostics module<a class="headerlink" href="#module-ampycloud.plots.diagnostics" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: class for the diagnostic plots</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ampycloud.plots.diagnostics.</span></span><span class="sig-name descname"><span class="pre">DiagnosticPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot" title="Permalink to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Class used to create diagnsotic plots</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.__init__">
+<span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.__init__" title="Permalink to this definition"></a></dt>
+<dd><p>The init function.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>chunk</strong> (<em>CeiloChunk</em>) – A ceilometer Data Chunk.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.setup_fig">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.setup_fig" title="Permalink to this definition"></a></dt>
+<dd><p>Setups a diagnsotic plot figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>fig, axs</em> – the matplotlib figure, and the axes stored in a list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.new_fig">
+<span class="sig-name descname"><span class="pre">new_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.new_fig" title="Permalink to this definition"></a></dt>
+<dd><p>Assign the fig attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.show_hits_only">
+<span class="sig-name descname"><span class="pre">show_hits_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.show_hits_only" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the ceilometer hits alone.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This will clear the plot first !</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show_ceilos</strong> (<em>bool, optional</em>) – whether to distinguish between the different ceilos,
+or not.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.show_slices">
+<span class="sig-name descname"><span class="pre">show_slices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.show_slices" title="Permalink to this definition"></a></dt>
+<dd><p>Show the slices data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.show_groups">
+<span class="sig-name descname"><span class="pre">show_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.show_groups" title="Permalink to this definition"></a></dt>
+<dd><p>Show the group data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>show_points</strong> (<em>bool, optional</em>) – whether to actually draw the groups, or simply add the
+info about them. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.show_layers">
+<span class="sig-name descname"><span class="pre">show_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.show_layers" title="Permalink to this definition"></a></dt>
+<dd><p>Show the layer data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_vv_legend">
+<span class="sig-name descname"><span class="pre">add_vv_legend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_vv_legend" title="Permalink to this definition"></a></dt>
+<dd><p>Adds a legend about the VV hits.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_ceilo_count">
+<span class="sig-name descname"><span class="pre">add_ceilo_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_ceilo_count" title="Permalink to this definition"></a></dt>
+<dd><p>Adds the number of ceilometer present in the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_max_hits">
+<span class="sig-name descname"><span class="pre">add_max_hits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_max_hits" title="Permalink to this definition"></a></dt>
+<dd><p>Adds the max_hit_per_layer info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_geoloc_and_ref_dt">
+<span class="sig-name descname"><span class="pre">add_geoloc_and_ref_dt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_geoloc_and_ref_dt" title="Permalink to this definition"></a></dt>
+<dd><p>Adds info about the chunk geoloc and reference date &amp; time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_ref_metar">
+<span class="sig-name descname"><span class="pre">add_ref_metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_ref_metar" title="Permalink to this definition"></a></dt>
+<dd><p>Display a reference METAR, for example from human observers, different code, etc …</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of the reference, e.g. ‘Human Observers’.</p></li>
+<li><p><strong>metar</strong> (<em>str</em>) – the METAR code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.add_metar">
+<span class="sig-name descname"><span class="pre">add_metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">synop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.add_metar" title="Permalink to this definition"></a></dt>
+<dd><p>Display the ampycloud METAR/Synop proposal.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>synop</strong> (<em>bool, optional</em>) – If True, will display the full synop call. Defaults to False.</p></li>
+<li><p><strong>msa</strong> (<em>int|float, optional</em>) – if set, will apply a Minimum Sector Altitude to the METAR
+message. Deafaults to None.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.format_primary_axes">
+<span class="sig-name descname"><span class="pre">format_primary_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.format_primary_axes" title="Permalink to this definition"></a></dt>
+<dd><p>Deals with the main plot axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.format_slice_axes">
+<span class="sig-name descname"><span class="pre">format_slice_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.format_slice_axes" title="Permalink to this definition"></a></dt>
+<dd><p>Format the duplicate axes related to the slicing part.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.format_group_axes">
+<span class="sig-name descname"><span class="pre">format_group_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.format_group_axes" title="Permalink to this definition"></a></dt>
+<dd><p>Format the duplicate axes related to the clsutering part.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.save" title="Permalink to this definition"></a></dt>
+<dd><p>Saves the plot to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn_out</strong> (<em>str</em>) – file name out.</p></li>
+<li><p><strong>fmts</strong> (<em>list or str, optional</em>) – list of formats to export the plot to.
+Defaults to None == ‘pdf’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.show" title="Permalink to this definition"></a></dt>
+<dd><p>Shows the plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.close_fig">
+<span class="sig-name descname"><span class="pre">close_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.close_fig" title="Permalink to this definition"></a></dt>
+<dd><p>Close the figure to free the memory.</p>
+<p>If you need to re-create them, start by generating the figure with the <cite>.new_fig()</cite> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.plots.hardcoded">
+<span id="ampycloud-plots-hardcoded-module"></span><h2>ampycloud.plots.hardcoded module<a class="headerlink" href="#module-ampycloud.plots.hardcoded" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: hardcoded plotting parameters</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.plots.hardcoded.WIDTH_ONECOL">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_ONECOL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.92</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_ONECOL" title="Permalink to this definition"></a></dt>
+<dd><p>Width of a 1-column plot [inches], to fit in scientific articles when scaled by 50%</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.plots.hardcoded.WIDTH_TWOCOL">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_TWOCOL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14.16</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_TWOCOL" title="Permalink to this definition"></a></dt>
+<dd><p>Width of a 2-column plot [inches], to fit in scientific articles when scaled by 50%</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.plots.hardcoded.MRKS">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">MRKS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['s',</span> <span class="pre">'^',</span> <span class="pre">'o',</span> <span class="pre">'v',</span> <span class="pre">'D',</span> <span class="pre">'&gt;',</span> <span class="pre">'h',</span> <span class="pre">'&lt;']</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.MRKS" title="Permalink to this definition"></a></dt>
+<dd><p>list of markers, for the different cloud layers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.plots.secondary">
+<span id="ampycloud-plots-secondary-module"></span><h2>ampycloud.plots.secondary module<a class="headerlink" href="#module-ampycloud.plots.secondary" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: secondary plotting functions</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.secondary.scaling_fcts">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.secondary.</span></span><span class="sig-name descname"><span class="pre">scaling_fcts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.secondary.scaling_fcts" title="Permalink to this definition"></a></dt>
+<dd><p>Plots the different scaling functions.</p>
+<p>This is a small utility routine to rapdily see the different altitude scaling options used by
+ampycloud.</p>
+<p>For the “step” sclaing plot, the parameters are taken straight from dynamic.GROUPING_PRMS.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show</strong> (<em>bool, optional</em>) – show the plot, or not. Defaults to True.</p></li>
+<li><p><strong>save</strong> (<em>bool, optional</em>) – save the plot to pdf, or not. Defaults to False.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.plots.utils">
+<span id="ampycloud-plots-utils-module"></span><h2>ampycloud.plots.utils module<a class="headerlink" href="#module-ampycloud.plots.utils" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: utilities fucntions for plots</p>
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.utils.style_pth">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.utils.</span></span><span class="sig-name descname"><span class="pre">style_pth</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pathlib.Path</span></span></span><a class="headerlink" href="#ampycloud.plots.utils.style_pth" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the Path to the ampycloud ploitting styles.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.utils.valid_styles">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.utils.</span></span><span class="sig-name descname"><span class="pre">valid_styles</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">list</span></span></span><a class="headerlink" href="#ampycloud.plots.utils.valid_styles" title="Permalink to this definition"></a></dt>
+<dd><p>Returns the list of valid plotting styles.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.utils.set_mplstyle">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.utils.</span></span><span class="sig-name descname"><span class="pre">set_mplstyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="headerlink" href="#ampycloud.plots.utils.set_mplstyle" title="Permalink to this definition"></a></dt>
+<dd><p>Intended to be used as a decorator around plotting functions, to set the plotting style.</p>
+<p>By defaults, the <code class="docutils literal notranslate"><span class="pre">base</span></code> ampycloud style will be enabled. Motivated users can tweak it further
+by setting the <code class="docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS.MPL_STYLE</span></code> keyword argument to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">latex</span></code>: to enable the use of a system-wide LaTeX engine, and the Computer Modern font.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metsymb</span></code>: to enable the use of a system-wide LaTeX engine, the Computer Modern font,
+and the <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> LaTeX package to display proper okta symbols.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> LaTeX package is NOT included with ampycloud, and must be installed
+separately. It is available at: <a class="reference external" href="https://github.com/MeteoSwiss/metsymb">https://github.com/MeteoSwiss/metsymb</a></p>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Specifying the <code class="docutils literal notranslate"><span class="pre">latex</span></code> or <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> style requires a working system-wide LaTeX
+installation. In particular, the following LaTeX packages must be installed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cmbright</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">amsmath</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">amssymb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relsize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metsymb</span></code> (only if <code class="docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS.MPL_STYLE='metsymb'</span></code>)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p><em>Callable</em> – the decorator</p>
+</dd>
+</dl>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>See <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues/18">https://github.com/MeteoSwiss/ampycloud/issues/18</a></p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.utils.texify">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.utils.</span></span><span class="sig-name descname"><span class="pre">texify</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">msg</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ampycloud.plots.utils.texify" title="Permalink to this definition"></a></dt>
+<dd><p>Small utility function that TeX-ifies a string to make it LaTeX robust if warranted by the
+current rcParams settings.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>msg</strong> (<em>str</em>) – message to clean-up</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>str</em> – the robust string.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="ampycloud.html" class="btn btn-neutral float-left" title="ampycloud package" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="ampycloud.utils.html" class="btn btn-neutral float-right" title="ampycloud.utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

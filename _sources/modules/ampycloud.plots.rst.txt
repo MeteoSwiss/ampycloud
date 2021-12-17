@@ -1,0 +1,50 @@
+ampycloud.plots package
+=======================
+
+.. automodule:: ampycloud.plots
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Submodules
+----------
+
+ampycloud.plots.core module
+---------------------------
+
+.. automodule:: ampycloud.plots.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.plots.diagnostics module
+----------------------------------
+
+.. automodule:: ampycloud.plots.diagnostics
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.plots.hardcoded module
+--------------------------------
+
+.. automodule:: ampycloud.plots.hardcoded
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.plots.secondary module
+--------------------------------
+
+.. automodule:: ampycloud.plots.secondary
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.plots.utils module
+----------------------------
+
+.. automodule:: ampycloud.plots.utils
+   :members:
+   :undoc-members:
+   :show-inheritance:

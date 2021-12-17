@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Changelog &mdash; ampycloud  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="License &amp; Copyright" href="license.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> ampycloud
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Using ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">The ampycloud scientific parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledge.html">Acknowledging ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Copyright</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ampycloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Changelog</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/changelog.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="changelog">
+<h1>Changelog<a class="headerlink" href="#changelog" title="Permalink to this headline"></a></h1>
+<p><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="last-commit" src="https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues"><img alt="issues" src="https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e" /></a></p>
+<p>The ampycloud changelog (reproduced below) is stored in the
+<a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">code repository</a> on Github.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>All notable changes to ampycloud will be documented in this file.
+
+The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+
+## [Unreleased]
+### Added:
+ - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md and auto-doc-publish action, incl. first doc release.
+ - [fpavogt, 2021-12-16] Add a new entry point for `copy_prm_file`, i.e. fix #26.
+ - [fpavogt, 2021-12-15] Add `msa` to `plots.diagnostic`, i.e. fix #22.
+ - [fpavogt, 2021-12-10] Add Minimum Sector Altitude to the metar_msg() method.
+ - [fpavogt, 2021-12-10] Add detailed examples to the core functions, and link them in the doc.
+ - [fpavogt, 2021-12-10] Add the performance module, and a dedicated high level entry point.
+ - [fpavogt, 2021-12-10] Improve plots with show, save, close methods, and tweak their look.
+ - [fpavogt, 2021-12-10] Add pytest ficture to let users feed &#39;MPL_STYLE&#39; as a command line argument
+ - [fpavogt, 2021-12-09] Add the plots module.
+ - [fpavogt, 2021-12-08] Add the MANIFEST.in file, to include parameter and plot style files.
+ - [fpavogt, 2021-12-08] Add the data, dynamic, and core modules, and a new AmpycloudWarning class.
+ - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, cluster, and utils.mocker modules.
+ - [fpavogt, 2021-12-07] Add the AmpycloudError class.
+ - [fpavogt, 2021-12-06] Setup logging tools, incl. custom decorator for fcts.
+ - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD &quot;check&quot; Action.
+ - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package &amp; test infrastructure.
+### Fixed:
+ - [fpavogt, 2021-12-15] Fix bug in `CeiloChunk.metar_msg()` when all clouds are above the MSA.
+ - [fpavogt, 2021-12-12] Fix the format_slices() method of the DiagnosticPlot class.
+ - [fpavogt, 2021-12-09] Fix #5.
+ - [fpavogt, 2021-12-08] Fix #14.
+### Changed:
+ - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
+ - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).
+ - [fpavogt, 2021-12-08] Change `mock_layer` to return a pd.DataFrame instead of a np.ndarray.
+### Deprecated:
+### Removed:
+### Security:
+</pre></div>
+</div>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="license.html" class="btn btn-neutral float-left" title="License &amp; Copyright" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

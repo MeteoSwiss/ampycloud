@@ -1,0 +1,453 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Using ampycloud &mdash; ampycloud  documentation</title>
+      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="The ampycloud scientific parameters" href="parameters.html" />
+    <link rel="prev" title="Installation" href="installation.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="index.html" class="icon icon-home"> ampycloud
+          </a>
+              <div class="version">
+                0.1.0
+              </div>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using ampycloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#running-the-algorithm">Running the algorithm</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#ampycloud-core-run">ampycloud.core.run</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#the-no-plots-required-shortcuts">The no-plots-required shortcuts</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#adjusting-the-default-algorithm-parameters">Adjusting the default algorithm parameters</a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting-the-diagnostic-diagram">Plotting the diagnostic diagram</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#adjusting-the-plotting-style">Adjusting the plotting style</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="parameters.html">The ampycloud scientific parameters</a></li>
+<li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
+<li class="toctree-l1"><a class="reference internal" href="acknowledge.html">Acknowledging ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
+<li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">ampycloud</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+      <li>Using ampycloud</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/running.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="using-ampycloud">
+<span id="using"></span><h1>Using ampycloud<a class="headerlink" href="#using-ampycloud" title="Permalink to this headline"></a></h1>
+<section id="running-the-algorithm">
+<span id="running"></span><h2>Running the algorithm<a class="headerlink" href="#running-the-algorithm" title="Permalink to this headline"></a></h2>
+<section id="ampycloud-core-run">
+<h3>ampycloud.core.run<a class="headerlink" href="#ampycloud-core-run" title="Permalink to this headline"></a></h3>
+<p>Applying the ampycloud algorithm to a given set of ceilometer cloud base hits is done via the
+following function, that is also directly accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.run()</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span></dt>
+<dd><p>Run the ampycloud algorithm on a given dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a pandas DataFrame.</p></li>
+<li><p><strong>geoloc</strong> (<em>str, optional</em>) – the name of the geographic location where the data was taken.
+Defaults to None.</p></li>
+<li><p><strong>ref_dt</strong> (<em>str, optional</em>) – reference date and time of the observations, corresponding to
+Delta t = 0. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>CeiloChunk</em> – the data chunk with all the processing outcome bundled cleanly.</p>
+</dd>
+</dl>
+<p>All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
+specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance plots (should they be
+created) at the moment.</p>
+<p>The input <code class="docutils literal notranslate"><span class="pre">data</span></code> must be a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following column names (types):</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span> <span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s1">&#39;dt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;alt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> columns contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> column contains time deltas, in s, between a given ceilometer observation and
+<code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
+above ground.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integer that are the hit sequence number, if a given ceilometer
+is reporting multiple hits for a given timestep, or <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the hit corresponds to a
+vertical visibility observations.</p>
+<p>It is possible to obtain an example of the format from the
+<code class="docutils literal notranslate"><span class="pre">ampycloud.utils.mocker.canonical_demo_dataset()</span></code> routine of the package, namely:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_dataset</span><span class="p">()</span>
+</pre></div>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>ampycloud treats vertical visibility hits just like any other hit. Hence, it is up to the
+user to adjust the vertical visibility hit altitude (if they so desire), and/or ignore
+some of them (if they so desire) prior to feeding them to ampycloud.</p>
+</div>
+<p>All the scientific parameters are set dynamically in ampycloud.dynamic. From within
+a Python session all these parameters can be changed directly. For example,
+to change the plotting style to ‘latex’, one would do:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">MPL_STYLE</span> <span class="o">=</span> <span class="s1">&#39;latex&#39;</span>
+</pre></div>
+</div>
+<p>Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
+file. See <code class="docutils literal notranslate"><span class="pre">ampycloud.set_prms()</span></code> for details.</p>
+<p class="rubric">Example</p>
+<p>In the following example, we create the canonical mock dataset from ampycloud, and run
+the algorithm on it:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Run the ampycloud algorithm on it</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">&#39;Mock data&#39;</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Get the resulting METAR/SYNOP message</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">metar_msg</span><span class="p">(</span><span class="n">synop</span><span class="o">=</span><span class="kc">False</span><span class="p">))</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="the-no-plots-required-shortcuts">
+<h3>The no-plots-required shortcuts<a class="headerlink" href="#the-no-plots-required-shortcuts" title="Permalink to this headline"></a></h3>
+<p>The following two functions, also accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.metar()</span> <span class="pre">and</span> <span class="pre">ampycloud.synop()</span></code>,
+will directly provide interested users with the ampycloud-METAR/synop messages for a given dataset.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span></dt>
+<dd><p>Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a pandas DataFrame.</p></li>
+<li><p><strong>msa</strong> (<em>int|float, optional</em>) – Minimum Sector Altitude. If set, layers above it will not be
+reported. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>str</em> – the metar message.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Compute the METAR message, with Minimnum Sector Altitude of 10&#39;000 ft</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">metar</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">msa</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">synop</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span></dt>
+<dd><p>Runs the ampycloud algorithm on a dataset and extract a synop report of the cloud layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a pandas DataFrame.</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>str</em> – the synop message.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Compute the synop message</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">synop</span><span class="p">(</span><span class="n">mock_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+<section id="adjusting-the-default-algorithm-parameters">
+<h3>Adjusting the default algorithm parameters<a class="headerlink" href="#adjusting-the-default-algorithm-parameters" title="Permalink to this headline"></a></h3>
+<p>The ampycloud parameters with a <strong>scientific</strong> impact on the outcome of the algorithm
+(see <a class="reference internal" href="parameters.html#the-ampycloud-scientific-parameters"><span class="std std-ref">here for the complete list</span></a>)
+are accessible in the <cite>ampycloud.dynamic</cite> module.  From there, users can easily adjust them as they
+see fit. For example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
+
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">OKTA_LIM8</span> <span class="o">=</span> <span class="mi">95</span>
+</pre></div>
+</div>
+<p>Note that it is important to always import the entire <cite>dynamic</cite> module and stick to the above
+structure if the updated parameters are to be <em>seen</em> by all the ampycloud modules.</p>
+<p>Alternatively, all the scientific parameters can be adjusted and fed to ampycloud via a YAML file,
+in which case the routines <code class="docutils literal notranslate"><span class="pre">`ampycloud.copy_prm_file()</span></code> and <code class="docutils literal notranslate"><span class="pre">ampycloud.set_prms()</span></code> may be of
+interest.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">copy_prm_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'defaults'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Save a local copy of a specific ampycloud parameter file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_loc</strong> (<em>str, optional</em>) – location to save the YML file to. Defaults to ‘./’.</p></li>
+<li><p><strong>which</strong> (<em>str, optional</em>) – name of thee parameter file to copy. Defaults to ‘defaults’.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">copy_prm_file</span><span class="p">(</span><span class="n">save_loc</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is also a high-level entry point that allows users to get a local copy of the
+ampycloud parameter files directly from the command line:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ampycloud_copy_prm_file</span> <span class="o">-</span><span class="n">which</span><span class="o">=</span><span class="n">default</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">set_prms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">pathlib.Path</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>pth</strong> (<em>str|Path</em>) – path to a YAML parameter file for ampycloud.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is recommended to first get a copy of the default ampycloud parameter file using
+<code class="docutils literal notranslate"><span class="pre">ampycloud.copy_prm_file()</span></code>, and edit its content as required.</p>
+<p>Doing so should ensure full compliance with default structure of <code class="docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS</span></code>.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">copy_prm_file</span><span class="p">(</span><span class="n">save_loc</span><span class="o">=</span><span class="s1">&#39;.&#39;</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">&#39;default&#39;</span><span class="p">)</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">set_prms</span><span class="p">(</span><span class="s1">&#39;./ampycloud_default_prms.yml&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<p>If all hope is lost and you wish to revert to the original (default) values of the all the
+ampycloud scientific parameters, you can use <code class="docutils literal notranslate"><span class="pre">`ampycloud.reset_prms()</span></code>.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">reset_prms</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>Reset the ampycloud dynamic=scientific parameters to their default values.</p>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
+
+<span class="c1"># Change a parameter</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">OKTA_LIM8</span> <span class="o">=</span> <span class="mi">95</span>
+<span class="c1"># Reset them</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">reset_prms</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Back to the default value:&#39;</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">OKTA_LIM8</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+<section id="logging">
+<span id="id1"></span><h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline"></a></h2>
+<p>A <code class="docutils literal notranslate"><span class="pre">NullHandler()</span></code> is being set by ampycloud, such that no logging will be apparent to the users
+unless they explicitly set it up
+(<a class="reference external" href="https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library">see here</a> for
+more details).</p>
+<p>As an example, to enable ampycloud log messages all the way down to the <code class="docutils literal notranslate"><span class="pre">DEBUG</span></code> level, users can
+make the following call before running ampycloud functions:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">logging</span>
+
+<span class="n">logging</span><span class="o">.</span><span class="n">basicConfig</span><span class="p">()</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ampycloud&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>Each ampycloud module has a dedicated <code class="docutils literal notranslate"><span class="pre">logger</span></code> based on the module <code class="docutils literal notranslate"><span class="pre">__name__</span></code>. Hence, users
+can adjust the logging level of each ampycloud module however they desire, e.g.:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ampycloud.wmo&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;WARNING&#39;</span><span class="p">)</span>
+<span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="s1">&#39;ampycloud.scaler&#39;</span><span class="p">)</span><span class="o">.</span><span class="n">setLevel</span><span class="p">(</span><span class="s1">&#39;DEBUG&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="plotting-the-diagnostic-diagram">
+<span id="plotting"></span><h2>Plotting the diagnostic diagram<a class="headerlink" href="#plotting-the-diagnostic-diagram" title="Permalink to this headline"></a></h2>
+<p>Users interested to plot the ampycloud diagnostic diagram can do using the following function,
+which is also accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.plots.diagnostic()</span></code>:</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.core.</span></span><span class="sig-name descname"><span class="pre">diagnostic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">upto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<dd><p>A function to create the ampycloud diagnostic plot all the way to the layering step
+(included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunk</strong> (<em>CeiloChunk</em>) – the CeiloChunk to look at.</p></li>
+<li><p><strong>upto</strong> (<em>str, optional</em>) – up to which algorithm steps to plot. Can be one of
+[‘raw_data’, ‘slices’, ‘groups’, ‘layers’]. Defaults to ‘layers’.</p></li>
+<li><p><strong>show_ceilos</strong> (<em>bool, optional</em>) – if True, hits will be colored as a function of the
+responsible ceilometer. Defaults to False. No effects unless <code class="docutils literal notranslate"><span class="pre">upto='raw</span> <span class="pre">data'</span></code>.</p></li>
+<li><p><strong>msa</strong> (<em>int|float, optional</em>) – Apply a Minimum Sector Altitude to the ampycloud METAR message.
+Deafults to None.</p></li>
+<li><p><strong>ref_metar</strong> (<em>str, optional</em>) – reference METAR message. Defaults to None.</p></li>
+<li><p><strong>ref_metar_origin</strong> (<em>str, optional</em>) – name of the source of the reference METAR set with
+ref_metar. Defaults to None.</p></li>
+<li><p><strong>show</strong> (<em>bool, optional</em>) – will show the plot on the screen if True. Defaults to False.</p></li>
+<li><p><strong>save_stem</strong> (<em>str, optional</em>) – if set, will save the plot with this stem (which can include a
+path as well). Deafults to None.</p></li>
+<li><p><strong>save_fmts</strong> (<em>list|str, optional</em>) – a list of file formats to export the plot to. Deafults to
+None = [‘pdf’].</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+<span class="kn">from</span> <span class="nn">ampycloud.plots</span> <span class="kn">import</span> <span class="n">diagnostic</span>
+
+<span class="c1"># First create some mock data for the example</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Then run the ampycloud algorithm on it</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">&#39;Mock data&#39;</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Create the full ampycloud diagnostic plot</span>
+<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">&#39;layers&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<section id="adjusting-the-plotting-style">
+<h3>Adjusting the plotting style<a class="headerlink" href="#adjusting-the-plotting-style" title="Permalink to this headline"></a></h3>
+<p>ampycloud ships with its own set of matplotlib style files, that are used in <cite>context</cite>, and thus
+will not impact any user-specified setups.</p>
+<p>Whereas the default parameters should ensure a decent-enough look for the diagnostic diagrams of
+ampycloud, a better look can be achieved by using a system-wide LaTeX installation. Provided this is
+available, users interested in creating nicer-looking diagnostic diagrams can do so by setting
+the appropriate ampycloud parameter:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">MPL_STYLE</span> <span class="o">=</span> <span class="s1">&#39;latex&#39;</span>
+</pre></div>
+</div>
+<p>And for the most demanding users that want nothing but the best, they can create plots with actual
+okta symbols if they install the <a class="reference external" href="https://github.com/MeteoSwiss/metsymb">metsymb LaTeX package</a>
+system-wide, and set:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">MPL_STYLE</span> <span class="o">=</span> <span class="s1">&#39;metsymb&#39;</span>
+</pre></div>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Using a system-wide LaTeX installation to create matplotlib figures <strong>is not officially
+supported by matplotib</strong>, and thus <strong>not officially supported by the ampycloud</strong> either.</p>
+</div>
+</section>
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="installation.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parameters.html" class="btn btn-neutral float-right" title="The ampycloud scientific parameters" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

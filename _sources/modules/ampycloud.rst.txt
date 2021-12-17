@@ -1,0 +1,99 @@
+ampycloud package
+=================
+
+.. automodule:: ampycloud
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+Subpackages
+-----------
+
+.. toctree::
+   :maxdepth: 4
+
+   ampycloud.plots
+   ampycloud.utils
+
+Submodules
+----------
+
+ampycloud.cluster module
+------------------------
+
+.. automodule:: ampycloud.cluster
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.core module
+---------------------
+
+.. automodule:: ampycloud.core
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.data module
+---------------------
+
+.. automodule:: ampycloud.data
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.dynamic module
+------------------------
+
+.. automodule:: ampycloud.dynamic
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.errors module
+-----------------------
+
+.. automodule:: ampycloud.errors
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.layer module
+----------------------
+
+.. automodule:: ampycloud.layer
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.logger module
+-----------------------
+
+.. automodule:: ampycloud.logger
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.scaler module
+-----------------------
+
+.. automodule:: ampycloud.scaler
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.version module
+------------------------
+
+.. automodule:: ampycloud.version
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
+ampycloud.wmo module
+--------------------
+
+.. automodule:: ampycloud.wmo
+   :members:
+   :undoc-members:
+   :show-inheritance:
