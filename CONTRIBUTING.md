@@ -13,6 +13,7 @@ If you:
 - [Scope of ampycloud](#scope-of-ampycloud)
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
+    - [Installing from source](#installling-from-source)
     - [CI/CD](#ci/cd)
     - [Linting](#linting)
     - [Logging](#logging)
@@ -62,6 +63,24 @@ Contributors are required to work in their own branches, and issue Pull Requests
 branch when appropriate.
 
 The `master`, `develop`, and `gh-pages` branches are all protected.
+
+
+### Installing from source
+
+If you intend to actively contribute to ampycloud, you ought to clone the `develop` branch of the
+repository, and install it from source. In a terminal:
+```
+git clone -b develop git@github.com:MeteoSwiss/ampycloud.git some_folder
+cd some_folder
+pip install -e .[dev]
+```
+Note the use of `[dev]` to also install the dependencies required for dev work (i.e. `sphinx`, `pylint`, etc ...).
+
+:warning: If you encouter the error `zsh: no matches found: .[dev]`, add some quotes as follows:
+```
+pip install -e '.[dev]'
+```
+
 
 ### CI/CD
 

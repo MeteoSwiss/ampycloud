@@ -45,6 +45,9 @@ setup(
         "pyyaml",
         "yaconfigobject"
     ],
+    extras_require={
+        'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest']
+    },
 
     # Setup entry points to use ampycloud directly from a terminal
     entry_points={'console_scripts':
