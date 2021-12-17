@@ -51,7 +51,7 @@ def test_minmax_scaling():
     # Make sure we are between 0 and 1
     assert np.nanmax(out) <= 1
     assert np.nanmin(out) >= 0
-    # Go further and make sure we re actually much smaller than that
+    # Go further and make sure we are actually much smaller than that
     assert np.round(np.nanmax(out)-np.nanmin(out), 1) == 0.3
     # Check that all gets properly descaled as well
     assert np.all(np.round(deout[~np.isnan(vals)], 5) == np.round(vals[~np.isnan(vals)], 5))
@@ -74,7 +74,12 @@ def test_step_scaling():
     vals = np.arange(0, 25000, 10)
     out = step_scaling(vals, steps=[3000, 7000, 10000, 14000], scales=[100, 500, 50, 1000, 10],
                        mode='scale')
+    # Basic check to make sure we are always increasing
     assert np.all(np.diff(out) > 0)
+    # Check for gaps by looking at the slopes
+    # If a slope value were to appear only once, it would be a gap.
+    assert np.all([np.count_nonzero(np.diff(out)==item) for item in np.unique(np.diff(out))])
+    # Check I can undo the scaling
     deout = step_scaling(out, steps=[3000, 7000, 10000, 14000], scales=[100, 500, 50, 1000, 10],
                          mode='descale')
     assert np.all(np.round(deout, 1) == vals)

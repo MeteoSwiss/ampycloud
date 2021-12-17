@@ -27,6 +27,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
+ - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
  - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).
  - [fpavogt, 2021-12-08] Change `mock_layer` to return a pd.DataFrame instead of a np.ndarray.
 ### Deprecated:

@@ -31,6 +31,10 @@ def scores2nrl(abics : np.ndarray) -> np.ndarray:
 
         p_i = \\frac{e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}{\\sum_{i}e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}
 
+    .. note::
+        The smaller the BIC/AIC scores, the better, but the higher the probabilities = normalized
+        relative likelihood, the better !
+
     Args:
         abics (ndarray): scores.
 
@@ -67,7 +71,7 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 
             prob(abics[current_best_model]) < min_prob
             AND
-            abics[n] < abics[current_best_model]
+            prob(abics[n]) > prob(abics[current_best_model])
 
         - `mode='delta'`:
           ::
@@ -78,10 +82,10 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
         smallest score.
 
     Args:
-        abics (ndarray): the AICs or BICs values, ordered from simplest to most complex model.
+        abics (ndarray): the AICs or BICs scores, ordered from simplest to most complex model.
         mode (str, optional): one of ['delta', 'prob']. Defaults to 'delta'.
         min_prob (float, optional): minimum model probability computed from the scores's relative
-            likelihood, below which alternative models will be considered. Set it to 1 to select
+            likelihood, below which the other models will be considered. Set it to 1 to select
             the model with the lowest score, irrespective of its probability. Defaults to 1.
             This has no effect unless mode='prob'.
         delta_mul_gain (float, optional): a smaller score will only be considered "valid"
@@ -98,7 +102,7 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 
     # Compute the relative probabilities of each model from the scores,
     # i.e. compute the "relative likelihood" of each model, normalized by the sum of all relative
-    # lieklihoods (if warranted)
+    # likelihoods (if warranted)
     if mode=='prob':
         nrl = scores2nrl(abics)
 
@@ -114,7 +118,7 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
         # Here, define if the new model is "better" following the user's wishes ...
         if mode == 'prob':
             better = (nrl[best_model_ind] < min_prob) and \
-                     (abics[m_ind+1] < abics[best_model_ind])
+                     (nrl[m_ind+1] > nrl[best_model_ind])
         elif mode == 'delta':
             better = abics[m_ind + 1] < delta_mul_gain * abics[best_model_ind]
         else:
@@ -129,7 +133,7 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 @log_func_call(logger)
 def ncomp_from_gmm(vals : np.ndarray,
                    scores : str = 'BIC',
-                   rescale_0to : float = None,
+                   rescale_0_to_x : float = None,
                    **kwargs : dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
     components.
@@ -141,7 +145,7 @@ def ncomp_from_gmm(vals : np.ndarray,
             .reshape(-1, 1).
         scores (str, optional): either 'BIC' or 'AIC', to use Baysian Information Criterion or
             Akaike Information criterion scores.
-        rescale_0to (float, optional): if set, vals will be rescaled between 0 and this value.
+        rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value.
             Defaults to None = no rescaling.
         **kwargs (dict, optional): these will be fed to `best_gmm()`.
 
@@ -159,8 +163,8 @@ def ncomp_from_gmm(vals : np.ndarray,
         vals = vals.reshape(-1, 1)
 
     # Rescale the data if warranted
-    if rescale_0to is not None:
-        vals = minmax_scaling(vals, min_range=0) * rescale_0to
+    if rescale_0_to_x is not None:
+        vals = minmax_scaling(vals, min_range=0) * rescale_0_to_x
 
     # I will only look for at most 3 layers.
     ncomp = np.array([1, 2, 3])
