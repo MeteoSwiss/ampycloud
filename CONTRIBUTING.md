@@ -3,7 +3,7 @@
 If you:
 
 *  have a **question** about ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/discussions)
-*  want to **report a bug** with ampycloud: [jump there instead.](https://github.com/MeteoSwiss/ampycloud/issues).
+*  want to **report a bug** with ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/issues)
 * are considering to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
 
 
@@ -74,8 +74,8 @@ Additional CI/CD tasks will be added eventually, including:
 ### Logging
 
   No handlers/formatters are being defined in ampycloud, with the exception of a `NullHandler()` for
-  when users do not specify any logging handler explicitly. In other words, **it is up to the
-  ampycloud users to decide what logging they wish to see**, if any.
+  when users do not specify any logging handler explicitly. In other words, [**it is up to the
+  ampycloud users to decide what logging they wish to see**](https://MeteoSwiss.github.io/ampycloud/running.html#logging), if any.
 
   Specifically:
 
