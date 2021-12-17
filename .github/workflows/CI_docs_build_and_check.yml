@@ -33,13 +33,12 @@ jobs:
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
-          python -m pip install -r ./.dev_utils/dev_requirements.txt
         shell: bash
 
       # Here, let's install our module to make sure all the dependencies specified in setup.py are
       # also installed
       - name: Install our module
-        run: pip install -e .
+        run: pip install -e .[dev]
         shell: bash
 
       # Launch a home-made python script to compile and check the docs.
