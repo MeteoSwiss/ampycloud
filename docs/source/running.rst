@@ -10,12 +10,18 @@ Using ampycloud
 Running the algorithm
 ---------------------
 
+ampycloud.core.run
+..................
+
 Applying the ampycloud algorithm to a given set of ceilometer cloud base hits is done via the
 following function, that is also directly accessible as ``ampycloud.run()``.
 
 .. autofunction:: ampycloud.core.run
     :noindex:
 
+
+The no-plots-required shortcuts
+...............................
 
 The following two functions, also accessible as ``ampycloud.metar() and ampycloud.synop()``,
 will directly provide interested users with the ampycloud-METAR/synop messages for a given dataset.
@@ -30,9 +36,10 @@ will directly provide interested users with the ampycloud-METAR/synop messages f
 Adjusting the default algorithm parameters
 ..........................................
 
-The ampycloud parameters with a **scientific** impact on the outcome of the algorithm are accessible
-in the `ampycloud.dynamic` module.  From there, users can easily adjust them as they see fit. For
-example:
+The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
+(see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
+are accessible in the `ampycloud.dynamic` module.  From there, users can easily adjust them as they
+see fit. For example:
 ::
 
     from ampycloud import dynamic
