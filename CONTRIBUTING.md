@@ -10,6 +10,7 @@ If you:
 ## Table of contents
 
 - [Code of conduct](#code-of-conduct)
+- [Scope of ampycloud](#scope-of-ampycloud)
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
     - [CI/CD](#ci/cd)
@@ -25,6 +26,24 @@ If you:
 
 This project and everyone participating in it is governed by the [ampycloud Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
 Please report unacceptable behavior to [loris.foresti@meteoswiss.ch](mailto:loris.foresti@meteoswiss.ch) and/or [frederic.vogt@meteoswiss.ch](mailto:frederic.vogt@meteoswiss.ch).
+
+
+## Scope of ampycloud
+
+ampycloud is a key dependency of the automatic METAR-generating code of MeteoSwiss, which requires
+all its dependencies to be robust and stable.
+
+This has the following implications for ampycloud:
+
+* The scope of ampycloud will remain limited to the automatic processing of ceilometer hits.
+* ampycloud can evidently be used for R&D work, but the code itself should not be seen as an R&D platform.
+* Contributions via Pull Requests are always welcome (and appreciated !), but will only be considered if they:
+
+    - remove a bug, and/or
+    - improve the usability of ampycloud without altering the quality of the results, and/or
+    - demonstrate a significant improvement in the quality of the results.
+
+* The ingestion of external contributions may be delayed to allow for careful, internal verification that they do not affect the MeteoSwiss operational chain that relies on ampycloud.
 
 
 ## Essential things to know about ampycloud for dev work

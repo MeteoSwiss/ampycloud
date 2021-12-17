@@ -6,7 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
- - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md
+ - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md and auto-doc-publish action, incl. first doc release.
  - [fpavogt, 2021-12-16] Add a new entry point for `copy_prm_file`, i.e. fix #26.
  - [fpavogt, 2021-12-15] Add `msa` to `plots.diagnostic`, i.e. fix #22.
  - [fpavogt, 2021-12-10] Add Minimum Sector Altitude to the metar_msg() method.
