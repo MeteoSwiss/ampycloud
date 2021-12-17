@@ -2,17 +2,24 @@
 
 If you:
 
-    *  have a question about ampycloud: [jump here !](https://github.com/MeteoSwiss/ampycloud/discussions).
-    *  want to report a bug with ampycloud: [jump here !](https://github.com/MeteoSwiss/ampycloud/issues).
-    * are considering to contribute to ampycloud (:heart_eyes: :tada:): read on !
+*  have a **question** about ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/discussions)
+*  want to **report a bug** with ampycloud: [jump there instead.](https://github.com/MeteoSwiss/ampycloud/issues).
+* are considering to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
 
 
 ## Table of contents
 
 - [Code of conduct](#code-of-conduct)
-- [Essential things to know about ampycloud](#essential-things-to-know-about-ampycloud)
-- [Branching model](#branching-model)
-
+- [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
+    - [Branching model](#branching-model)
+    - [CI/CD](#ci/cd)
+    - [Linting](#linting)
+    - [Logging](#logging)
+    - [Exceptions and Warnings](#exceptions-and-warnings)
+    - [Docstrings](#docstrings)
+    - [Documentation](#documentation)
+    - [Testing](#testing)
+    - [Plotting](#plotting)
 
 ## Code of conduct
 
@@ -20,7 +27,7 @@ This project and everyone participating in it is governed by the [ampycloud Code
 Please report unacceptable behavior to [loris.foresti@meteoswiss.ch](mailto:loris.foresti@meteoswiss.ch) and/or [frederic.vogt@meteoswiss.ch](mailto:frederic.vogt@meteoswiss.ch).
 
 
-## Essential things to know about ampycloud
+## Essential things to know about ampycloud for dev work
 
 For now, ampycloud is being developed in a **private** repository under the [MeteoSwiss organization](https://github.com/MeteoSwiss/ampycloud) on Github. The documentation, generated using Sphinx, is hosted as Github Pages on the `gh-pages` branch of the repo, and is **publicly** visible
 at https://MeteoSwiss.github.io/ampycloud.
@@ -39,17 +46,17 @@ The `master`, `develop`, and `gh-pages` branches are all protected.
 
 ### CI/CD
 
-Automated CI/CD checks are triggered upon Pull Request being issued towards the `develop` and
-`master` branches. At the time being, these include:
+Automated CI/CD checks are triggered upon Pull Requests being issued towards the `develop` and
+`master` branches. At the time being, they are implemented using dedicated Github Actions specified under `.github/workflows`. These checks include:
 
 * code linting using `pylint`
 * code testing using `pytest`
 * check that the CHANGELOG was updated
 * check that the Sphinx docs compile
+* automatic publication of the Sphinx docs
 
 Additional CI/CD tasks will be added eventually, including:
 
-* automatic publication of the Sphinx docs
 * automatic release mechanism, incl. pypi upload
 
 
@@ -57,8 +64,11 @@ Additional CI/CD tasks will be added eventually, including:
 
 * The following [pylint](https://www.pylint.org/) error codes are forbidden in ampycloud:
   ``E, C0303, C0304, C0112, C0114, C0115, C0116, C0411, W0611, W0612.`` Every Pull Request to `develop` and `master` is automatically linted, and these codes will be flagged accordingly.
+* There is no "automated black formatting" implemented in the repo **by choice**. We believe that it
+  is up to the contributors to ensure that the quality of their code meets the required standards enforced by the Github Action in this repo.
 * We encourage contributors to follow PEP8 as closely as possible/reasonable. You should check
   often how well you are doing using the command `pylint some_modified_file.py`.
+
 
 
 ### Logging
@@ -75,7 +85,7 @@ Additional CI/CD tasks will be added eventually, including:
     import logging
     logger = loggging.getLogger(__name__)
     ```
-  * log calls are then simply done via their module logger:
+  * log calls are then simply done via this module logger:
 
     ```
     logger.debug('...')
@@ -84,7 +94,7 @@ Additional CI/CD tasks will be added eventually, including:
     logger.error('...')
     ```
 
-  * the function `ampycloud.logger.log_func_call()` can be used to decorate ampycloud functions to
+  * the function `ampycloud.logger.log_func_call()` can be used to decorate ampycloud functions and
     automatically log their call at the `INFO` level, and the arguments at the `DEBUG` level, e.g.:
 
     ```
@@ -100,68 +110,68 @@ Additional CI/CD tasks will be added eventually, including:
 
 ### Exceptions and Warnings
 
-    The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
-    class, and is meant as a general exception for ampycloud. Using it is straightforward:
-    ```
-    from .errors import AmpycloudError
+The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
+class, and is meant as a general exception for ampycloud. Using it is straightforward:
+```
+from .errors import AmpycloudError
 
-    raise AmpycloudError('...')
-    ```
+raise AmpycloudError('...')
+```
 
-    There is also a custom `AmpycloudWarning` class for the package, which is a simple child of the
-    `Warning` class. Using it is also simple:
-    ```
-    import warnings
-    from .errors import AmpycloudWarning
+There is also a custom `AmpycloudWarning` class for the package, which is a simple child of the
+`Warning` class. Using it is also simple:
+```
+import warnings
+from .errors import AmpycloudWarning
 
-    warnings.warn('...', AmpycloudWarning)
-    ```
+warnings.warn('...', AmpycloudWarning)
+```
 
-### Doctrings:
-    Google Style. Please try to stick to the following MWE:
-    ```
-    """ A brief one-liner description in present tense, that finishes with a dot.
+### Doctrings
+Google Style ! Please try to stick to the following MWE:
+```
+""" A brief one-liner description in present tense, that finishes with a dot.
 
-    Use some
-    multi-line space for
-    more detailed info.
+Use some
+multi-line space for
+more detailed info.
 
-    Args:
-        x (float|int): variable x could be of 2 types ... note the use of `|` to say that !
-            - *float*: x could be a float
-            - *int*: x could also be an int
+Args:
+    x (float|int): variable x could be of 2 types ... note the use of `|` to say that !
+        - *float*: x could be a float
+        - *int*: x could also be an int
 
-        y (list[str]|str, optional): variable y info
+    y (list[str]|str, optional): variable y info
 
-    Returns:
-        bool: some grand Truth about the World.
+Returns:
+    bool: some grand Truth about the World.
 
-    Raises:
-        AmpycloudError: if blah and blah occurs.
+Raises:
+    AmpycloudError: if blah and blah occurs.
 
-    Example:
-        If needed, you can specify chunks of code using code blocks::
+Example:
+    If needed, you can specify chunks of code using code blocks::
 
-            def some_function():
-                print('hurray!')
+        def some_function():
+            print('hurray!')
 
-    Note:
-        `Source <https://github.com/sphinx-doc/sphinx/issues/3921>`__
-        Please note the double _ _ after the link !
+Note:
+    `Source <https://github.com/sphinx-doc/sphinx/issues/3921>`__
+    Please note the double _ _ after the link !
 
-    Caution:
-        Something to be careful about.
+Caution:
+    Something to be careful about.
 
-    """
-    ```
+"""
+```
 
-    You should of course feel free to use more of the tools offered by
-    [sphinx](https://www.sphinx-doc.org/en/master/),
-    [napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html), and
-    [Google Doc Strings](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html#example-google). But if you do, **please make sure there are no errors upon generating the docs !**
+You should of course feel free to use more of the tools offered by
+[sphinx](https://www.sphinx-doc.org/en/master/),
+[napoleon](https://www.sphinx-doc.org/en/master/usage/extensions/napoleon.html), and
+[Google Doc Strings](https://www.sphinx-doc.org/en/master/usage/extensions/example_google.html#example-google). But if you do, **please make sure there are no errors upon generating the docs !**
 
 
-### Package documentation
+### Documentation
 
 There is a scientific article about the ampycloud **algorithm** in preparation. It will complement
 the [Sphinx documentation](https://MeteoSwiss.github.io/ampycloud) that contains all the important elements required to use the ampycloud **Python package**.
@@ -171,7 +181,10 @@ The Sphinx documentation can be generated manually as follows:
 cd ./where/you/placed/ampycloud/docs
 sh build_docs.sh
 ```
-This will create the `.html` pages of the compiled documentation under `./build`.
+This will create the `.html` pages of the compiled documentation under `./build`. In particular,
+this bash script will automatically update the help message from the high-level ampycloud entry
+point ``ampycloud_speed_test``, create the demo figure for the main page, compile and ingest all the
+docstrings, etc ...
 
 
 ### Testing
@@ -211,7 +224,7 @@ logger = logging.getLogger(__name__)
 def some_plot_function(...):
     ...
 ```
-Note how the `@set_mplstyle` decorator goes above the `@log_func_call()` decorator.
+:warning: Note how the `@set_mplstyle` decorator goes above the `@log_func_call()` decorator.
 
 With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
