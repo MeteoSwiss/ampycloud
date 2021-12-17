@@ -51,22 +51,22 @@ def test_ncomp_from_gmm():
     comp3 = np.random.randn(100) + 10
 
     out, _, _ = ncomp_from_gmm(comp1,
-                               scores='BIC', rescale_0to=100,
+                               scores='BIC', rescale_0_to_x=100,
                                delta_mul_gain=0.95, mode='delta')
     assert out == 1
 
     out, _, _ = ncomp_from_gmm(np.concatenate([comp1, comp2]),
-                               scores='BIC', rescale_0to=100,
+                               scores='BIC', rescale_0_to_x=100,
                                delta_mul_gain=0.95, mode='delta')
     assert out == 2
 
     out, _, _ = ncomp_from_gmm(np.concatenate([comp1, comp2, comp3]),
-                               scores='BIC', rescale_0to=100,
+                               scores='BIC', rescale_0_to_x=100,
                                delta_mul_gain=0.95, mode='delta')
     assert out == 3
 
     # Check that I can "force" 1 component in all cases ...
     out, _, _ = ncomp_from_gmm(np.concatenate([comp1, comp2, comp3]),
-                               scores='BIC', rescale_0to=100,
+                               scores='BIC', rescale_0_to_x=100,
                                delta_mul_gain=0., mode='delta')
     assert out == 1

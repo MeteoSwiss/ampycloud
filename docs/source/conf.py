@@ -89,6 +89,9 @@ napoleon_use_rtype = False
 napoleon_use_keyword = False
 napoleon_custom_sections = None
 
+# ENable the numbering of Figure
+numfig = True
+
 # -- Options for HTML output -------------------------------------------------
 
 # The theme to use for HTML and HTML Help pages.  See the documentation for

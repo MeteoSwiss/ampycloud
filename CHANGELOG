@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md and auto-doc-publish action, incl. first doc release.
  - [fpavogt, 2021-12-16] Add a new entry point for `copy_prm_file`, i.e. fix #26.
  - [fpavogt, 2021-12-15] Add `msa` to `plots.diagnostic`, i.e. fix #22.
  - [fpavogt, 2021-12-10] Add Minimum Sector Altitude to the metar_msg() method.
@@ -27,6 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
+ - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
  - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).
  - [fpavogt, 2021-12-08] Change `mock_layer` to return a pd.DataFrame instead of a np.ndarray.
 ### Deprecated:

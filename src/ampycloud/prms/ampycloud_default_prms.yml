@@ -91,4 +91,4 @@ LAYERING_PRMS:
         # Only used if mode='delta'
         delta_mul_gain: 0.95
         # If set, rescale each group between 0 and this value before looking for layers using gmm.
-        rescale_0to: 100
+        rescale_0_to_x: 100

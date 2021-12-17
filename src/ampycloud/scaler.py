@@ -109,17 +109,17 @@ def step_scaling(vals : np.ndarray,
                  steps : list, scales : list, mode : str = 'scale') -> np.ndarray:
     """ Scales values step-wise, with different constants bewteen specific steps.
 
-    Values are scaled by scales[i] between steps[i-1:i].
-    Anything outside the range of steps is scaled by scales[0] or scale[-1].
+    Values are divided by scales[i] between steps[i-1:i].
+    Anything outside the range of steps is divided by scales[0] or scale[-1].
 
     Note that this function ensures that each step is properly offseted to ensure that the
-    scaled data is continuous !
+    scaled data is continuous (no gaps and no overlapping steps) !
 
     Args:
         vals (ndarray): values to scale.
         steps (list, optional): the step **edges**. E.g. [8000, 14000].
-        scales (list, optional): the scaling values for each step. E.g. [100, 500, 1000].
-            Must have len(scales) = len(steps)+1.
+        scales (list, optional): the scaling values (=dividers) for each step.
+            E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.
         mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.
 
     Returns:
@@ -149,7 +149,7 @@ def step_scaling(vals : np.ndarray,
     # Start scaling things, one step after another
     for (sid, scale) in enumerate(scales):
 
-        # What is this specific step offset (to ensure continuitiy between steps) ?
+        # What is this specific step offset (to ensure continuity between steps) ?
         cont_corr = np.concatenate((np.array([steps[0]/scales[0]]), np.diff(steps)/scales[1:-1]))
         cont_corr = np.sum(cont_corr[:sid])
 

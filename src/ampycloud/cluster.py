@@ -28,7 +28,7 @@ def agglomerative_cluster(data : np.ndarray, n_clusters : int = None,
     """ Function that wraps arround sklearn.cluster.AgglomerativeClustering.
 
     Args:
-        data (ndarray): array of [x, y] arrays to run the clustering on.
+        data (ndarray): array of [x, y] pairs to run the clustering on.
         n_clusters (int, optional): see sklearn.cluster.AgglomerativeClustering for details.
             Defaults to None.
         affinity (str, optional): see sklearn.cluster.AgglomerativeClustering for details.

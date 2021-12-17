@@ -1,0 +1,90 @@
+# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+#
+# This will build the docs and push them to the gh-pages branch of the repo
+# Assumes a few things: 1) docs live in ./docs; 2) there is a doc_build.sh bash script that takes
+# the ./docs/source/ material and turn it into a compiled ./docs/build ready docs; 3) the content of
+# the ./docs/build/ folder are published as-is in a gh-pages branch of the repo, with only
+# .nojekyll, .gitignore, and .git (folder) in addition.
+#
+
+name: CI_docs_publish
+
+on:
+  push:
+    branches: [ master ]
+  # For dev/debug purposes, doing it on PR helps a lot
+  #pull_request:
+  #  branches: [ master, develop, develop_vof ]
+
+jobs:
+  docs:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: [3.9]
+
+    steps:
+      # Checkout our repository
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      # Also check out the live docs, placing it into a pseudo "build" folder for the docs
+      - name: Checkout live docs
+        uses: actions/checkout@v2
+        with:
+            repository: MeteoSwiss/ampycloud
+            ref: gh-pages
+            path: './docs/build/'
+
+      # Now let's clean-up the existing docs, keeping the import .git info intact.
+      - name: Clean-up the old docs
+        run: |
+          cd ./docs/build/
+          echo "Existing docs before cleanup:"
+          ls -a
+          find . -not \( -path '*.git*' -o -name '.nojekyll' -o -name '.-gitignore' \) -delete
+          echo "Existing docs after cleanup:"
+          ls -a
+          cd ../..
+
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+            python-version: ${{ matrix.python-version }}
+
+      # Install any dependency we require
+      - name: Install dependancies
+        run: |
+          python -m pip install --upgrade pip
+          python -m pip install -r ./.dev_utils/dev_requirements.txt
+        shell: bash
+
+      # Here, let's install our module to make sure all the dependencies specified in setup.py are
+      # also installed
+      - name: Install our module
+        run: pip install -e .
+        shell: bash
+
+      # Compile the docs.
+      - name: Compile the docs from scratch
+        run: |
+          cd ./docs
+          sh build_docs.sh
+        shell: bash
+
+      # Add/Commit the modified docs, and push it back to the branch
+      - name: Upload new docs to gh-pages
+        run: |
+          cd ./docs/build
+          echo "New docs location:"
+          pwd
+          echo "New docs:"
+          ls -a
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add -A .
+          git commit -m "CI auto-update of the docs on `date +'%Y-%m-%d %H:%M:%S'`"
+          git push origin gh-pages
