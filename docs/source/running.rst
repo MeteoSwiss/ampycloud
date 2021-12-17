@@ -68,6 +68,33 @@ ampycloud scientific parameters, you can use ```ampycloud.reset_prms()``.
     :noindex:
 
 
+.. _logging:
+
+Logging
+-------
+
+A ``NullHandler()`` is being set by ampycloud, such that no logging will be apparent to the users
+unless they explicitly set it up
+(`see here <https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library>`_ for
+more details).
+
+As an example, to enable ampycloud log messages all the way down to the ``DEBUG`` level, users can
+make the following call before running ampycloud functions:
+::
+
+    import logging
+
+    logging.basicConfig()
+    logging.getLogger('ampycloud').setLevel('DEBUG')
+
+
+Each ampycloud module has a dedicated ``logger`` based on the module ``__name__``. Hence, users
+can adjust the logging level of each ampycloud module however they desire, e.g.:
+::
+
+    logging.getLogger('ampycloud.wmo').setLevel('WARNING')
+    logging.getLogger('ampycloud.scaler').setLevel('DEBUG')
+
 .. _plotting:
 
 Plotting the diagnostic diagram
