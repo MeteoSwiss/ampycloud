@@ -92,3 +92,7 @@ LAYERING_PRMS:
         delta_mul_gain: 0.95
         # If set, rescale each group between 0 and this value before looking for layers using gmm.
         rescale_0_to_x: 100
+        # Minimum separation (in ft) between the mean altitude of identified layers, below which
+        # they will not be split. Any value < than 5* the resolution of the data will raise a
+        # warning, as it may lead to an over-layering of groups.
+        min_sep: 150

@@ -10,11 +10,13 @@ Module contains: layering tools
 
 # Import from Python
 import logging
+import warnings
+from typing import Union
 import numpy as np
 from sklearn.mixture import GaussianMixture
 
 # Import from this module
-from .errors import AmpycloudError
+from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from .scaler import minmax_scaling
 
@@ -134,6 +136,8 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 def ncomp_from_gmm(vals : np.ndarray,
                    scores : str = 'BIC',
                    rescale_0_to_x : float = None,
+                   min_sep : Union[int, float] = 0,
+                   random_seed : int = 42,
                    **kwargs : dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
     components.
@@ -147,6 +151,11 @@ def ncomp_from_gmm(vals : np.ndarray,
             Akaike Information criterion scores.
         rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value.
             Defaults to None = no rescaling.
+        min_sep (int|float, optional): minimum separation, in data unit (i.e. pre-rescaled),
+            required between the mean location of two Gaussian components to consider them distinct.
+            Defaults to 0. This is in complement to any parameters fed to best_gmm().
+        random_seed (int, optional): a value fed to numpy.random.seed to ensure repeatable
+            results. Defaults to 42, because :-).
         **kwargs (dict, optional): these will be fed to `best_gmm()`.
 
     Returns:
@@ -158,9 +167,26 @@ def ncomp_from_gmm(vals : np.ndarray,
         `<https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html>`_
     """
 
+    # To ensure repeatability of the results, let's define a seed here.
+    np.random.seed(random_seed)
+
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
         vals = vals.reshape(-1, 1)
+
+    # Keep track of the original values
+    vals_orig = vals
+
+    # Compute the resolution of the data, and check if min_sep is larger than this value.
+    # If not, we seriously risk over-selecting components
+    res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
+    res_orig = np.min(res_orig[res_orig>0])
+
+    logger.debug('res_orig: %.2f', res_orig)
+    if min_sep < 5*res_orig:
+        warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.'+
+                      'This could lead to an over-layering for thin groups !',
+                      AmpycloudWarning)
 
     # Rescale the data if warranted
     if rescale_0_to_x is not None:
@@ -184,9 +210,45 @@ def ncomp_from_gmm(vals : np.ndarray,
     else:
         raise AmpycloudError(f'Ouch ! Unknown scores: {scores}')
 
+    # Get the interesting information out
     best_model_ind = best_gmm(abics, **kwargs)
+    best_ncomp = ncomp[best_model_ind]
+    best_ids = models[ncomp[best_model_ind]].predict(vals)
 
     logger.debug('%s scores: %s', scores, abics)
     logger.debug('best_model_ind: %i', best_model_ind)
+    logger.debug('best_ncomp: %i', best_ncomp)
 
-    return ncomp[best_model_ind], models[ncomp[best_model_ind]].predict(vals), abics
+    # If I found only one component, I can stop here
+    if best_ncomp == 1:
+        return best_ncomp, best_ids, abics
+
+    # If I found more than one component, let's make sure that they are sufficiently far appart.
+    # First, let's compute the mean component heights
+    mean_comp_heights = [np.mean(vals_orig[best_ids==i]) for i in range(ncomp[best_model_ind])]
+
+    # These may not be ordered, so let's keep track of the indices
+    # First, let's deal with the fact that they are not ordered.
+    comp_ids = np.argsort(mean_comp_heights)
+
+    # Now loop throught the different components, check if they are far sufficiently far apart,
+    # and merge them otherwise.
+    for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
+
+        # If the the delta is large enough, move on ...
+        if delta >= min_sep:
+            continue
+
+        # Else, I have two components that are "too close" from each other. Let's merge them.
+        # This may seem over convoluted, but it is required to make sure merge 3 layers all end up
+        # with the same id.
+        best_ids[best_ids==comp_ids[ind+1]] = comp_ids[ind]
+        comp_ids[ind+1] = comp_ids[ind]
+
+        # Decrease the number of valid ids
+        best_ncomp -= 1
+
+    if not len(np.unique(best_ids)) == best_ncomp:
+        raise AmpycloudError('Ouch ! This error is impossible !')
+
+    return best_ncomp, best_ids, abics
