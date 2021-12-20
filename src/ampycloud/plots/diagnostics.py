@@ -383,10 +383,10 @@ class DiagnosticPlot:
                               )
 
     def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
-        """ Display the ampycloud METAR/SYNOP proposal.
+        """ Display the ampycloud METAR/SYNOP message.
 
         Args:
-            synop (bool, optional): If True, will display the full SYNOP call. Defaults to False.
+            synop (bool, optional): If True, will display the full SYNOP message. Defaults to False.
             msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
                 message. Deafaults to None.
         """

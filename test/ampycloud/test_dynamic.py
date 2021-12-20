@@ -27,7 +27,7 @@ def test_dynamic_module():
     assert new_val == -1
 
     # Check whether I can copy PRMS values and change these without altering the originals
-    # (i.e do I need a depcopy ?)
+    # (i.e do I need a deepcopy ?)
     tmp = dynamic.AMPYCLOUD_PRMS.MPL_STYLE
     assert tmp == dynamic.AMPYCLOUD_PRMS.MPL_STYLE
     tmp = 'bad'

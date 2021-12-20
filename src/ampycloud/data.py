@@ -250,7 +250,7 @@ class CeiloChunk(AbstractChunk):
                 expressed as a fraction (0<=base_frac<=1) of the total hit count, to consider when
                 deriving the slice/group/layer altitude (as a median). Defaults to 0.1, i.e. the
                 cloud base is the median of the lowest 10% of cloud hits of that slice/group/layer.
-            lim0 (int|float, optional): upper limit of the sky coverage percentagte for the 0 okta
+            lim0 (int|float, optional): upper limit of the sky coverage percentage for the 0 okta
                 bin, in %. Defaults to 2.
             lim8 (int|float, optional): lower limit of the sky coverage percentage for the 8 okta
                 bin, in %. Defaults to 98.
@@ -666,7 +666,7 @@ class CeiloChunk(AbstractChunk):
                   which : str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
-        The WMO's cloud layer selection rules applicable to METARs will be applied, unless
+        The ICAO's cloud layer selection rules applicable to METARs will be applied, unless
         synop = True.
 
         Args:
