@@ -18,7 +18,7 @@ ampycloud |version| |stars| |watch|
     :align: center
     :alt: ampycloud demo diagnostic diagram
 
-    *Figure 1: the ampycloud diagnostic diagram for its canonical mock dataset.*
+    the ampycloud diagnostic diagram for its canonical mock dataset.
 
 **Welcome to the ampycloud documentation !**
 

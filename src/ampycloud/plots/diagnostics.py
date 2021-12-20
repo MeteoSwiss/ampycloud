@@ -383,10 +383,10 @@ class DiagnosticPlot:
                               )
 
     def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
-        """ Display the ampycloud METAR/Synop proposal.
+        """ Display the ampycloud METAR/SYNOP proposal.
 
         Args:
-            synop (bool, optional): If True, will display the full synop call. Defaults to False.
+            synop (bool, optional): If True, will display the full SYNOP call. Defaults to False.
             msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
                 message. Deafaults to None.
         """
@@ -463,7 +463,7 @@ class DiagnosticPlot:
             secax_y.tick_params(axis='y', which='both', labelsize=rcParams['font.size']-2)
 
     def format_group_axes(self) -> None:
-        """ Format the duplicate axes related to the clsutering part. """
+        """ Format the duplicate axes related to the grouping part. """
 
         # First, get the scaling parameters, and switch them over to a 'descale' mode ...
         # TODO: once issue #25 is fixed, maybe update these lines ...

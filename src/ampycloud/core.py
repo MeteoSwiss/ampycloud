@@ -168,8 +168,8 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
         CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
 
     All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
-    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they be
-    created) at the moment.
+    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they
+    be created).
 
     The input ``data`` must be a ``pandas.DataFrame`` with the following column names (types):
     ::
