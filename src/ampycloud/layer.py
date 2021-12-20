@@ -216,8 +216,8 @@ def ncomp_from_gmm(vals : np.ndarray,
     best_ids = models[ncomp[best_model_ind]].predict(vals)
 
     logger.debug('%s scores: %s', scores, abics)
-    logger.debug('best_model_ind: %i', best_model_ind)
-    logger.debug('best_ncomp: %i', best_ncomp)
+    logger.debug('best_model_ind (raw): %i', best_model_ind)
+    logger.debug('best_ncomp (raw): %i', best_ncomp)
 
     # If I found only one component, I can stop here
     if best_ncomp == 1:
@@ -250,5 +250,7 @@ def ncomp_from_gmm(vals : np.ndarray,
 
     if not len(np.unique(best_ids)) == best_ncomp:
         raise AmpycloudError('Ouch ! This error is impossible !')
+
+    logger.debug('best_ncomp (final): %i', best_ncomp)
 
     return best_ncomp, best_ids, abics
