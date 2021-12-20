@@ -153,7 +153,7 @@ warnings.warn('...', AmpycloudWarning)
 ```
 
 ### Docstrings
-Google Style ! Please try to stick to the following MWE:
+Google Style ! Please try to stick to the following example:
 ```
 """ A brief one-liner description in present tense, that finishes with a dot.
 
