@@ -28,6 +28,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
+ - [fpavgot, 2021-12-20] implement feedback from @loforest
  - [fpavogt, 2021-12-17] Improve the handling of the optional requirements.
  - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
  - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).
