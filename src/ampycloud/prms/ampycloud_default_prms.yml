@@ -51,7 +51,7 @@ GROUPING_PRMS:
     algo: agglomerative
     # Grouping algorithm parameters
     algo_kwargs:
-        n_clusters:
+        n_clusters: null # null = None
         distance_threshold: 1
         linkage: single
         affinity: manhattan
@@ -85,7 +85,7 @@ LAYERING_PRMS:
         # minimum model probability computed from the relative likelihood,
         # below which alternative models with more components will be considered.
         # Only used if mode='prob'
-        min_prob: 0.01
+        min_prob: 1.0
         # a model with a smaller score will only be considered "valid"
         # if its score is smaller than delta_mul_gain*current_best_score.
         # Only used if mode='delta'

@@ -83,7 +83,7 @@ def set_prms(pth : Union[str, Path]) -> None:
     """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
-        pth (str|Path): path to a YAML parameter file for ampycloud.
+        pth (str|Path): path+filenamne to a YAML parameter file for ampycloud.
 
     .. note::
         It is recommended to first get a copy of the default ampycloud parameter file using
@@ -242,7 +242,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     # Go through the ampycloud cascade:
     # Run the slicing ...
     chunk.find_slices()
-    # ... then the clustering ...
+    # ... then the grouping ...
     chunk.find_groups()
     # ... and the layering.
     chunk.find_layers()

@@ -148,7 +148,7 @@ Additional CI/CD tasks will be added eventually, including:
 
 ### Exceptions and Warnings
 
-The class `AmpyCloudError` defined in `errors.py` is a child of the canonical Python `Exception`
+The class `AmpycloudError` defined in `errors.py` is a child of the canonical Python `Exception`
 class, and is meant as a general exception for ampycloud. Using it is straightforward:
 ```
 from .errors import AmpycloudError
