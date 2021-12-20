@@ -13,7 +13,7 @@ If you:
 - [Scope of ampycloud](#scope-of-ampycloud)
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
-    - [Installing from source](#installling-from-source)
+    - [Installing from source](#installing-from-source)
     - [CI/CD](#ci/cd)
     - [Linting](#linting)
     - [Logging](#logging)
@@ -31,21 +31,8 @@ Please report unacceptable behavior to [loris.foresti@meteoswiss.ch](mailto:lori
 
 ## Scope of ampycloud
 
-ampycloud is a key dependency of the automatic METAR-generating code of MeteoSwiss, which requires
-all its dependencies to be robust and stable.
-
-This has the following implications for ampycloud:
-
-* The scope of ampycloud will remain limited to the automatic processing of ceilometer hits.
-* ampycloud can evidently be used for R&D work, but the code itself should not be seen as an R&D platform.
-* Contributions via Pull Requests are always welcome (and appreciated !), but will only be considered if they:
-
-    - remove a bug, and/or
-    - improve the usability of ampycloud without altering the quality of the results, and/or
-    - demonstrate a significant improvement in the quality of the results.
-
-* The ingestion of external contributions may be delayed to allow for careful, internal verification that they do not affect the MeteoSwiss operational chain that relies on ampycloud.
-
+Please be sure to read (and understand the implications) of the
+[scope of ampycloud](https://meteoswiss.github.io/ampycloud/index.html#scope-of-ampycloud).
 
 ## Essential things to know about ampycloud for dev work
 
@@ -165,7 +152,7 @@ from .errors import AmpycloudWarning
 warnings.warn('...', AmpycloudWarning)
 ```
 
-### Doctrings
+### Docstrings
 Google Style ! Please try to stick to the following MWE:
 ```
 """ A brief one-liner description in present tense, that finishes with a dot.
@@ -232,7 +219,7 @@ itself, and they are meant to be used with pytest. To run them all, simply type 
 terminal from the package root. If you only want to run a specific set of tests, type
 `pytest test/ampycloud/module/to/test_...py`.
 
-In order to test the different plotting style without affecting the automated tests on Github
+In order to test the different plotting styles without affecting the automated tests on Github
 (which cannot do so because they have no access to a local LaTeX installation), a nifty fixture is
 defined in `conftext.py`, that allows to feed a specific command line argument to the pytest call:
 ```

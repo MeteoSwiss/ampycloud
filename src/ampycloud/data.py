@@ -53,7 +53,7 @@ class AbstractChunk(ABC):
 
     @log_func_call(logger)
     def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
-        """ Checks the input pandas DataFrame and adjust it as requried.
+        """ Checks the input pandas DataFrame and adjust it as required.
 
         Args:
             data (pd.DataFrame): the input data.
