@@ -185,8 +185,8 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     above ground.
 
     The ``type`` column contains integer that are the hit sequence number, if a given ceilometer
-    is reporting multiple hits for a given timestep, or ``-1`` if the hit corresponds to a
-    vertical visibility observations.
+    is reporting multiple hits for a given timestep (i.e. cloud level 1, cloud level 2,
+    cloud level 3), or ``-1`` if the hit corresponds to a vertical visibility measurements.
 
     It is possible to obtain an example of the format from the
     ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, namely:

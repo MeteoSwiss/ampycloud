@@ -45,7 +45,7 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
         show (bool, optional): will show the plot on the screen if True. Defaults to False.
         save_stem (str, optional): if set, will save the plot with this stem (which can include a
             path as well). Deafults to None.
-        save_fmts (list|str, optional): a list of file formats to export the plot to. Deafults to
+        save_fmts (list|str, optional): a list of file formats to export the plot to. Defaults to
             None = ['pdf'].
 
 
