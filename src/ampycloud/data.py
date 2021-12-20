@@ -36,17 +36,53 @@ class AbstractChunk(ABC):
     sense to revisit the distribution of methods between child and parent classes. Or not.
     """
 
+    #: dict: required data columns
+    DATA_COLS = {'ceilo': str, 'dt': float, 'alt': float, 'type': int}
+
     @abstractmethod
-    def __init__(self) -> None:
+    def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
         """ Init routine for abstract class."""
 
-        # Name of the geographic location of the observations
-        self._geoloc = None
-        # Date and time at the reference
-        self._ref_dt = None
         # Chunk data and required column names
-        self._data = None
-        self._data_cols = None
+        self._data = self._cleanup_pdf(data)
+        # Name of the geographic location of the observations
+        self._geoloc = geoloc
+        # Date and time at the reference
+        self._ref_dt = ref_dt
+
+
+    @log_func_call(logger)
+    def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
+        """ Checks the input pandas DataFrame and adjust it as requried.
+
+        Args:
+            data (pd.DataFrame): the input data.
+
+        """
+
+        # First things first, make sure I was fed a pandas DataFrame
+        if not isinstance(data, pd.DataFrame):
+            raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,'+
+                                 f' not: {type(data)}')
+
+        # Check that all the required columns are present in the data, with the correct format
+        for (col, type_req) in self.DATA_COLS.items():
+            # If the requried column is missing, raise an Exception
+            if col not in data.columns:
+                raise AmpycloudError(f'Ouch ! Column {col} is missing from the input data.')
+            # If the column has the wrong data type, try to fix it on the fly.
+            if type_in := data[col].dtype != type_req:
+                logger.info('Adjusting the dtype of column %s from %s to %s',
+                            col, type_in, type_req)
+                data[col] = data[col].astype(type_req)
+
+        # Drop any columns that I do not need for processing
+        for key in data.columns:
+            if key not in self.DATA_COLS.keys():
+                logger.info('Dropping the superfluous %s column from the input data.', key)
+                data.drop((key), axis=1, inplace=True)
+
+        return data
 
     @property
     def geoloc(self) -> str:
@@ -80,7 +116,8 @@ class CeiloChunk(AbstractChunk):
     def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
         """ CeiloChunk init method.
 
-        The input data is required to be a pandas DataFrame with 4 columns:
+        The input data is required to be a pandas DataFrame with 4 columns described in
+        CeiloChunk.DATA_COLS, i.e. :
         ::
 
             ['ceilo', 'dt', 'alt', 'type']
@@ -116,55 +153,13 @@ class CeiloChunk(AbstractChunk):
 
         """
 
-        # Call the Parent class init, even if it doesn't exactly do much (for now?)
-        super().__init__()
-
-        # Assign the geoloc name
-        self._geoloc =  geoloc
-        self._ref_dt = ref_dt
-
-        # Assign the data after transforming it to a pandas DataFrame
-        self._data_cols = {'ceilo': str, 'dt': float, 'alt': float, 'type': int}
-        self._data = self._cleanup_pdf(data)
+        # Call the Parent class init
+        super().__init__(data, geoloc=geoloc, ref_dt=ref_dt)
 
         # For now, we have no slices, no groups, and no layers identified
         self._slices = None
         self._groups = None
         self._layers = None
-
-
-    @log_func_call(logger)
-    def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
-        """ Checks the input pandas DataFrame and adjust it as requried.
-
-        Args:
-            data (pd.DataFrame): the input data.
-
-        """
-
-        # First things first, make sure I was fed a pandas DataFrame
-        if not isinstance(data, pd.DataFrame):
-            raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,'+
-                                 f' not: {type(data)}')
-
-        # Check that all the required columns are present in the data, with the correct format
-        for (col, type_req) in self._data_cols.items():
-            # If the requried column is missing, raise an Exception
-            if col not in data.columns:
-                raise AmpycloudError(f'Ouch ! Column {col} is missing from the input data.')
-            # If the column has the wrong data type, try to fix it on the fly.
-            if type_in := data[col].dtype != type_req:
-                logger.info('Adjusting the dtype of column %s from %s to %s',
-                            col, type_in, type_req)
-                data[col] = data[col].astype(type_req)
-
-        # Drop any columns that I do not need for processing
-        for key in data.columns:
-            if key not in self._data_cols.keys():
-                logger.info('Dropping the superfluous %s column from the input data.', key)
-                data.drop((key), axis=1, inplace=True)
-
-        return data
 
     @log_func_call(logger)
     def data_rescaled(self, dt_mode : str = None, alt_mode : str = None,
@@ -251,10 +246,10 @@ class CeiloChunk(AbstractChunk):
         Args:
             which (str, optional): whether to process 'slices', 'groups', or 'layers'.
                 Defaults to 'slices'.
-            base_frac (float, optional): number of the smallest slice/group/layer elements to
-                consider when deriving the slice/group/layer altitude (as a median), expressed as a
-                fraction (0<=base_frac<=1) of the slice/cluster/layer total hit counts.
-                Defaults to 0.1.
+            base_frac (float, optional): amount of the lowest slice/group/layer elements,
+                expressed as a fraction (0<=base_frac<=1) of the total hit count, to consider when
+                deriving the slice/group/layer altitude (as a median). Defaults to 0.1, i.e. the
+                cloud base is the median of the lowest 10% of cloud hits of that slice/group/layer.
             lim0 (int|float, optional): upper limit of the sky coverage percentagte for the 0 okta
                 bin, in %. Defaults to 2.
             lim8 (int|float, optional): lower limit of the sky coverage percentage for the 8 okta
@@ -400,12 +395,13 @@ class CeiloChunk(AbstractChunk):
         the identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in AMPYCLOUD_PRMS.SLICING_PRMS in the
-            dynamic.py module.
+            The "parameters" of this function are set in AMPYCLOUD_PRMS.SLICING_PRMS in the
+            dynamic.py module, which itself is defined in
+            src/ampycloud.prms/ampycloud_default_prms.yml.
 
         """
 
-        # If warranted, get a scaled **copy** of the data to feed the clustering algorithm
+        # Get a scaled **copy** of the data to feed the clustering algorithm
         tmp = self.data_rescaled(dt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
                                  dt_kwargs=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs,
                                  alt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
@@ -440,8 +436,9 @@ class CeiloChunk(AbstractChunk):
         stage towards the identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in AMPYCLOUD_PRMS.GROUPING_PRMS in the
-            dynamic.py module.
+            The "parameters" of this function are set in AMPYCLOUD_PRMS.GROUPING_PRMS in the
+            dynamic.py module, which itself is defined in
+            src/ampycloud.prms/ampycloud_default_prms.yml.
 
         """
 
@@ -489,7 +486,8 @@ class CeiloChunk(AbstractChunk):
             # If I get to this point, the slice is not isolated ...
             self._slices.at[ind, 'isolated'] = False
 
-            # What slices are connected to this one ?
+            # What slices are connected to this one ? This is the list of indices of all the slices
+            # that are overlapping with the one currently under scrutiny.
             close_inds = list(np.arange(0, ind, 1)[seps_m]) + \
                          list(np.arange(ind+1, self.n_slices, 1)[seps_p])
 
@@ -545,12 +543,13 @@ class CeiloChunk(AbstractChunk):
     @log_func_call(logger)
     def find_layers(self) -> None:
         """ Identifies individual layers from a list of groups, splitting these in 2 or 3
-        (if warrented) *significant* cloud sub-layers. Intended as the third stage towards the
+        (if warranted) *significant* cloud sub-layers. Intended as the third stage towards the
         identification of cloud layers.
 
         Note:
-            The "parameters" of this function are defined in AMPYCLOUD_PRMS.LAYERING_RPMS in the
-            dynamic.py module.
+            The "parameters" of this function are set in AMPYCLOUD_PRMS.LAYERING_PRMS in the
+            dynamic.py module, which itself is defined in
+            src/ampycloud.prms/ampycloud_default_prms.yml.
 
         """
 
@@ -645,7 +644,7 @@ class CeiloChunk(AbstractChunk):
 
     @property
     def n_layers(self) -> Union[None, int]:
-        """ Returns the nnumber of layers identified in the data.
+        """ Returns the number of layers identified in the data.
 
         Returns:
             int: the number of layers.
