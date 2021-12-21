@@ -1,7 +1,7 @@
-The pickle file in this folder contain reference datasets used to test the scientific stability of
+The pickle files in this folder contain reference datasets used to test the scientific stability of
 ampycloud.
 
-Each file name has the following format:
+Each filename has the following format:
 
 geoloc_YYYY.MMM.DD-hh.mm.ss_ref-metar.pkl
 
@@ -10,7 +10,7 @@ or alternatively, to set a specific MSA value:
 geoloc_YYYY.MMM.DD-hh.mm.ss_ref-metar_MSAXXXXX.pkl
 
 
-Each file is required to be a Python binary pickle containing data ready to be fed to
+Each file is required to be a Python binary pickle, containing data ready to be fed to
 ampycloud.run(), together with the geoloc and ref_dt extracted from the filename.
 
-Only adding a file to this folder is sufficient to have it processed by pytest.
+Simply adding a file to this folder is sufficient to have it processed by the ampycloud test suite.

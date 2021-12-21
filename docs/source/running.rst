@@ -73,8 +73,8 @@ ampycloud scientific parameters, you can use ```ampycloud.reset_prms()``.
     :noindex:
 
 
-More info for advanced users
-****************************
+Advanced info for advanced users
+********************************
 
 The majority of parameters present in ``dynamic.AMPYCLOUD_PRMS`` are fetched directly by the
 methods of the ``CeiloChunk`` class when they are called. As a result, modifying a specific

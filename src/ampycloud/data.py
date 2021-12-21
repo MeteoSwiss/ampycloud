@@ -692,9 +692,8 @@ class CeiloChunk(AbstractChunk):
         The ICAO's cloud layer selection rules applicable to METARs will be applied, unless
         synop = True.
 
-        The Minimum Sector Altitude value set at when the CeiloChunk instance was initialized will
+        The Minimum Sector Altitude value set when the CeiloChunk instance was initialized will
         be applied.
-
 
         Args:
             synop (bool optional): if True, all cloud layers will be reported. Else, the WMO's

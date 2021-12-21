@@ -30,16 +30,16 @@ def test_scientific_stability(mpls, do_sciplots):
             See conftest.py for details.
 
     Important:
-        We assess the scientific stability using METAR only. This implies that any changes to the
-        slicing/grouping/clustering will NOT be caught by this test if they have no impact on the
-        resulting METAR.
+        We assess the scientific stability using only the METAR messages. This implies that any
+        changes to the slicing/grouping/clustering will NOT be caught by this test if they have no
+        impact on the resulting METAR message.
 
         This is intended. The point is to have enough representative/special/tricky/interesting
         reference cases to catch any **significant** changes in the code behavior.
 
     """
 
-    # Where it the data located, and how many cases do I have
+    # Where is the data located, and how many cases do I have ?
     ref_data_path = Path(__file__).parent / 'ref_data'
     ref_data_files = ref_data_path.glob('*.pkl')
 
@@ -55,19 +55,19 @@ def test_scientific_stability(mpls, do_sciplots):
         ref_dt = ref_data_file.stem.split('_')[1].replace('-', ' ')
         ref_metar = ref_data_file.stem.split('_')[2].split('.')[0].replace('-', ' ')
 
+        # Do I need to set a specific MSA ?
         if 'MSA' in ref_data_file.stem:
-
             dynamic.AMPYCLOUD_PRMS.MSA = int(ref_data_file.setm.split('_')[3].split('.')[0][3:])
-
         else:
-            # Use the default MSA
+            # Make sure I use the default MSA
             reset_prms()
 
         # Run ampycloud
         chunk = ampycloud.run(data, geoloc=geoloc, ref_dt=ref_dt)
 
+        # Should I make a plot ?
         if do_sciplots:
-
+            # Do I need to set a specific plotting style ?
             if mpls:
                 dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
@@ -75,6 +75,7 @@ def test_scientific_stability(mpls, do_sciplots):
             diagnostic(chunk, upto='layers', ref_metar=ref_metar, ref_metar_origin='Should be',
                        show=False, save_stem=ref_data_file.stem, save_fmts=['pdf'])
 
+        # Was the computed METAR as expected ?
         assert chunk.metar_msg() == ref_metar
 
     # Reset the ampyclou parameters to avoid wreaking havoc with the other tests

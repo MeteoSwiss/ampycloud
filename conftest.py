@@ -37,7 +37,7 @@ def pytest_addoption(parser) -> None:
 def mpls(request):
     """ A pytext fixture to identify whether the MPL_STYLE argument was fed to pytest, or not.
 
-    Adapted from the similar function in dvas, which itself was adaptedfrom the response of ipetrik
+    Adapted from the similar function in dvas, which itself was adapted from the response of ipetrik
     on `StackOverflow <https://stackoverflow.com/questions/40880259>`__
 
     To use this, simply call it as an argument in any of the test function, e.g.:
@@ -56,7 +56,7 @@ def do_sciplots(request):
     """ A pytext fixture to decide whether to create plots (or not) when testing the
     scientific stability of ampycloud.
 
-    Adapted from the similar function in dvas, which itself was adaptedfrom the response of ipetrik
+    Adapted from the similar function in dvas, which itself was adapted from the response of ipetrik
     on `StackOverflow <https://stackoverflow.com/questions/40880259>`__
 
     To use this, simply call it as an argument in any of the test function, e.g.:

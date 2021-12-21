@@ -77,7 +77,7 @@ def test_ncomp_from_gmm():
     assert out == 1
 
 def test_unstable_layers():
-    """ The real data from the 4 ceilometers at Geneva airport on 2019.01.10 @ 04:45 :34 leads to
+    """ The real data from the 4 ceilometers at Geneva airport on 2019.01.10 @ 04:45:34 leads to
     unstable layering depending on the random seed of the system. Let's make sure this is not a
     problem anymore. """
 
