@@ -10,7 +10,6 @@ Module contains: class for the diagnostic plots
 
 # Import from Python
 import logging
-from typing import Union
 from functools import partial
 from copy import deepcopy
 import numpy as np
