@@ -28,6 +28,10 @@ def pytest_addoption(parser) -> None:
                      help="The required dynamic.MPL_STYLE value, e.g. latex or metsymb." +
                      " Defaults to base.")
 
+    parser.addoption("--DO_SCIPLOTS", action="store_true", default=False,
+                     help="If used, will generate the plots when running the scientific stability"+
+                     "tests.")
+
 
 @pytest.fixture(scope='session')
 def mpls(request):
@@ -41,8 +45,27 @@ def mpls(request):
         def test_some_func(a, b, mpls):
             ...
             if mpls:
-                dynamic.MPL_STYLE = mpls
+                dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
     """
 
     return request.config.getoption("--MPL_STYLE")
+
+@pytest.fixture(scope='session')
+def do_sciplots(request):
+    """ A pytext fixture to decide whether to create plots (or not) when testing the
+    scientific stability of ampycloud.
+
+    Adapted from the similar function in dvas, which itself was adaptedfrom the response of ipetrik
+    on `StackOverflow <https://stackoverflow.com/questions/40880259>`__
+
+    To use this, simply call it as an argument in any of the test function, e.g.:
+
+            def test_some_func(a, b, do_sciplots):
+            ...
+            if do_sciplots:
+                    diagnostic(...)
+
+    """
+
+    return request.config.getoption("--DO_SCIPLOTS")

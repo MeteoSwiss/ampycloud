@@ -228,6 +228,15 @@ pytest --MPL_STYLE=latex
 Doing so, the users can easily test the `dynamic.MPL_STYLE` of their choice, e.g. `base`, `latex`,
 or `metsymb`. :warning: For this to work, pytest must be called from the package root.
 
+The tests defined under `test/ampycloud/test_scientific_stability.py` are meant to catch any unexpected alteration of the **scientific behavior** of ampycloud. Specifically, they process real
+datasets of reference, and check whether the computed METAR is as expected. These datasets are provided as Python pickle files under `test/ampycloud/ref_dat`. The idea is to keep this list of
+scientific tests *as short as possible, but as complete as necessary*.
+
+If one of these tests fail, it is possible to generate the corresponding diagnostic plot with the
+following fixture-argument:
+```
+pytest --do_SCIPLOTS
+```
 
 ### Plotting
 
