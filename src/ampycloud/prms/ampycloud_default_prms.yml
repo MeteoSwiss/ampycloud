@@ -51,7 +51,7 @@ GROUPING_PRMS:
     algo: agglomerative
     # Grouping algorithm parameters
     algo_kwargs:
-        n_clusters:
+        n_clusters: null # null = None
         distance_threshold: 1
         linkage: single
         affinity: manhattan
@@ -75,6 +75,16 @@ GROUPING_PRMS:
 LAYERING_PRMS:
     # Minimum okta value below which cluster splitting is not attempted
     min_okta_to_split: 2
+    # Minimum separation (in ft) between the mean altitude of identified layers inside groups
+    # with a base altitude <=10'000ft. Any layers separated by less thanthis value will not be
+    # split. Any value < than 5 times the resolution of the data will raise a warning, as it
+    # may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent with
+    # the ICAO rules of layer selection, this should be >=100 ft.
+    min_sep_low: 150
+    # Same as min_sep_low, but for layers identified in groups with a base height >10'000 ft. For
+    # the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this
+    # should be >=1000 ft.
+    min_sep_high: 1000
     # Gaussian Mixture Model parameters
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
@@ -85,7 +95,7 @@ LAYERING_PRMS:
         # minimum model probability computed from the relative likelihood,
         # below which alternative models with more components will be considered.
         # Only used if mode='prob'
-        min_prob: 0.01
+        min_prob: 1.0
         # a model with a smaller score will only be considered "valid"
         # if its score is smaller than delta_mul_gain*current_best_score.
         # Only used if mode='delta'

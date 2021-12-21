@@ -83,7 +83,7 @@ def set_prms(pth : Union[str, Path]) -> None:
     """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
-        pth (str|Path): path to a YAML parameter file for ampycloud.
+        pth (str|Path): path+filename to a YAML parameter file for ampycloud.
 
     .. note::
         It is recommended to first get a copy of the default ampycloud parameter file using
@@ -168,8 +168,8 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
         CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
 
     All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
-    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they be
-    created) at the moment.
+    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they
+    be created).
 
     The input ``data`` must be a ``pandas.DataFrame`` with the following column names (types):
     ::
@@ -185,8 +185,8 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     above ground.
 
     The ``type`` column contains integer that are the hit sequence number, if a given ceilometer
-    is reporting multiple hits for a given timestep, or ``-1`` if the hit corresponds to a
-    vertical visibility observations.
+    is reporting multiple hits for a given timestep (i.e. cloud level 1, cloud level 2,
+    cloud level 3), or ``-1`` if the hit corresponds to a vertical visibility measurements.
 
     It is possible to obtain an example of the format from the
     ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, namely:
@@ -242,7 +242,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     # Go through the ampycloud cascade:
     # Run the slicing ...
     chunk.find_slices()
-    # ... then the clustering ...
+    # ... then the grouping ...
     chunk.find_groups()
     # ... and the layering.
     chunk.find_layers()

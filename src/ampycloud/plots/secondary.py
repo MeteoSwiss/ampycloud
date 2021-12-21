@@ -29,10 +29,10 @@ logger = logging.getLogger(__name__)
 def scaling_fcts(show: bool = True, save : bool = False) -> None:
     """ Plots the different scaling functions.
 
-    This is a small utility routine to rapdily see the different altitude scaling options used by
+    This is a small utility routine to rapidly see the different altitude scaling options used by
     ampycloud.
 
-    For the "step" sclaing plot, the parameters are taken straight from dynamic.GROUPING_PRMS.
+    For the "step" scaling plot, the parameters are taken straight from dynamic.GROUPING_PRMS.
 
     Args:
        show (bool, optional): show the plot, or not. Defaults to True.

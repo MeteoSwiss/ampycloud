@@ -23,11 +23,13 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.
  - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package & test infrastructure.
 ### Fixed:
+ - [fpavogt, 2021-12-20] Fix #30 and #31.
  - [fpavogt, 2021-12-15] Fix bug in `CeiloChunk.metar_msg()` when all clouds are above the MSA.
  - [fpavogt, 2021-12-12] Fix the format_slices() method of the DiagnosticPlot class.
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
+ - [fpavgot, 2021-12-20] Implement feedback from @loforest
  - [fpavogt, 2021-12-17] Improve the handling of the optional requirements.
  - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
  - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).

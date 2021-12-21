@@ -5,7 +5,7 @@ Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module contains: utilities fucntions for plots
+Module contains: utilities functions for plots
 """
 
 # Import from Python
@@ -26,7 +26,7 @@ from .. import dynamic
 logger = logging.getLogger(__name__)
 
 def style_pth() -> Path:
-    """ Returns the Path to the ampycloud ploitting styles. """
+    """ Returns the Path to the ampycloud plotting styles. """
 
     return Path(__file__).parent / 'mpl_styles'
 
@@ -88,7 +88,7 @@ def set_mplstyle(func : Callable) -> Callable:
             pass
         # 2) Else, I need a string or I cry ...
         elif not isinstance(spec_style, str):
-            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS..MPL_STYLE type unknown:'+
+            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS.MPL_STYLE type unknown:'+
                                  f' {type(spec_style)}')
         # 3) Is that a supported style ?
         elif spec_style not in valid_styles():
