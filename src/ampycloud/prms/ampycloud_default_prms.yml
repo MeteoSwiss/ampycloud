@@ -22,6 +22,15 @@ OKTA_LIM8: 98
 # Fraction of smallest layer points to median to compute the layer altitude for the METAR
 LAYER_BASE_FRAC: 0.1
 
+# Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
+# in the ampycloud metar/synop messages. Set it to null for no limits.
+MSA: null
+
+# Additional distance above the MSA value (in ft) beyond which hits will be ignored by ampycloud
+# entirely. This is to ensure that cloud layers with cloud base heights close to the MSA value are
+# still detected with the correct densities.
+MSA_HIT_BUFFER: 1500
+
 # Slicing parameters
 SLICING_PRMS:
     # Clustering algorithm name

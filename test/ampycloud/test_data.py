@@ -16,6 +16,43 @@ from pytest import raises
 from ampycloud.errors import AmpycloudError
 from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
+from ampycloud import dynamic, reset_prms
+
+def test_ceilochunk_init():
+    """ Test the init method of the CeiloChunk class. """
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(n_ceilos,
+                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
+                                     'hit_rate': rate, 'sky_cov_frac': 1,
+                                     'period': 100, 'amplitude': 0}])
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+    # Simple check of the number of ceilometers
+    assert len(chunk.data) == len(mock_data)
+
+    # Now initialize a CeiloChunk with the same data, but with the MSA set to 0 ft
+    dynamic.AMPYCLOUD_PRMS.MSA = 0
+    dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = 0
+    chunk = CeiloChunk(mock_data)
+    assert len(chunk.data) == 0
+    # Verify the class MSA value is correct too ...
+    assert chunk.msa == 0
+
+    # And now again, but this time with a large hit buffer that coverts all the data
+    dynamic.AMPYCLOUD_PRMS.MSA = 0
+    dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = mock_data['alt'].max() + 10
+    chunk = CeiloChunk(mock_data)
+    assert len(chunk.data) == len(mock_data)
+
+    # Let's not forget to reset the dynamic parameters to not mess up the other tests
+    reset_prms()
 
 def test_ceilochunk_basic():
     """ Test the basic methods of the CeiloChunk class. """

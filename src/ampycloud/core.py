@@ -284,13 +284,11 @@ def synop(data : pd.DataFrame) -> str:
     return chunk.metar_msg(synop=True, which='layers')
 
 @log_func_call(logger)
-def metar(data : pd.DataFrame, msa : Union[int, float] = None) -> str:
+def metar(data : pd.DataFrame) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
-        msa (int|float, optional): Minimum Sector Altitude. If set, layers above it will not be
-            reported. Defaults to None.
 
     Returns:
         str: the metar message.
@@ -304,8 +302,8 @@ def metar(data : pd.DataFrame, msa : Union[int, float] = None) -> str:
         # Generate the canonical demo dataset for ampycloud
         mock_data = mocker.canonical_demo_data()
 
-        # Compute the METAR message, with Minimnum Sector Altitude of 10'000 ft
-        msg = ampycloud.metar(mock_data, msa=1e5)
+        # Compute the METAR message
+        msg = ampycloud.metar(mock_data)
         print(msg)
 
     """
@@ -314,7 +312,7 @@ def metar(data : pd.DataFrame, msa : Union[int, float] = None) -> str:
     chunk = run(data)
 
     # Then, return the synop message
-    return chunk.metar_msg(synop=False, msa=msa, which='layers')
+    return chunk.metar_msg(synop=False, which='layers')
 
 @log_func_call(logger)
 def demo() -> tuple:

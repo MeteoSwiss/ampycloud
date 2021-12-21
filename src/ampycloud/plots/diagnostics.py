@@ -382,20 +382,18 @@ class DiagnosticPlot:
                               #          boxstyle='round, pad=0.25')
                               )
 
-    def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
+    def add_metar(self, synop : bool = False) -> None:
         """ Display the ampycloud METAR/SYNOP message.
 
         Args:
             synop (bool, optional): If True, will display the full SYNOP message. Defaults to False.
-            msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
-                message. Deafaults to None.
         """
 
         # Combine it all in one message
-        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop, msa=msa)
+        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop)
 
-        if msa is not None:
-            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(msa)
+        if self._chunk.msa is not None:
+            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(self._chunk.msa)
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.25, texify(msg),
