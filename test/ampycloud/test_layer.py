@@ -77,8 +77,9 @@ def test_ncomp_from_gmm():
     assert out == 1
 
 def test_unstable_layers():
-    """ The real data from 2019.01.20 @ 04:50 leads to unstable layering depending on the
-    random seed of the system. Let's make sure this is not a problem anymore. """
+    """ The real data from the 4 ceilometers at Geneva airport on 2019.01.20 @ 04:50 leads to
+    unstable layering depending on the random seed of the system. Let's make sure this is not a
+    problem anymore. """
 
     with open(Path(__file__).parent / 'test_data' / 'unstable_2-3_layers.pkl', 'rb') as f:
         data = pickle.load(f)
@@ -101,7 +102,7 @@ def test_unstable_layers():
                                           min_sep=0,
                                           random_seed=45,
                                           delta_mul_gain=0.95, mode='delta')
-
+        # With this specific seed, I should be finding 3 layers
         assert best_ncomp == 3
 
     # Once I take into account asuitable min_sep, do the layers not get split anymore ?

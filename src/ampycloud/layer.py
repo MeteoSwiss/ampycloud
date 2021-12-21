@@ -11,6 +11,7 @@ Module contains: layering tools
 # Import from Python
 import logging
 import warnings
+import copy
 from typing import Union
 import numpy as np
 from sklearn.mixture import GaussianMixture
@@ -134,9 +135,9 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 
 @log_func_call(logger)
 def ncomp_from_gmm(vals : np.ndarray,
+                   min_sep : Union[int, float] = 0,
                    scores : str = 'BIC',
                    rescale_0_to_x : float = None,
-                   min_sep : Union[int, float] = 0,
                    random_seed : int = 42,
                    **kwargs : dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
@@ -155,7 +156,8 @@ def ncomp_from_gmm(vals : np.ndarray,
             required between the mean location of two Gaussian components to consider them distinct.
             Defaults to 0. This is in complement to any parameters fed to best_gmm().
         random_seed (int, optional): a value fed to numpy.random.seed to ensure repeatable
-            results. Defaults to 42, because :-).
+            results. Defaults to 42, because it is the Answer to the Ultimate Question of Life, the
+            Universe, and Everything.
         **kwargs (dict, optional): these will be fed to `best_gmm()`.
 
     Returns:
@@ -175,14 +177,15 @@ def ncomp_from_gmm(vals : np.ndarray,
         vals = vals.reshape(-1, 1)
 
     # Keep track of the original values
-    vals_orig = vals
+    vals_orig = copy.deepcopy(vals)
 
-    # Compute the resolution of the data, and check if min_sep is larger than this value.
-    # If not, we seriously risk over-selecting components
+    # Estimate the resolution of the data (by measuring the minimum separation between two data
+    # points).
     res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
     res_orig = np.min(res_orig[res_orig>0])
-
     logger.debug('res_orig: %.2f', res_orig)
+    # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
+    # over-layering.
     if min_sep < 5*res_orig:
         warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.'+
                       'This could lead to an over-layering for thin groups !',
@@ -239,9 +242,8 @@ def ncomp_from_gmm(vals : np.ndarray,
         if delta >= min_sep:
             continue
 
-        # Else, I have two components that are "too close" from each other. Let's merge them.
-        # This may seem over convoluted, but it is required to make sure merge 3 layers all end up
-        # with the same id.
+        # Else, I have two components that are "too close" from each other. Let's merge them by
+        # re-assigning the ids accordingly.
         best_ids[best_ids==comp_ids[ind+1]] = comp_ids[ind]
         comp_ids[ind+1] = comp_ids[ind]
 

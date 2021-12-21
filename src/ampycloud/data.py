@@ -577,8 +577,16 @@ class CeiloChunk(AbstractChunk):
                                      self._groups.at[ind, 'original_id'],
                                      'alt'].to_numpy().reshape(-1, 1)
 
+            # Let's also get the overall group base alt
+            if self.groups.at[ind, 'alt_base'] > 10000:
+                min_sep = dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_sep_high
+            else:
+                min_sep = dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_sep_low
+            logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
+            logger.info('min_sep value: %.1f', min_sep)
+
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
-            ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(gro_alts,
+            ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(gro_alts, min_sep=min_sep,
                 **dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.gmm_kwargs)
 
             # Add this info to the log
