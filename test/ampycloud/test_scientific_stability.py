@@ -73,7 +73,7 @@ def test_scientific_stability(mpls, do_sciplots):
 
             # Create the plot
             diagnostic(chunk, upto='layers', ref_metar=ref_metar, ref_metar_origin='Should be',
-                       show=False, save_stem=ref_data_file.stem, save_fmts=['pdf'])
+                       show=False, save_stem=ref_data_file.stem, save_fmts=['png'])
 
         # Was the computed METAR as expected ?
         assert chunk.metar_msg() == ref_metar
