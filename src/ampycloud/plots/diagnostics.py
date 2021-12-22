@@ -346,7 +346,16 @@ class DiagnosticPlot:
 
     def add_max_hits(self) -> None:
         """ Adds the max_hit_per_layer info. """
+
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
+        msg += r'$^{\uparrow\, '
+        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100*
+                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)))
+        msg += r'}_{\downarrow\, '
+        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100*
+                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM0)))
+        msg += r'}$'
+
         self._axs[0].text(-0.14, -0.21, texify(msg),
                           transform=self._axs[0].transAxes, ha='left')
 
