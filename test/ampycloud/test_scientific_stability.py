@@ -57,7 +57,7 @@ def test_scientific_stability(mpls, do_sciplots):
 
         # Do I need to set a specific MSA ?
         if 'MSA' in ref_data_file.stem:
-            dynamic.AMPYCLOUD_PRMS.MSA = int(ref_data_file.setm.split('_')[3].split('.')[0][3:])
+            dynamic.AMPYCLOUD_PRMS.MSA = int(ref_data_file.stem.split('_')[3].split('.')[0][3:])
         else:
             # Make sure I use the default MSA
             reset_prms()
