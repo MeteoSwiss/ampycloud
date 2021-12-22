@@ -117,7 +117,7 @@ def test_unstable_layers():
         assert best_ncomp == 2
 
 
-    # Once I take into account asuitable min_sep, do the layers not get split anymore ?
+    # Once I take into account a suitable min_sep, do the layers not get split anymore ?
     best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
                                       scores='BIC', rescale_0_to_x=100,
                                       min_sep=200,

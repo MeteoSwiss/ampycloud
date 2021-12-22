@@ -85,10 +85,10 @@ LAYERING_PRMS:
     # Minimum okta value below which cluster splitting is not attempted
     min_okta_to_split: 2
     # Minimum separation (in ft) between the mean altitude of identified layers inside groups
-    # with a base altitude <=10'000ft. Any layers separated by less thanthis value will not be
-    # split. Any value < than 5 times the resolution of the data will raise a warning, as it
-    # may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent with
-    # the ICAO rules of layer selection, this should be >=100 ft.
+    # with a base altitude <=10'000ft. Any layers separated by less than this value will not be
+    # split. Any value < than 5 times the vertical resolution of the data will raise a warning, as
+    # it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent
+    # with the ICAO rules of layer selection, this should be >=100 ft.
     min_sep_low: 150
     # Same as min_sep_low, but for layers identified in groups with a base height >10'000 ft. For
     # the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this
