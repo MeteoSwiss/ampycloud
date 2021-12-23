@@ -17,15 +17,15 @@ import ampycloud
 from ampycloud import dynamic, reset_prms
 from ampycloud.plots import diagnostic
 
-def test_scientific_stability(mpls, do_sciplots):
+def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
     """ Test the scientific stability of ampycloud. A series of reference cases is being processed,
     and the resulting METAR are compared with the expected outcome.
 
     Args:
-        mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
+        mpls (str): False, or the value of MPL_STYLE requested by the user. This is set automatically
             by a fixture that fetches the corresponding command line argument.
             See conftest.py for details.
-        do_sciplots: True to make plots. This is set automatically
+        do_sciplots (bool): True to make plots. This is set automatically
             by a fixture that fetches the corresponding command line argument.
             See conftest.py for details.
 
