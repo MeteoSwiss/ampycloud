@@ -10,7 +10,6 @@ Module content: tests for the plots.core module
 
 # Import from Python
 from pathlib import Path
-import warnings
 import numpy as np
 import pandas as pd
 
