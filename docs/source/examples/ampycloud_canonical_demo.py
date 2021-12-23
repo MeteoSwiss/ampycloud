@@ -11,13 +11,17 @@ File contains: a very simple script that can generate the demo diagnostic plot f
 # Import what I need
 from pathlib import Path
 import ampycloud
+from ampycloud import dynamic
 import ampycloud.plots as ampyplots
 
+
+# Adjust the ampycloud scientific parameters
+dynamic.AMPYCLOUD_PRMS.MSA = 10000
 
 # Generate and process the mock data
 mock_data, chunk = ampycloud.demo()
 
 # Plot it
 ampyplots.diagnostic(chunk, upto='layers', show=False, save_fmts=['png'], ref_metar='FEW008 BKN037',
-                     ref_metar_origin='Mock data', msa=1e5,
+                     ref_metar_origin='Mock data',
                      save_stem=Path(__file__).parent / 'ampycloud_canonical_mock_demo')

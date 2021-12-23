@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2021-12-21] Add tests to check real data for scientific stability (fixes #33).
  - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md and auto-doc-publish action, incl. first doc release.
  - [fpavogt, 2021-12-16] Add a new entry point for `copy_prm_file`, i.e. fix #26.
  - [fpavogt, 2021-12-15] Add `msa` to `plots.diagnostic`, i.e. fix #22.
@@ -29,7 +30,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2021-12-09] Fix #5.
  - [fpavogt, 2021-12-08] Fix #14.
 ### Changed:
- - [fpavgot, 2021-12-20] Implement feedback from @loforest
+ - [fpavogt, 2021-12-21] Add MSA and MSA_HIT_BUFFER parameters (fixes #34).
+ - [fpavgot, 2021-12-20] Implement feedback from @loforest.
  - [fpavogt, 2021-12-17] Improve the handling of the optional requirements.
  - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
  - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).

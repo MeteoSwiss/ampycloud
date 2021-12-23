@@ -57,7 +57,7 @@ def flat_layer(alt : float, alt_std : float, lookback_time : float,
     # First extract the hits I want to keep ...
     to_keep = out.sample(frac=sky_cov_frac)
     # ... then get rid of the alt values everywhere ...
-    out['alt'] = np.nan
+    out.loc[:, 'alt'] = np.nan
     # ... and re-set the values I choose to keep.
     out.loc[to_keep.index] = to_keep
 
@@ -87,7 +87,7 @@ def sin_layer(alt : float, alt_std : float, lookback_time : float,
     out = flat_layer(alt, alt_std, lookback_time, hit_rate, sky_cov_frac)
 
     # And add to it a sinusoidal fluctuations. Note that nan should stay nan.
-    out['alt'] = out['alt'] + np.sin(-np.pi/2 + out['dt']/period*2*np.pi) * amplitude
+    out.loc[:, 'alt'] = out.loc[:, 'alt'] + np.sin(-np.pi/2 + out['dt']/period*2*np.pi) * amplitude
 
     return out
 
@@ -156,10 +156,10 @@ def mock_layers(n_ceilos : int, layer_prms : list) -> pd.DataFrame:
     out = out.sort_values('dt').reset_index(drop=True)
 
     # Fix the dtypes
-    out['dt'] = out['dt'].astype(float)
-    out['alt'] = out['alt'].astype(float)
-    out['type'] = out['type'].astype(int)
-    out['ceilo'] = out['ceilo'].astype(str)
+    out.loc[:, 'dt'] = out['dt'].astype(float)
+    out.loc[:, 'alt'] = out['alt'].astype(float)
+    out.loc[:, 'type'] = out['type'].astype(int)
+    out.loc[:, 'ceilo'] = out['ceilo'].astype(str)
 
     return out
 

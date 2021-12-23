@@ -10,7 +10,6 @@ Module contains: class for the diagnostic plots
 
 # Import from Python
 import logging
-from typing import Union
 from functools import partial
 from copy import deepcopy
 import numpy as np
@@ -347,7 +346,16 @@ class DiagnosticPlot:
 
     def add_max_hits(self) -> None:
         """ Adds the max_hit_per_layer info. """
+
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
+        msg += r'$^{\uparrow\, '
+        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100*
+                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)))
+        msg += r'}_{\downarrow\, '
+        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100*
+                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM0)))
+        msg += r'}$'
+
         self._axs[0].text(-0.14, -0.21, texify(msg),
                           transform=self._axs[0].transAxes, ha='left')
 
@@ -382,20 +390,18 @@ class DiagnosticPlot:
                               #          boxstyle='round, pad=0.25')
                               )
 
-    def add_metar(self, synop : bool = False, msa : Union[int, float] = None) -> None:
+    def add_metar(self, synop : bool = False) -> None:
         """ Display the ampycloud METAR/SYNOP message.
 
         Args:
             synop (bool, optional): If True, will display the full SYNOP message. Defaults to False.
-            msa (int|float, optional): if set, will apply a Minimum Sector Altitude to the METAR
-                message. Deafaults to None.
         """
 
         # Combine it all in one message
-        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop, msa=msa)
+        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop)
 
-        if msa is not None:
-            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(msa)
+        if self._chunk.msa is not None:
+            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(self._chunk.msa)
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.25, texify(msg),

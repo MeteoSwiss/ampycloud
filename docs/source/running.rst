@@ -36,6 +36,11 @@ will directly provide interested users with the ampycloud-METAR/synop messages f
 Adjusting the default algorithm parameters
 ..........................................
 
+.. caution::
+
+    It is highly recommended to adjust any scientific parameters **before** executing any of the
+    ampycloud routines. Doing otherwise may have un-expected consequences. You have been warned.
+
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
 are accessible in the `ampycloud.dynamic` module.  From there, users can easily adjust them as they
@@ -67,6 +72,25 @@ ampycloud scientific parameters, you can use ```ampycloud.reset_prms()``.
 .. autofunction:: ampycloud.core.reset_prms
     :noindex:
 
+
+Advanced info for advanced users
+********************************
+
+The majority of parameters present in ``dynamic.AMPYCLOUD_PRMS`` are fetched directly by the
+methods of the ``CeiloChunk`` class when they are called. As a result, modifying a specific
+parameter in ``dynamic.AMPYCLOUD_PRMS`` (e.g. ``dynamic.AMPYCLOUD_PRMS.OKTA_LIM8``) will be seen
+by any ``CeiloChunk`` instance already in existence.
+
+The ``MSA`` and ``MSA_HIT_BUFFER`` are the only exception to this rule ! These two
+parameters are being applied (and deep-copied as ``CeiloChunk`` class variables) immediately at the
+initialization of any ``CeiloChunk`` instance. This implies that:
+
+    1. any cloud hits above ``MSA + MSA_HIT_BUFFER`` in the data will be cropped immediately in the
+       ``CeiloChunk.__init__()`` routine, and thus cannot be recovered by subsequently changing the
+       value of ``dynamic.AMPYCLOUD_PRMS.MSA``, and
+    2. any METAR/SYNOP message issued will always be subject to the Minimum Sector Altitude
+       value that was specified in ``dynamic.AMPYCLOUD_PRMS.MSA`` at the time the class
+       instance was initialized. This is to ensure consistency with the cropped data at all times.
 
 .. _logging:
 

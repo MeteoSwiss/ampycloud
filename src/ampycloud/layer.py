@@ -148,13 +148,16 @@ def ncomp_from_gmm(vals : np.ndarray,
     Args:
         vals (ndarray): the data to process. If ndarray is 1-D, it will be reshaped to 2-D via
             .reshape(-1, 1).
+        min_sep (int|float, optional): minimum separation, in data unit,
+            required between the mean location of two Gaussian components to consider them distinct.
+            Defaults to 0. This is used in complement to any parameters fed to best_gmm(), that will
+            first decide how many components looks "best", at which point these may get merged
+            depending on min_sep. I.e. min_sep does not lead to re-running the GMM, it only merges
+            the identified layers if required.
         scores (str, optional): either 'BIC' or 'AIC', to use Baysian Information Criterion or
             Akaike Information criterion scores.
-        rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value.
-            Defaults to None = no rescaling.
-        min_sep (int|float, optional): minimum separation, in data unit (i.e. pre-rescaled),
-            required between the mean location of two Gaussian components to consider them distinct.
-            Defaults to 0. This is in complement to any parameters fed to best_gmm().
+        rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value
+            before running the Gaussian Mixture Modelling. Defaults to None = no rescaling.
         random_seed (int, optional): a value fed to numpy.random.seed to ensure repeatable
             results. Defaults to 42, because it is the Answer to the Ultimate Question of Life, the
             Universe, and Everything.
@@ -226,7 +229,7 @@ def ncomp_from_gmm(vals : np.ndarray,
     if best_ncomp == 1:
         return best_ncomp, best_ids, abics
 
-    # If I found more than one component, let's make sure that they are sufficiently far appart.
+    # If I found more than one component, let's make sure that they are sufficiently far apart.
     # First, let's compute the mean component heights
     mean_comp_heights = [np.mean(vals_orig[best_ids==i]) for i in range(ncomp[best_model_ind])]
 

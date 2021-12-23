@@ -11,7 +11,7 @@ Module content: tests for the plots.core module
 # Import from Python
 from pathlib import Path
 
-from ampycloud import dynamic
+from ampycloud import dynamic, reset_prms
 from ampycloud.core import demo
 from ampycloud.plots.core import diagnostic
 
@@ -27,6 +27,8 @@ def test_diagnostic(mpls):
     if mpls:
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
+    dynamic.AMPYCLOUD_PRMS.MSA=12345
+
     # Get some demo chunk data
     _, chunk = demo()
 
@@ -40,3 +42,6 @@ def test_diagnostic(mpls):
                    ref_metar_origin='Mock data', ref_metar='FEW008 BKN037')
 
         assert Path(base_name+sufx+'.pdf').exists
+
+    # Reset the dynamic params to their default to not mess up the other tests
+    reset_prms()

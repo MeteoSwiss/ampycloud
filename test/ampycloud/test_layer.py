@@ -77,12 +77,16 @@ def test_ncomp_from_gmm():
     assert out == 1
 
 def test_unstable_layers():
-    """ The real data from the 4 ceilometers at Geneva airport on 2019.01.20 @ 04:50 leads to
+    """ The real data from the 4 ceilometers at Geneva airport on 2019.01.10 @ 04:45:34 leads to
     unstable layering depending on the random seed of the system. Let's make sure this is not a
     problem anymore. """
 
-    with open(Path(__file__).parent / 'test_data' / 'unstable_2-3_layers.pkl', 'rb') as f:
+    with open(Path(__file__).parent / 'ref_data' / 'Geneva_2019.01.10-04.45.34_FEW040-BKN070.pkl',
+              'rb') as f:
         data = pickle.load(f)
+
+    # Drop anything below 6500 ft
+    data = data.drop(data[data['alt']<6500].index)
 
     # Let's run the the Gaussian Mixture Modelling 100 times ...
     out = [ncomp_from_gmm(data['alt'].to_numpy(),
@@ -104,8 +108,16 @@ def test_unstable_layers():
                                           delta_mul_gain=0.95, mode='delta')
         # With this specific seed, I should be finding 3 layers
         assert best_ncomp == 3
+        # With this other seed, I should get 2 components
+        best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
+                                          scores='BIC', rescale_0_to_x=100,
+                                          min_sep=0,
+                                          random_seed=42,
+                                          delta_mul_gain=0.95, mode='delta')
+        assert best_ncomp == 2
 
-    # Once I take into account asuitable min_sep, do the layers not get split anymore ?
+
+    # Once I take into account a suitable min_sep, do the layers not get split anymore ?
     best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
                                       scores='BIC', rescale_0_to_x=100,
                                       min_sep=200,

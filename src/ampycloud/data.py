@@ -29,12 +29,7 @@ from . import dynamic
 logger = logging.getLogger(__name__)
 
 class AbstractChunk(ABC):
-    """ Abstract parent class for data chunk classes.
-
-    For now, this class is fairly small, because it has only one child that contains many more
-    methods. If there are ever more than Ceilometer data used by this algorithm, it might make
-    sense to revisit the distribution of methods between child and parent classes. Or not.
-    """
+    """ Abstract parent class for data chunk classes."""
 
     #: dict: required data columns
     DATA_COLS = {'ceilo': str, 'dt': float, 'alt': float, 'type': int}
@@ -43,13 +38,44 @@ class AbstractChunk(ABC):
     def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
         """ Init routine for abstract class."""
 
+        # Here, we initialize a class MSA value using the **currrent** dynamic MSA value.
+        # This ensures that any instance can always function coherently, even if the dynamic MSA
+        # value is changed after the creation of an instance.
+        self._msa = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA)
+        self._msa_hit_buffer = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER)
+
         # Chunk data and required column names
         self._data = self._cleanup_pdf(data)
+
         # Name of the geographic location of the observations
         self._geoloc = geoloc
         # Date and time at the reference
         self._ref_dt = ref_dt
 
+    @property
+    def msa(self) -> float:
+        """ The Minimum Sector Altitude set when initializing this specific instance. """
+        return self._msa
+
+    @property
+    def msa_hit_buffer(self) -> float:
+        """ The Minimum Sector Altitude hit buffer set when initializing this specific instance. """
+        return self._msa_hit_buffer
+
+    @property
+    def geoloc(self) -> str:
+        """ The name of the geographic location of the observations. """
+        return self._geoloc
+
+    @property
+    def ref_dt(self) -> str:
+        """ The reference date and time for the data, i.e. Delta t = 0. """
+        return self._ref_dt
+
+    @property
+    def data(self) -> pd.DataFrame:
+        """ The data of the chunk, as a pandas DataFrame. """
+        return self._data
 
     @log_func_call(logger)
     def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
@@ -82,22 +108,12 @@ class AbstractChunk(ABC):
                 logger.info('Dropping the superfluous %s column from the input data.', key)
                 data.drop((key), axis=1, inplace=True)
 
+        # Drop any hits that is too high
+        if self.msa is not None:
+            hit_alt_lim = self.msa + self.msa_hit_buffer
+            data = data.drop(data[data.alt > hit_alt_lim].index)
+
         return data
-
-    @property
-    def geoloc(self) -> str:
-        """ The name of the geographic location of the observations. """
-        return self._geoloc
-
-    @property
-    def ref_dt(self) -> str:
-        """ The reference date and time for the data, i.e. Delta t = 0. """
-        return self._ref_dt
-
-    @property
-    def data(self) -> pd.DataFrame:
-        """ The data of the chunk, as a pandas DataFrame. """
-        return self._data
 
 class CeiloChunk(AbstractChunk):
     """Child class for timeseries of Ceilometers hits, referred to as data 'chunks'.
@@ -354,19 +370,19 @@ class CeiloChunk(AbstractChunk):
                                         wmo.alt2code(pdf.iloc[ind]['alt_base'])
 
         # Set the proper column types
-        pdf['n_hits'] = pdf['n_hits'].astype(int)
-        pdf['perc'] = pdf['perc'].astype(float)
-        pdf['okta'] = pdf['okta'].astype(int)
-        pdf['alt_base'] = pdf['alt_base'].astype(float)
-        pdf['alt_mean'] = pdf['alt_mean'].astype(float)
-        pdf['alt_std'] = pdf['alt_std'].astype(float)
-        pdf['code'] = pdf['code'].astype(str)
-        pdf['significant'] = pdf['significant'].astype(bool)
+        pdf.loc[:, 'n_hits'] = pdf['n_hits'].astype(int)
+        pdf.loc[:, 'perc'] = pdf['perc'].astype(float)
+        pdf.loc[:, 'okta'] = pdf['okta'].astype(int)
+        pdf.loc[:, 'alt_base'] = pdf['alt_base'].astype(float)
+        pdf.loc[:, 'alt_mean'] = pdf['alt_mean'].astype(float)
+        pdf.loc[:,'alt_std'] = pdf['alt_std'].astype(float)
+        pdf.loc[:, 'code'] = pdf['code'].astype(str)
+        pdf.loc[:, 'significant'] = pdf['significant'].astype(bool)
         pdf['original_id'] = pdf['original_id'].astype(int)
         if which == 'slices':
-            pdf['isolated'] = pdf['isolated'].astype(bool)
+            pdf.loc[:, 'isolated'] = pdf['isolated'].astype(bool)
         if which == 'groups':
-            pdf['ncomp'] = pdf['ncomp'].astype(int)
+            pdf.loc[:, 'ncomp'] = pdf['ncomp'].astype(int)
 
         # Sort the table as a function of the base altitude of the sli/gro/lay.
         # This is why having the 'original_id' info is useful (so I remember which they are).
@@ -413,8 +429,8 @@ class CeiloChunk(AbstractChunk):
 
         # Add a column to the original data to keep track of the slice id.
         # First, set them all to -1 and force the correct dtype. I hate pandas for this ...
-        self.data['slice_id'] = -1
-        self.data['slice_id'] = self.data['slice_id'].astype(int)
+        self.data.loc[:, 'slice_id'] = -1
+        self.data.loc[:, 'slice_id'] = self.data.loc[:, 'slice_id'].astype(int)
 
         # If I have any valid points ...
         if len(valids[valids]) > 0:
@@ -453,7 +469,7 @@ class CeiloChunk(AbstractChunk):
         self._slices['isolated'] = None
 
         # Prepare to add the group id to the data frame
-        self.data['group_id'] = None
+        self.data.loc[:, 'group_id'] = None
 
         # Prepare a list of slices that are overlapping with one another.
         slice_bundles = []
@@ -561,7 +577,7 @@ class CeiloChunk(AbstractChunk):
                             'finding groups first !')
 
         # Get ready to add the layering info to the data
-        self.data['layer_id'] = None
+        self.data.loc[:, 'layer_id'] = None
 
         # Loop through every group, and look for sub-layers in it ...
         for ind in range(len(self.groups)):
@@ -670,18 +686,18 @@ class CeiloChunk(AbstractChunk):
         by the layering algorithm. """
         return self._layers
 
-    def metar_msg(self, synop : bool = False, msa : Union[int, float] = None,
-                  which : str = 'layers') -> str:
+    def metar_msg(self, synop : bool = False, which : str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
         The ICAO's cloud layer selection rules applicable to METARs will be applied, unless
         synop = True.
 
+        The Minimum Sector Altitude value set when the CeiloChunk instance was initialized will
+        be applied.
+
         Args:
             synop (bool optional): if True, all cloud layers will be reported. Else, the WMO's
                 cloud layer selection rules applicable to METARs will be applied.
-            msa (int|float, optional): Minimum Sector Altitude. If set, layers above it will not be
-                reported. Defaults to None.
             which (str, optional): whether to look at 'slices', 'groups', or 'layers'. Defaults to
                 'layers'.
 
@@ -690,8 +706,10 @@ class CeiloChunk(AbstractChunk):
         """
 
         # Deal with the MSA: set it to infinity if None was specified
-        if msa is None:
-            msa = np.infty
+        if self.msa is None:
+            msa_val = np.infty
+        else:
+            msa_val = self.msa
 
         # Some sanity checks to begin with
         if (sligrolay := getattr(self, which)) is None:
@@ -704,9 +722,9 @@ class CeiloChunk(AbstractChunk):
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
         if synop:
-            report = (sligrolay['alt_base']<msa)
+            report = (sligrolay['alt_base']<msa_val)
         else:
-            report = sligrolay['significant']*(sligrolay['alt_base']<msa)
+            report = sligrolay['significant']*(sligrolay['alt_base']<msa_val)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
 
