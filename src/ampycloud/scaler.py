@@ -59,7 +59,8 @@ def minmax_scaling(vals : np.ndarray,
         vals (ndarray): values to (de-)scale.
         min_range (int|float, optional): will map the [0, 1] interval to
             [val_mid-min_range/2, val_mid+min_range/2] rather than [val_min, val_max],
-            if val_max-val_min < min_range. Note: val_mid=(val_max+val_min)/2.
+            if val_max-val_min < min_range. Note: val_mid=(val_max+val_min)/2. Must be >=0.
+            Defaults to 0.
         mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.
         min_val (int|float, optional): min (target) interval value, in case mode='descale'.
             Defaults to None.
@@ -71,6 +72,11 @@ def minmax_scaling(vals : np.ndarray,
 
     """
 
+    # Complain if min_range is smaller than 0. Else, I risk dividing by 0 in certai circumstances
+    # (i.e. when a single point is being fed).
+    if min_range < 0:
+        raise AmpycloudError(f'Ouch ! min_range must be >0, and not: {min_range}')
+
     if mode == 'scale':
         # What is the range of the data
         val_range = np.nanmax(vals) - np.nanmin(vals)
@@ -78,7 +84,9 @@ def minmax_scaling(vals : np.ndarray,
 
         # Deal with the cases where all the values are the same by returning nans
         if val_range == 0:
-            return vals * np.nan
+            # If the user did not set a min_range, let's do it for them
+            if min_range == 0:
+                min_range = 1
 
         # Else, deal with the values as usual ...
         if val_range >= min_range:
