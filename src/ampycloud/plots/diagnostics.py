@@ -429,18 +429,20 @@ class DiagnosticPlot:
         de_alt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
         de_alt_scale_kwargs['mode'] = 'descale'
 
-        # Here, I need to add some vital information to the de_alt_scaling parameters
-        # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
-        # and generate the appropriate side-axis.
-        if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode == 'minmax':
-            de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
-            de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
-        if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'minmax':
-            de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
-            de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
-
         # Here, only proceed if I have actually found some slices !
         if self._chunk.n_slices > 0:
+
+            # Here, I need to add some vital information to the de_alt_scaling parameters
+            # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
+            # and generate the appropriate side-axis.
+            if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode == 'minmax':
+                de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
+                de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
+            if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'minmax':
+                de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
+                de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
+
+
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.06,
@@ -454,11 +456,6 @@ class DiagnosticPlot:
                                    **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs),
                            partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
                                    **de_alt_scale_kwargs)))
-
-            # Finally, let's hide the original axes and ticks to avoid "fat" lines ...
-            #self._axs[0].spines['top'].set_visible(False)
-            #self._axs[0].spines['right'].set_visible(False)
-            #self._axs[0].tick_params(axis='both', which='both', top=False, right=False)
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Slicing $\Delta t$'))

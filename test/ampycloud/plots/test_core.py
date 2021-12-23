@@ -10,8 +10,11 @@ Module content: tests for the plots.core module
 
 # Import from Python
 from pathlib import Path
+import warnings
+import numpy as np
+import pandas as pd
 
-from ampycloud import dynamic, reset_prms
+from ampycloud import dynamic, reset_prms, run
 from ampycloud.core import demo
 from ampycloud.plots.core import diagnostic
 
@@ -27,7 +30,8 @@ def test_diagnostic(mpls):
     if mpls:
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
-    dynamic.AMPYCLOUD_PRMS.MSA=12345
+    # Set some MSA to see it on the plot
+    dynamic.AMPYCLOUD_PRMS.MSA = 12345
 
     # Get some demo chunk data
     _, chunk = demo()
@@ -45,3 +49,37 @@ def test_diagnostic(mpls):
 
     # Reset the dynamic params to their default to not mess up the other tests
     reset_prms()
+
+
+def test_empty_plot(mpls):
+    """ Test that all goes well, when I just get NaNs.
+
+    Args:
+        mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
+            by a fixture that fetches the corresponding command line argument.
+            See conftest.py for details.
+
+    """
+
+    if mpls:
+        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+
+    # Let's create some data with only NaNs
+    data = pd.DataFrame([['1', -100, np.nan, 1], ['1', -99, np.nan, 1]],
+                        columns=['ceilo', 'dt', 'alt', 'type'])
+    data['ceilo'] = data['ceilo'].astype(str)
+    data['dt'] = data['dt'].astype(float)
+    data['alt'] = data['alt'].astype(float)
+    data['type'] = data['type'].astype(int)
+
+    # Run ampycloud
+    chunk = run(data)
+
+    # Uncomment the line below once pytst 7.0 can be pip-installed
+    #with pytest.does_not_warn():
+    if True:
+        diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
+                   save_stem='pytest_empty_plot', save_fmts='png',
+                   ref_metar_origin='Empty data', ref_metar='NCD')
+
+    assert Path('pytest_empty_plot.pdf').exists
