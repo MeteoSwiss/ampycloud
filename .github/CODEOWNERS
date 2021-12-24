@@ -1,0 +1,21 @@
+# This file specifies who "owns" the different ampycloud code bits.
+# These users will be automatically asked to review changes to these files in pull requests.
+#
+# Order is important; the **last** matching pattern takes the most precedence.
+# For more info, see:
+# https://docs.github.com/en/free-pro-team@latest/github/creating-cloning-and-archiving-repositories/about-code-owners
+#
+
+# All the Github actions and gimmicks
+.github/                @fpavogt
+.pylintrc               @fpavogt
+CODE_OF_CONDUCT.md      @fpavogt
+CONTRIBUTING.md         @fpavogt
+LICENSE                 @fpavogt
+README.md               @fpavogt
+
+# All the docs
+docs/                   @fpavogt
+
+# All the code
+src/                    @fpavogt

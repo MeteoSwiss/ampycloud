@@ -1,11 +1,17 @@
 # Python stuff
 __pycache__/
+.pytest_cache
 
 # Python packaging stuff
 build/
 dist/
 eggs/
-*.egg_info/
+*.egg-info/
+docs/source/modules/
 
 # MacOS stuff
 *.DS_Store
+
+# General stuff
+*.pdf
+*.png

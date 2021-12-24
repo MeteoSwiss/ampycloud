@@ -1,12 +1,22 @@
-# ampycloud:
-## A Python package to characterize cloud layers using ceilometer measurements
+# ampycloud
+
+[![github](https://img.shields.io/github/release/MeteoSwiss/ampycloud.svg)](https://github.com/MeteoSwiss/ampycloud/releases)
+[![last-commit](https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000)](https://github.com/MeteoSwiss/ampycloud)
+[![issues](https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e)](https://github.com/MeteoSwiss/ampycloud/issues)
+[![pypi](https://img.shields.io/pypi/v/ampycloud.svg?colorB=<brightgreen>)](https://pypi.python.org/pypi/ampycloud/)
 
 ### Introduction
 
-ampycloud refers to both this Python package and the algorithm in its core. Both are designed to characterize cloud layers (i.e. height and sky coverage fraction) from ceilometer measurements, and specifically: automatic cloud base *hits* measurements.
+ampycloud refers to both this Python package and the algorithm at its core, designed to
+characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
+ (i.e. automatic cloud base *hits* measurements), and derive the corresponding METAR-like message.
 
-If this code ever makes it out in the open, you'll be able to check the full documentation at https://meteoswiss.github.io/ampycloud
+For the full documentation, installation instructions, etc ..., go to: https://MeteoSwiss.github.io/ampycloud
 
 ### License & Copyright
 
 ampycloud is released under the terms of **the 3-clause BSD license**. The copyright belongs to MeteoSwiss.
+
+### Contributing to ampycloud
+
+Please see the [contributing guidelines](CONTRIBUTING.md) for details.

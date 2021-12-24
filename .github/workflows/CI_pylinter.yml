@@ -1,0 +1,70 @@
+# Inspired from: https://github.com/PyCQA/pylint/pull/2758#issuecomment-561164761
+#
+# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+
+name: CI_pylinter
+
+on:
+  # Not required on push: no code should go to master directly
+  #push:
+  #  branches: [ master ]
+  pull_request:
+    branches: [ master, develop ]
+
+jobs:
+  pylinter:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.8']
+
+    steps:
+      # Checkout our repository
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install any dependency we require
+      - name: Install dependancies
+        run: |
+          python -m pip install --upgrade pip
+        shell: bash
+
+      # Here, let's install our module to make sure all the dependencies specified in setup.py are
+      # also installed
+      - name: Install our module
+        run: pip install -e .[dev]
+        shell: bash
+
+      # Launch a home-made python script with in-line arguments split over multiple lines.
+      # Here I use bash line breaks to feed each error codes on their own line. that way, I can
+      # comment on each of them. The comments are included by hijacking the bash backtick's command
+      # substitution.
+      # Inspired from https://stackoverflow.com/questions/9522631/how-to-put-a-line-comment-for-a-multi-line-command
+      # Authors: Marwan Alsabbagh, Kos
+      - name: Look for Exception-raising errors
+        run: |
+          python ./.github/workflows/pylinter.py --restrict E `# All errors are bad` \
+                                                            C0303 `# trailing-whitespace` \
+                                                            C0304 `# missing-final-newline` \
+                                                            C0112 `# empty docstrings` \
+                                                            C0114 `# missing-module-docstring` \
+                                                            C0115 `# missing-class-docstring` \
+                                                            C0116 `# missing-function-docstring` \
+                                                            C0411 `# wrong-import-order` \
+                                                            W0611 `# unused-import` \
+                                                            W0612 `# unused-variable` \
+        shell: bash
+
+      # Do it again. But this time, just run the script for all possible pylint errors without
+      # issuing any exception.
+      - name: Look for all other pylint issue with a failure score threshold of 8
+        run: python ./.github/workflows/pylinter.py --min_score 8
+        shell: bash
