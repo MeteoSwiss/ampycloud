@@ -100,9 +100,6 @@ def test_scaling():
     out = scaling(np.ones(10)*np.nan, fct='minmax', mode='scale', min_range=1000)
     assert np.all(np.isnan(out))
 
-    # Try other problematic cases that should only return NaNs
+    # Try when a single point is being fed
     out = scaling(np.ones(1), fct='minmax', mode='scale', min_range=1000)
-    assert np.all(np.isnan(out))
-
-    out = scaling(np.ones(1), fct='minmax', mode='scale', min_range=-1)
-    assert np.all(np.isnan(out))
+    assert out == 0.5

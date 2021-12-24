@@ -111,6 +111,7 @@ class AbstractChunk(ABC):
         # Drop any hits that is too high
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
+            logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
             data = data.drop(data[data.alt > hit_alt_lim].index)
 
         return data
@@ -432,8 +433,10 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[:, 'slice_id'] = -1
         self.data.loc[:, 'slice_id'] = self.data.loc[:, 'slice_id'].astype(int)
 
-        # If I have any valid points ...
-        if len(valids[valids]) > 0:
+        # If I have only 1 valid point ...
+        if len(valids[valids]) == 1:
+            self.data.loc[valids, ['slice_id']] = 1
+        elif len(valids[valids]) > 1:
             # ... run the clustering on them ...
             _, labels = cluster.clusterize(tmp[['dt','alt']][valids].to_numpy(),
                                            algo=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.algo,
@@ -441,6 +444,9 @@ class CeiloChunk(AbstractChunk):
 
             # ... and set the labels in the original data
             self.data.loc[self.data['alt'].notna(), ['slice_id']] = labels
+        else:
+            # If I get no valid points, do nothing at all
+            pass
 
         # Finally, let's metarize these slices !
         self.metarize(which='slices', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
@@ -582,16 +588,27 @@ class CeiloChunk(AbstractChunk):
         # Loop through every group, and look for sub-layers in it ...
         for ind in range(len(self.groups)):
 
+            # Let's extract the altitudes of all the hits in this group ...
+            gro_alts = self.data.loc[self.data.loc[:, 'group_id'] ==
+                                     self._groups.at[ind, 'original_id'],
+                                     'alt'].to_numpy()
+
             # Only look for multiple layers if it is worth it ...
-            if self.groups.at[ind, 'okta'] < dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_okta_to_split:
+            # 1) Layer density is large enough
+            cond1 = self.groups.at[ind, 'okta'] < \
+                    dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_okta_to_split
+            # 2) I have more than one valid point !
+            cond2 = len(gro_alts[~np.isnan(gro_alts)]) == 1
+            if cond1 or cond2:
+                # Add some useful info to the log
+                logger.info('Skipping the layering because: MIN_OKTA [%s] | 1PT [%s]',
+                             cond1, cond2)
                 # Here, set ncomp to -1 to show clearly that I did NOT actually check it ...
                 self.groups.at[ind, 'ncomp'] = -1
                 continue
 
-            # Let's extract the altitudes of all the hits in this group ...
-            gro_alts = self.data.loc[self.data.loc[:, 'group_id'] ==
-                                     self._groups.at[ind, 'original_id'],
-                                     'alt'].to_numpy().reshape(-1, 1)
+            # Reshape the array in anticipation of the GMM routine ...
+            gro_alts = gro_alts.reshape(-1, 1)
 
             # Let's also get the overall group base alt
             if self.groups.at[ind, 'alt_base'] > 10000:

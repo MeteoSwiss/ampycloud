@@ -4,8 +4,8 @@ which requires all its dependencies to be robust and stable.
 This has the following implications for ampycloud:
 
     * The scope of ampycloud will remain limited to the **automatic processing of ceilometer
-      hits**.  In particular, ampycloud does not process Vertical visibility (VV) measurements.
-      Depending on the ceilometer type, the user will need to decide how to treat VV hits before
+      hits**.  In particular, ampycloud does not process Vertical Visibility (VV) measurements.
+      Depending on the ceilometer type, the user will need to decide how to treat VV hits *before*
       passing them to ampycloud, e.g. by removing them or by converting them to cloud base
       heights.
     * ampycloud can evidently be used for R&D work, but the code itself should not be
