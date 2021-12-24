@@ -225,7 +225,7 @@ ampycloud parameter files directly from the command line:</p>
 <dd><p>Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>pth</strong> (<em>str|Path</em>) – path to a YAML parameter file for ampycloud.</p>
+<dd class="field-odd"><p><strong>pth</strong> (<em>str|Path</em>) – path+filename to a YAML parameter file for ampycloud.</p>
 </dd>
 </dl>
 <div class="admonition note">
@@ -277,9 +277,10 @@ Delta t = 0. Defaults to None.</p></li>
 <dd class="field-even"><p><em>CeiloChunk</em> – the data chunk with all the processing outcome bundled cleanly.</p>
 </dd>
 </dl>
-<p>All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
-specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance plots (should they be
-created) at the moment.</p>
+<p>All that is required to run ampycloud is a properly formatted dataset. At the moment,
+specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance plots (should they
+be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>: so long as they are
+strings, you can set them to whatever you please.</p>
 <p>The input <code class="docutils literal notranslate"><span class="pre">data</span></code> must be a <code class="docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following column names (types):</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span> <span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s1">&#39;dt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;alt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span>
 </pre></div>
@@ -289,33 +290,48 @@ created) at the moment.</p>
 <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
 above ground.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integer that are the hit sequence number, if a given ceilometer
-is reporting multiple hits for a given timestep, or <code class="docutils literal notranslate"><span class="pre">-1</span></code> if the hit corresponds to a
-vertical visibility observations.</p>
-<p>It is possible to obtain an example of the format from the
-<code class="docutils literal notranslate"><span class="pre">ampycloud.utils.mocker.canonical_demo_dataset()</span></code> routine of the package, namely:</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integer that correspond to the hit <em>sequence id</em>. E.g. if a given
+ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
+cloud level 2, cloud level 3, etc …), the <code class="docutils literal notranslate"><span class="pre">type</span></code> of these measurements could be <code class="docutils literal notranslate"><span class="pre">1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, … Any data point with a <code class="docutils literal notranslate"><span class="pre">type</span></code> of <code class="docutils literal notranslate"><span class="pre">-1</span></code> will be flagged in the ampycloud
+plots as a vertical Visibility (VV) hits, <strong>but it will not be treated any differently than any
+other regular hit</strong>.</p>
+<p>It is possible to obtain an example of the required <code class="docutils literal notranslate"><span class="pre">data</span></code> format from the
+<code class="docutils literal notranslate"><span class="pre">ampycloud.utils.mocker.canonical_demo_dataset()</span></code> routine of the package, like so:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
 <span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_dataset</span><span class="p">()</span>
 </pre></div>
 </div>
-<div class="admonition important">
-<p class="admonition-title">Important</p>
-<p>ampycloud treats vertical visibility hits just like any other hit. Hence, it is up to the
-user to adjust the vertical visibility hit altitude (if they so desire), and/or ignore
-some of them (if they so desire) prior to feeding them to ampycloud.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>ampycloud treats Vertical Visibility hits just like any other hit. Hence, it is up to the
+user to adjust the Vertical Visibility hit altitude (and/or ignore some of them) prior to
+feeding them to ampycloud.</p>
 </div>
-<p>All the scientific parameters are set dynamically in ampycloud.dynamic. From within
-a Python session all these parameters can be changed directly. For example,
-to change the plotting style to ‘latex’, one would do:</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>ampycloud uses the <code class="docutils literal notranslate"><span class="pre">dt</span></code> and <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> values to decide if two hits simultaenous, or not.
+It is thus important that the values of <code class="docutils literal notranslate"><span class="pre">dt</span></code> be sufficiently precise to distinguish
+between different measurements. Essentially, each <em>measurement</em> (which may be comprised of
+several hits) should be associated to a unique <code class="docutils literal notranslate"><span class="pre">(ceilo;</span> <span class="pre">dt)</span></code> set of values. Failure to do
+so may result in incorrect estimations of the cloud layer densities. See
+<code class="docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk.max_hits_per_layer</span></code> for more details.</p>
+</div>
+<p>All the scientific parameters of the algorithm are set dynamically in ampycloud.dynamic.
+From within a Python session all these parameters can be changed directly. For example,
+to change the Minimum Sector Altitude, one would do:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud</span> <span class="kn">import</span> <span class="n">dynamic</span>
-<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">MPL_STYLE</span> <span class="o">=</span> <span class="s1">&#39;latex&#39;</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="o">.</span><span class="n">MSA</span> <span class="o">=</span> <span class="mi">5000</span>
 </pre></div>
 </div>
 <p>Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
 file. See <code class="docutils literal notranslate"><span class="pre">ampycloud.set_prms()</span></code> for details.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk</span></code> instance returned by this function contain all the information
+associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
+info. Its method <cite>.metar_msg()</cite> provides direct access to the resulting METAR-like message.</p>
 <p class="rubric">Example</p>
-<p>In the following example, we create the canonical mock dataset from ampycloud, and run
-the algorithm on it:</p>
+<p>In the following example, we create the canonical mock dataset of ampycloud, run
+the algorithm on it, and fetch the resulting METAR-like message:</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">ampycloud</span>
 <span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
@@ -360,15 +376,11 @@ the algorithm on it:</p>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.core.metar">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ampycloud.core.metar" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ampycloud.core.metar" title="Permalink to this definition"></a></dt>
 <dd><p>Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a pandas DataFrame.</p></li>
-<li><p><strong>msa</strong> (<em>int|float, optional</em>) – Minimum Sector Altitude. If set, layers above it will not be
-reported. Defaults to None.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a pandas DataFrame.</p>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p><em>str</em> – the metar message.</p>
@@ -381,8 +393,8 @@ reported. Defaults to None.</p></li>
 <span class="c1"># Generate the canonical demo dataset for ampycloud</span>
 <span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
 
-<span class="c1"># Compute the METAR message, with Minimnum Sector Altitude of 10&#39;000 ft</span>
-<span class="n">msg</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">metar</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">msa</span><span class="o">=</span><span class="mf">1e5</span><span class="p">)</span>
+<span class="c1"># Compute the METAR message</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">metar</span><span class="p">(</span><span class="n">mock_data</span><span class="p">)</span>
 <span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
 </pre></div>
 </div>
@@ -409,16 +421,36 @@ instance.</p>
 <p>Module contains: data classes</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ampycloud.data.AbstractChunk">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ampycloud.data.</span></span><span class="sig-name descname"><span class="pre">AbstractChunk</span></span><a class="headerlink" href="#ampycloud.data.AbstractChunk" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ampycloud.data.</span></span><span class="sig-name descname"><span class="pre">AbstractChunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ampycloud.data.AbstractChunk" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">abc.ABC</span></code></p>
 <p>Abstract parent class for data chunk classes.</p>
-<p>For now, this class is fairly small, because it has only one child that contains many more
-methods. If there are ever more than Ceilometer data used by this algorithm, it might make
-sense to revisit the distribution of methods between child and parent classes. Or not.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="ampycloud.data.AbstractChunk.DATA_COLS">
+<span class="sig-name descname"><span class="pre">DATA_COLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'ceilo':</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'type':</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span></em><a class="headerlink" href="#ampycloud.data.AbstractChunk.DATA_COLS" title="Permalink to this definition"></a></dt>
+<dd><p>required data columns</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
 <dl class="py method">
 <dt class="sig sig-object py" id="ampycloud.data.AbstractChunk.__init__">
-<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.data.AbstractChunk.__init__" title="Permalink to this definition"></a></dt>
+<em class="property"><span class="pre">abstract</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.data.AbstractChunk.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>Init routine for abstract class.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.data.AbstractChunk.msa">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">msa</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#ampycloud.data.AbstractChunk.msa" title="Permalink to this definition"></a></dt>
+<dd><p>The Minimum Sector Altitude set when initializing this specific instance.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.data.AbstractChunk.msa_hit_buffer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">msa_hit_buffer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><a class="headerlink" href="#ampycloud.data.AbstractChunk.msa_hit_buffer" title="Permalink to this definition"></a></dt>
+<dd><p>The Minimum Sector Altitude hit buffer set when initializing this specific instance.</p>
 </dd></dl>
 
 <dl class="py property">
@@ -457,7 +489,8 @@ have been put in place to ensure this actually happens, but still …</p>
 <dt class="sig sig-object py" id="ampycloud.data.CeiloChunk.__init__">
 <span class="sig-name descname"><span class="pre">__init__</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.data.CeiloChunk.__init__" title="Permalink to this definition"></a></dt>
 <dd><p>CeiloChunk init method.</p>
-<p>The input data is required to be a pandas DataFrame with 4 columns:</p>
+<p>The input data is required to be a pandas DataFrame with 4 columns described in
+CeiloChunk.DATA_COLS, i.e. :</p>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="p">[</span><span class="s1">&#39;ceilo&#39;</span><span class="p">,</span> <span class="s1">&#39;dt&#39;</span><span class="p">,</span> <span class="s1">&#39;alt&#39;</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="p">]</span>
 </pre></div>
 </div>
@@ -566,11 +599,11 @@ attribute.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>which</strong> (<em>str, optional</em>) – whether to process ‘slices’, ‘groups’, or ‘layers’.
 Defaults to ‘slices’.</p></li>
-<li><p><strong>base_frac</strong> (<em>float, optional</em>) – number of the smallest slice/group/layer elements to
-consider when deriving the slice/group/layer altitude (as a median), expressed as a
-fraction (0&lt;=base_frac&lt;=1) of the slice/cluster/layer total hit counts.
-Defaults to 0.1.</p></li>
-<li><p><strong>lim0</strong> (<em>int|float, optional</em>) – upper limit of the sky coverage percentagte for the 0 okta
+<li><p><strong>base_frac</strong> (<em>float, optional</em>) – amount of the lowest slice/group/layer elements,
+expressed as a fraction (0&lt;=base_frac&lt;=1) of the total hit count, to consider when
+deriving the slice/group/layer altitude (as a median). Defaults to 0.1, i.e. the
+cloud base is the median of the lowest 10% of cloud hits of that slice/group/layer.</p></li>
+<li><p><strong>lim0</strong> (<em>int|float, optional</em>) – upper limit of the sky coverage percentage for the 0 okta
 bin, in %. Defaults to 2.</p></li>
 <li><p><strong>lim8</strong> (<em>int|float, optional</em>) – lower limit of the sky coverage percentage for the 8 okta
 bin, in %. Defaults to 98.</p></li>
@@ -586,8 +619,9 @@ bin, in %. Defaults to 98.</p></li>
 the identification of cloud layers.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The “parameters” of this function are defined in AMPYCLOUD_PRMS.SLICING_PRMS in the
-dynamic.py module.</p>
+<p>The “parameters” of this function are set in AMPYCLOUD_PRMS.SLICING_PRMS in the
+dynamic.py module, which itself is defined in
+src/ampycloud.prms/ampycloud_default_prms.yml.</p>
 </div>
 </dd></dl>
 
@@ -598,8 +632,9 @@ dynamic.py module.</p>
 stage towards the identification of cloud layers.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The “parameters” of this function are defined in AMPYCLOUD_PRMS.GROUPING_PRMS in the
-dynamic.py module.</p>
+<p>The “parameters” of this function are set in AMPYCLOUD_PRMS.GROUPING_PRMS in the
+dynamic.py module, which itself is defined in
+src/ampycloud.prms/ampycloud_default_prms.yml.</p>
 </div>
 </dd></dl>
 
@@ -607,12 +642,13 @@ dynamic.py module.</p>
 <dt class="sig sig-object py" id="ampycloud.data.CeiloChunk.find_layers">
 <span class="sig-name descname"><span class="pre">find_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.data.CeiloChunk.find_layers" title="Permalink to this definition"></a></dt>
 <dd><p>Identifies individual layers from a list of groups, splitting these in 2 or 3
-(if warrented) <em>significant</em> cloud sub-layers. Intended as the third stage towards the
+(if warranted) <em>significant</em> cloud sub-layers. Intended as the third stage towards the
 identification of cloud layers.</p>
 <div class="admonition note">
 <p class="admonition-title">Note</p>
-<p>The “parameters” of this function are defined in AMPYCLOUD_PRMS.LAYERING_RPMS in the
-dynamic.py module.</p>
+<p>The “parameters” of this function are set in AMPYCLOUD_PRMS.LAYERING_PRMS in the
+dynamic.py module, which itself is defined in
+src/ampycloud.prms/ampycloud_default_prms.yml.</p>
 </div>
 </dd></dl>
 
@@ -655,7 +691,7 @@ by the grouping algorithm.</p>
 <dl class="py property">
 <dt class="sig sig-object py" id="ampycloud.data.CeiloChunk.n_layers">
 <em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_layers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">None</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#ampycloud.data.CeiloChunk.n_layers" title="Permalink to this definition"></a></dt>
-<dd><p>Returns the nnumber of layers identified in the data.</p>
+<dd><p>Returns the number of layers identified in the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p><em>int</em> – the number of layers.</p>
@@ -672,17 +708,17 @@ by the layering algorithm.</p>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ampycloud.data.CeiloChunk.metar_msg">
-<span class="sig-name descname"><span class="pre">metar_msg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">synop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">msa</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ampycloud.data.CeiloChunk.metar_msg" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">metar_msg</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">synop</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#ampycloud.data.CeiloChunk.metar_msg" title="Permalink to this definition"></a></dt>
 <dd><p>Construct a METAR-like message for the identified cloud slices, groups, or layers.</p>
-<p>The WMO’s cloud layer selection rules applicable to METARs will be applied, unless
+<p>The ICAO’s cloud layer selection rules applicable to METARs will be applied, unless
 synop = True.</p>
+<p>The Minimum Sector Altitude value set when the CeiloChunk instance was initialized will
+be applied.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>synop</strong> (<em>bool optional</em>) – if True, all cloud layers will be reported. Else, the WMO’s
 cloud layer selection rules applicable to METARs will be applied.</p></li>
-<li><p><strong>msa</strong> (<em>int|float, optional</em>) – Minimum Sector Altitude. If set, layers above it will not be
-reported. Defaults to None.</p></li>
 <li><p><strong>which</strong> (<em>str, optional</em>) – whether to look at ‘slices’, ‘groups’, or ‘layers’. Defaults to
 ‘layers’.</p></li>
 </ul>
@@ -813,7 +849,7 @@ This has no effect unless mode=’delta’.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.layer.ncomp_from_gmm">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.layer.</span></span><span class="sig-name descname"><span class="pre">ncomp_from_gmm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BIC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_0_to_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.layer.ncomp_from_gmm" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.layer.</span></span><span class="sig-name descname"><span class="pre">ncomp_from_gmm</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_sep</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scores</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'BIC'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rescale_0_to_x</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">random_seed</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">42</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.layer.ncomp_from_gmm" title="Permalink to this definition"></a></dt>
 <dd><p>Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
 components.</p>
 <p>The default values lead to selecting the number of components with the smallest BIC values.</p>
@@ -822,10 +858,19 @@ components.</p>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vals</strong> (<em>ndarray</em>) – the data to process. If ndarray is 1-D, it will be reshaped to 2-D via
 .reshape(-1, 1).</p></li>
+<li><p><strong>min_sep</strong> (<em>int|float, optional</em>) – minimum separation, in data unit,
+required between the mean location of two Gaussian components to consider them distinct.
+Defaults to 0. This is used in complement to any parameters fed to best_gmm(), that will
+first decide how many components looks “best”, at which point these may get merged
+depending on min_sep. I.e. min_sep does not lead to re-running the GMM, it only merges
+the identified layers if required.</p></li>
 <li><p><strong>scores</strong> (<em>str, optional</em>) – either ‘BIC’ or ‘AIC’, to use Baysian Information Criterion or
 Akaike Information criterion scores.</p></li>
-<li><p><strong>rescale_0_to_x</strong> (<em>float, optional</em>) – if set, vals will be rescaled between 0 and this value.
-Defaults to None = no rescaling.</p></li>
+<li><p><strong>rescale_0_to_x</strong> (<em>float, optional</em>) – if set, vals will be rescaled between 0 and this value
+before running the Gaussian Mixture Modelling. Defaults to None = no rescaling.</p></li>
+<li><p><strong>random_seed</strong> (<em>int, optional</em>) – a value fed to numpy.random.seed to ensure repeatable
+results. Defaults to 42, because it is the Answer to the Ultimate Question of Life, the
+Universe, and Everything.</p></li>
 <li><p><strong>**kwargs</strong> (<em>dict, optional</em>) – these will be fed to <cite>best_gmm()</cite>.</p></li>
 </ul>
 </dd>
@@ -909,7 +954,8 @@ Hence the min_val and max_val kwargs, so that the user can tell us …</p>
 <li><p><strong>vals</strong> (<em>ndarray</em>) – values to (de-)scale.</p></li>
 <li><p><strong>min_range</strong> (<em>int|float, optional</em>) – will map the [0, 1] interval to
 [val_mid-min_range/2, val_mid+min_range/2] rather than [val_min, val_max],
-if val_max-val_min &lt; min_range. Note: val_mid=(val_max+val_min)/2.</p></li>
+if val_max-val_min &lt; min_range. Note: val_mid=(val_max+val_min)/2. Must be &gt;=0.
+Defaults to 0.</p></li>
 <li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘scale’ or ‘descale’, i.e. undo the scaling.</p></li>
 <li><p><strong>min_val</strong> (<em>int|float, optional</em>) – min (target) interval value, in case mode=’descale’.
 Defaults to None.</p></li>

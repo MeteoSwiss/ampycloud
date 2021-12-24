@@ -90,23 +90,25 @@ page.</p>
 <figure class="align-center" id="id2">
 <span id="fig-demo"></span><a class="reference internal image-reference" href="_images/ampycloud_canonical_mock_demo.png"><img alt="ampycloud demo diagnostic diagram" src="_images/ampycloud_canonical_mock_demo.png" style="width: 750px;" /></a>
 <figcaption>
-<p><span class="caption-number">Fig. 1 </span><span class="caption-text"><em>Figure 1: the ampycloud diagnostic diagram for its canonical mock dataset.</em></span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
+<p><span class="caption-number">Fig. 1 </span><span class="caption-text">the ampycloud diagnostic diagram for its canonical mock dataset.</span><a class="headerlink" href="#id2" title="Permalink to this image"></a></p>
 </figcaption>
 </figure>
-<p><strong>Welcome to the ampycloud documentation !</strong></p>
-<p><strong>WHAT:</strong> ampycloud refers to both a Python package and the algorithm at its core, designed to
+<section id="welcome-to-the-ampycloud-documentation">
+<h2>Welcome to the ampycloud documentation<a class="headerlink" href="#welcome-to-the-ampycloud-documentation" title="Permalink to this headline"></a></h2>
+<p><strong>What:</strong> ampycloud refers to both a Python package and the algorithm at its core, designed to
 characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
-(i.e. automatic cloud base <em>hits</em> measurements), and derive the corresponding METAR-like message.
-A visual illustration of the algorithm is visible in <a class="reference internal" href="#fig-demo"><span class="std std-numref">Fig. 1</span></a>, which corresponds to the
-<em>ampycloud diagnostic diagram</em> for the ampycloud canonical mock dataset.</p>
-<p><strong>WHERE:</strong> ampycloud lives in <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">a dedicated repository</a>
+(i.e. automatic cloud base <em>hits</em>), and derive the corresponding METAR-like message.
+A visual illustration of the algorithm is visible in <a class="reference internal" href="#fig-demo"><span class="std std-numref">Fig. 1</span></a>.</p>
+<p><strong>Where:</strong> ampycloud lives in <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">a dedicated repository</a>
 under the <a class="reference external" href="https://github.com/MeteoSwiss">MeteoSwiss organization</a> on Github, where you can
 submit all your <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/discussions">questions</a> and
 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues">bug reports</a>. See
 <a class="reference internal" href="troubleshooting.html#troubleshooting"><span class="std std-ref">Troubleshooting</span></a> for more details.</p>
-<p><strong>WHO:</strong> ampycloud is being developped at MeteoSwiss, with contributions from the following
-<a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/AUTHORS">authors.</a> See also the code’s
+<p><strong>Who:</strong> ampycloud is being developed at MeteoSwiss. See also the code’s
 <a class="reference internal" href="license.html#license-copyright"><span class="std std-ref">license &amp; copyright</span></a> information.</p>
+</section>
+<section id="scope-of-ampycloud">
+<h2>Scope of ampycloud<a class="headerlink" href="#scope-of-ampycloud" title="Permalink to this headline"></a></h2>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>ampycloud is a key dependency of the automatic METAR-generating code of MeteoSwiss,
@@ -115,15 +117,18 @@ which requires all its dependencies to be robust and stable.</p>
 <blockquote>
 <div><ul>
 <li><p>The scope of ampycloud will remain limited to the <strong>automatic processing of ceilometer
-hits</strong>.</p></li>
+hits</strong>.  In particular, ampycloud does not process Vertical Visibility (VV) measurements.
+Depending on the ceilometer type, the user will need to decide how to treat VV hits <em>before</em>
+passing them to ampycloud, e.g. by removing them or by converting them to cloud base
+heights.</p></li>
 <li><p>ampycloud can evidently be used for R&amp;D work, but the code itself should not be
 seen as an R&amp;D platform.</p></li>
 <li><p>Contributions via Pull Requests are always welcome (and appreciated !), but will only be
 considered if they:</p>
 <blockquote>
 <div><ul class="simple">
-<li><p>remove a bug, or</p></li>
-<li><p>improve the usability of ampycloud without altering the quality of the results, or</p></li>
+<li><p>remove a bug, and/or</p></li>
+<li><p>improve the usability of ampycloud without altering the quality of the results, and/or</p></li>
 <li><p>demonstrate a significant improvement in the quality of the results.</p></li>
 </ul>
 </div></blockquote>
@@ -134,12 +139,23 @@ ampycloud.</p></li>
 </ul>
 </div></blockquote>
 </div>
-<p><strong>Table of contents:</strong></p>
+</section>
+<section id="table-of-contents">
+<h2>Table of contents<a class="headerlink" href="#table-of-contents" title="Permalink to this headline"></a></h2>
 <div class="toctree-wrapper compound">
 <ul class="current">
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Home</a></li>
-<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="running.html">Using ampycloud</a></li>
+<li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#requirements">Requirements</a></li>
+<li class="toctree-l2"><a class="reference internal" href="installation.html#testing-the-installation-speed-benchmark">Testing the installation &amp; Speed benchmark</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="running.html">Using ampycloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="running.html#running-the-algorithm">Running the algorithm</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#logging">Logging</a></li>
+<li class="toctree-l2"><a class="reference internal" href="running.html#plotting-the-diagnostic-diagram">Plotting the diagnostic diagram</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="parameters.html">The ampycloud scientific parameters</a></li>
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledge.html">Acknowledging ampycloud</a></li>
@@ -147,10 +163,14 @@ ampycloud.</p></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="modules/ampycloud.html">ampycloud package</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
 </ul>
 </div>
+</section>
 </section>
 
 

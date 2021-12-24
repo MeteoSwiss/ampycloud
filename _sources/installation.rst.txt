@@ -54,8 +54,8 @@ should return:
     :language: none
 
 To actually run the speed test, simply call ``ampycloud_speed_test``, optionally setting a different
-number of executions via the ``-niter`` argument. For comparison purposes, here are the performance on the machine that
-was responsible for compiling this documentation:
+number of executions via the ``-niter`` argument. For comparison purposes, here are the performances
+on the machine that was responsible for compiling this documentation:
 
 .. literalinclude:: ampycloud_speed_test_msg.txt
     :language: none

@@ -122,6 +122,15 @@ for details.</p>
 <span class="c1"># Fraction of smallest layer points to median to compute the layer altitude for the METAR</span>
 <span class="nt">LAYER_BASE_FRAC</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.1</span>
 
+<span class="c1"># Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported</span>
+<span class="c1"># in the ampycloud METAR/SYNOP messages. Set it to null for no limit.</span>
+<span class="nt">MSA</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+
+<span class="c1"># Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by</span>
+<span class="c1"># ampycloud. This is to ensure that cloud layers with cloud base heights close to the MSA value are</span>
+<span class="c1"># still detected with the correct densities.</span>
+<span class="nt">MSA_HIT_BUFFER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1500</span>
+
 <span class="c1"># Slicing parameters</span>
 <span class="nt">SLICING_PRMS</span><span class="p">:</span>
     <span class="c1"># Clustering algorithm name</span>
@@ -151,7 +160,7 @@ for details.</p>
     <span class="nt">algo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agglomerative</span>
     <span class="c1"># Grouping algorithm parameters</span>
     <span class="nt">algo_kwargs</span><span class="p">:</span>
-        <span class="nt">n_clusters</span><span class="p">:</span>
+        <span class="nt">n_clusters</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span> <span class="c1"># null = None</span>
         <span class="nt">distance_threshold</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
         <span class="nt">linkage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">single</span>
         <span class="nt">affinity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">manhattan</span>
@@ -175,6 +184,16 @@ for details.</p>
 <span class="nt">LAYERING_PRMS</span><span class="p">:</span>
     <span class="c1"># Minimum okta value below which cluster splitting is not attempted</span>
     <span class="nt">min_okta_to_split</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+    <span class="c1"># Minimum separation (in ft) between the mean altitude of identified layers inside groups</span>
+    <span class="c1"># with a base altitude &lt;=10&#39;000ft. Any layers separated by less than this value will not be</span>
+    <span class="c1"># split. Any value &lt; than 5 times the vertical resolution of the data will raise a warning, as</span>
+    <span class="c1"># it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent</span>
+    <span class="c1"># with the ICAO rules of layer selection, this should be &gt;=100 ft.</span>
+    <span class="nt">min_sep_low</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
+    <span class="c1"># Same as min_sep_low, but for layers identified in groups with a base height &gt;10&#39;000 ft. For</span>
+    <span class="c1"># the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this</span>
+    <span class="c1"># should be &gt;=1000 ft.</span>
+    <span class="nt">min_sep_high</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
     <span class="c1"># Gaussian Mixture Model parameters</span>
     <span class="nt">gmm_kwargs</span><span class="p">:</span>
         <span class="c1"># Whether to use &#39;BIC&#39; or &#39;AIC&#39; scores to decide which model is &quot;best&quot;.</span>
@@ -185,7 +204,7 @@ for details.</p>
         <span class="c1"># minimum model probability computed from the relative likelihood,</span>
         <span class="c1"># below which alternative models with more components will be considered.</span>
         <span class="c1"># Only used if mode=&#39;prob&#39;</span>
-        <span class="nt">min_prob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.01</span>
+        <span class="nt">min_prob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>
         <span class="c1"># a model with a smaller score will only be considered &quot;valid&quot;</span>
         <span class="c1"># if its score is smaller than delta_mul_gain*current_best_score.</span>
         <span class="c1"># Only used if mode=&#39;delta&#39;</span>
