@@ -39,11 +39,12 @@ Adjusting the default algorithm parameters
 .. caution::
 
     It is highly recommended to adjust any scientific parameters **before** executing any of the
-    ampycloud routines. Doing otherwise may have un-expected consequences. You have been warned.
+    ampycloud routines. Doing otherwise may have un-expected consequences (i.e. parameters may not
+    have the expected value). You have been warned.
 
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
-are accessible in the `ampycloud.dynamic` module.  From there, users can easily adjust them as they
+are accessible in the ``ampycloud.dynamic`` module.  From there, users can easily adjust them as they
 see fit. For example:
 ::
 
@@ -51,7 +52,7 @@ see fit. For example:
 
     dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
 
-Note that it is important to always import the entire `dynamic` module and stick to the above
+Note that it is important to always import the entire ``dynamic`` module and stick to the above
 structure if the updated parameters are to be *seen* by all the ampycloud modules.
 
 Alternatively, all the scientific parameters can be adjusted and fed to ampycloud via a YAML file,
@@ -157,4 +158,4 @@ system-wide, and set:
 .. warning::
 
     Using a system-wide LaTeX installation to create matplotlib figures **is not officially
-    supported by matplotib**, and thus **not officially supported by the ampycloud** either.
+    supported by matplotib**, and thus **not officially supported by ampycloud** either.

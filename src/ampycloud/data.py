@@ -111,7 +111,7 @@ class AbstractChunk(ABC):
         # Drop any hits that is too high
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
-            logger.info('Cropping hits to MSA+buffer: %s', str(hit_alt_lim))
+            logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
             data = data.drop(data[data.alt > hit_alt_lim].index)
 
         return data
@@ -607,7 +607,7 @@ class CeiloChunk(AbstractChunk):
                 self.groups.at[ind, 'ncomp'] = -1
                 continue
 
-            # reshape the array in anticipation of the GMM routine ...
+            # Reshape the array in anticipation of the GMM routine ...
             gro_alts = gro_alts.reshape(-1, 1)
 
             # Let's also get the overall group base alt

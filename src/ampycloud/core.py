@@ -167,9 +167,10 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     Returns:
         CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
 
-    All that is required to run ampycloud is said (properly formatted) dataset. At the moment,
+    All that is required to run ampycloud is a properly formatted dataset. At the moment,
     specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they
-    be created).
+    be created). There is no special requirements for ``geoloc`` and ``ref_dt``: so long as they are
+    strings, you can set them to whatever you please.
 
     The input ``data`` must be a ``pandas.DataFrame`` with the following column names (types):
     ::
@@ -184,38 +185,53 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     The ``alt`` column contains the cloud base hit altitudes reported by the ceilometers, in ft
     above ground.
 
-    The ``type`` column contains integer that are the hit sequence number, if a given ceilometer
-    is reporting multiple hits for a given timestep (i.e. cloud level 1, cloud level 2,
-    cloud level 3), or ``-1`` if the hit corresponds to a vertical visibility measurements.
+    The ``type`` column contains integer that correspond to the hit *sequence id*. E.g. if a given
+    ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
+    cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements could be ``1``,
+    ``2``, ``3``, ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
+    plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
+    other regular hit**.
 
-    It is possible to obtain an example of the format from the
-    ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, namely:
+    It is possible to obtain an example of the required ``data`` format from the
+    ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, like so:
     ::
 
         from ampycloud.utils import mocker
         mock_data = mocker.canonical_demo_dataset()
 
-    Important:
-        ampycloud treats vertical visibility hits just like any other hit. Hence, it is up to the
-        user to adjust the vertical visibility hit altitude (if they so desire), and/or ignore
-        some of them (if they so desire) prior to feeding them to ampycloud.
+    Caution:
+        ampycloud treats Vertical Visibility hits just like any other hit. Hence, it is up to the
+        user to adjust the Vertical Visibility hit altitude (and/or ignore some of them) prior to
+        feeding them to ampycloud.
+
+    Caution:
+        ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits simultaenous, or not.
+        It is thus important that the values of ``dt`` be sufficiently precise to distinguish
+        between different measurements. Essentially, each *measurement* (which may be comprised of
+        several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do
+        so may result in incorrect estimations of the cloud layer densities. See
+        ``ampycloud.data.CeiloChunk.max_hits_per_layer`` for more details.
 
 
-    All the scientific parameters are set dynamically in ampycloud.dynamic. From within
-    a Python session all these parameters can be changed directly. For example,
-    to change the plotting style to 'latex', one would do:
+    All the scientific parameters of the algorithm are set dynamically in ampycloud.dynamic.
+    From within a Python session all these parameters can be changed directly. For example,
+    to change the Minimum Sector Altitude, one would do:
     ::
 
         from ampycloud import dynamic
-        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'latex'
+        dynamic.AMPYCLOUD_PRMS.MSA = 5000
 
     Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
     file. See ``ampycloud.set_prms()`` for details.
 
+    The ``ampycloud.data.CeiloChunk`` instance returned by this function contain all the information
+    associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
+    info. Its method `.metar_msg()` provides direct access to the resulting METAR-like message.
+
     Example:
 
-        In the following example, we create the canonical mock dataset from ampycloud, and run
-        the algorithm on it:
+        In the following example, we create the canonical mock dataset of ampycloud, run
+        the algorithm on it, and fetch the resulting METAR-like message:
         ::
 
             from datetime import datetime

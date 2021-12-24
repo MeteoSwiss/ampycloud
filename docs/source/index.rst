@@ -25,9 +25,8 @@ Welcome to the ampycloud documentation
 
 **What:** ampycloud refers to both a Python package and the algorithm at its core, designed to
 characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
-(i.e. automatic cloud base *hits* measurements), and derive the corresponding METAR-like message.
-A visual illustration of the algorithm is visible in :numref:`fig-demo`, which corresponds to the
-*ampycloud diagnostic diagram* for the ampycloud canonical mock dataset.
+(i.e. automatic cloud base *hits*), and derive the corresponding METAR-like message.
+A visual illustration of the algorithm is visible in :numref:`fig-demo`.
 
 **Where:** ampycloud lives in `a dedicated repository <https://github.com/MeteoSwiss/ampycloud>`_
 under the `MeteoSwiss organization <https://github.com/MeteoSwiss>`_ on Github, where you can
@@ -35,8 +34,7 @@ submit all your `questions <https://github.com/MeteoSwiss/ampycloud/discussions>
 `bug reports <https://github.com/MeteoSwiss/ampycloud/issues>`_. See
 :ref:`troubleshooting:Troubleshooting` for more details.
 
-**Who:** ampycloud is being developped at MeteoSwiss, with contributions from the following
-`authors. <https://github.com/MeteoSwiss/ampycloud/blob/develop/AUTHORS>`_ See also the code's
+**Who:** ampycloud is being developed at MeteoSwiss. See also the code's
 :ref:`license & copyright <license:License & Copyright>` information.
 
 Scope of ampycloud
@@ -46,10 +44,11 @@ Scope of ampycloud
     .. include:: ./scope.rst
 
 
-**Table of contents:**
+Table of contents
+-----------------
 
 .. toctree::
-    :maxdepth: 1
+    :maxdepth: 2
 
     Home <self>
     installation
