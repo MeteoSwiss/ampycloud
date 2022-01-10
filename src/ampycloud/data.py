@@ -91,6 +91,13 @@ class AbstractChunk(ABC):
             raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,'+
                                  f' not: {type(data)}')
 
+        # Make sure the dataframe is not empty.
+        # Note: an empty dataframe = no measurements. This is NOT the same as "measuring" clear sky
+        # conditions, which would result in NaNs.
+        # If I have no measurements, I cannot issue a METAR. It would make no sense.
+        if len(data) == 0:
+            raise AmpycloudError("Ouch ! len(data) is 0. I can't work with no data !")
+
         # Check that all the required columns are present in the data, with the correct format
         for (col, type_req) in self.DATA_COLS.items():
             # If the requried column is missing, raise an Exception
@@ -112,7 +119,12 @@ class AbstractChunk(ABC):
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
-            data = data.drop(data[data.alt > hit_alt_lim].index)
+            # Type 1 or less hits above the cut threshold get turned to NaNs, to signal a
+            # non-detection below the MSA. Also change the hit type to 0 accordingly !
+            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'type'] = 0
+            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'alt'] = np.nan
+            # Type 2 or more hits get cropped (there should be only 1 non-detection per time-stamp).
+            data = data.drop(data[(data.alt > hit_alt_lim) & (data.type > 1)].index)
 
         return data
 

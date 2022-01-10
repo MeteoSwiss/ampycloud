@@ -236,7 +236,7 @@ this list of scientific tests *as short as possible, but as complete as necessar
 If one of these tests fail, it is possible to generate the corresponding diagnostic plot with the
 following fixture-argument:
 ```
-pytest --do_SCIPLOTS
+pytest --DO_SCIPLOTS
 ```
 
 ### Plotting

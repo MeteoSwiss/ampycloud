@@ -190,7 +190,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements could be ``1``,
     ``2``, ``3``, ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
     plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
-    other regular hit**.
+    other regular hit**. Type 0 corresponds to no (cloud) detection.
 
     It is possible to obtain an example of the required ``data`` format from the
     ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, like so:

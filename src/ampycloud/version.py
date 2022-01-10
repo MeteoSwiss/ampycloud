@@ -8,4 +8,4 @@ SPDX-License-Identifier: BSD-3-Clause
 Module contains: ampycloud version
 """
 
-VERSION = '0.1.0'
+VERSION = '0.2.0'
