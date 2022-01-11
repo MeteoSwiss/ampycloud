@@ -18,7 +18,7 @@ If you:
     - [Linting](#linting)
     - [Logging](#logging)
     - [Exceptions and Warnings](#exceptions-and-warnings)
-    - [Type hints](#type-hints)
+    - [Type hints](#type-hints-)
     - [Docstrings](#docstrings)
     - [Documentation](#documentation)
     - [Testing](#testing)
@@ -158,7 +158,16 @@ warnings.warn('...', AmpycloudWarning)
 
 ### Type hints ...
 
-... should be used in ampycloud. See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
+... should be used in ampycloud. Here's an example:
+```
+from typing import Union
+from pathlib import Path
+
+
+def set_prms(pth : Union[str, Path]) -> None:
+    """ ... """
+```
+See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
 
 ### Docstrings
 Google Style ! Please try to stick to the following example:
