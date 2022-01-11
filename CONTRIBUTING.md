@@ -18,6 +18,7 @@ If you:
     - [Linting](#linting)
     - [Logging](#logging)
     - [Exceptions and Warnings](#exceptions-and-warnings)
+    - [Type hints](#type-hints)
     - [Docstrings](#docstrings)
     - [Documentation](#documentation)
     - [Testing](#testing)
@@ -154,6 +155,10 @@ from .errors import AmpycloudWarning
 
 warnings.warn('...', AmpycloudWarning)
 ```
+
+### Type hints ...
+
+... should be used in ampycloud. See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
 
 ### Docstrings
 Google Style ! Please try to stick to the following example:
