@@ -14,4 +14,4 @@ Please tag them using `#`, e.g. `Fixed #42`.
 - [ ] New code is compatible with the 3-Clause BSD license.
 - [ ] CHANGELOG has been updated.
 - [ ] AUTHORS has been updated.
-- [ ] Copyright years in module docstrings has been updated.
+- [ ] Copyright years in module docstrings have been updated.

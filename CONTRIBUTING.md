@@ -2,9 +2,9 @@
 
 If you:
 
-*  have a **question** about ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/discussions)
-*  want to **report a bug** with ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/issues)
-* are considering to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
+*  :boom: want to **report a bug** with ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/issues)
+*  :question: have a **question** about ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/discussions)
+* :construction_worker: want to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
 
 
 ## Table of contents
@@ -14,7 +14,7 @@ If you:
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
     - [Installing from source](#installing-from-source)
-    - [CI/CD](#ci/cd)
+    - [CI/CD](#cicd)
     - [Linting](#linting)
     - [Logging](#logging)
     - [Exceptions and Warnings](#exceptions-and-warnings)
@@ -272,10 +272,11 @@ With this decorator, all functions will automatically deploy the effects associa
 ### Updating the copyright years
 The ampycloud copyright years may need to be updated if the development goes on beyond 2022. If so,
 the copyright years will need to be manually updated in the following locations:
-    * `docs/source/substitutions.rst` (the copyright tag)
-    * `docs/source/conf.py` (the `copyright` variable)
-    * `docs/source/license.rst`
-    * `README.md` (the copyright section)
+
+* `docs/source/substitutions.rst` (the copyright tag)
+* `docs/source/conf.py` (the `copyright` variable)
+* `docs/source/license.rst`
+* `README.md` (the copyright section)
 
 The copyright years are also present in all the docstring modules. These can be updated individually
 if/when a modification is made to a given module.
