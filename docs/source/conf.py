@@ -28,7 +28,7 @@ with version_file.open() as fid:
 # -- Project information -----------------------------------------------------
 
 project = 'ampycloud'
-copyright = '2021, MeteoSwiss'
+copyright = '2021-2022, MeteoSwiss'
 author = 'Frédéric P.A. Vogt'
 version = vers
 
