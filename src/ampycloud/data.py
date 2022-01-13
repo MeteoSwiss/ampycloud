@@ -22,7 +22,7 @@ from .logger import log_func_call
 from . import scaler
 from . import cluster
 from . import layer
-from . import wmo
+from . import wmo, icao
 from . import dynamic
 
 # Instantiate the module logger
@@ -428,15 +428,7 @@ class CeiloChunk(AbstractChunk):
         pdf.reset_index(drop=True, inplace=True)
 
         # Almost done ... I just need to figure out which levels are significant.
-        # This is just the basic WMO/ICAO selection rule !
-        sig_level = 0
-        for ind in range(len(oids)):
-            if pdf.at[ind, 'okta'] > sig_level:
-                sig_level += 2
-                pdf.at[ind, 'significant'] = True
-
-            else:
-                pdf.at[ind, 'significant'] = False
+        pdf.loc[:, 'significant'] = icao.significant_cloud(pdf['okta'].to_list())
 
         # Finally, assign the outcome where it belongs.
         setattr(self, f'_{which}', pdf)
