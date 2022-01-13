@@ -31,11 +31,11 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
-    """ Save a local copy of a specific ampycloud parameter file.
+    """ Create a local copy of a specific ampycloud parameter file.
 
     Args:
         save_loc (str, optional): location to save the YML file to. Defaults to './'.
-        which (str, optional): name of thee parameter file to copy. Defaults to 'defaults'.
+        which (str, optional): name of the parameter file to copy. Defaults to 'defaults'.
 
     Example:
         ::
@@ -86,10 +86,11 @@ def set_prms(pth : Union[str, Path]) -> None:
         pth (str|Path): path+filename to a YAML parameter file for ampycloud.
 
     .. note::
-        It is recommended to first get a copy of the default ampycloud parameter file using
-        ``ampycloud.copy_prm_file()``, and edit its content as required.
+        It is recommended to first get a copy of the default ampycloud parameter file
+        using :py:func:`.copy_prm_file()`, and edit its content as required.
 
-        Doing so should ensure full compliance with default structure of ``dynamic.AMPYCLOUD_PRMS``.
+        Doing so should ensure full compliance with the default structure of
+        :py:data:`.dynamic.AMPYCLOUD_PRMS`.
 
     Example:
         ::
@@ -155,24 +156,26 @@ def reset_prms() -> None:
 
 @log_func_call(logger)
 def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
-    """ Run the ampycloud algorithm on a given dataset.
+    """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
-        data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
+        data (pd.DataFrame): the data to be processed, as a py:class:`pandas.DataFrame`.
         geoloc (str, optional): the name of the geographic location where the data was taken.
             Defaults to None.
         ref_dt (str, optional): reference date and time of the observations, corresponding to
             Delta t = 0. Defaults to None.
 
     Returns:
-        CeiloChunk: the data chunk with all the processing outcome bundled cleanly.
+        :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
+        cleanly.
 
-    All that is required to run ampycloud is a properly formatted dataset. At the moment,
-    specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots (should they
-    be created). There is no special requirements for ``geoloc`` and ``ref_dt``: so long as they are
-    strings, you can set them to whatever you please.
+    All that is required to run the ampycloud algorithm is a properly formatted dataset. At the
+    moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots
+    (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``: so
+    long as they are strings, you can set them to whatever you please.
 
-    The input ``data`` must be a ``pandas.DataFrame`` with the following column names (types):
+    The input ``data`` must be a :py:class:`pandas.DataFrame` with the following column names
+    (types):
     ::
 
         'ceilo' (str), 'dt' (float), 'alt' (float), 'type' (int)
@@ -190,43 +193,45 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements could be ``1``,
     ``2``, ``3``, ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
     plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
-    other regular hit**. Type 0 corresponds to no (cloud) detection.
+    other regular hit**. Type ``0`` corresponds to no (cloud) detection.
 
     It is possible to obtain an example of the required ``data`` format from the
-    ``ampycloud.utils.mocker.canonical_demo_dataset()`` routine of the package, like so:
+    :py:func:`.utils.mocker.canonical_demo_data` routine of the package, like so:
     ::
 
         from ampycloud.utils import mocker
-        mock_data = mocker.canonical_demo_dataset()
+        mock_data = mocker.canonical_demo_data()
 
-    Caution:
-        ampycloud treats Vertical Visibility hits just like any other hit. Hence, it is up to the
-        user to adjust the Vertical Visibility hit altitude (and/or ignore some of them) prior to
-        feeding them to ampycloud.
+    .. important ::
+        ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
+        to the user to adjust the Vertical Visibility hit altitude (and/or ignore some of them, for
+        example) prior to feeding them to ampycloud.
 
-    Caution:
-        ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits simultaenous, or not.
-        It is thus important that the values of ``dt`` be sufficiently precise to distinguish
+    .. important::
+        ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits are simultaenous, or
+        not. It is thus important that the values of ``dt`` be sufficiently precise to distinguish
         between different measurements. Essentially, each *measurement* (which may be comprised of
         several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do
         so may result in incorrect estimations of the cloud layer densities. See
-        ``ampycloud.data.CeiloChunk.max_hits_per_layer`` for more details.
+        :py:attr:`.data.CeiloChunk.max_hits_per_layer` for more details.
 
 
-    All the scientific parameters of the algorithm are set dynamically in ampycloud.dynamic.
-    From within a Python session all these parameters can be changed directly. For example,
+    All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`
+    module. From within a Python session all these parameters can be changed directly. For example,
     to change the Minimum Sector Altitude, one would do:
     ::
 
         from ampycloud import dynamic
         dynamic.AMPYCLOUD_PRMS.MSA = 5000
 
-    Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YML
-    file. See ``ampycloud.set_prms()`` for details.
+    Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YAML
+    file. See :py:func:`.set_prms()` for details.
 
-    The ``ampycloud.data.CeiloChunk`` instance returned by this function contain all the information
+    The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
-    info. Its method `.metar_msg()` provides direct access to the resulting METAR-like message.
+    info. Its method :py:meth:`.data.CeiloChunk.metar_msg` provides direct access to the resulting
+    METAR-like message. Users that require the altitude, okta amount, and/or exact sky coverage
+    fraction of layers can get them via the :py:attr:`.data.CeiloChunk.layers` class property.
 
     Example:
 
@@ -246,6 +251,9 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
 
             # Get the resulting METAR/SYNOP message
             print(chunk.metar_msg(synop=False))
+
+            # Display the full information available for the layers found
+            print(chunk.layers)
 
     """
 
@@ -273,7 +281,7 @@ def synop(data : pd.DataFrame) -> str:
     """ Runs the ampycloud algorithm on a dataset and extract a synop report of the cloud layers.
 
     Args:
-        data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
+        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
 
     Returns:
         str: the synop message.
@@ -304,7 +312,7 @@ def metar(data : pd.DataFrame) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
 
     Args:
-        data (pd.DataFrame): the data to be processed, as a pandas DataFrame.
+        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
 
     Returns:
         str: the metar message.
@@ -335,8 +343,8 @@ def demo() -> tuple:
     """ Run the ampycloud algorithm on a demonstration dataset.
 
     Returns:
-        pd.DataFrame, CeiloChunk: the mock dataset used for the demonstration, and the CeiloChunk
-        instance.
+        :py:class:`pandas.DataFrame`, :py:class:`.data.CeiloChunk`: the mock dataset used for the
+        demonstration, and the :py:class:`.data.CeiloChunk` instance.
 
     """
 

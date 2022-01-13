@@ -20,3 +20,8 @@ This has the following implications for ampycloud:
     * The ingestion of external contributions may be delayed to allow for careful, internal
       verification that they do not affect the MeteoSwiss operational chain that relies on
       ampycloud.
+
+    * ampycloud is designed (and intended to be used) as a regular Python module. As such, it is
+      not meant to interact (directly) with other programming languages. The implementation of a
+      complex API to interact with "the outside World" (e.g. to feed data to ampycloud using the
+      JSON format) is not foreseen.

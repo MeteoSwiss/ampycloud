@@ -170,13 +170,11 @@ def set_prms(pth : Union[str, Path]) -> None:
 See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
 
 ### Docstrings
-Google Style ! Please try to stick to the following example:
+Google Style ! Please try to stick to the following example. Note the use of `:py:class:...`
+([or `:py:func:...`, `py:mod:...` etc ...](https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cross-referencing-python-objects)) with relative import to cleanly link to our own
+functions, classes, etc ... :
 ```
 """ A brief one-liner description in present tense, that finishes with a dot.
-
-Use some
-multi-line space for
-more detailed info.
 
 Args:
     x (float|int): variable x could be of 2 types ... note the use of `|` to say that !
@@ -186,10 +184,16 @@ Args:
     y (list[str]|str, optional): variable y info
 
 Returns:
-    bool: some grand Truth about the World.
+    :py:class:`.data.CeiloChunk`: more lorem ipsum ...
 
 Raises:
-    AmpycloudError: if blah and blah occurs.
+    :py:exc:`.errors.AmpycloudError`: if blah and blah occurs.
+
+
+Use some
+multi-line space for
+more detailed info. Refer to the whole module as :py:mod`ampycloud`.
+Do all this **after** the Args, Returns, and Raises sections !
 
 Example:
     If needed, you can specify chunks of code using code blocks::
@@ -201,8 +205,11 @@ Note:
     `Source <https://github.com/sphinx-doc/sphinx/issues/3921>`__
     Please note the double _ _ after the link !
 
+Important:
+   Something you're hoping users will read ...
+
 Caution:
-    Something to be careful about.
+    Something you're hoping users will read carefully ...
 
 """
 ```

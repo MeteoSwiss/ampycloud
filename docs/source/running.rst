@@ -10,13 +10,36 @@ Using ampycloud
 Running the algorithm
 ---------------------
 
-ampycloud.core.run
-..................
+The :py:func:`ampycloud.core.run` function
+..........................................
 
 Applying the ampycloud algorithm to a given set of ceilometer cloud base hits is done via the
 following function, that is also directly accessible as ``ampycloud.run()``.
 
 .. autofunction:: ampycloud.core.run
+    :noindex:
+
+The :py:class:`ampycloud.data.CeiloChunk` class
+...............................................
+
+The function :py:func:`ampycloud.core.run` returns a :py:class:`ampycloud.data.CeiloChunk` class
+instance, which is at the core of ampycloud. This class is used to load and format the
+user-supplied data, execute the different ampycloud algorithm steps, and format their outcomes.
+
+The properties of the slices/groups/layers identified by the different steps of the ampycloud
+algorithm are accessible, as :py:class:`pandas.DataFrame` instances, via the class properties
+:py:attr:`ampycloud.data.CeiloChunk.slices`, :py:attr:`ampycloud.data.CeiloChunk.groups`, and
+:py:attr:`ampycloud.data.CeiloChunk.layers`.
+
+.. note::
+    :py:meth:`ampycloud.data.CeiloChunk.metar_msg` relies on
+    :py:attr:`ampycloud.data.CeiloChunk.layers` to derive the corresponding METAR-like message.
+
+All these slices/groups/layer parameters are being compiled/computed by
+:py:meth:`ampycloud.data.CeiloChunk.metarize`, which contains all the info about the different
+parameters.
+
+.. autofunction:: ampycloud.data.CeiloChunk.metarize
     :noindex:
 
 
@@ -36,7 +59,7 @@ will directly provide interested users with the ampycloud-METAR/synop messages f
 Adjusting the default algorithm parameters
 ..........................................
 
-.. caution::
+.. important::
 
     It is highly recommended to adjust any scientific parameters **before** executing any of the
     ampycloud routines. Doing otherwise may have un-expected consequences (i.e. parameters may not
@@ -44,20 +67,20 @@ Adjusting the default algorithm parameters
 
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
-are accessible in the ``ampycloud.dynamic`` module.  From there, users can easily adjust them as they
-see fit. For example:
+are accessible in the :py:mod:`ampycloud.dynamic` module.  From there, users can easily adjust them
+as they see fit. For example:
 ::
 
     from ampycloud import dynamic
 
     dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
 
-Note that it is important to always import the entire ``dynamic`` module and stick to the above
-structure if the updated parameters are to be *seen* by all the ampycloud modules.
+Note that it is important to always import the entire :py:mod:`dynamic` module and stick to the
+above structure if the updated parameters are to be *seen* by all the ampycloud modules.
 
 Alternatively, all the scientific parameters can be adjusted and fed to ampycloud via a YAML file,
-in which case the routines ```ampycloud.copy_prm_file()`` and ``ampycloud.set_prms()`` may be of
-interest.
+in which case the following routines, also accessible as ``ampycloud.copy_prm_file()`` and
+``ampycloud.set_prms()`` may be of interest:
 
 .. autofunction:: ampycloud.core.copy_prm_file
     :noindex:
@@ -67,8 +90,8 @@ interest.
     :noindex:
 
 
-If all hope is lost and you wish to revert to the original (default) values of the all the
-ampycloud scientific parameters, you can use ```ampycloud.reset_prms()``.
+If all hope is lost and you wish to revert to the original (default) values of all the
+ampycloud scientific parameters, you can use :py:func:`ampycloud.core.reset_prms()`.
 
 .. autofunction:: ampycloud.core.reset_prms
     :noindex:
@@ -77,29 +100,33 @@ ampycloud scientific parameters, you can use ```ampycloud.reset_prms()``.
 Advanced info for advanced users
 ********************************
 
-The majority of parameters present in ``dynamic.AMPYCLOUD_PRMS`` are fetched directly by the
-methods of the ``CeiloChunk`` class when they are called. As a result, modifying a specific
-parameter in ``dynamic.AMPYCLOUD_PRMS`` (e.g. ``dynamic.AMPYCLOUD_PRMS.OKTA_LIM8``) will be seen
-by any ``CeiloChunk`` instance already in existence.
+The majority of parameters present in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` are fetched
+directly by the methods of the :py:class:`ampycloud.data.CeiloChunk` class when they are required.
+As a result, modifying a specific parameter in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` (e.g.
+``OKTA_LIM8``) will be seen by any :py:class:`ampycloud.data.CeiloChunk` instance already in
+existence.
 
-The ``MSA`` and ``MSA_HIT_BUFFER`` are the only exception to this rule ! These two
-parameters are being applied (and deep-copied as ``CeiloChunk`` class variables) immediately at the
-initialization of any ``CeiloChunk`` instance. This implies that:
+The ``MSA`` and ``MSA_HIT_BUFFER`` parameters are the only exception to this rule ! These two
+parameters are being applied (and deep-copied as :py:class:`ampycloud.data.CeiloChunk` instance
+attributes) immediately at the initialization of any :py:class:`ampycloud.data.CeiloChunk` instance.
+This implies that:
 
     1. any cloud hits above ``MSA + MSA_HIT_BUFFER`` in the data will be cropped immediately in the
-       ``CeiloChunk.__init__()`` routine, and thus cannot be recovered by subsequently changing the
-       value of ``dynamic.AMPYCLOUD_PRMS.MSA``, and
+       :py:meth:`ampycloud.data.CeiloChunk.__init__` routine, and thus cannot be recovered by
+       subsequently changing the value of ``MSA`` in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
+       and
     2. any METAR/SYNOP message issued will always be subject to the Minimum Sector Altitude
-       value that was specified in ``dynamic.AMPYCLOUD_PRMS.MSA`` at the time the class
-       instance was initialized. This is to ensure consistency with the cropped data at all times.
+       value that was specified in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` at the time the
+       :py:class:`ampycloud.data.CeiloChunk` instance was initialized. This is to ensure
+       consistency with the cropped data at all times.
 
 .. _logging:
 
 Logging
 -------
 
-A ``NullHandler()`` is being set by ampycloud, such that no logging will be apparent to the users
-unless they explicitly set it up
+A :py:class:`logging.NullHandler` instance is being created by ampycloud, such that no logging will
+be apparent to the users unless they explicitly set it up themselves
 (`see here <https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library>`_ for
 more details).
 
@@ -113,7 +140,7 @@ make the following call before running ampycloud functions:
     logging.getLogger('ampycloud').setLevel('DEBUG')
 
 
-Each ampycloud module has a dedicated ``logger`` based on the module ``__name__``. Hence, users
+Each ampycloud module has a dedicated logger based on the module ``__name__``. Hence, users
 can adjust the logging level of each ampycloud module however they desire, e.g.:
 ::
 
@@ -155,7 +182,7 @@ system-wide, and set:
     dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'metsymb'
 
 
-.. warning::
+.. important::
 
     Using a system-wide LaTeX installation to create matplotlib figures **is not officially
     supported by matplotib**, and thus **not officially supported by ampycloud** either.
