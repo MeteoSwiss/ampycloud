@@ -10,6 +10,7 @@ Module contains: ICAO-related utilities
 
 # Import from Python
 import logging
+import numpy as np
 
 # Import from ampycloud
 from .logger import log_func_call
@@ -37,6 +38,11 @@ def significant_cloud(oktas : list) -> list:
     Source: Meteorological Service for International Air Navigation, Annex 3 to the Convention on
     International Civil Aviation, ICAO, 7th edition, July 2010.
 
+    Todo:
+        At the moment, there is no limit to the number of significant cloud layers possible. I.e.
+        any layer with 5 oktas or more will always be reported. Strictly speaking, the
+        ICAO doc does not speciify an upper limit ... right ? See #47.
+
     """
 
     sig_level = 0
@@ -44,6 +50,8 @@ def significant_cloud(oktas : list) -> list:
     for okta in oktas:
         if okta > sig_level:
             sig_level += 2
+            # Unless proven otherwise, report all layers that are BKn or more.
+            sig_level = np.min([sig_level, 4])
             sig += [True]
         else:
             sig += [False]
