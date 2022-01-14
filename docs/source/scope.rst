@@ -8,8 +8,10 @@ This has the following implications for ampycloud:
       Depending on the ceilometer type, the user will need to decide how to treat VV hits *before*
       passing them to ampycloud, e.g. by removing them or by converting them to cloud base
       heights.
+
     * ampycloud can evidently be used for R&D work, but the code itself should not be
       seen as an R&D platform.
+
     * Contributions via Pull Requests are always welcome (and appreciated !), but will only be
       considered if they:
 
@@ -25,3 +27,6 @@ This has the following implications for ampycloud:
       not meant to interact (directly) with other programming languages. The implementation of a
       complex API to interact with "the outside World" (e.g. to feed data to ampycloud using the
       JSON format) is not foreseen.
+
+    * ampycloud is not meant to handle/generate/derive ``CB/TCU`` codes. The module deals "basic"
+      cloud layers only.
