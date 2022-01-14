@@ -34,24 +34,21 @@ def significant_cloud(oktas : list) -> list:
         * first layer is always reported
         * second layer must be SCT or more (i.e. 3 oktas or more)
         * third layer must be BKN or more (i.e. 5 oktas or more)
+        * no more than 3 layers reported (since ampycloud does not deal with CB/TCU)
 
-    Source: Meteorological Service for International Air Navigation, Annex 3 to the Convention on
-    International Civil Aviation, ICAO, 7th edition, July 2010.
-
-    Todo:
-        At the moment, there is no limit to the number of significant cloud layers possible. I.e.
-        any layer with 5 oktas or more will always be reported. Strictly speaking, the
-        ICAO doc does not speciify an upper limit ... right ? See #47.
+    **Source**: Sec. 4.5.4.3 & footnote #14 in Table A3-1, Meteorological Service for International
+    Air Navigation, Annex 3 to the Convention on International Civil Aviation, ICAO, 7th edition,
+    July 2010.
 
     """
 
     sig_level = 0
     sig = []
     for okta in oktas:
-        if okta > sig_level:
+        # There can be no more than 3 significant cloud layers.
+        # See that footnote 14 in the ICAO doc !
+        if okta > sig_level and sig.count(True) < 3:
             sig_level += 2
-            # Unless proven otherwise, report all layers that are BKN or more.
-            sig_level = np.min([sig_level, 4])
             sig += [True]
         else:
             sig += [False]
