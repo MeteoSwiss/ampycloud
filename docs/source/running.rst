@@ -43,18 +43,14 @@ parameters.
     :noindex:
 
 
-The no-plots-required shortcuts
-...............................
+The no-plots-required shortcut
+..............................
 
-The following two functions, also accessible as ``ampycloud.metar() and ampycloud.synop()``,
-will directly provide interested users with the ampycloud-METAR/synop messages for a given dataset.
+The following functions, also accessible as ``ampycloud.metar()``,
+will directly provide interested users with the ampycloud METAR-like message for a given dataset.
 
 .. autofunction:: ampycloud.core.metar
     :noindex:
-
-.. autofunction:: ampycloud.core.synop
-    :noindex:
-
 
 Adjusting the default algorithm parameters
 ..........................................
@@ -115,7 +111,7 @@ This implies that:
        :py:meth:`ampycloud.data.CeiloChunk.__init__` routine, and thus cannot be recovered by
        subsequently changing the value of ``MSA`` in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
        and
-    2. any METAR/SYNOP message issued will always be subject to the Minimum Sector Altitude
+    2. any METAR-like message issued will always be subject to the Minimum Sector Altitude
        value that was specified in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` at the time the
        :py:class:`ampycloud.data.CeiloChunk` instance was initialized. This is to ensure
        consistency with the cropped data at all times.

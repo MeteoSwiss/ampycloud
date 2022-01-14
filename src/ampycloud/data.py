@@ -730,20 +730,19 @@ class CeiloChunk(AbstractChunk):
         identified by the layering algorithm. """
         return self._layers
 
-    def metar_msg(self, synop : bool = False, which : str = 'layers') -> str:
+    def metar_msg(self, which : str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
         Args:
-            synop (bool optional): if True, all cloud layers will be reported. Else, the ICAO's
-                cloud layer selection rules applicable to METARs will be applied.
             which (str, optional): whether to look at 'slices', 'groups', or 'layers'. Defaults to
                 'layers'.
 
         Returns:
             str: the METAR-like message.
 
-        The ICAO's cloud layer selection rules applicable to METARs will be applied, unless
-        ``synop==True``. See :py:func:`.icao.significant_cloud` for details.
+        Important:
+            The ICAO's cloud layer selection rules applicable to METARs will be applied to create
+            the resulting ``str`` ! See :py:func:`.icao.significant_cloud` for details.
 
         .. Caution::
             The Minimum Sector Altitude value set when the :py:class:`.CeiloChunk` instance **was
@@ -768,14 +767,12 @@ class CeiloChunk(AbstractChunk):
 
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
-        if synop:
-            report = (sligrolay['alt_base']<msa_val)
-        else:
-            report = sligrolay['significant']*(sligrolay['alt_base']<msa_val)
+        # What layers are significant *AND* below the MSA ?
+        report = sligrolay['significant']*(sligrolay['alt_base']<msa_val)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
 
-        # Here, deal with the situations when all clouds are above the msa
+        # Here, deal with the situations when all clouds are above the MSA
         if len(msg) ==0:
             return 'NCD'
 

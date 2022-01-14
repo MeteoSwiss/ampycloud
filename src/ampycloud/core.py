@@ -249,8 +249,8 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
             # Run the ampycloud algorithm on it
             chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
 
-            # Get the resulting METAR/SYNOP message
-            print(chunk.metar_msg(synop=False))
+            # Get the resulting METAR message
+            print(chunk.metar_msg())
 
             # Display the full information available for the layers found
             print(chunk.layers)
@@ -275,38 +275,6 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
 
     return chunk
 
-
-@log_func_call(logger)
-def synop(data : pd.DataFrame) -> str:
-    """ Runs the ampycloud algorithm on a dataset and extract a synop report of the cloud layers.
-
-    Args:
-        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
-
-    Returns:
-        str: the synop message.
-
-    Example:
-        ::
-
-            import ampycloud
-            from ampycloud.utils import mocker
-
-            # Generate the canonical demo dataset for ampycloud
-            mock_data = mocker.canonical_demo_data()
-
-            # Compute the synop message
-            msg = ampycloud.synop(mock_data)
-            print(msg)
-
-    """
-
-    # First, run the ampycloud algorithm
-    chunk = run(data)
-
-    # Then, return the synop message
-    return chunk.metar_msg(synop=True, which='layers')
-
 @log_func_call(logger)
 def metar(data : pd.DataFrame) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
@@ -315,7 +283,7 @@ def metar(data : pd.DataFrame) -> str:
         data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
 
     Returns:
-        str: the metar message.
+        str: the METAR-like message.
 
     Example:
     ::
@@ -335,8 +303,8 @@ def metar(data : pd.DataFrame) -> str:
     # First, run the ampycloud algorithm
     chunk = run(data)
 
-    # Then, return the synop message
-    return chunk.metar_msg(synop=False, which='layers')
+    # Then, return the METAR message
+    return chunk.metar_msg(which='layers')
 
 @log_func_call(logger)
 def demo() -> tuple:

@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-01-10] Update copyright years.
 ### Deprecated:
 ### Removed:
+ - [fpavogt, 2022-01-14] ampycloud.core.synop(), and all synop references.
 ### Security:
 
 ## [v0.1.0]

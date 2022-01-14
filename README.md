@@ -11,7 +11,7 @@ ampycloud refers to both this Python package and the algorithm at its core, desi
 characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
  (i.e. automatic cloud base *hits* measurements), and derive the corresponding METAR-like message.
 
-For the full documentation, installation instructions, etc ..., go to: https://MeteoSwiss.github.io/ampycloud
+For the full documentation, installation instructions, etc ..., go to: https://meteoswiss.github.io/ampycloud
 
 ### License & Copyright
 

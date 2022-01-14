@@ -83,7 +83,7 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
         adp.format_group_axes()
     if upto == 'layers':
         adp.show_layers()
-        adp.add_metar(synop=False)
+        adp.add_metar()
 
     # And add all the common stuff
     adp.add_ref_metar(ref_metar_origin, ref_metar)
