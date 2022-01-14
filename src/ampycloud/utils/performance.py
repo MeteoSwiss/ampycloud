@@ -22,8 +22,8 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def get_speed_benchmark(niter : int = 10) -> tuple:
-    """ This function will run and time :py:func:`..core.demo` to assess the code's performance
-    on a given machine.
+    """ This function will run and time :py:func:`ampycloud.core.demo` to assess the code's
+    performance on a given machine.
 
     For now, this is a rather dumb and uninspired way to do it. If the need ever arises, this
     could certainly be done better, and (for example) also with a finer step resolution to see

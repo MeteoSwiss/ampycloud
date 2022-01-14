@@ -50,7 +50,7 @@ def significant_cloud(oktas : list) -> list:
     for okta in oktas:
         if okta > sig_level:
             sig_level += 2
-            # Unless proven otherwise, report all layers that are BKn or more.
+            # Unless proven otherwise, report all layers that are BKN or more.
             sig_level = np.min([sig_level, 4])
             sig += [True]
         else:

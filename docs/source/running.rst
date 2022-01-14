@@ -75,12 +75,12 @@ as they see fit. For example:
 
     dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
 
-Note that it is important to always import the entire :py:mod:`dynamic` module and stick to the
+Note that it is important to always import the entire :py:mod:`ampycloud.dynamic` module and stick to the
 above structure if the updated parameters are to be *seen* by all the ampycloud modules.
 
 Alternatively, all the scientific parameters can be adjusted and fed to ampycloud via a YAML file,
 in which case the following routines, also accessible as ``ampycloud.copy_prm_file()`` and
-``ampycloud.set_prms()`` may be of interest:
+``ampycloud.set_prms()``, may be of interest:
 
 .. autofunction:: ampycloud.core.copy_prm_file
     :noindex:
@@ -102,11 +102,11 @@ Advanced info for advanced users
 
 The majority of parameters present in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` are fetched
 directly by the methods of the :py:class:`ampycloud.data.CeiloChunk` class when they are required.
-As a result, modifying a specific parameter in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` (e.g.
+As a result, modifying a specific entry in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` (e.g.
 ``OKTA_LIM8``) will be seen by any :py:class:`ampycloud.data.CeiloChunk` instance already in
 existence.
 
-The ``MSA`` and ``MSA_HIT_BUFFER`` parameters are the only exception to this rule ! These two
+The ``MSA`` and ``MSA_HIT_BUFFER`` entries are the only exception to this rule ! These two
 parameters are being applied (and deep-copied as :py:class:`ampycloud.data.CeiloChunk` instance
 attributes) immediately at the initialization of any :py:class:`ampycloud.data.CeiloChunk` instance.
 This implies that:

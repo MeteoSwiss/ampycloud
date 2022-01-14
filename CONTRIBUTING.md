@@ -192,7 +192,7 @@ Raises:
 
 Use some
 multi-line space for
-more detailed info. Refer to the whole module as :py:mod`ampycloud`.
+more detailed info. Refer to the whole module as :py:mod:`ampycloud`.
 Do all this **after** the Args, Returns, and Raises sections !
 
 Example:
