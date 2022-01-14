@@ -10,7 +10,6 @@ Module contains: ICAO-related utilities
 
 # Import from Python
 import logging
-import numpy as np
 
 # Import from ampycloud
 from .logger import log_func_call
