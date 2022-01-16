@@ -171,7 +171,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
 
     All that is required to run the ampycloud algorithm is a properly formatted dataset. At the
     moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots
-    (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``: so
+    (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``: as
     long as they are strings, you can set them to whatever you please.
 
     The input ``data`` must be a :py:class:`pandas.DataFrame` with the following column names
@@ -205,7 +205,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     .. important ::
         ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
         to the user to adjust the Vertical Visibility hit altitude (and/or ignore some of them, for
-        example) prior to feeding them to ampycloud.
+        example) prior to feeding them to ampycloud, so that it can be used as a cloud hit.
 
     .. important::
         ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits are simultaenous, or

@@ -46,8 +46,10 @@ parameters.
 The no-plots-required shortcut
 ..............................
 
-The following functions, also accessible as ``ampycloud.metar()``,
+The following function, also accessible as ``ampycloud.metar()``,
 will directly provide interested users with the ampycloud METAR-like message for a given dataset.
+It is a convenience function intended for users that do not want to generate diagnostic plots, but
+only seek the outcome of the ampycloud algorithm formatted as a METAR-like ``str``.
 
 .. autofunction:: ampycloud.core.metar
     :noindex:

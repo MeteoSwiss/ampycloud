@@ -35,9 +35,9 @@ def significant_cloud(oktas : list) -> list:
         * third layer must be BKN or more (i.e. 5 oktas or more)
         * no more than 3 layers reported (since ampycloud does not deal with CB/TCU)
 
-    **Source**: Sec. 4.5.4.3 & footnote #14 in Table A3-1, Meteorological Service for International
-    Air Navigation, Annex 3 to the Convention on International Civil Aviation, ICAO, 7th edition,
-    July 2010.
+    **Source**: Sec. 4.5.4.3 e) & footnote #14 in Table A3-1, Meteorological Service for
+    International Air Navigation, Annex 3 to the Convention on International Civil Aviation, ICAO,
+    20th edition, July 2018.
 
     """
 

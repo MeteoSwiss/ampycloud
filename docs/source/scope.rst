@@ -28,5 +28,5 @@ This has the following implications for ampycloud:
       complex API to interact with "the outside World" (e.g. to feed data to ampycloud using the
       JSON format) is not foreseen.
 
-    * ampycloud is not meant to handle/generate/derive ``CB/TCU`` codes. The module deals "basic"
-      cloud layers only.
+    * ampycloud is not meant to handle/generate/derive ``CB/TCU`` codes. The module deals with
+      "basic" cloud layers only.
