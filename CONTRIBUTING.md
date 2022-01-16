@@ -2,9 +2,9 @@
 
 If you:
 
-*  have a **question** about ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/discussions)
-*  want to **report a bug** with ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/issues)
-* are considering to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
+*  :boom: want to **report a bug** with ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/issues)
+*  :question: have a **question** about ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/discussions)
+* :construction_worker: want to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
 
 
 ## Table of contents
@@ -14,14 +14,18 @@ If you:
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
     - [Installing from source](#installing-from-source)
-    - [CI/CD](#ci/cd)
+    - [CI/CD](#cicd)
     - [Linting](#linting)
     - [Logging](#logging)
     - [Exceptions and Warnings](#exceptions-and-warnings)
+    - [Type hints](#type-hints-)
     - [Docstrings](#docstrings)
     - [Documentation](#documentation)
     - [Testing](#testing)
     - [Plotting](#plotting)
+- [Less-Essential things to know about ampycloud for dev work](#less-essential-things-to-know-about-ampycloud-for-dev-work)
+    - [Updating the copyright years](#updating-the-copyright-years)
+
 
 ## Code of conduct
 
@@ -152,14 +156,25 @@ from .errors import AmpycloudWarning
 warnings.warn('...', AmpycloudWarning)
 ```
 
+### Type hints ...
+
+... should be used in ampycloud. Here's an example:
+```
+from typing import Union
+from pathlib import Path
+
+
+def set_prms(pth : Union[str, Path]) -> None:
+    """ ... """
+```
+See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
+
 ### Docstrings
-Google Style ! Please try to stick to the following example:
+Google Style ! Please try to stick to the following example. Note the use of `:py:class:...`
+([or `:py:func:...`, `py:mod:...` etc ...](https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cross-referencing-python-objects)) with relative import to cleanly link to our own
+functions, classes, etc ... :
 ```
 """ A brief one-liner description in present tense, that finishes with a dot.
-
-Use some
-multi-line space for
-more detailed info.
 
 Args:
     x (float|int): variable x could be of 2 types ... note the use of `|` to say that !
@@ -169,10 +184,16 @@ Args:
     y (list[str]|str, optional): variable y info
 
 Returns:
-    bool: some grand Truth about the World.
+    :py:class:`.data.CeiloChunk`: more lorem ipsum ...
 
 Raises:
-    AmpycloudError: if blah and blah occurs.
+    :py:exc:`.errors.AmpycloudError`: if blah and blah occurs.
+
+
+Use some
+multi-line space for
+more detailed info. Refer to the whole module as :py:mod:`ampycloud`.
+Do all this **after** the Args, Returns, and Raises sections !
 
 Example:
     If needed, you can specify chunks of code using code blocks::
@@ -184,8 +205,11 @@ Note:
     `Source <https://github.com/sphinx-doc/sphinx/issues/3921>`__
     Please note the double _ _ after the link !
 
+Important:
+   Something you're hoping users will read ...
+
 Caution:
-    Something to be careful about.
+    Something you're hoping users will read carefully ...
 
 """
 ```
@@ -236,7 +260,7 @@ this list of scientific tests *as short as possible, but as complete as necessar
 If one of these tests fail, it is possible to generate the corresponding diagnostic plot with the
 following fixture-argument:
 ```
-pytest --do_SCIPLOTS
+pytest --DO_SCIPLOTS
 ```
 
 ### Plotting
@@ -263,3 +287,17 @@ def some_plot_function(...):
 
 With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
+
+## Less-Essential things to know about ampycloud for dev work
+
+### Updating the copyright years
+The ampycloud copyright years may need to be updated if the development goes on beyond 2022. If so,
+the copyright years will need to be manually updated in the following locations:
+
+* `docs/source/substitutions.rst` (the copyright tag)
+* `docs/source/conf.py` (the `copyright` variable)
+* `docs/source/license.rst`
+* `README.md` (the copyright section)
+
+The copyright years are also present in all the docstring modules. These can be updated individually
+if/when a modification is made to a given module.

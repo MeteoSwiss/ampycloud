@@ -19,7 +19,7 @@ import pandas as pd
 from ampycloud import dynamic, reset_prms
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
-from ampycloud.core import copy_prm_file, reset_prms, run, synop, metar, demo
+from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
 
 def test_copy_prm_file():
     """ Test the copy_prm_file routine."""
@@ -71,12 +71,9 @@ def test_run():
     out = run(mock_data)
 
     assert isinstance(out, CeiloChunk)
-    assert out.metar_msg(synop=True) == 'FEW009 FEW019'
-    assert out.metar_msg(synop=False) == 'FEW009'
+    assert out.metar_msg() == 'FEW009'
 
-    # While I'm at it, also check the metar and synop routines, that are so close
-
-    assert synop(mock_data) == 'FEW009 FEW019'
+    # While I'm at it, also check the metar routines, that are so close
     assert metar(mock_data) == 'FEW009'
 
 def test_run_single_point():

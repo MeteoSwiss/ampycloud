@@ -7,7 +7,7 @@ License & Copyright
 
 ampycloud is distributed under the terms of the 3-Clause BSD License terms, that are as follows:
 
-Copyright 2021 MeteoSwiss, contributors listed under AUTHORS
+Copyright 2021-2022 MeteoSwiss, contributors listed under AUTHORS
 
 Redistribution and use in source and binary forms, with or without modification, are permitted
 provided that the following conditions are met:

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -31,6 +31,8 @@ def test_ceilochunk_init():
                                    [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
                                      'hit_rate': rate, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
+    # The following line is required as long as the mocker module issues mock data with type 99.
+    mock_data.iloc[-1, mock_data.columns.get_loc('type')] = 1
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -41,7 +43,9 @@ def test_ceilochunk_init():
     dynamic.AMPYCLOUD_PRMS.MSA = 0
     dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = 0
     chunk = CeiloChunk(mock_data)
-    assert len(chunk.data) == 0
+    # Applying the MSA should crop any Type 2 or more hits, and change Type 1 or less to Type 0.
+    assert len(chunk.data) == len(mock_data[mock_data.type <=1])
+    assert not np.any(chunk.data.type>0)
     # Verify the class MSA value is correct too ...
     assert chunk.msa == 0
 
@@ -50,6 +54,10 @@ def test_ceilochunk_init():
     dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = mock_data['alt'].max() + 10
     chunk = CeiloChunk(mock_data)
     assert len(chunk.data) == len(mock_data)
+
+    # Check that feeding an empty dataframe crashes properly
+    with raises(AmpycloudError):
+        _ = CeiloChunk(mock_data[:0])
 
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
     reset_prms()
@@ -111,7 +119,7 @@ def test_ceilochunk_basic():
 
     # Assert the METAR-like message
     assert chunk.metar_msg() == 'OVC009'
-    assert chunk.metar_msg(which='groups', synop=True) == 'OVC009'
+    assert chunk.metar_msg(which='groups') == 'OVC009'
 
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
@@ -165,4 +173,3 @@ def test_ceilochunk_2lay():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'FEW009'
-    assert chunk.metar_msg(synop=True) == 'FEW009 FEW019'

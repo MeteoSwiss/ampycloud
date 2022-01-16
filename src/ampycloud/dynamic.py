@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -18,5 +18,5 @@ def get_default_prms() -> Config:
     return Config(paths=[str(Path(__file__).parent/ 'prms')], name='ampycloud_default_prms.yml')
 
 
-# Load the defaults ampycloud parameters
+#:dict: The ampycloud parameters, first set from a config file via :py:func:`.get_default_prms`
 AMPYCLOUD_PRMS = get_default_prms()
