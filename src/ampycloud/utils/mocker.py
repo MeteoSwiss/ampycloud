@@ -111,7 +111,7 @@ def mock_layers(n_ceilos : int, layer_prms : list) -> pd.DataFrame:
                 'period': 100, 'amplitude': 0}
 
     Returns:
-        DataFrame: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
+        pd.DataFrame: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
         ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time deltas in s,
         3) hit altitudes in ft, and 4) hit type.
 

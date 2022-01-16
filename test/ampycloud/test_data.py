@@ -119,7 +119,7 @@ def test_ceilochunk_basic():
 
     # Assert the METAR-like message
     assert chunk.metar_msg() == 'OVC009'
-    assert chunk.metar_msg(which='groups', synop=True) == 'OVC009'
+    assert chunk.metar_msg(which='groups') == 'OVC009'
 
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
@@ -173,4 +173,3 @@ def test_ceilochunk_2lay():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'FEW009'
-    assert chunk.metar_msg(synop=True) == 'FEW009 FEW019'

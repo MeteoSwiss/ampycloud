@@ -6,12 +6,16 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [Unreleased]
 ### Added:
+ - [fpavogt, 2022-01-13] New icao module, for easy/clean access to the significant_cloud() function.
+ - [fpavogt, 2022-01-13] Doc cleanup/improvement, and use of :py:func: (etc...) function to ease user navigation.
 ### Fixed:
  - [fpavogt, 2022-01-10] Fix issues #40 and #41.
 ### Changed:
+ - [fpavogt, 2022-01-14] Fix #47.
  - [fpavogt, 2022-01-10] Update copyright years.
 ### Deprecated:
 ### Removed:
+ - [fpavogt, 2022-01-14] ampycloud.core.synop(), and all synop references.
 ### Security:
 
 ## [v0.1.0]

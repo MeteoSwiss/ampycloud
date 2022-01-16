@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -30,7 +30,12 @@ setup(
     # Tell setuptools packages are under src
     package_dir={"": "src"},
 
-    url="https://github.com/MeteoSwiss/ampycloud",
+    url="https://meteoswiss.github.io/ampycloud",
+    project_urls={
+        'Source': 'https://github.com/MeteoSwiss/ampycloud/',
+        'Changelog': 'https://meteoswiss.github.io/ampycloud/changelog.html',
+        'Issues': 'https://github.com/MeteoSwiss/ampycloud/issues'
+    },
     author="Frédéric P.A. Vogt",
     author_email="frederic.vogt@meteoswiss.ch",
     description="Characterization of cloud layers from ceilometer measurements",
@@ -65,6 +70,7 @@ setup(
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Meteorology',
+        'Topic :: Scientific/Engineering :: Atmospheric Science',
 
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: BSD License',

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -31,13 +31,13 @@ from ..version import VERSION
 logger = logging.getLogger(__name__)
 
 class DiagnosticPlot:
-    """ Class used to create diagnsotic plots """
+    """ Class used to create diagnostic plots. """
 
     def __init__(self, chunk : CeiloChunk) -> None:
         """ The init function.
 
         Args:
-            chunk (CeiloChunk): A ceilometer Data Chunk.
+            :py:class:`ampycloud.data.CeiloChunk`: a ceilometer Data Chunk.
 
         """
 
@@ -91,12 +91,13 @@ class DiagnosticPlot:
     def show_hits_only(self, show_ceilos : bool = False) -> None:
         """ Shows the ceilometer hits alone.
 
-        Note:
-            This will clear the plot first !
-
         Args:
             show_ceilos (bool, optional): whether to distinguish between the different ceilos,
                 or not.
+
+        Important:
+            This will clear the plot first !
+
         """
 
         # Let's create an array of colors for *every* (sigh) point ...
@@ -142,7 +143,7 @@ class DiagnosticPlot:
                                 title='Ceilo. names')
 
     def show_slices(self) -> None:
-        """ Show the slices data. """
+        """ Show the slice data. """
 
         # Let's start by cleaning the plotting area
         self._axs[0].clear()
@@ -390,15 +391,11 @@ class DiagnosticPlot:
                               #          boxstyle='round, pad=0.25')
                               )
 
-    def add_metar(self, synop : bool = False) -> None:
-        """ Display the ampycloud METAR/SYNOP message.
-
-        Args:
-            synop (bool, optional): If True, will display the full SYNOP message. Defaults to False.
-        """
+    def add_metar(self) -> None:
+        """ Display the ampycloud METAR message."""
 
         # Combine it all in one message
-        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg(synop=synop)
+        msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg()
 
         if self._chunk.msa is not None:
             msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(self._chunk.msa)
