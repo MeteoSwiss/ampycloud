@@ -34,14 +34,14 @@ ampycloud is compatible with the following python versions:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 39
+    :lines: 44
 
 Furthermore, ampycloud relies on a few external modules, which will be automatically installed by
 ``pip`` if required:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 41-46
+    :lines: 45-52
 
 Testing the installation & Speed benchmark
 ------------------------------------------

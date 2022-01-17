@@ -10,4 +10,4 @@
 [BASIC]
 
 # Good variable names which should always be accepted, separated by a comma.
-good-names=a, ax, b, c, fn, i, j, k, _, w, x, y, z
+good-names=a, ax, b, c, dt, fn, i, j, k, _, w, x, y, z

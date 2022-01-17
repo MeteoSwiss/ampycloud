@@ -1,12 +1,8 @@
 
-Documentation todos
-===================
+TODO list
+=========
 
-.. note::
-
-    All the following items need to be dealt with at some point ...
-    
-    When this page is finally empty ... delete it!
+What follows is a list of all the ``TODO`` left in the docs and the code.
 
 
 

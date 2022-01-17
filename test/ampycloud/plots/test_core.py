@@ -42,7 +42,7 @@ def test_diagnostic(mpls):
     for sufx in sufxs:
         diagnostic(chunk, upto=sufx, show_ceilos=True, show=False,
                    save_stem=base_name+sufx, save_fmts='pdf',
-                   ref_metar_origin='Mock data', ref_metar='FEW008 BKN037')
+                   ref_metar_origin='Mock data', ref_metar='FEW009 SCT018 BKN038')
 
         assert Path(base_name+sufx+'.pdf').exists
 
