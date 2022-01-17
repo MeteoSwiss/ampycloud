@@ -20,6 +20,7 @@ from sklearn.mixture import GaussianMixture
 from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from .scaler import minmax_scaling
+from .utils import utils
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -158,9 +159,9 @@ def ncomp_from_gmm(vals : np.ndarray,
             Akaike Information criterion scores.
         rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value
             before running the Gaussian Mixture Modelling. Defaults to None = no rescaling.
-        random_seed (int, optional): a value fed to numpy.random.seed to ensure repeatable
-            results. Defaults to 42, because it is the Answer to the Ultimate Question of Life, the
-            Universe, and Everything.
+        random_seed (int, optional): used to reset **temporarily** the value of
+            :py:func:`numpy.random.seed` to ensure repeatable results. Defaults to 42, because it
+            is the Answer to the Ultimate Question of Life, the Universe, and Everything.
         **kwargs (dict, optional): these will be fed to `best_gmm()`.
 
     Returns:
@@ -172,8 +173,6 @@ def ncomp_from_gmm(vals : np.ndarray,
         `<https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html>`_
     """
 
-    # To ensure repeatability of the results, let's define a seed here.
-    np.random.seed(random_seed)
 
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
@@ -205,8 +204,9 @@ def ncomp_from_gmm(vals : np.ndarray,
     models = {}
 
     # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
-    for n_val in ncomp:
-        models[n_val] = GaussianMixture(n_val, covariance_type='spherical').fit(vals)
+    with utils.tmp_seed(random_seed):
+        for n_val in ncomp:
+            models[n_val] = GaussianMixture(n_val, covariance_type='spherical').fit(vals)
 
     # Extract the AICS and BICS scores
     if scores == 'AIC':

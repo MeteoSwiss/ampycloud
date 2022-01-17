@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -17,12 +17,10 @@ import pandas as pd
 # import from ampycloud
 from ..logger import log_func_call
 from ..errors import AmpycloudError
+from . import utils
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
-
-# Define a proper random number generator
-np.random.seed(42)
 
 @log_func_call(logger)
 def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float) -> pd.DataFrame:
@@ -204,5 +202,10 @@ def canonical_demo_data() -> pd.DataFrame:
             {'alt': 5000, 'alt_std': 200, 'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1000},
             ]
 
-    # Actually generate the mock data
-    return mock_layers(n_ceilos, lookback_time, hit_rate, lyrs)
+
+    # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.
+    with utils.tmp_seed(42):
+        # Actually generate the mock data
+        out = mock_layers(n_ceilos, lookback_time, hit_rate, lyrs)
+
+    return out
