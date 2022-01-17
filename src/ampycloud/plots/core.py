@@ -16,7 +16,7 @@ from typing import Union
 from ..data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
-from .utils import set_mplstyle
+from .tools import set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)

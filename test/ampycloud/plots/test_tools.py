@@ -9,7 +9,7 @@ Module content: tests for the plots.utils module
 """
 
 # Import from ampycloud
-from ampycloud.plots.utils import valid_styles
+from ampycloud.plots.tools import valid_styles
 
 
 def test_valid_styles():

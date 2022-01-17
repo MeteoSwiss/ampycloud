@@ -21,7 +21,7 @@ from matplotlib import rcParams
 # Import from this package
 from ..scaler import scaling
 from .hardcoded import WIDTH_TWOCOL, MRKS
-from .utils import texify
+from .tools import texify
 from .. import wmo
 from ..data import CeiloChunk
 from .. import dynamic

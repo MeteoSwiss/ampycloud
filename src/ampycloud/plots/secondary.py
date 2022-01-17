@@ -19,7 +19,7 @@ from ..logger import log_func_call
 from ..scaler import scaling
 from .. import dynamic
 from .hardcoded import WIDTH_TWOCOL
-from .utils import texify, set_mplstyle
+from .tools import texify, set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)

@@ -34,7 +34,7 @@ def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : floa
             reach this value. Must be 0 <= x <= 1.
 
     Returns:
-        pd.DataFrame: the simulated layer with columns ['dt', 'alt'].
+        :py:class:`pandas.DataFrame`: the simulated layer with columns ['dt', 'alt'].
     """
 
     # How many points do I need to generate ?
@@ -74,7 +74,7 @@ def sin_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float
         amplitude (int|float): amplitude of the sine-wave, in ft.
 
     Returns:
-        pd.DataFrame: the simulated layer with columns ['alt', 'dt'].
+        :py:class:`pandas.DataFrame`: the simulated layer with columns ['alt', 'dt'].
     """
 
     # First, get a flat layer
@@ -96,14 +96,15 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_rate: float,
         hit_rate (float): rate of data acquisition.
         layer_prms (list of dict): list of layer parameters, provided as a dict for each layer.
             Each dict should specify all the parameters required to generate a
-            :py:func:`.sin_layer` (with the exception of ``hit_rate`` and ``lookback_time``):
+            :py:func:`.sin_layer` (with the exception of ``dts`` that will be computed directly
+            from ``lookback_time`` and ``hit_rate``):
             ::
 
                 {'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
                 'period': 100, 'amplitude': 0}
 
     Returns:
-        pd.DataFrame: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
+        :py:class:`pandas.DataFrame`: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
         ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time deltas in s,
         3) hit altitudes in ft, and 4) hit type.
 
@@ -135,18 +136,12 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_rate: float,
         dts = np.random.random(n_pts) * -lookback_time
 
         # Let's now loop through each cloud layer and generate them
-        layers = [sin_layer(dts=dts, **prms)
-                  for prms in layer_prms]
+        layers = [sin_layer(dts=dts, **prms) for prms in layer_prms]
 
-        # Make the time stamps the same for all the layers - this is to reproduce the fact that all
-        # layers are detected at the same moment by ceilometers returning multiple hits.
-        for layer in layers:
-            layer.loc[:, 'dt'] = layers[0]['dt']
-            # Add the type column while I'm at it. Set it to None for now.
-            layer['type'] = None
-
-        # Merge them all into one ...
+        # Merge them all into one DataFrame ...
         layers = pd.concat(layers).reset_index(drop=True)
+        # Add the type column while I'm at it. Set it to None for now.
+        layers['type'] = None
 
         # Here, adjust the types so that it ranks lowest to highest for every dt step.
         # This needs to be done on a point by point basis, given that layers an cross each other.
@@ -188,7 +183,7 @@ def canonical_demo_data() -> pd.DataFrame:
     illustrate the full behavior of the algorithm.
 
     Returns:
-        pd.DataFrame: the canonical mock dataset with properly-formatted columns.
+        :py:class:`pandas.DataFrame`: the canonical mock dataset with properly-formatted columns.
 
     """
 
