@@ -20,7 +20,7 @@ And that would take care of things. ampycloud uses `semantic versioning <https:/
 The latest stable version is |version|.
 
 The most recent release of ampycloud is available for download/cloning from its
-`Github repository <https://github.com/MeteoSwiss-MDA/ampycloud/releases/latest/>`_, in which case
+`Github repository <https://github.com/MeteoSwiss/ampycloud/releases/latest/>`_, in which case
 the install command becomes:
 
 .. code-block:: python
