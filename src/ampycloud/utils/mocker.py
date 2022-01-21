@@ -27,7 +27,7 @@ def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : floa
     """ Generates a mock, flat, Gaussian cloud layer around a given altitude.
 
     Args:
-        dts (np.array): time deltas for the simulated ceilometer hits.
+        dts (np.array of float): time deltas, in s, for the simulated ceilometer hits.
         alt (float): layer mean altitude, in ft.
         alt_std (float): layer altitude standard deviation, in ft.
         sky_cov_frac (float): Sky coverage fraction. Random hits will be set to NaN to
@@ -65,7 +65,7 @@ def sin_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float
     """ Generates a sinusoidal cloud layer.
 
     Args:
-        dts (np.array): time deltas for the simulated ceilometer hits.
+        dts (np.array of float): time deltas, in s, for the simulated ceilometer hits.
         alt (float): layer mean altitude, in ft.
         alt_std (float): layer altitude standard deviation, in ft.
         sky_cov_frac (float, optional): Sky coverage fraction. Random hits will be set to NaN to
@@ -86,27 +86,27 @@ def sin_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float
     return out
 
 
-def mock_layers(n_ceilos : int, lookback_time : float, hit_rate: float,
+def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
                 layer_prms : list) -> pd.DataFrame:
     """ Generate a mock set of cloud layers for a specified number of ceilometers.
 
     Args:
         n_ceilos (int): number of ceilometers to simulate.
         lookback_time (float): length of the time interval, in s.
-        hit_rate (float): rate of data acquisition.
+        hit_gap (float): number of seconds between ceilometer measurements.
         layer_prms (list of dict): list of layer parameters, provided as a dict for each layer.
             Each dict should specify all the parameters required to generate a
             :py:func:`.sin_layer` (with the exception of ``dts`` that will be computed directly
-            from ``lookback_time`` and ``hit_rate``):
+            from ``lookback_time`` and ``hit_gap``):
             ::
 
                 {'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
                 'period': 100, 'amplitude': 0}
 
     Returns:
-        :py:class:`pandas.DataFrame`: a pandas DataFrame with the mock data, ready to be fed to ampycloud. Columns
-        ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time deltas in s,
-        3) hit altitudes in ft, and 4) hit type.
+        :py:class:`pandas.DataFrame`: a pandas DataFrame with the mock data, ready to be fed to
+        ampycloud. Columns ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time
+        deltas in s, 3) hit altitudes in ft, and 4) hit type.
 
     TODO:
         - add the possibility to set some VV hits in the mix
@@ -132,7 +132,7 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_rate: float,
     for ceilo in range(n_ceilos):
 
         # Let's compute the time steps
-        n_pts = int(np.ceil(lookback_time/hit_rate))
+        n_pts = int(np.ceil(lookback_time/hit_gap))
         dts = np.random.random(n_pts) * -lookback_time
 
         # Let's now loop through each cloud layer and generate them
@@ -144,7 +144,7 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_rate: float,
         layers['type'] = None
 
         # Here, adjust the types so that it ranks lowest to highest for every dt step.
-        # This needs to be done on a point by point basis, given that layers an cross each other.
+        # This needs to be done on a point by point basis, given that layers can cross each other.
         for dt in np.unique(layers['dt']):
             # Get the hit altitudes, and sort them from lowest to highest
             alts = layers[layers['dt']==dt]['alt'].sort_values(axis=0)
@@ -190,7 +190,7 @@ def canonical_demo_data() -> pd.DataFrame:
     # Create the "famous" mock dataset
     n_ceilos = 4
     lookback_time = 1200
-    hit_rate = 30
+    hit_gap = 30
 
     lyrs = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 0.1, 'period': 10, 'amplitude': 0},
             {'alt': 2000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
@@ -201,6 +201,6 @@ def canonical_demo_data() -> pd.DataFrame:
     # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.
     with utils.tmp_seed(42):
         # Actually generate the mock data
-        out = mock_layers(n_ceilos, lookback_time, hit_rate, lyrs)
+        out = mock_layers(n_ceilos, lookback_time, hit_gap, lyrs)
 
     return out
