@@ -21,7 +21,7 @@ from matplotlib import rcParams
 # Import from this package
 from ..scaler import scaling
 from .hardcoded import WIDTH_TWOCOL, MRKS
-from .utils import texify
+from .tools import texify
 from .. import wmo
 from ..data import CeiloChunk
 from .. import dynamic
@@ -415,7 +415,12 @@ class DiagnosticPlot:
         self._axs[0].set_ylabel(r'Alt. [ft]', labelpad=10)
 
     def format_slice_axes(self) -> None:
-        """ Format the duplicate axes related to the slicing part. """
+        """ Format the duplicate axes related to the slicing part.
+
+        Todo:
+            Cleanup the code once #25 is fixed.
+
+        """
 
         # First, get the scaling parameters, and switch them over to a 'descale' mode ...
         # TODO: Once issue #25 is fixed, maybe update these lines ...
@@ -463,7 +468,12 @@ class DiagnosticPlot:
             secax_y.tick_params(axis='y', which='both', labelsize=rcParams['font.size']-2)
 
     def format_group_axes(self) -> None:
-        """ Format the duplicate axes related to the grouping part. """
+        """ Format the duplicate axes related to the grouping part.
+
+        Todo:
+            Cleanup the code once #25 is fixed.
+
+        """
 
         # First, get the scaling parameters, and switch them over to a 'descale' mode ...
         # TODO: once issue #25 is fixed, maybe update these lines ...

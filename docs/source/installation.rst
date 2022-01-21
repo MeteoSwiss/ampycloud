@@ -20,7 +20,7 @@ And that would take care of things. ampycloud uses `semantic versioning <https:/
 The latest stable version is |version|.
 
 The most recent release of ampycloud is available for download/cloning from its
-`Github repository <https://github.com/MeteoSwiss-MDA/ampycloud/releases/latest/>`_, in which case
+`Github repository <https://github.com/MeteoSwiss/ampycloud/releases/latest/>`_, in which case
 the install command becomes:
 
 .. code-block:: python
@@ -34,14 +34,14 @@ ampycloud is compatible with the following python versions:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 39
+    :lines: 44
 
 Furthermore, ampycloud relies on a few external modules, which will be automatically installed by
 ``pip`` if required:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 41-46
+    :lines: 45-52
 
 Testing the installation & Speed benchmark
 ------------------------------------------

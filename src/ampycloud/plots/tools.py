@@ -5,7 +5,7 @@ Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module contains: utilities functions for plots
+Module contains: tools for plots
 """
 
 # Import from Python

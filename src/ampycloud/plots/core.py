@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -16,7 +16,7 @@ from typing import Union
 from ..data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
-from .utils import set_mplstyle
+from .tools import set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)

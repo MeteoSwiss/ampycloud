@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -35,14 +35,11 @@ def test_dynamic_module():
     assert tmp == 'bad'
 
     # Also test with new dictionnary keys, that seems to behave differently
-    # TODO: if issue #24 gets fixed, this may need to be adjusted ...
     tmp = {}
     tmp.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
     tmp['new_entry'] = 'rubbish'
-
     assert 'new_entry' in tmp.keys()
     assert 'new_entry' not in dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs.keys()
-
 
     # Reset everything so as to not break havoc with the other tests
     reset_prms()

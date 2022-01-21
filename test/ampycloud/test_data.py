@@ -27,9 +27,8 @@ def test_ceilochunk_init():
 
     # Create some fake data to get started
     # 1 very flat layer with no gaps
-    mock_data = mocker.mock_layers(n_ceilos,
-                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                     'hit_rate': rate, 'sky_cov_frac': 1,
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
     # The following line is required as long as the mocker module issues mock data with type 99.
     mock_data.iloc[-1, mock_data.columns.get_loc('type')] = 1
@@ -71,9 +70,8 @@ def test_ceilochunk_basic():
 
     # Create some fake data to get started
     # 1 very flat layer with no gaps
-    mock_data = mocker.mock_layers(n_ceilos,
-                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                     'hit_rate': rate, 'sky_cov_frac': 1,
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -130,9 +128,8 @@ def test_ceilochunk_nocld():
 
     # Create some fake data to get started
     # 1 very flat layer with no gaps
-    mock_data = mocker.mock_layers(n_ceilos,
-                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                     'hit_rate': rate, 'sky_cov_frac': 0,
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -154,13 +151,10 @@ def test_ceilochunk_2lay():
     rate = 30
 
     # Create some fake data to get started
-    # 1 very flat layer with no gaps
-    mock_data = mocker.mock_layers(n_ceilos,
-                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                     'hit_rate': rate, 'sky_cov_frac': 0.5,
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                      'period': 100, 'amplitude': 0},
-                                    {'alt':2000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                       'hit_rate': rate, 'sky_cov_frac': 0.5,
+                                    {'alt':2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                        'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -172,4 +166,4 @@ def test_ceilochunk_2lay():
     chunk.find_layers()
 
     # Assert the final METAR code is correct
-    assert chunk.metar_msg() == 'FEW009'
+    assert chunk.metar_msg() == 'SCT009 SCT019'

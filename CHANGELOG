@@ -4,11 +4,21 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [v0.3.0]
 ### Added:
+### Fixed:
+### Changed:
+### Deprecated:
+### Removed:
+### Security:
+
+## [v0.2.0]
+### Added:
+ - [fpavogt, 2022-01-17] Added new utils.utils.temp_seed() function to set random seed temporarily only.
  - [fpavogt, 2022-01-13] New icao module, for easy/clean access to the significant_cloud() function.
  - [fpavogt, 2022-01-13] Doc cleanup/improvement, and use of :py:func: (etc...) function to ease user navigation.
 ### Fixed:
+ - [fpavogt, 2022-01-17] Fix #49 - mock cloud layers now have proper type values.
  - [fpavogt, 2022-01-10] Fix issues #40 and #41.
 ### Changed:
  - [fpavogt, 2022-01-14] Fix #47.

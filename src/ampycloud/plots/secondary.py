@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -19,7 +19,7 @@ from ..logger import log_func_call
 from ..scaler import scaling
 from .. import dynamic
 from .hardcoded import WIDTH_TWOCOL
-from .utils import texify, set_mplstyle
+from .tools import texify, set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
