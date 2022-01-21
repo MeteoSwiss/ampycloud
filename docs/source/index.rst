@@ -8,7 +8,7 @@ ampycloud |version| |stars| |watch|
 
 .. todo::
 
-    Tags for the latest pypi release and associated DOI should be added when releasing the code
+    Tags for the latest DOI should be added when releasing the code
     for the first time. These should also be added to the :ref:`acknowledge:Acknowledging ampycloud`
     page.
 

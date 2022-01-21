@@ -2,9 +2,9 @@
 '''
 Copyright (c) 2020-2021 MeteoSwiss, contributors listed in AUTHORS.
 
-Distributed under the terms of the GNU General Public License v3.0 or later.
+Distributed under the terms of the 3-Clause BSD License.
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: BSD-3-Clause
 
 This script can be used together with a Github Action to build the docs, and check for errors and
 warnings. This script assumes that it is being executed from within the "docs" folder.

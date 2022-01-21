@@ -1,5 +1,8 @@
-include LICENSE
 include AUTHORS
+include CHANGELOG
+include CODE_OF_CONDUCT.md
+include CONTRIBUTING.md
+include LICENSE
 include README.md
 include src/ampycloud/prms/*.yml
 include src/ampycloud/plots/mpl_styles/*.mplstyle

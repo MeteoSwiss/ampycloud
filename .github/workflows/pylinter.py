@@ -2,9 +2,9 @@
 '''
 Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
-Distributed under the terms of the GNU General Public License v3.0 or later.
+Distributed under the terms of the 3-Clause BSD License.
 
-SPDX-License-Identifier: GPL-3.0-or-later
+SPDX-License-Identifier: BSD-3-Clause
 
 This script can be used together with a Github Action to run pylint on all the .py files in a
 repository. Command line arguments can be used to search for a specific subset of errors (if any are
@@ -12,7 +12,8 @@ found, this script will raise an Exception), or to ignore some errors in a gener
 will print all the errors found, but will not raise any Exception). If a score is specified, the
 script will raise an Exception if it is not met.
 
-Created May 2020; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+Created May 2020; fpavogt; frederic.vogt@meteoswiss.ch
+Adapted Jan 2022; fpavogt; frederic.vogt@meteoswiss.ch
 '''
 
 import argparse
