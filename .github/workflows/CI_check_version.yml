@@ -1,0 +1,51 @@
+# This workflow will check that the code version was increased.
+#
+# It is triggered for any PR to the master branch.
+#
+# Copyright (c) 2022 fpavogt; frederic.vogt@meteoswiss.ch
+
+name: CI_check_version
+
+on:
+  pull_request:
+    branches: [ master ]
+
+jobs:
+  version:
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout current repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependancies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools
+      shell: bash
+
+    - name: wget/cp the BASE and HEAD version files
+      # Here, I could get both the BASE and HEAD files with wget, but cp-ing the HEAD is safer,
+      # since we have cloned the repo anyway.
+      run: |
+        export VERSION_LOC=src/ampycloud/version.py
+        echo $GITHUB_HEAD_REF
+        echo $GITHUB_BASE_REF
+        wget -O base_version.tmp https://raw.githubusercontent.com/$GITHUB_REPOSITORY/$GITHUB_BASE_REF/$VERSION_LOC
+        cp ./$VERSION_LOC head_version.tmp
+      shell: bash
+
+    - name: Check if the version was increased
+      run: |
+        HEAD_VERSION="$(grep VERSION head_version.tmp | grep -o '[[:alnum:]]*\.[[:alnum:]]*\.[[:alnum:]]*')"
+        echo "HEAD_VERSION:" $HEAD_VERSION
+        BASE_VERSION="$(grep VERSION base_version.tmp | grep -o '[[:alnum:]]*\.[[:alnum:]]*\.[[:alnum:]]*')"
+        echo "BASE_VERSION:" $BASE_VERSION
+        python ./.github/workflows/check_version.py $HEAD_VERSION $BASE_VERSION
+      shell: bash

@@ -23,6 +23,7 @@ If you:
     - [Documentation](#documentation)
     - [Testing](#testing)
     - [Plotting](#plotting)
+    - [Release mechanisms](#release-mechanisms)
 - [Less-Essential things to know about ampycloud for dev work](#less-essential-things-to-know-about-ampycloud-for-dev-work)
     - [Updating the copyright years](#updating-the-copyright-years)
 
@@ -82,12 +83,12 @@ Automated CI/CD checks are triggered upon Pull Requests being issued towards the
 * code testing using `pytest`
 * check that the CHANGELOG was updated
 * check that the Sphinx docs compile
-* automatic publication of the Sphinx docs
+* automatic publication of the Sphinx docs (for a PR to `master` only)
+* check that the code version was incremented (for PR to `master` only)
 
-Additional CI/CD tasks will be added eventually, including:
-
-* automatic release mechanism, incl. pypi upload
-
+There is another Github action responsible for publishing the code onto pypi, that gets triggered
+upon a new release or pre-release being published. See the ampycloud
+[release mechanisms](#release-mechanisms) for details.
 
 ### Linting:
 
@@ -233,7 +234,8 @@ sh build_docs.sh
 This will create the `.html` pages of the compiled documentation under `./build`. In particular,
 this bash script will automatically update the help message from the high-level ampycloud entry
 point ``ampycloud_speed_test``, create the demo figure for the main page, compile and ingest all the
-docstrings, etc ...
+docstrings, etc ... . See the ampycloud[release mechanisms](#release-mechansims) for more info about
+the automated publication of the documentation upon new releases.
 
 
 ### Testing
@@ -265,7 +267,8 @@ pytest --DO_SCIPLOTS
 
 ### Plotting
 
-Because the devs care about the look of plots, ampycloud ships with specific matplotlib styles that will get used by default. For this to work as intended, any plotting function must be wrapped with
+Because the devs care about the look of plots, ampycloud ships with specific matplotlib styles that
+will get used by default. For this to work as intended, any plotting function must be wrapped with
 the `plots.utils.set_mplstyle` decorator, as follows:
 ```
 # Import from Python
@@ -287,6 +290,26 @@ def some_plot_function(...):
 
 With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
+
+### Release mechanisms
+
+When changes merged in the `develop` branch are stable and deemed *worthy*, follow these steps to
+create a new release of ampycloud:
+
+1) Create a PR from `develop` to `master`. Merge only if all checks pass,
+  **including the version check*.
+
+  :warning: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud) will be
+  automatically updated (via the `CI_docs_build_and_publish.zml` Action) when the PR to `master` is
+  merged.
+
+2) Manually create a new release from Github. **Pay attention to issue it from the `master` branch,
+  and to set the same version number as set in the code !**
+
+  :warning: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action) when the
+  release is *published*. This will work the same for pre-releases.
+
+
 
 ## Less-Essential things to know about ampycloud for dev work
 

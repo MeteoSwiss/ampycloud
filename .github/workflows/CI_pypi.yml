@@ -1,0 +1,57 @@
+# This workflow will push the code onto pypi.
+# It assumes that TESTPYPI_API_TOKEN and PYPI_API_TOKEN secrets from GITHUB have been defined
+# at the repo or organization levels to upload the package via API authentification.
+#
+# It will trigger the moment a new release or pre-release is being published.
+#
+# Copyright (c) 2022 fpavogt; frederic.vogt@meteoswiss.ch
+
+name: CI_pypi
+
+on:
+  release:
+    types: [published]
+
+jobs:
+  pypi:
+
+    runs-on: ubuntu-latest
+    steps:
+
+    - name: Checkout current repository
+      uses: actions/checkout@v2
+
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: '3.10'
+
+    - name: Install dependancies
+      run: |
+        python -m pip install --upgrade pip
+        pip install setuptools
+        pip install wheel
+        pip install twine
+      shell: bash
+
+    - name: Build the wheels
+      run: |
+        python setup.py sdist bdist_wheel
+      shell: bash
+
+    - name: Deploy to testpypi
+      # Let's make use of Github secrets to avoid spelling out secret stuff
+      env:
+        TESTPYPI_TOKEN: ${{ secrets.TESTPYPI_API_TOKEN }}
+      # We first go to testpypi to make sure nothing blows up.
+      run: |
+        twine upload -r testpypi dist/* --verbose --skip-existing -u __token__ -p "$TESTPYPI_TOKEN"
+      shell: bash
+
+    - name: Deploy to pypi
+      # Let's make use of Github secrets to avoid spelling out secret stuff
+      env:
+        PYPI_TOKEN: ${{ secrets.PYPI_API_TOKEN }}
+      run: |
+        twine upload dist/* --verbose --skip-existing -u __token__ -p "$PYPI_TOKEN"
+      shell: bash
