@@ -11,11 +11,11 @@ ampycloud refers to both this Python package and the algorithm at its core, desi
 characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
  (i.e. automatic cloud base *hits* measurements), and derive the corresponding METAR-like message.
 
-For the full documentation, installation instructions, etc ..., go to: https://MeteoSwiss.github.io/ampycloud
+For the full documentation, installation instructions, etc ..., go to: https://meteoswiss.github.io/ampycloud
 
 ### License & Copyright
 
-ampycloud is released under the terms of **the 3-clause BSD license**. The copyright belongs to MeteoSwiss.
+ampycloud is released under the terms of **the 3-Clause BSD license**. The copyright (2021-2022) belongs to MeteoSwiss.
 
 ### Contributing to ampycloud
 

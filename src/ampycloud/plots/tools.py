@@ -1,11 +1,11 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module contains: utilities functions for plots
+Module contains: tools for plots
 """
 
 # Import from Python
@@ -39,13 +39,13 @@ def set_mplstyle(func : Callable) -> Callable:
     """ Intended to be used as a decorator around plotting functions, to set the plotting style.
 
     By defaults, the ``base`` ampycloud style will be enabled. Motivated users can tweak it further
-    by setting the ``dynamic.AMPYCLOUD_PRMS.MPL_STYLE`` keyword argument to:
+    by setting the ``MPL_STYLE`` entry of :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` to:
 
         - ``latex``: to enable the use of a system-wide LaTeX engine, and the Computer Modern font.
         - ``metsymb``: to enable the use of a system-wide LaTeX engine, the Computer Modern font,
           and the ``metsymb`` LaTeX package to display proper okta symbols.
 
-    Note:
+    Important:
 
         The ``metsymb`` LaTeX package is NOT included with ampycloud, and must be installed
         separately. It is available at: https://github.com/MeteoSwiss/metsymb
@@ -58,10 +58,11 @@ def set_mplstyle(func : Callable) -> Callable:
            - ``amsmath``
            - ``amssymb``
            - ``relsize``
-           - ``metsymb`` (only if ``dynamic.AMPYCLOUD_PRMS.MPL_STYLE='metsymb'``)
+           - ``metsymb`` (only if the ``MPL_STYLE`` entry of
+             :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` was set to ``'metsymb'``)
 
     Returns:
-        Callable: the decorator
+        Callable: the decorator.
 
     Todo:
         See https://github.com/MeteoSwiss/ampycloud/issues/18

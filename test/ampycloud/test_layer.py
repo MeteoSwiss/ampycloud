@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -47,6 +47,8 @@ def test_ncomp_from_gmm():
 
     # Generate random data with a normal distribution, and offset by 5-sigma each.
     # This is a level at which I should always be able to find the correct number of components.
+    # Set a random seed so I always get the same data
+    np.random.seed(42)
     comp1 = np.random.randn(100)
     comp2 = np.random.randn(100) + 5
     comp3 = np.random.randn(100) + 10

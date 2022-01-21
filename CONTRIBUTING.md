@@ -2,9 +2,9 @@
 
 If you:
 
-*  have a **question** about ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/discussions)
-*  want to **report a bug** with ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/issues)
-* are considering to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
+*  :boom: want to **report a bug** with ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/issues)
+*  :question: have a **question** about ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/discussions)
+* :construction_worker: want to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
 
 
 ## Table of contents
@@ -14,14 +14,19 @@ If you:
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
     - [Installing from source](#installing-from-source)
-    - [CI/CD](#ci/cd)
+    - [CI/CD](#cicd)
     - [Linting](#linting)
     - [Logging](#logging)
     - [Exceptions and Warnings](#exceptions-and-warnings)
+    - [Type hints](#type-hints-)
     - [Docstrings](#docstrings)
     - [Documentation](#documentation)
     - [Testing](#testing)
     - [Plotting](#plotting)
+    - [Release mechanisms](#release-mechanisms)
+- [Less-Essential things to know about ampycloud for dev work](#less-essential-things-to-know-about-ampycloud-for-dev-work)
+    - [Updating the copyright years](#updating-the-copyright-years)
+
 
 ## Code of conduct
 
@@ -78,12 +83,12 @@ Automated CI/CD checks are triggered upon Pull Requests being issued towards the
 * code testing using `pytest`
 * check that the CHANGELOG was updated
 * check that the Sphinx docs compile
-* automatic publication of the Sphinx docs
+* automatic publication of the Sphinx docs (for a PR to `master` only)
+* check that the code version was incremented (for PR to `master` only)
 
-Additional CI/CD tasks will be added eventually, including:
-
-* automatic release mechanism, incl. pypi upload
-
+There is another Github action responsible for publishing the code onto pypi, that gets triggered
+upon a new release or pre-release being published. See the ampycloud
+[release mechanisms](#release-mechanisms) for details.
 
 ### Linting:
 
@@ -152,14 +157,25 @@ from .errors import AmpycloudWarning
 warnings.warn('...', AmpycloudWarning)
 ```
 
+### Type hints ...
+
+... should be used in ampycloud. Here's an example:
+```
+from typing import Union
+from pathlib import Path
+
+
+def set_prms(pth : Union[str, Path]) -> None:
+    """ ... """
+```
+See [the official Python documentation](https://docs.python.org/3/library/typing.html) for more info.
+
 ### Docstrings
-Google Style ! Please try to stick to the following example:
+Google Style ! Please try to stick to the following example. Note the use of `:py:class:...`
+([or `:py:func:...`, `py:mod:...` etc ...](https://www.sphinx-doc.org/en/master/usage/restructuredtext/domains.html#cross-referencing-python-objects)) with relative import to cleanly link to our own
+functions, classes, etc ... :
 ```
 """ A brief one-liner description in present tense, that finishes with a dot.
-
-Use some
-multi-line space for
-more detailed info.
 
 Args:
     x (float|int): variable x could be of 2 types ... note the use of `|` to say that !
@@ -169,10 +185,16 @@ Args:
     y (list[str]|str, optional): variable y info
 
 Returns:
-    bool: some grand Truth about the World.
+    :py:class:`.data.CeiloChunk`: more lorem ipsum ...
 
 Raises:
-    AmpycloudError: if blah and blah occurs.
+    :py:exc:`.errors.AmpycloudError`: if blah and blah occurs.
+
+
+Use some
+multi-line space for
+more detailed info. Refer to the whole module as :py:mod:`ampycloud`.
+Do all this **after** the Args, Returns, and Raises sections !
 
 Example:
     If needed, you can specify chunks of code using code blocks::
@@ -184,8 +206,11 @@ Note:
     `Source <https://github.com/sphinx-doc/sphinx/issues/3921>`__
     Please note the double _ _ after the link !
 
+Important:
+   Something you're hoping users will read ...
+
 Caution:
-    Something to be careful about.
+    Something you're hoping users will read carefully ...
 
 """
 ```
@@ -209,7 +234,8 @@ sh build_docs.sh
 This will create the `.html` pages of the compiled documentation under `./build`. In particular,
 this bash script will automatically update the help message from the high-level ampycloud entry
 point ``ampycloud_speed_test``, create the demo figure for the main page, compile and ingest all the
-docstrings, etc ...
+docstrings, etc ... . See the ampycloud[release mechanisms](#release-mechansims) for more info about
+the automated publication of the documentation upon new releases.
 
 
 ### Testing
@@ -236,12 +262,13 @@ this list of scientific tests *as short as possible, but as complete as necessar
 If one of these tests fail, it is possible to generate the corresponding diagnostic plot with the
 following fixture-argument:
 ```
-pytest --do_SCIPLOTS
+pytest --DO_SCIPLOTS
 ```
 
 ### Plotting
 
-Because the devs care about the look of plots, ampycloud ships with specific matplotlib styles that will get used by default. For this to work as intended, any plotting function must be wrapped with
+Because the devs care about the look of plots, ampycloud ships with specific matplotlib styles that
+will get used by default. For this to work as intended, any plotting function must be wrapped with
 the `plots.utils.set_mplstyle` decorator, as follows:
 ```
 # Import from Python
@@ -263,3 +290,52 @@ def some_plot_function(...):
 
 With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
+
+### Release mechanisms
+
+When changes merged in the `develop` branch are stable and deemed *worthy*, follow these steps to
+create a new release of ampycloud:
+
+1) Create a PR from `develop` to `master`.
+
+   :warning: Merge only if all checks pass, **including the version check !**
+
+   :white_check_mark: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud)
+   will be automatically updated (via the `CI_docs_build_and_publish.yml` Action) when the PR to
+   `master` is merged.
+
+2) Manually create a new release from Github.
+
+   :warning: **Make sure to issue it from the `master` branch !**
+
+   :warning: **Make sure to set the same version number as set in the code !**
+
+   :white_check_mark: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action)
+   when the release is *published*. This will work the same for pre-releases.
+
+   :smirk: *Side note for (test)pypi: ampycloud will be published under the
+   [MeteoSwiss](https://pypi.org/user/MeteoSwiss/) account using an
+   [API token](https://pypi.org/help/#apitoken). The token is stored as an organization-level
+   Github secret.*
+
+3) That's it ! Wait a few seconds/minutes, and you'll see the updates:
+
+   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases),
+   - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
+   - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/ampycloud/),
+   - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
+   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud).
+
+## Less-Essential things to know about ampycloud for dev work
+
+### Updating the copyright years
+The ampycloud copyright years may need to be updated if the development goes on beyond 2022. If so,
+the copyright years will need to be manually updated in the following locations:
+
+* `docs/source/substitutions.rst` (the copyright tag)
+* `docs/source/conf.py` (the `copyright` variable)
+* `docs/source/license.rst`
+* `README.md` (the copyright section)
+
+The copyright years are also present in all the docstring modules. These can be updated individually
+if/when a modification is made to a given module.

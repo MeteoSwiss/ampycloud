@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -19,7 +19,7 @@ import pandas as pd
 from ampycloud import dynamic, reset_prms
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
-from ampycloud.core import copy_prm_file, reset_prms, run, synop, metar, demo
+from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
 
 def test_copy_prm_file():
     """ Test the copy_prm_file routine."""
@@ -60,24 +60,19 @@ def test_run():
 
     # Create some fake data to get started
     # 1 very flat layer with no gaps
-    mock_data = mocker.mock_layers(n_ceilos,
-                                   [{'alt':1000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                     'hit_rate': rate, 'sky_cov_frac': 0.5,
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                      'period': 100, 'amplitude': 0},
-                                    {'alt':2000, 'alt_std': 10, 'lookback_time' : lookback_time,
-                                       'hit_rate': rate, 'sky_cov_frac': 0.5,
+                                    {'alt':2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                        'period': 100, 'amplitude': 0}])
 
     out = run(mock_data)
 
     assert isinstance(out, CeiloChunk)
-    assert out.metar_msg(synop=True) == 'FEW009 FEW019'
-    assert out.metar_msg(synop=False) == 'FEW009'
+    assert out.metar_msg() == 'SCT009 SCT019'
 
-    # While I'm at it, also check the metar and synop routines, that are so close
-
-    assert synop(mock_data) == 'FEW009 FEW019'
-    assert metar(mock_data) == 'FEW009'
+    # While I'm at it, also check the metar routines, that are so close
+    assert metar(mock_data) == 'SCT009 SCT019'
 
 def test_run_single_point():
     """ Test the code when a single data point is fed to it. """

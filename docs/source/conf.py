@@ -28,7 +28,7 @@ with version_file.open() as fid:
 # -- Project information -----------------------------------------------------
 
 project = 'ampycloud'
-copyright = '2021, MeteoSwiss'
+copyright = '2021-2022, MeteoSwiss'
 author = 'Frédéric P.A. Vogt'
 version = vers
 
@@ -48,7 +48,7 @@ extensions = [
 # Specify the parameters of the autodoc, in order to
 autodoc_default_options = {
 #    'members': 'var1, var2',
-    'member-order': 'bysource',
+    'member-order': 'bysource', # List fcts and classes in the same order they are in the files
 #    'special-members': '__init__',
 #    'undoc-members': False,
 #    'exclude-members': '__weakref__'

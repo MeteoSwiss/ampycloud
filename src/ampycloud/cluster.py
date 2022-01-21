@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -25,18 +25,18 @@ logger = logging.getLogger(__name__)
 def agglomerative_cluster(data : np.ndarray, n_clusters : int = None,
                           affinity : str = 'euclidean', linkage : str = 'single',
                           distance_threshold : Union[int, float] = 1) -> tuple:
-    """ Function that wraps arround sklearn.cluster.AgglomerativeClustering.
+    """ Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
 
     Args:
         data (ndarray): array of [x, y] pairs to run the clustering on.
-        n_clusters (int, optional): see sklearn.cluster.AgglomerativeClustering for details.
-            Defaults to None.
-        affinity (str, optional): see sklearn.cluster.AgglomerativeClustering for details.
-            Defaults to 'euclidian'.
-        linkage (str, optional): see sklearn.cluster.AgglomerativeClustering for details.
-            Defaults to 'single'.
-        distance_threshold (int|float, optional): see sklearn.cluster.AgglomerativeClustering for
-            details. Defaults to 1.
+        n_clusters (int, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering`
+            for details. Defaults to None.
+        affinity (str, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering` for
+            details. Defaults to 'euclidian'.
+        linkage (str, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering` for
+            details. Defaults to 'single'.
+        distance_threshold (int|float, optional): see
+            :py:class:`sklearn.cluster.AgglomerativeClustering` for details. Defaults to 1.
 
     Returns:
         int, ndarray: number of clusters found, and corresponding clustering labels for each data

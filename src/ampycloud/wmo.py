@@ -1,11 +1,11 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module contains: wmo-related utilities
+Module contains: WMO-related utilities
 """
 
 # Import from Python

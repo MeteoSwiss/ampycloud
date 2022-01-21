@@ -23,7 +23,7 @@ OKTA_LIM8: 98
 LAYER_BASE_FRAC: 0.1
 
 # Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
-# in the ampycloud METAR/SYNOP messages. Set it to null for no limit.
+# in the ampycloud METAR messages. Set it to null for no limit.
 MSA: null
 
 # Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by

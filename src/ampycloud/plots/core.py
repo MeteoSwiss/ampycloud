@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -16,7 +16,7 @@ from typing import Union
 from ..data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
-from .utils import set_mplstyle
+from .tools import set_mplstyle
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -83,7 +83,7 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
         adp.format_group_axes()
     if upto == 'layers':
         adp.show_layers()
-        adp.add_metar(synop=False)
+        adp.add_metar()
 
     # And add all the common stuff
     adp.add_ref_metar(ref_metar_origin, ref_metar)
