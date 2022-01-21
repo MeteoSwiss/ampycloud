@@ -322,7 +322,7 @@ create a new release of ampycloud:
 
    - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases),
    - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
-   - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/linestats/),
+   - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/ampycloud/),
    - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
    - in the [live documentation](https://MeteoSwiss.github.io/ampycloud).
 
