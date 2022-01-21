@@ -301,7 +301,7 @@ create a new release of ampycloud:
    :warning: Merge only if all checks pass, **including the version check !**
 
    :white_check_mark: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud)
-   will be automatically updated (via the `CI_docs_build_and_publish.zml` Action) when the PR to
+   will be automatically updated (via the `CI_docs_build_and_publish.yml` Action) when the PR to
    `master` is merged.
 
 2) Manually create a new release from Github.
@@ -313,13 +313,20 @@ create a new release of ampycloud:
    :white_check_mark: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action)
    when the release is *published*. This will work the same for pre-releases.
 
+   :smirk: *Side note for (test)pypi: ampycloud will be published under the
+   [MeteoSwiss](https://pypi.org/user/MeteoSwiss/) account using an
+   [API token]*https://pypi.org/help/#apitoken). The token is stored as an organization-level
+   Github secret.*
+
 3) That's it ! Wait a few seconds/minutes, and you'll see the updates:
 
-   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases)
+   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases),
    - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
    - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/linestats/),
    - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
-   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud)
+   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud).
+
+
 
 ## Less-Essential things to know about ampycloud for dev work
 
