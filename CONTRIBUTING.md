@@ -315,7 +315,7 @@ create a new release of ampycloud:
 
    :smirk: *Side note for (test)pypi: ampycloud will be published under the
    [MeteoSwiss](https://pypi.org/user/MeteoSwiss/) account using an
-   [API token]*https://pypi.org/help/#apitoken). The token is stored as an organization-level
+   [API token](https://pypi.org/help/#apitoken). The token is stored as an organization-level
    Github secret.*
 
 3) That's it ! Wait a few seconds/minutes, and you'll see the updates:
@@ -325,8 +325,6 @@ create a new release of ampycloud:
    - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/linestats/),
    - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
    - in the [live documentation](https://MeteoSwiss.github.io/ampycloud).
-
-
 
 ## Less-Essential things to know about ampycloud for dev work
 
