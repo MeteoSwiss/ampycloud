@@ -9,10 +9,11 @@ Module content: tests for the version module
 """
 
 # Import from Python
+from pkg_resources import parse_version
 
 # Import from this package
 from ampycloud.version import VERSION
-from pkg_resources import parse_version, safe_version
+
 
 def test_version():
     """ Test the format of the code version."""
