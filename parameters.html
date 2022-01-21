@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.1.0
+                0.2.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,7 +52,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -98,119 +98,119 @@ other ways to modify the default parameter values to fit your needs, including v
 copies of this file. See <a class="reference internal" href="running.html#adjusting-the-default-algorithm-parameters"><span class="std std-ref">Adjusting the default algorithm parameters</span></a>
 for details.</p>
 </div>
-<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span>
-<span class="c1"># Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</span>
-<span class="c1">#</span>
-<span class="c1"># Distributed under the terms of the 3-Clause BSD License.</span>
-<span class="c1">#</span>
-<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span>
-<span class="c1">#</span>
-<span class="c1"># File contains: default scientific parameters of the ampycloud algorithm</span>
-<span class="c1">#</span>
+<div class="highlight-yaml notranslate"><div class="highlight"><pre><span></span><span class="c1">#</span><span class="w"></span>
+<span class="c1"># Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># Distributed under the terms of the 3-Clause BSD License.</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># SPDX-License-Identifier: BSD-3-Clause</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
+<span class="c1"># File contains: default scientific parameters of the ampycloud algorithm</span><span class="w"></span>
+<span class="c1">#</span><span class="w"></span>
 
-<span class="c1"># General parameters</span>
+<span class="c1"># General parameters</span><span class="w"></span>
 
-<span class="c1"># Plotting style. Can be one of &#39;base&#39;, &#39;latex&#39;, &#39;metsymb&#39;</span>
-<span class="nt">MPL_STYLE</span><span class="p">:</span> <span class="s">&#39;base&#39;</span>
+<span class="c1"># Plotting style. Can be one of &#39;base&#39;, &#39;latex&#39;, &#39;metsymb&#39;</span><span class="w"></span>
+<span class="nt">MPL_STYLE</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;base&#39;</span><span class="w"></span>
 
-<span class="c1"># Max sky coverage (in %) up to which the coverage is considered null.</span>
-<span class="nt">OKTA_LIM0</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
+<span class="c1"># Max sky coverage (in %) up to which the coverage is considered null.</span><span class="w"></span>
+<span class="nt">OKTA_LIM0</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
 
-<span class="c1"># Min sky coverage (in %) down to which the coverage is considered full.</span>
-<span class="nt">OKTA_LIM8</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">98</span>
+<span class="c1"># Min sky coverage (in %) down to which the coverage is considered full.</span><span class="w"></span>
+<span class="nt">OKTA_LIM8</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">98</span><span class="w"></span>
 
-<span class="c1"># Fraction of smallest layer points to median to compute the layer altitude for the METAR</span>
-<span class="nt">LAYER_BASE_FRAC</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.1</span>
+<span class="c1"># Fraction of smallest layer points to median to compute the layer altitude for the METAR</span><span class="w"></span>
+<span class="nt">LAYER_BASE_FRAC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.1</span><span class="w"></span>
 
-<span class="c1"># Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported</span>
-<span class="c1"># in the ampycloud METAR/SYNOP messages. Set it to null for no limit.</span>
-<span class="nt">MSA</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span>
+<span class="c1"># Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported</span><span class="w"></span>
+<span class="c1"># in the ampycloud METAR messages. Set it to null for no limit.</span><span class="w"></span>
+<span class="nt">MSA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"></span>
 
-<span class="c1"># Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by</span>
-<span class="c1"># ampycloud. This is to ensure that cloud layers with cloud base heights close to the MSA value are</span>
-<span class="c1"># still detected with the correct densities.</span>
-<span class="nt">MSA_HIT_BUFFER</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1500</span>
+<span class="c1"># Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by</span><span class="w"></span>
+<span class="c1"># ampycloud. This is to ensure that cloud layers with cloud base heights close to the MSA value are</span><span class="w"></span>
+<span class="c1"># still detected with the correct densities.</span><span class="w"></span>
+<span class="nt">MSA_HIT_BUFFER</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1500</span><span class="w"></span>
 
-<span class="c1"># Slicing parameters</span>
-<span class="nt">SLICING_PRMS</span><span class="p">:</span>
-    <span class="c1"># Clustering algorithm name</span>
-    <span class="nt">algo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agglomerative</span>
-    <span class="c1"># Clustering algorithm parameters</span>
-    <span class="nt">algo_kwargs</span><span class="p">:</span>
-        <span class="nt">n_clusters</span><span class="p">:</span>
-        <span class="nt">distance_threshold</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.2</span>
-        <span class="nt">linkage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">average</span>
-        <span class="nt">affinity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">manhattan</span>
-    <span class="c1"># Time scaling mode</span>
-    <span class="nt">dt_scale_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">const</span>
-    <span class="c1"># Time scaling parameters</span>
-    <span class="nt">dt_scale_kwargs</span><span class="p">:</span>
-        <span class="nt">scale</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100000</span>
-        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scale</span>
-    <span class="c1"># Altitude scaling mode</span>
-    <span class="nt">alt_scale_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">minmax</span>
-    <span class="c1"># Altitude scaling parameters</span>
-    <span class="nt">alt_scale_kwargs</span><span class="p">:</span>
-        <span class="nt">min_range</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
-        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scale</span>
+<span class="c1"># Slicing parameters</span><span class="w"></span>
+<span class="nt">SLICING_PRMS</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Clustering algorithm name</span><span class="w"></span>
+<span class="w">    </span><span class="nt">algo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agglomerative</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Clustering algorithm parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">algo_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">n_clusters</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">distance_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span><span class="w"></span>
+<span class="w">        </span><span class="nt">linkage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average</span><span class="w"></span>
+<span class="w">        </span><span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Time scaling mode</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">const</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Time scaling parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100000</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Altitude scaling mode</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minmax</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Altitude scaling parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">min_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
 
-<span class="c1"># Clustering parameters</span>
-<span class="nt">GROUPING_PRMS</span><span class="p">:</span>
-    <span class="c1"># Grouping algorithm name</span>
-    <span class="nt">algo</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">agglomerative</span>
-    <span class="c1"># Grouping algorithm parameters</span>
-    <span class="nt">algo_kwargs</span><span class="p">:</span>
-        <span class="nt">n_clusters</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">null</span> <span class="c1"># null = None</span>
-        <span class="nt">distance_threshold</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1</span>
-        <span class="nt">linkage</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">single</span>
-        <span class="nt">affinity</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">manhattan</span>
-    <span class="c1"># Time scaling mode</span>
-    <span class="nt">dt_scale_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">const</span>
-    <span class="c1"># Time scaling parameters</span>
-    <span class="nt">dt_scale_kwargs</span><span class="p">:</span>
-        <span class="nt">scale</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">180</span>
-        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scale</span>
-    <span class="c1"># Altitude scaling mode</span>
-    <span class="nt">alt_scale_mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">step</span>
-    <span class="c1"># Altitude scaling parameters</span>
-    <span class="nt">alt_scale_kwargs</span><span class="p">:</span>
-        <span class="nt">steps</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">8000</span><span class="p p-Indicator">,</span> <span class="nv">14000</span><span class="p p-Indicator">]</span>
-        <span class="nt">scales</span><span class="p">:</span> <span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">,</span> <span class="nv">500</span><span class="p p-Indicator">,</span> <span class="nv">1000</span><span class="p p-Indicator">]</span>
-        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">scale</span>
-    <span class="c1"># Distance from the mean altitude (in std) below which two slices are considered &quot;overlapping&quot;</span>
-    <span class="nt">overlap</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2.0</span>
+<span class="c1"># Clustering parameters</span><span class="w"></span>
+<span class="nt">GROUPING_PRMS</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Grouping algorithm name</span><span class="w"></span>
+<span class="w">    </span><span class="nt">algo</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">agglomerative</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Grouping algorithm parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">algo_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">n_clusters</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span><span class="w"> </span><span class="c1"># null = None</span><span class="w"></span>
+<span class="w">        </span><span class="nt">distance_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span><span class="w"></span>
+<span class="w">        </span><span class="nt">linkage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">single</span><span class="w"></span>
+<span class="w">        </span><span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Time scaling mode</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">const</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Time scaling parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Altitude scaling mode</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">step</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Altitude scaling parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">8000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">14000</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">        </span><span class="nt">scales</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Distance from the mean altitude (in std) below which two slices are considered &quot;overlapping&quot;</span><span class="w"></span>
+<span class="w">    </span><span class="nt">overlap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"></span>
 
-<span class="c1"># Layering parameters</span>
-<span class="nt">LAYERING_PRMS</span><span class="p">:</span>
-    <span class="c1"># Minimum okta value below which cluster splitting is not attempted</span>
-    <span class="nt">min_okta_to_split</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">2</span>
-    <span class="c1"># Minimum separation (in ft) between the mean altitude of identified layers inside groups</span>
-    <span class="c1"># with a base altitude &lt;=10&#39;000ft. Any layers separated by less than this value will not be</span>
-    <span class="c1"># split. Any value &lt; than 5 times the vertical resolution of the data will raise a warning, as</span>
-    <span class="c1"># it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent</span>
-    <span class="c1"># with the ICAO rules of layer selection, this should be &gt;=100 ft.</span>
-    <span class="nt">min_sep_low</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">150</span>
-    <span class="c1"># Same as min_sep_low, but for layers identified in groups with a base height &gt;10&#39;000 ft. For</span>
-    <span class="c1"># the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this</span>
-    <span class="c1"># should be &gt;=1000 ft.</span>
-    <span class="nt">min_sep_high</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1000</span>
-    <span class="c1"># Gaussian Mixture Model parameters</span>
-    <span class="nt">gmm_kwargs</span><span class="p">:</span>
-        <span class="c1"># Whether to use &#39;BIC&#39; or &#39;AIC&#39; scores to decide which model is &quot;best&quot;.</span>
-        <span class="nt">scores</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">BIC</span>
-        <span class="c1"># Whether to use &#39;delta&#39;, or &#39;prob&#39; to find the best model.</span>
-        <span class="c1"># See ampycloud.layer.best_gmm() for details.</span>
-        <span class="nt">mode</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">delta</span>
-        <span class="c1"># minimum model probability computed from the relative likelihood,</span>
-        <span class="c1"># below which alternative models with more components will be considered.</span>
-        <span class="c1"># Only used if mode=&#39;prob&#39;</span>
-        <span class="nt">min_prob</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">1.0</span>
-        <span class="c1"># a model with a smaller score will only be considered &quot;valid&quot;</span>
-        <span class="c1"># if its score is smaller than delta_mul_gain*current_best_score.</span>
-        <span class="c1"># Only used if mode=&#39;delta&#39;</span>
-        <span class="nt">delta_mul_gain</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">0.95</span>
-        <span class="c1"># If set, rescale each group between 0 and this value before looking for layers using gmm.</span>
-        <span class="nt">rescale_0_to_x</span><span class="p">:</span> <span class="l l-Scalar l-Scalar-Plain">100</span>
+<span class="c1"># Layering parameters</span><span class="w"></span>
+<span class="nt">LAYERING_PRMS</span><span class="p">:</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Minimum okta value below which cluster splitting is not attempted</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_okta_to_split</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Minimum separation (in ft) between the mean altitude of identified layers inside groups</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># with a base altitude &lt;=10&#39;000ft. Any layers separated by less than this value will not be</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># split. Any value &lt; than 5 times the vertical resolution of the data will raise a warning, as</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># with the ICAO rules of layer selection, this should be &gt;=100 ft.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_sep_low</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">150</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Same as min_sep_low, but for layers identified in groups with a base height &gt;10&#39;000 ft. For</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># should be &gt;=1000 ft.</span><span class="w"></span>
+<span class="w">    </span><span class="nt">min_sep_high</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
+<span class="w">    </span><span class="c1"># Gaussian Mixture Model parameters</span><span class="w"></span>
+<span class="w">    </span><span class="nt">gmm_kwargs</span><span class="p">:</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># Whether to use &#39;BIC&#39; or &#39;AIC&#39; scores to decide which model is &quot;best&quot;.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">scores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BIC</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># Whether to use &#39;delta&#39;, or &#39;prob&#39; to find the best model.</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># See ampycloud.layer.best_gmm() for details.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delta</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># minimum model probability computed from the relative likelihood,</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># below which alternative models with more components will be considered.</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># Only used if mode=&#39;prob&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">min_prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># a model with a smaller score will only be considered &quot;valid&quot;</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># if its score is smaller than delta_mul_gain*current_best_score.</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># Only used if mode=&#39;delta&#39;</span><span class="w"></span>
+<span class="w">        </span><span class="nt">delta_mul_gain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.95</span><span class="w"></span>
+<span class="w">        </span><span class="c1"># If set, rescale each group between 0 and this value before looking for layers using gmm.</span><span class="w"></span>
+<span class="w">        </span><span class="nt">rescale_0_to_x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span><span class="w"></span>
 </pre></div>
 </div>
 </section>
@@ -226,7 +226,7 @@ for details.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2022, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

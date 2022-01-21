@@ -41,10 +41,10 @@ ampycloud.plots.secondary module
    :undoc-members:
    :show-inheritance:
 
-ampycloud.plots.utils module
+ampycloud.plots.tools module
 ----------------------------
 
-.. automodule:: ampycloud.plots.utils
+.. automodule:: ampycloud.plots.tools
    :members:
    :undoc-members:
    :show-inheritance:

@@ -27,7 +27,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.1.0
+                0.2.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -49,7 +49,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -176,6 +176,13 @@
 </li>
       </ul></li>
       <li>
+    ampycloud.icao
+
+      <ul>
+        <li><a href="modules/ampycloud.html#module-ampycloud.icao">module</a>
+</li>
+      </ul></li>
+      <li>
     ampycloud.layer
 
       <ul>
@@ -189,8 +196,6 @@
         <li><a href="modules/ampycloud.html#module-ampycloud.logger">module</a>
 </li>
       </ul></li>
-  </ul></td>
-  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ampycloud.plots
 
@@ -198,6 +203,8 @@
         <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots">module</a>
 </li>
       </ul></li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
       <li>
     ampycloud.plots.core
 
@@ -227,10 +234,10 @@
 </li>
       </ul></li>
       <li>
-    ampycloud.plots.utils
+    ampycloud.plots.tools
 
       <ul>
-        <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots.utils">module</a>
+        <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots.tools">module</a>
 </li>
       </ul></li>
       <li>
@@ -262,6 +269,13 @@
 </li>
       </ul></li>
       <li>
+    ampycloud.utils.utils
+
+      <ul>
+        <li><a href="modules/ampycloud.utils.html#module-ampycloud.utils.utils">module</a>
+</li>
+      </ul></li>
+      <li>
     ampycloud.version
 
       <ul>
@@ -275,6 +289,8 @@
         <li><a href="modules/ampycloud.html#module-ampycloud.wmo">module</a>
 </li>
       </ul></li>
+      <li><a href="modules/ampycloud.html#ampycloud.dynamic.AMPYCLOUD_PRMS">AMPYCLOUD_PRMS (in module ampycloud.dynamic)</a>
+</li>
       <li><a href="modules/ampycloud.html#ampycloud.errors.AmpycloudError">AmpycloudError</a>
 </li>
       <li><a href="modules/ampycloud.html#ampycloud.errors.AmpycloudWarning">AmpycloudWarning</a>
@@ -413,6 +429,8 @@
 </li>
         <li><a href="modules/ampycloud.html#module-ampycloud.errors">ampycloud.errors</a>
 </li>
+        <li><a href="modules/ampycloud.html#module-ampycloud.icao">ampycloud.icao</a>
+</li>
         <li><a href="modules/ampycloud.html#module-ampycloud.layer">ampycloud.layer</a>
 </li>
         <li><a href="modules/ampycloud.html#module-ampycloud.logger">ampycloud.logger</a>
@@ -427,7 +445,7 @@
 </li>
         <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots.secondary">ampycloud.plots.secondary</a>
 </li>
-        <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots.utils">ampycloud.plots.utils</a>
+        <li><a href="modules/ampycloud.plots.html#module-ampycloud.plots.tools">ampycloud.plots.tools</a>
 </li>
         <li><a href="modules/ampycloud.html#module-ampycloud.scaler">ampycloud.scaler</a>
 </li>
@@ -436,6 +454,8 @@
         <li><a href="modules/ampycloud.utils.html#module-ampycloud.utils.mocker">ampycloud.utils.mocker</a>
 </li>
         <li><a href="modules/ampycloud.utils.html#module-ampycloud.utils.performance">ampycloud.utils.performance</a>
+</li>
+        <li><a href="modules/ampycloud.utils.html#module-ampycloud.utils.utils">ampycloud.utils.utils</a>
 </li>
         <li><a href="modules/ampycloud.html#module-ampycloud.version">ampycloud.version</a>
 </li>
@@ -516,7 +536,7 @@
 </li>
       <li><a href="modules/ampycloud.html#ampycloud.layer.scores2nrl">scores2nrl() (in module ampycloud.layer)</a>
 </li>
-      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.utils.set_mplstyle">set_mplstyle() (in module ampycloud.plots.utils)</a>
+      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.tools.set_mplstyle">set_mplstyle() (in module ampycloud.plots.tools)</a>
 </li>
       <li><a href="modules/ampycloud.html#ampycloud.core.set_prms">set_prms() (in module ampycloud.core)</a>
 </li>
@@ -534,15 +554,15 @@
 </li>
       <li><a href="modules/ampycloud.plots.html#ampycloud.plots.diagnostics.DiagnosticPlot.show_slices">show_slices() (ampycloud.plots.diagnostics.DiagnosticPlot method)</a>
 </li>
+      <li><a href="modules/ampycloud.html#ampycloud.icao.significant_cloud">significant_cloud() (in module ampycloud.icao)</a>
+</li>
       <li><a href="modules/ampycloud.utils.html#ampycloud.utils.mocker.sin_layer">sin_layer() (in module ampycloud.utils.mocker)</a>
 </li>
       <li><a href="modules/ampycloud.html#ampycloud.data.CeiloChunk.slices">slices (ampycloud.data.CeiloChunk property)</a>
 </li>
       <li><a href="modules/ampycloud.html#ampycloud.scaler.step_scaling">step_scaling() (in module ampycloud.scaler)</a>
 </li>
-      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.utils.style_pth">style_pth() (in module ampycloud.plots.utils)</a>
-</li>
-      <li><a href="modules/ampycloud.html#ampycloud.core.synop">synop() (in module ampycloud.core)</a>
+      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.tools.style_pth">style_pth() (in module ampycloud.plots.tools)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -550,7 +570,11 @@
 <h2 id="T">T</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.utils.texify">texify() (in module ampycloud.plots.utils)</a>
+      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.tools.texify">texify() (in module ampycloud.plots.tools)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/ampycloud.utils.html#ampycloud.utils.utils.tmp_seed">tmp_seed() (in module ampycloud.utils.utils)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -558,7 +582,11 @@
 <h2 id="V">V</h2>
 <table style="width: 100%" class="indextable genindextable"><tr>
   <td style="width: 33%; vertical-align: top;"><ul>
-      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.utils.valid_styles">valid_styles() (in module ampycloud.plots.utils)</a>
+      <li><a href="modules/ampycloud.plots.html#ampycloud.plots.tools.valid_styles">valid_styles() (in module ampycloud.plots.tools)</a>
+</li>
+  </ul></td>
+  <td style="width: 33%; vertical-align: top;"><ul>
+      <li><a href="modules/ampycloud.html#ampycloud.version.VERSION">VERSION (in module ampycloud.version)</a>
 </li>
   </ul></td>
 </tr></table>
@@ -584,7 +612,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2022, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

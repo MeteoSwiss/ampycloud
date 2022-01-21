@@ -58,6 +58,14 @@ ampycloud.errors module
    :undoc-members:
    :show-inheritance:
 
+ampycloud.icao module
+---------------------
+
+.. automodule:: ampycloud.icao
+   :members:
+   :undoc-members:
+   :show-inheritance:
+
 ampycloud.layer module
 ----------------------
 

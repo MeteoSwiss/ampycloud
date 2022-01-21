@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.1.0
+                0.2.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -52,7 +52,7 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">Documentation todos</a></li>
+<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -90,12 +90,29 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
-## [Unreleased]
+## [v0.3.0]
 ### Added:
 ### Fixed:
 ### Changed:
 ### Deprecated:
 ### Removed:
+### Security:
+
+## [v0.2.0.dev]
+### Added:
+ - [fpavogt, 2022-01-21] New CI Actions to automate the pypi releases.
+ - [fpavogt, 2022-01-17] Added new utils.utils.temp_seed() function to set random seed temporarily only.
+ - [fpavogt, 2022-01-13] New icao module, for easy/clean access to the significant_cloud() function.
+ - [fpavogt, 2022-01-13] Doc cleanup/improvement, and use of :py:func: (etc...) function to ease user navigation.
+### Fixed:
+ - [fpavogt, 2022-01-17] Fix #49 - mock cloud layers now have proper type values.
+ - [fpavogt, 2022-01-10] Fix issues #40 and #41.
+### Changed:
+ - [fpavogt, 2022-01-14] Fix #47.
+ - [fpavogt, 2022-01-10] Update copyright years.
+### Deprecated:
+### Removed:
+ - [fpavogt, 2022-01-14] ampycloud.core.synop(), and all synop references.
 ### Security:
 
 ## [v0.1.0]
@@ -150,7 +167,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2022, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
