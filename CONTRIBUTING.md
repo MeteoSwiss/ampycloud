@@ -296,20 +296,30 @@ With this decorator, all functions will automatically deploy the effects associa
 When changes merged in the `develop` branch are stable and deemed *worthy*, follow these steps to
 create a new release of ampycloud:
 
-1) Create a PR from `develop` to `master`. Merge only if all checks pass,
-  **including the version check*.
+1) Create a PR from `develop` to `master`.
 
-  :warning: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud) will be
-  automatically updated (via the `CI_docs_build_and_publish.zml` Action) when the PR to `master` is
-  merged.
+   :warning: Merge only if all checks pass, **including the version check !**
 
-2) Manually create a new release from Github. **Pay attention to issue it from the `master` branch,
-  and to set the same version number as set in the code !**
+   :white_check_mark: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud)
+   will be automatically updated (via the `CI_docs_build_and_publish.zml` Action) when the PR to
+   `master` is merged.
 
-  :warning: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action) when the
-  release is *published*. This will work the same for pre-releases.
+2) Manually create a new release from Github.
 
+   :warning: **Make sure to issue it from the `master` branch !**
 
+   :warning: **Make sure to set the same version number as set in the code !**
+
+   :white_check_mark: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action)
+   when the release is *published*. This will work the same for pre-releases.
+
+3) That's it ! Wait a few seconds/minutes, and you'll see the updates:
+
+   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases)
+   - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
+   - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/linestats/),
+   - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
+   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud)
 
 ## Less-Essential things to know about ampycloud for dev work
 
