@@ -69,7 +69,6 @@ setup(
 
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
-        'Topic :: Scientific/Engineering :: Meteorology',
         'Topic :: Scientific/Engineering :: Atmospheric Science',
 
         # Pick your license as you wish (should match "license" above)
