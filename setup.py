@@ -80,4 +80,6 @@ setup(
 
     ],
 
+    # Let's make sure the parameter non-py files get included in the wheels on pypi.
+    include_package_data=True
 )
