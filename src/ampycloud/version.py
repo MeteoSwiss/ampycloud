@@ -9,4 +9,4 @@ Module contains: ampycloud version
 """
 
 #:str: the one-and-only place where the ampycloud version is set.
-VERSION = '0.2.0.dev1'
+VERSION = '0.2.1.dev0'
