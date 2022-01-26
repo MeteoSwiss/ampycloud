@@ -187,4 +187,4 @@ def test_layering_singlepts():
     chunk.find_layers()
 
     # Check that the GMM was never executed
-    assert np.all(chunk.groups['ncomp'] == -1)
+    assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
