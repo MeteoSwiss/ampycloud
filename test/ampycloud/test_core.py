@@ -12,6 +12,7 @@ Module content: tests for the core module
 #Import from Python
 import os
 from pathlib import Path
+from datetime import datetime
 import numpy as np
 import pandas as pd
 
@@ -102,9 +103,20 @@ def test_run_single_point():
     reset_prms()
 
 def test_demo():
-    """ test the demo routine. """
+    """ Test the demo routine. """
 
     mock_data, chunk = demo()
 
     assert isinstance(chunk, CeiloChunk)
     assert isinstance(mock_data, pd.DataFrame)
+
+def test_datetime():
+    """ Test the ability to feed datetime instances. """
+
+    # Get some random data
+    mock_data, _ = demo()
+    # Here, feed a datetime.datetime instance ...
+    out = run(mock_data, ref_dt=datetime(year=2022, month=1, day=26))
+
+    # and make sure it gets converted to str properly.
+    assert out.ref_dt == '2022-01-26 00:00:00'

@@ -7,7 +7,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [v0.3.0.dev0]
 ### Added:
 ### Fixed:
- - [fpavogt, 2022-01-26] Fix #62.
+ - [fpavogt, 2022-01-26] Fix #62, #63.
 ### Changed:
 ### Deprecated:
 ### Removed:

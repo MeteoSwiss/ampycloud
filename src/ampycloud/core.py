@@ -155,15 +155,17 @@ def reset_prms() -> None:
     dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
 @log_func_call(logger)
-def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloChunk:
+def run(data : pd.DataFrame, geoloc : str = None,
+        ref_dt : Union[str, datetime] = None) -> CeiloChunk:
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a py:class:`pandas.DataFrame`.
         geoloc (str, optional): the name of the geographic location where the data was taken.
             Defaults to None.
-        ref_dt (str, optional): reference date and time of the observations, corresponding to
-            Delta t = 0. Defaults to None.
+        ref_dt (str|datetime.datetime, optional): reference date and time of the observations,
+            corresponding to Delta t = 0. Defaults to None. A datetime instance will be turned to
+            str via ``str(ref_dt)``.
 
     Returns:
         :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
@@ -261,7 +263,7 @@ def run(data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> CeiloC
     logger.info('Starting an ampycloud run at %s', starttime)
 
     # First, let's create an CeiloChunk instance ...
-    chunk = CeiloChunk(data, geoloc = geoloc, ref_dt = ref_dt)
+    chunk = CeiloChunk(data, geoloc = geoloc, ref_dt = str(ref_dt))
 
     # Go through the ampycloud cascade:
     # Run the slicing ...
