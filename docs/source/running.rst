@@ -5,6 +5,45 @@
 Using ampycloud
 =================
 
+A no-words example for those that want to get started quickly
+-------------------------------------------------------------
+
+::
+
+    from datetime import datetime
+    import ampycloud
+    from ampycloud.utils import mocker
+    from ampycloud.plots import diagnostic
+
+    # Generate the canonical demo dataset for ampycloud
+    # Your data should have *exactly* this structure
+    mock_data = mocker.canonical_demo_data()
+
+    # Run the ampycloud algorithm on it
+    chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+
+    # Get the resulting METAR message
+    print(chunk.metar_msg())
+
+    # Display the full information available for the layers found
+    print(chunk.layers)
+
+    # And for the most motivated, plot the diagnostic diagram
+    diagnostic(chunk, upto='layers', show=True, save_stem='ampycloud_demo')
+
+
+The input data
+--------------
+
+The ampycloud algorithm is meant to process cloud base *hits* from ceilometer observations. A given
+set of hits to be processed by the ampycloud package must be stored inside a
+:py:class:`pandas.DataFrame` with a specific set of characteristics outlined below. Users can use
+the following utility function to check whether a given :py:class:`pandas.DataFrame` meets all the
+requirements of ampycloud.
+
+.. autofunction:: ampycloud.utils.utils.check_data_consistency
+    :noindex:
+
 .. _running:
 
 Running the algorithm

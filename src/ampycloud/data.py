@@ -19,11 +19,10 @@ import pandas as pd
 # Import from this package
 from .errors import AmpycloudError
 from .logger import log_func_call
-from . import scaler
-from . import cluster
-from . import layer
+from . import scaler, cluster, layer
 from . import wmo, icao
-from . import dynamic
+from . import dynamic, hardcoded
+from .utils import utils
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -32,7 +31,7 @@ class AbstractChunk(ABC):
     """ Abstract parent class for data chunk classes."""
 
     #: dict: required data columns
-    DATA_COLS = {'ceilo': str, 'dt': float, 'alt': float, 'type': int}
+    DATA_COLS = copy.deepcopy(hardcoded.REQ_DATA_COLS)
 
     @abstractmethod
     def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
@@ -44,8 +43,8 @@ class AbstractChunk(ABC):
         self._msa = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA)
         self._msa_hit_buffer = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER)
 
-        # Chunk data and required column names
-        self._data = self._cleanup_pdf(data)
+        # Assign the data using **a deep copy** to avoid messing with the original one.
+        self._data = self._cleanup_pdf(copy.deepcopy(data))
 
         # Name of the geographic location of the observations
         self._geoloc = geoloc
@@ -86,36 +85,10 @@ class AbstractChunk(ABC):
 
         """
 
-        # First things first, make sure I was fed a pandas DataFrame
-        if not isinstance(data, pd.DataFrame):
-            raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,'+
-                                 f' not: {type(data)}')
+        # Begin with a thorough inspection of the dataset
+        data = utils.check_data_consistency(data, req_cols=self.DATA_COLS)
 
-        # Make sure the dataframe is not empty.
-        # Note: an empty dataframe = no measurements. This is NOT the same as "measuring" clear sky
-        # conditions, which would result in NaNs.
-        # If I have no measurements, I cannot issue a METAR. It would make no sense.
-        if len(data) == 0:
-            raise AmpycloudError("Ouch ! len(data) is 0. I can't work with no data !")
-
-        # Check that all the required columns are present in the data, with the correct format
-        for (col, type_req) in self.DATA_COLS.items():
-            # If the requried column is missing, raise an Exception
-            if col not in data.columns:
-                raise AmpycloudError(f'Ouch ! Column {col} is missing from the input data.')
-            # If the column has the wrong data type, try to fix it on the fly.
-            if type_in := data[col].dtype != type_req:
-                logger.info('Adjusting the dtype of column %s from %s to %s',
-                            col, type_in, type_req)
-                data[col] = data[col].astype(type_req)
-
-        # Drop any columns that I do not need for processing
-        for key in data.columns:
-            if key not in self.DATA_COLS.keys():
-                logger.info('Dropping the superfluous %s column from the input data.', key)
-                data.drop((key), axis=1, inplace=True)
-
-        # Drop any hits that is too high
+        # Then also drop any hits that is too high
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))

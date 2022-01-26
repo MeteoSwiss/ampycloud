@@ -17,7 +17,7 @@ from pytest import raises
 from ampycloud.errors import AmpycloudError
 from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
-from ampycloud import dynamic, reset_prms
+from ampycloud import dynamic, reset_prms, hardcoded
 
 def test_ceilochunk_init():
     """ Test the init method of the CeiloChunk class. """
@@ -175,8 +175,12 @@ def test_layering_singlepts():
     mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
                                        ['dummy', -1, 4000, 2],
                                        ['dummy', -1, 4500, 3],
-                                       ['dummy', -1, 10, 0]]),
+                                       ['dummy', -1, np.nan, 0]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)

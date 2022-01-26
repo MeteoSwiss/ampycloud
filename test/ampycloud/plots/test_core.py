@@ -66,9 +66,9 @@ def test_empty_plot(mpls):
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
     # Let's create some data with only NaNs
-    data = pd.DataFrame([['1', -100, np.nan, 1], ['1', -99, np.nan, 1]],
+    data = pd.DataFrame([['1', -100, np.nan, 0], ['1', -99, np.nan, 0]],
                         columns=['ceilo', 'dt', 'alt', 'type'])
-    data['ceilo'] = data['ceilo'].astype(str)
+    data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
     data['dt'] = data['dt'].astype(float)
     data['alt'] = data['alt'].astype(float)
     data['type'] = data['type'].astype(int)

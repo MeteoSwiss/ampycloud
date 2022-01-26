@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud import dynamic, reset_prms
+from ampycloud import dynamic, reset_prms, hardcoded
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
@@ -82,12 +82,11 @@ def test_run_single_point():
     dynamic.OKTA_LIM0 = 0
 
     # Let's create some data with a single valid point
-    data = pd.DataFrame([['1', -100, 2000, 1], ['1', -99, np.nan, 1]],
+    data = pd.DataFrame([['1', -100, 2000, 1], ['1', -99, np.nan, 0]],
                         columns=['ceilo', 'dt', 'alt', 'type'])
-    data['ceilo'] = data['ceilo'].astype(str)
-    data['dt'] = data['dt'].astype(float)
-    data['alt'] = data['alt'].astype(float)
-    data['type'] = data['type'].astype(int)
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        data.loc[:, col] = data.loc[:, col].astype(tpe)
 
     # Run the code
     out = run(data)

@@ -160,49 +160,22 @@ def run(data : pd.DataFrame, geoloc : str = None,
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
-        data (pd.DataFrame): the data to be processed, as a py:class:`pandas.DataFrame`.
+        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
         geoloc (str, optional): the name of the geographic location where the data was taken.
             Defaults to None.
         ref_dt (str|datetime.datetime, optional): reference date and time of the observations,
-            corresponding to Delta t = 0. Defaults to None. A datetime instance will be turned to
-            str via ``str(ref_dt)``.
+            corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance
+            is specified, it will be turned almost immediately to str via ``str(ref_dt)``.
 
     Returns:
         :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
         cleanly.
 
-    All that is required to run the ampycloud algorithm is a properly formatted dataset. At the
-    moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance plots
-    (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``: as
-    long as they are strings, you can set them to whatever you please.
-
-    The input ``data`` must be a :py:class:`pandas.DataFrame` with the following column names
-    (types):
-    ::
-
-        'ceilo' (str), 'dt' (float), 'alt' (float), 'type' (int)
-
-    The ``ceilo`` columns contains the names/ids of the ceilometers as ``str``.
-
-    The ``dt`` column contains time deltas, in s, between a given ceilometer observation and
-    ``ref_dt``.
-
-    The ``alt`` column contains the cloud base hit altitudes reported by the ceilometers, in ft
-    above ground.
-
-    The ``type`` column contains integer that correspond to the hit *sequence id*. E.g. if a given
-    ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
-    cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements could be ``1``,
-    ``2``, ``3``, ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
-    plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
-    other regular hit**. Type ``0`` corresponds to no (cloud) detection.
-
-    It is possible to obtain an example of the required ``data`` format from the
-    :py:func:`.utils.mocker.canonical_demo_data` routine of the package, like so:
-    ::
-
-        from ampycloud.utils import mocker
-        mock_data = mocker.canonical_demo_data()
+    All that is required to run the ampycloud algorithm is
+    `a properly formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
+    At the moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance
+    plots (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``:
+    as long as they are strings, you can set them to whatever you please.
 
     .. important ::
         ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
