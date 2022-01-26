@@ -10,6 +10,7 @@ Module content: tests for the data module
 
 # Import from Python
 import numpy as np
+import pandas as pd
 from pytest import raises
 
 # Import from the module to test
@@ -167,3 +168,23 @@ def test_ceilochunk_2lay():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'SCT009 SCT019'
+
+def test_layering_singlepts():
+    """ Test the layering step when there is a single time steps. See #62 for the motivaton. """
+
+    mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
+                                       ['dummy', -1, 4000, 2],
+                                       ['dummy', -1, 4500, 3],
+                                       ['dummy', -1, 10, 0]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Check that the GMM was never executed
+    assert np.all(chunk.groups['ncomp'] == -1)

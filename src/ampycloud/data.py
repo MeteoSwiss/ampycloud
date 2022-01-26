@@ -624,11 +624,11 @@ class CeiloChunk(AbstractChunk):
             # 1) Layer density is large enough
             cond1 = self.groups.at[ind, 'okta'] < \
                     dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_okta_to_split
-            # 2) I have more than one valid point !
-            cond2 = len(gro_alts[~np.isnan(gro_alts)]) == 1
+            # 2) I have more than three valid points (since I will look for up to 3 components)
+            cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 3
             if cond1 or cond2:
                 # Add some useful info to the log
-                logger.info('Skipping the layering because: MIN_OKTA [%s] | 1PT [%s]',
+                logger.info('Skipping the layering because: MIN_OKTA [%s] | 3PT [%s]',
                              cond1, cond2)
                 # Here, set ncomp to -1 to show clearly that I did NOT actually check it ...
                 self.groups.at[ind, 'ncomp'] = -1
