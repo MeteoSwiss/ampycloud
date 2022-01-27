@@ -6,13 +6,14 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v0.3.0.dev0]
 ### Added:
+ - [fpavogt, 2022-01-27] Add tests for the .plots.secondary module.
 ### Fixed:
- - [fpavogt, 2022-01-26] Fix #62, #63.
+ - [fpavogt, 2022-01-27] Fix #66 and #67.
+ - [fpavogt, 2022-01-26] Fix #62, #63 and #64.
 ### Changed:
 ### Deprecated:
 ### Removed:
 ### Security:
-
 
 ## [v0.2.1.dev0]
 ### Fixed:
