@@ -17,7 +17,7 @@ import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud import dynamic, reset_prms, hardcoded
+from ampycloud import dynamic, hardcoded
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
@@ -44,7 +44,7 @@ def test_reset_prms():
     ref_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
     dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 = -1
     assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == -1
-    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'const'
+    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'shift-and-scale'
 
     # Then try to reset it
     reset_prms()

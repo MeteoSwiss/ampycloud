@@ -54,9 +54,10 @@ def check_data_consistency(pdf : pd.DataFrame,
     See `the pandas documentation <https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html>`__
     for more info about this type.
 
-    The ``dt`` column contains time deltas, in seconds, between ``ref_dt`` and a given ceilometer
-    observation. Ideally, ``ref_dt`` would be the issuing time of the METAR message, such that
-    ``dt`` values are negative, with the smallest one corresponding to the oldest measurement.
+    The ``dt`` column contains time deltas, in seconds, between a given ceilometer
+    observation and ``ref_dt`` (i.e. ``obs_time-ref_dt``). Ideally, ``ref_dt`` would be the issuing
+    time of the METAR message, such that ``dt`` values are negative, with the smallest one
+    corresponding to the oldest measurement.
 
     The ``alt`` column contains the cloud base hit altitudes reported by the ceilometers, in ft
     above ground.

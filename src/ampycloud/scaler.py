@@ -21,100 +21,106 @@ from .logger import log_func_call
 logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
-def const_scaling(vals : np.ndarray,
-                  scale : Union[int, float], mode : str = 'scale') -> np.ndarray:
-    """ Scale (or descale) values by a constant.
+def shift_and_scale(vals : np.ndarray, shift : Union[int, float] = None,
+                    scale : Union[int, float] = 1, mode : str = 'do') -> np.ndarray:
+    """ Shift (by a constant) and scale (by a constant) the data.
 
     Args:
-        vals (ndarray): values to (de-)scale.
-        scale (int|float): the scaling value.
-        mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.
+        vals (ndarray): values to (un-)shift-and-scale.
+        shift (int|float, optional): amount to shift the data by. If not specified, it will be set
+            to ``max(vals)``.
+        scale (int|float, optional): the scaling value. Defaults to 1.
+        mode (str, optional): whether to 'do' or 'undo' the shift-and-scale.
 
     Returns:
-        ndarray: vals/scale if mode=='scale', and val * scale if mode=='descale'.
+        np.ndarray: the (un-)shifted-and-scaled array.
+
+    This function converts x to (x-shift)/scale if ``mode='do'``, and to x * scale + shift if
+    ``mode='undo'``.
+
     """
 
-    if mode == 'scale':
-        return vals/scale
+    # Let's deal with None shift ... this is important to ensure that the ampycloud algorithm
+    # always deals with the respective time separation between measurements, when doing the
+    # clustering.
+    if shift is None:
+        shift = np.nanmax(vals)
 
-    if mode == 'descale':
-        return vals * scale
+    # Implement the scaling routine
+    if mode == 'do':
+        return (vals-shift)/scale
+    if mode == 'undo':
+        return vals * scale + shift
 
     raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
 
 @log_func_call(logger)
-def minmax_scaling(vals : np.ndarray,
-                   min_range : Union[float, int] = 0,
-                   mode : str = 'scale',
-                   min_val : Union[float, int] = None,
-                   max_val : Union[float, int] = None) -> np.ndarray:
-    """ Rescale the data onto a [0, 1] interval, possibly using a minimum interval range.
-
-    Note:
-        Descaling with this function is a little bit annoying, because the data itself does not
-        contain enough information to know what interval vals should be mapped onto.
-        Hence the min_val and max_val kwargs, so that the user can tell us ...
+def minmax_scale(vals : np.ndarray,
+                 min_val : Union[float, int] = None,
+                 max_val : Union[float, int] = None,
+                 mode : str = 'do') -> np.ndarray:
+    """ Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum
+        interval range.
 
     Args:
-        vals (ndarray): values to (de-)scale.
-        min_range (int|float, optional): will map the [0, 1] interval to
-            [val_mid-min_range/2, val_mid+min_range/2] rather than [val_min, val_max],
-            if val_max-val_min < min_range. Note: val_mid=(val_max+val_min)/2. Must be >=0.
-            Defaults to 0.
+        vals (ndarray): values to (un-)minmax-scale.
         mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.
-        min_val (int|float, optional): min (target) interval value, in case mode='descale'.
+        min_val (int|float, optional): value to be mapped to 0. If not set, will be ``min(vals)``.
             Defaults to None.
-        max_val (int|float, optional): max (target) interval value, in case mode='descale'.
+        max_val (int|float, optional): value to be mapped to 1. If not set, will be ``max(vals)``.
             Defaults to None.
 
     Returns:
-        ndarray: scaled/descaled values.
+        ndarray: The (un-)minmax-scaled array.
 
     """
 
-    # Complain if min_range is smaller than 0. Else, I risk dividing by 0 in certai circumstances
-    # (i.e. when a single point is being fed).
-    if min_range < 0:
-        raise AmpycloudError(f'Ouch ! min_range must be >0, and not: {min_range}')
+    # Compute the "default" edges if warranted
+    if min_val is None:
+        min_val = np.nanmin(vals)
+    if max_val is None:
+        max_val = np.nanmax(vals)
 
-    if mode == 'scale':
-        # What is the range of the data
-        val_range = np.nanmax(vals) - np.nanmin(vals)
-        val_mid = (np.nanmax(vals) + np.nanmin(vals))/2
+    if mode == 'do':
+        return (vals-min_val)/(max_val-min_val)
 
-        # Deal with the cases where all the values are the same by returning nans
-        if val_range == 0:
-            # If the user did not set a min_range, let's do it for them
-            if min_range == 0:
-                min_range = 1
-
-        # Else, deal with the values as usual ...
-        if val_range >= min_range:
-            mymax = np.nanmax(vals)
-            mymin = np.nanmin(vals)
-        # ... unless I have a range smaller than the min_range specified by the user.
-        else:
-            mymax = val_mid + min_range/2
-            mymin = val_mid - min_range/2
-
-        return (vals-mymin)/(mymax-mymin)
-
-    if mode == 'descale':
-        # Compute the original range and mid point
-        val_range = max_val - min_val
-        val_mid = (max_val + min_val)/2
-
-        # Descale, properly handling the case where min_range matters.
-        if val_range >= min_range:
-            return vals * (max_val - min_val) + min_val
-
-        return vals * min_range + (val_mid - min_range/2)
+    if mode == 'undo':
+        return vals * (max_val - min_val) + min_val
 
     raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
 
 @log_func_call(logger)
-def step_scaling(vals : np.ndarray,
-                 steps : list, scales : list, mode : str = 'scale') -> np.ndarray:
+def minrange2minmax(vals : np.ndarray, min_range : Union[int, float] = 0) -> tuple:
+    """ Transform a minimum range into a pair of min/max values.
+
+    Args:
+        vals (np.ndarray): values to assess.
+        min_range (int|float, optional): mininum range to meet. Defaults t0 0.
+
+    Returns:
+        tuple: the min and max values of the data range of at least min_range in size.
+
+
+    Essentially, if max(vals)-min(vals) >= min_range, this function returns
+    ``[min(vals), max(vals)]``. Else, it returns ``[val_mid-min_range/2, val_mid+min_range/2]``,
+    with ```val_mid=(max(vals)+min(vals))/2``.
+
+    """
+
+    val_range = np.nanmax(vals) - np.nanmin(vals)
+    if val_range >= min_range:
+        return (np.nanmin(vals), np.nanmax(vals))
+
+    # Compute the middle of the data
+    val_mid = (np.nanmax(vals) + np.nanmin(vals))/2
+
+    # Build a symetric range around it
+    return (val_mid - min_range/2, val_mid + min_range/2)
+
+
+@log_func_call(logger)
+def step_scale(vals : np.ndarray,
+                 steps : list, scales : list, mode : str = 'do') -> np.ndarray:
     """ Scales values step-wise, with different constants bewteen specific steps.
 
     Values are divided by scales[i] between steps[i-1:i].
@@ -128,10 +134,10 @@ def step_scaling(vals : np.ndarray,
         steps (list, optional): the step **edges**. E.g. [8000, 14000].
         scales (list, optional): the scaling values (=dividers) for each step.
             E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.
-        mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.
+        mode (str, optional): whether to 'do' or 'undo' the scaling.
 
     Returns:
-        ndarray: (de-)scaled values
+        ndarray: (un-)step-scaled values
     """
 
     # Some sanity checks
@@ -155,36 +161,114 @@ def step_scaling(vals : np.ndarray,
     out = np.full_like(vals, np.nan, dtype=float)
 
     # Start scaling things, one step after another
-    for (sid, scale) in enumerate(scales):
+    for (sid, sval) in enumerate(scales):
 
         # What is this specific step offset (to ensure continuity between steps) ?
         cont_corr = np.concatenate((np.array([steps[0]/scales[0]]), np.diff(steps)/scales[1:-1]))
         cont_corr = np.sum(cont_corr[:sid])
 
-        if mode == 'scale':
+        if mode == 'do':
 
             # Which values belong to that step ?
             cond = (edges_in[sid] <= vals) * (vals < edges_in[sid+1])
             # Apply the scaling
-            out[cond] = (vals[cond] - offsets[sid])/scale + cont_corr
+            out[cond] = (vals[cond] - offsets[sid])/sval + cont_corr
 
-        if mode == 'descale':
+        elif mode == 'undo':
 
             # Which value belongs to that step ?
             cond = (vals >= edges_out[sid]) * (vals < edges_out[sid+1])
             # Apply the descaling
-            out[cond] = (vals[cond] - cont_corr) * scale + offsets[sid]
+            out[cond] = (vals[cond] - cont_corr) * sval + offsets[sid]
+
+        else:
+            raise AmpycloudError(f'Ouch ! mode unknown: {mode}')
 
     return out
 
 @log_func_call(logger)
-def scaling(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
+def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
+    """ Converts the user-input keywords such that they can be fed to the underlying scaling fcts.
+
+    Args:
+        vals (np.ndarray): the values to be prcoessed.
+        fct (str): the scaling mode, e.g. 'shift-and-scale', etc ....
+        **kwargs: dict of keyowrds arguments to be converted, if warranted.
+
+    Returns:
+        dict: the data-adjusted set of kwargs.
+
+    Note:
+        This function was originally created to accomodate the creation of secondary axis on the
+        ampycloud diagnostic plots. It is a buffer that allows to separate "user" scaling
+        keywords from the "deterministic" scaling keywords required to get a given scaling no
+        matter the udnerlying dataset (as is required for plotting secondary axis).
+
+    """
+
+    if fct == 'shift-and-scale':
+        # In this case, the only data I may need to derive from the data is the shift.
+        if 'shift' in kwargs.keys():
+            # Already set - do nothing
+            return kwargs
+        if 'mode' in kwargs.keys():
+            if kwargs['mode'] == 'do':
+                kwargs['shift'] = np.nanmax(vals)
+            elif kwargs['mode'] == 'undo':
+                raise AmpycloudError('Ouch ! I cannot get `shift` from the shift-and-scaled data !')
+            else:
+                raise AmpycloudError(f"Ouch ! mode unknown: {kwargs['mode']}")
+            return kwargs
+
+        # 'mode' is not set -> it will be "do" by default.
+        kwargs['shift'] = np.nanmax(vals)
+        return kwargs
+
+    if fct == 'minmax-scale':
+        # In this case, the challenge lies with identifying min_val and max_val, knowing that the
+        # user may specify a min_range value.
+        if 'min_val' in kwargs.keys() and 'max_val' in kwargs.keys():
+            # Already specified ... do  nothing
+            return kwargs
+        if 'mode' in kwargs.keys():
+            if kwargs['mode'] == 'do':
+                if 'min_range' in kwargs.keys():
+                    min_range = kwargs['min_range']
+                    kwargs.pop('min_range', None)
+                else:
+                    min_range = 0
+                (kwargs['min_val'], kwargs['max_val']) = minrange2minmax(vals, min_range)
+                return kwargs
+
+            if kwargs['mode']=='undo':
+                raise AmpycloudError('Ouch ! I cannot get `min_val` and `max_val` from' +
+                                     ' minmax-scaled data !')
+
+            raise AmpycloudError(f"Ouch ! mode unknown: {kwargs['mode']}")
+
+        # 'mode' not set -> will default to 'do'
+        if 'min_range' in kwargs.keys():
+            min_range = kwargs['min_range']
+            kwargs.pop('min_range', None)
+        else:
+            min_range = 0
+        (kwargs['min_val'], kwargs['max_val']) = minrange2minmax(vals, min_range)
+        return kwargs
+
+    if fct == 'step-scale':
+        # Nothing to be done here
+        return kwargs
+
+    raise AmpycloudError(f'Ouch ! scaling fct unknown: {fct}')
+
+@log_func_call(logger)
+def scaled(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:
         vals (ndarray): values to scale.
         fct (str, optional): name of the scaling function to use. Can be one of
-            ['const', 'minmax', or 'step']. Defaults to None =  do nothing.
+            ['shift-and-scale', 'minmax-scale', or 'step-scale']. Defaults to None = do nothing.
         **kwargs: keyword arguments that will be fed to the underlying scaling function.
 
     Returns:
@@ -199,13 +283,16 @@ def scaling(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
     if np.all(np.isnan(vals)):
         return vals
 
-    if fct == 'const':
-        return const_scaling(vals, **kwargs)
+    # Process the user-supplied kwargs into kwargs I can feed the functions.
+    kwargs = convert_kwargs(vals, fct, **kwargs)
 
-    if fct == 'minmax':
-        return minmax_scaling(vals, **kwargs)
+    if fct == 'shift-and-scale':
+        return shift_and_scale(vals, **kwargs)
 
-    if fct == 'step':
-        return step_scaling(vals, **kwargs)
+    if fct == 'minmax-scale':
+        return minmax_scale(vals, **kwargs)
+
+    if fct == 'step-scale':
+        return step_scale(vals, **kwargs)
 
     raise AmpycloudError(f'Ouch ! Scaling function name unknown: {fct}')

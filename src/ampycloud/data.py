@@ -195,10 +195,10 @@ class CeiloChunk(AbstractChunk):
         out = copy.deepcopy(self.data)
 
         # Deal with the dt first
-        out['dt'] = scaler.scaling(out['dt'], dt_mode, **dt_kwargs)
+        out['dt'] = scaler.scaled(out['dt'], dt_mode, **dt_kwargs)
 
         # Then the altitudes
-        out['alt'] = scaler.scaling(out['alt'], alt_mode, **alt_kwargs)
+        out['alt'] = scaler.scaled(out['alt'], alt_mode, **alt_kwargs)
 
         return out
 

@@ -19,7 +19,7 @@ from sklearn.mixture import GaussianMixture
 # Import from this module
 from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
-from .scaler import minmax_scaling
+from .scaler import minmax_scale
 from .utils import utils
 
 # Instantiate the module logger
@@ -195,7 +195,7 @@ def ncomp_from_gmm(vals : np.ndarray,
 
     # Rescale the data if warranted
     if rescale_0_to_x is not None:
-        vals = minmax_scaling(vals, min_range=0) * rescale_0_to_x
+        vals = minmax_scale(vals) * rescale_0_to_x
 
     # I will only look for at most 3 layers.
     ncomp = np.array([1, 2, 3])
