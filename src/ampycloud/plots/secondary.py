@@ -46,7 +46,7 @@ def scaling_fcts(show: bool = True,
 
     Example:
     ::
-    
+
         from ampycloud.plots.secondary import scaling_fcts
 
         scaling_fcts(show=True, save_stem='ampycloud_scaling_fcts', save_fmts=['pdf'])

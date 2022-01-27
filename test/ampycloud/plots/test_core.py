@@ -78,7 +78,7 @@ def test_diagnostic(mpls):
     # Create the diagnsotic plots at the four different upto levels
     for sufx in sufxs:
         diagnostic(chunk, upto=sufx, show_ceilos=True, show=False,
-                   save_stem=base_name+sufx, save_fmts='png',
+                   save_stem=base_name+sufx, save_fmts=['pdf', 'png'],
                    ref_metar_origin='Mock data', ref_metar='FEW009 SCT018 BKN038')
 
         assert Path(base_name+sufx+'.pdf').exists

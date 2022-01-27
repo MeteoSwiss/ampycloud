@@ -10,11 +10,8 @@ Module content: tests for the plots.secondary module
 
 # Import from Python
 from pathlib import Path
-import numpy as np
-import pandas as pd
 
-from ampycloud import dynamic, reset_prms, run
-from ampycloud.core import demo
+from ampycloud import dynamic
 from ampycloud.plots.secondary import scaling_fcts
 
 
@@ -30,7 +27,6 @@ def test_scaling_fcts(mpls):
 
     if mpls:
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
-
 
     scaling_fcts(show=False, save_stem='pytest_scaling_fcts', save_fmts=['png'])
     assert Path('pytest_large_dts.pdf').exists
