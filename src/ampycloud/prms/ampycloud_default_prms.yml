@@ -42,17 +42,15 @@ SLICING_PRMS:
         linkage: average
         affinity: manhattan
     # Time scaling mode
-    dt_scale_mode: const
+    dt_scale_mode: shift-and-scale
     # Time scaling parameters
     dt_scale_kwargs:
         scale: 100000
-        mode: scale
     # Altitude scaling mode
-    alt_scale_mode: minmax
+    alt_scale_mode: minmax-scale
     # Altitude scaling parameters
     alt_scale_kwargs:
         min_range: 1000
-        mode: scale
 
 # Clustering parameters
 GROUPING_PRMS:
@@ -65,18 +63,16 @@ GROUPING_PRMS:
         linkage: single
         affinity: manhattan
     # Time scaling mode
-    dt_scale_mode: const
+    dt_scale_mode: shift-and-scale
     # Time scaling parameters
     dt_scale_kwargs:
         scale: 180
-        mode: scale
     # Altitude scaling mode
-    alt_scale_mode: step
+    alt_scale_mode: step-scale
     # Altitude scaling parameters
     alt_scale_kwargs:
         steps: [8000, 14000]
         scales: [100, 500, 1000]
-        mode: scale
     # Distance from the mean altitude (in std) below which two slices are considered "overlapping"
     overlap: 2.0
 

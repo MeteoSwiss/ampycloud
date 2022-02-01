@@ -11,6 +11,7 @@ Module content: tests for the scientific stability of the package
 # Import from Python
 from pathlib import Path
 import pickle
+import pandas as pd
 
 # Import from ampycloud
 import ampycloud
@@ -49,6 +50,9 @@ def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
         # Extract the reference data
         with open(ref_data_file, 'rb') as f:
             data = pickle.load(f)
+
+        # Fix the dtype of the ceilo column
+        data.loc[:, 'ceilo'] = data.loc[:, 'ceilo'].astype(pd.StringDtype())
 
         # Get other useful info
         geoloc = ref_data_file.stem.split('_')[0]

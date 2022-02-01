@@ -19,9 +19,9 @@ from matplotlib.lines import Line2D
 from matplotlib import rcParams
 
 # Import from this package
-from ..scaler import scaling
+from .. import scaler
 from .hardcoded import WIDTH_TWOCOL, MRKS
-from .tools import texify
+from .tools import texify, get_scaling_kwargs
 from .. import wmo
 from ..data import CeiloChunk
 from .. import dynamic
@@ -197,8 +197,8 @@ class DiagnosticPlot:
             overlap = dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap
 
             # Get some fake data spanning the entire data range
-            misc = np.arange(np.nanmin(self._chunk.data['dt']),
-                             np.nanmax(self._chunk.data['dt']), 1)
+            misc = np.linspace(np.nanmin(self._chunk.data['dt']),
+                               np.nanmax(self._chunk.data['dt']), 3)
             self._axs[0].fill_between(misc,
                                       np.ones_like(misc) * (slice_mean - overlap * slice_std),
                                       np.ones_like(misc) * (slice_mean + overlap * slice_std),
@@ -417,47 +417,41 @@ class DiagnosticPlot:
     def format_slice_axes(self) -> None:
         """ Format the duplicate axes related to the slicing part.
 
-        Todo:
-            Cleanup the code once #25 is fixed.
-
         """
-
-        # First, get the scaling parameters, and switch them over to a 'descale' mode ...
-        # TODO: Once issue #25 is fixed, maybe update these lines ...
-        de_dt_scale_kwargs = {}
-        de_dt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
-        de_dt_scale_kwargs['mode'] = 'descale'
-        de_alt_scale_kwargs = {}
-        de_alt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
-        de_alt_scale_kwargs['mode'] = 'descale'
 
         # Here, only proceed if I have actually found some slices !
         if self._chunk.n_slices > 0:
 
-            # Here, I need to add some vital information to the de_alt_scaling parameters
-            # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
-            # and generate the appropriate side-axis.
-            if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode == 'minmax':
-                de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
-                de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
-            if dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'minmax':
-                de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
-                de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
+            # In order to show secondary_axis, we need to feed the forward/reverse scaling function
+            # with the actual ones used in the code. Since these are dependant upon the data,
+            # we need to derive them by hand given what was requested by the user.
+            (dt_scale_kwargs, dt_descale_kwargs) = \
+                get_scaling_kwargs(self._chunk.data['dt'].values,
+                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
 
+            (alt_scale_kwargs, alt_descale_kwargs) = \
+                get_scaling_kwargs(self._chunk.data['alt'].values,
+                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.06,
-                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
-                                   **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs),
-                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
-                                   **de_dt_scale_kwargs)))
+                functions=(partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                   **dt_scale_kwargs),
+                           partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                   **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.03,
-                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
-                                   **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs),
-                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
-                                   **de_alt_scale_kwargs)))
+                functions=(partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                   **alt_scale_kwargs),
+                           partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                   **alt_descale_kwargs)))
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Slicing $\Delta t$'))
@@ -470,46 +464,41 @@ class DiagnosticPlot:
     def format_group_axes(self) -> None:
         """ Format the duplicate axes related to the grouping part.
 
-        Todo:
-            Cleanup the code once #25 is fixed.
-
         """
-
-        # First, get the scaling parameters, and switch them over to a 'descale' mode ...
-        # TODO: once issue #25 is fixed, maybe update these lines ...
-        de_dt_scale_kwargs = {}
-        de_dt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs)
-        de_dt_scale_kwargs['mode'] = 'descale'
-        de_alt_scale_kwargs = {}
-        de_alt_scale_kwargs.update(dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
-        de_alt_scale_kwargs['mode'] = 'descale'
-
-        # Here, I need to add some vital information to the de_alt_scaling parameters
-        # Essentially, we need to set min_/max_val items so we can actually "undo" the scaling
-        # and generate the appropriate side-axis.
-        if dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode == 'minmax':
-            de_alt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['alt'])
-            de_alt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['alt'])
-        if dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode == 'minmax':
-            de_dt_scale_kwargs['min_val'] = np.nanmin(self._chunk.data['dt'])
-            de_dt_scale_kwargs['max_val'] = np.nanmax(self._chunk.data['dt'])
 
         # Only proceed if I have found some clusters ...
         if self._chunk.n_groups > 0:
 
+            # In order to show secondary_axis, we need to feed the forward/reverse scaling function
+            # with the actual ones used in the code. Since these are dependant upon the data,
+            # we need to derive them by hand given what was requested by the user.
+            (dt_scale_kwargs, dt_descale_kwargs) = \
+                get_scaling_kwargs(self._chunk.data['dt'].values,
+                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs)
+
+            (alt_scale_kwargs, alt_descale_kwargs) = \
+                get_scaling_kwargs(self._chunk.data['alt'].values,
+                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
+
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.25,
-                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
-                                   **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs),
-                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
-                                   **de_dt_scale_kwargs)))
+                functions=(partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                   **dt_scale_kwargs),
+                           partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                   **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.14,
-                functions=(partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
-                                   **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs),
-                           partial(scaling, fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
-                                   **de_alt_scale_kwargs)))
+                functions=(partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                   **alt_scale_kwargs),
+                           partial(scaler.apply_scaling,
+                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                   **alt_descale_kwargs)))
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Grouping $\Delta t$'))

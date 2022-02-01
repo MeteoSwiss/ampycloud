@@ -10,13 +10,14 @@ Module content: tests for the data module
 
 # Import from Python
 import numpy as np
+import pandas as pd
 from pytest import raises
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError
 from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
-from ampycloud import dynamic, reset_prms
+from ampycloud import dynamic, reset_prms, hardcoded
 
 def test_ceilochunk_init():
     """ Test the init method of the CeiloChunk class. """
@@ -167,3 +168,29 @@ def test_ceilochunk_2lay():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'SCT009 SCT019'
+
+def test_layering_singlepts():
+    """ Test the layering step when there is a single time steps. See #62 for the motivation. """
+
+    mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
+                                       ['dummy', -1, 4000, 2],
+                                       ['dummy', -1, 4500, 3],
+                                       ['dummy', -1, np.nan, 0]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Check that the GMM was never executed
+    assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
+    # Check that the resulting layers and groups are the same
+    assert np.all(chunk.groups.loc[:, 'code']==chunk.layers.loc[:, 'code'])

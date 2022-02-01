@@ -17,6 +17,41 @@ from ampycloud import dynamic, reset_prms, run
 from ampycloud.core import demo
 from ampycloud.plots.core import diagnostic
 
+
+def test_large_dts(mpls):
+    """ Test that all goes well if the user sets very large dts.
+
+    Args:
+        mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
+            by a fixture that fetches the corresponding command line argument.
+            See conftest.py for details.
+
+    """
+
+    if mpls:
+        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+
+    # Let's create some data with only NaNs
+    data = pd.DataFrame([['1', 7e5, 1000, 1], ['1', 7e5+1, 1001, 1], ['1', 7e5+2, 1002, 1]],
+                        columns=['ceilo', 'dt', 'alt', 'type'])
+    data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
+    data['dt'] = data['dt'].astype(float)
+    data['alt'] = data['alt'].astype(float)
+    data['type'] = data['type'].astype(int)
+
+    # Run ampycloud
+    chunk = run(data)
+
+    # Uncomment the line below once pytst 7.0 can be pip-installed
+    #with pytest.does_not_warn():
+    if True:
+        diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
+                   save_stem='pytest_large_dts', save_fmts='png',
+                   ref_metar_origin='Large dts', ref_metar='OVC010')
+
+    assert Path('pytest_large_dts.pdf').exists
+
+
 def test_diagnostic(mpls):
     """ Test the raw_data plot.
 
@@ -43,7 +78,7 @@ def test_diagnostic(mpls):
     # Create the diagnsotic plots at the four different upto levels
     for sufx in sufxs:
         diagnostic(chunk, upto=sufx, show_ceilos=True, show=False,
-                   save_stem=base_name+sufx, save_fmts='png',
+                   save_stem=base_name+sufx, save_fmts=['pdf', 'png'],
                    ref_metar_origin='Mock data', ref_metar='FEW009 SCT018 BKN038')
 
         assert Path(base_name+sufx+'.pdf').exists
@@ -66,9 +101,9 @@ def test_empty_plot(mpls):
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
     # Let's create some data with only NaNs
-    data = pd.DataFrame([['1', -100, np.nan, 1], ['1', -99, np.nan, 1]],
+    data = pd.DataFrame([['1', -100, np.nan, 0], ['1', -99, np.nan, 0]],
                         columns=['ceilo', 'dt', 'alt', 'type'])
-    data['ceilo'] = data['ceilo'].astype(str)
+    data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
     data['dt'] = data['dt'].astype(float)
     data['alt'] = data['alt'].astype(float)
     data['type'] = data['type'].astype(int)
