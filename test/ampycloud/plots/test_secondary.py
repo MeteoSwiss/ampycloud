@@ -29,4 +29,4 @@ def test_scaling_fcts(mpls):
         dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
 
     scaling_fcts(show=False, save_stem='pytest_scaling_fcts', save_fmts=['png'])
-    assert Path('pytest_large_dts.pdf').exists
+    assert Path('pytest_large_dts.png').exists

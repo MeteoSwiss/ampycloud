@@ -170,7 +170,7 @@ def test_ceilochunk_2lay():
     assert chunk.metar_msg() == 'SCT009 SCT019'
 
 def test_layering_singlepts():
-    """ Test the layering step when there is a single time steps. See #62 for the motivaton. """
+    """ Test the layering step when there is a single time steps. See #62 for the motivation. """
 
     mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
                                        ['dummy', -1, 4000, 2],
@@ -192,3 +192,5 @@ def test_layering_singlepts():
 
     # Check that the GMM was never executed
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
+    # Check that the resulting layers and groups are the same
+    assert np.all(chunk.groups.loc[:, 'code']==chunk.layers.loc[:, 'code'])

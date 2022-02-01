@@ -21,7 +21,7 @@ from matplotlib import rcParams
 # Import from this package
 from .. import scaler
 from .hardcoded import WIDTH_TWOCOL, MRKS
-from .tools import texify, get_scaled_kwargs
+from .tools import texify, get_scaling_kwargs
 from .. import wmo
 from ..data import CeiloChunk
 from .. import dynamic
@@ -422,34 +422,34 @@ class DiagnosticPlot:
         # Here, only proceed if I have actually found some slices !
         if self._chunk.n_slices > 0:
 
-            # In order to show secondary_axis, we need to feed the forard/reverse scaling function
+            # In order to show secondary_axis, we need to feed the forward/reverse scaling function
             # with the actual ones used in the code. Since these are dependant upon the data,
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
-                get_scaled_kwargs(self._chunk.data['dt'].values,
+                get_scaling_kwargs(self._chunk.data['dt'].values,
                                   dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
                                   dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
-                get_scaled_kwargs(self._chunk.data['alt'].values,
+                get_scaling_kwargs(self._chunk.data['alt'].values,
                                   dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
                                   dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.06,
-                functions=(partial(scaler.scaled,
+                functions=(partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
                                    **dt_scale_kwargs),
-                           partial(scaler.scaled,
+                           partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
                                    **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.03,
-                functions=(partial(scaler.scaled,
+                functions=(partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
                                    **alt_scale_kwargs),
-                           partial(scaler.scaled,
+                           partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
                                    **alt_descale_kwargs)))
 
@@ -469,34 +469,34 @@ class DiagnosticPlot:
         # Only proceed if I have found some clusters ...
         if self._chunk.n_groups > 0:
 
-            # In order to show secondary_axis, we need to feed the forard/reverse scaling function
+            # In order to show secondary_axis, we need to feed the forward/reverse scaling function
             # with the actual ones used in the code. Since these are dependant upon the data,
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
-                get_scaled_kwargs(self._chunk.data['dt'].values,
+                get_scaling_kwargs(self._chunk.data['dt'].values,
                                   dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
                                   dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs)
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
-                get_scaled_kwargs(self._chunk.data['alt'].values,
+                get_scaling_kwargs(self._chunk.data['alt'].values,
                                   dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
                                   dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.25,
-                functions=(partial(scaler.scaled,
+                functions=(partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
                                    **dt_scale_kwargs),
-                           partial(scaler.scaled,
+                           partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
                                    **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.14,
-                functions=(partial(scaler.scaled,
+                functions=(partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
                                    **alt_scale_kwargs),
-                           partial(scaler.scaled,
+                           partial(scaler.apply_scaling,
                                    fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
                                    **alt_descale_kwargs)))
 

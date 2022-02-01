@@ -17,7 +17,7 @@ import matplotlib.gridspec as gridspec
 
 # Import from this package
 from ..logger import log_func_call
-from ..scaler import scaled
+from ..scaler import apply_scaling
 from .. import dynamic
 from .hardcoded import WIDTH_TWOCOL
 from .tools import texify, set_mplstyle
@@ -39,9 +39,9 @@ def scaling_fcts(show: bool = True,
     Args:
        show (bool, optional): show the plot, or not. Defaults to True.
        save_stem (str, optional): if set, will save the plot with this stem (which can include a
-           path as well). Deafults to None.
+           path as well). Defaults to None.
        save_fmts (list|str, optional): a list of file formats to export the plot to. Defaults to
-           None = ['pdf'].
+           None = ['png'].
 
 
     Example:
@@ -69,13 +69,13 @@ def scaling_fcts(show: bool = True,
     alts = np.arange(0, 25000, 10)
 
     # Plot the slicing scale
-    ax1.plot(alts, scaled(alts, fct='shift-and-scale', **{'scale':1000}), c='k', lw=2)
+    ax1.plot(alts, apply_scaling(alts, fct='shift-and-scale', **{'scale':1000}), c='k', lw=2)
     ax1.set_title(texify(r'\smaller shift-and-scale'))
 
-    ax2.plot(alts, scaled(alts, fct='minmax-scale'), c='k', lw=2)
+    ax2.plot(alts, apply_scaling(alts, fct='minmax-scale'), c='k', lw=2)
     ax2.set_title(texify(r'\smaller minmax-scale'))
 
-    ax3.plot(alts, scaled(alts, fct='step-scale',
+    ax3.plot(alts, apply_scaling(alts, fct='step-scale',
         **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS['alt_scale_kwargs']), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step-scale'))
 

@@ -149,21 +149,23 @@ def texify(msg : str) -> str:
     return msg
 
 @log_func_call(logger)
-def get_scaled_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
-    """ Utility function to extract the **actual** parameters required to scale the data,
-    given a set of user-defined parameters.
+def get_scaling_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
+    """ Utility function to extract the **actual, deterministic** parameters required to scale the
+    data, given a set of user-defined parameters.
 
-    This is a utility function to aid in the drawing of seconary axis that require to derive the
+    This is a utility function to aid in the drawing of secondary axis that require to derive the
     "reverse scaling function".
 
     Args:
-       data (pd.Series): the data that was originally scaled by the user.
-       mode (str): the name of the scaling used by the user.
-       kwargs (dict): the scaling parameter set by the user.
+        data (pd.Series): the data that was originally scaled by the user.
+        mode (str): the name of the scaling used by the user. Must be any mode supported by
+            :py:func:`ampycloud.scaler.convert_kwargs` (e.g. ``shift-and-scale``, ``minmax-scale``,
+            ``step-scale``).
+        kwargs (dict): the scaling parameter set by the user.
 
     Return:
-       tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
-           scaling.
+        tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
+        scaling.
 
     Todo:
         Cleanup the code once #25 is fixed.

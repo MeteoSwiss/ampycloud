@@ -11,6 +11,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-01-27] Fix #66 and #67.
  - [fpavogt, 2022-01-26] Fix #62, #63 and #64.
 ### Changed:
+ - [fpavogt, 2022-02-01] Implement review feedback, including name change for `scaled` to `apply_scaling`.
 ### Deprecated:
 ### Removed:
 ### Security:

@@ -14,7 +14,7 @@ import numpy as np
 
 # Import from this package
 from ampycloud.scaler import shift_and_scale, minmax_scale, minrange2minmax, step_scale
-from ampycloud.scaler import convert_kwargs, scaled
+from ampycloud.scaler import convert_kwargs, apply_scaling
 from ampycloud.errors import AmpycloudError
 
 def test_shift_and_scale():
@@ -97,35 +97,39 @@ def test_convert_kwargs():
     assert 'shift' in convert_kwargs(data, fct='shift-and-scale', **kwargs).keys()
 
 
-def test_scaled():
+def test_apply_scaling():
     """ Test the umbrella scaling function, and its ability to correctly summon the different
     scaling functions. """
 
-    out = scaled(np.ones(1), fct='shift-and-scale', scale=10, mode='do')
+    out = apply_scaling(np.ones(1), fct='shift-and-scale', scale=10, mode='do')
     assert out == 0
 
+    out = apply_scaling(np.array((10, 20)), fct='shift-and-scale', scale=10, shift=15, mode='do')
+    assert (out == np.array([-0.5, 0.5])).all()
+
     # Try to feed args in the wrong order ...
-    out = scaled(np.ones(1), fct='step-scale', scales=[10, 100, 1000], mode='do', steps=[10, 20])
+    out = apply_scaling(np.ones(1), fct='step-scale', scales=[10, 100, 1000], mode='do',
+                        steps=[10, 20])
     assert out == 0.1
 
     # Try to feed only NaNs
-    out = scaled(np.ones(10)*np.nan, fct='minmax-scale', mode='do', min_range=1000)
+    out = apply_scaling(np.ones(10)*np.nan, fct='minmax-scale', mode='do', min_range=1000)
     assert np.all(np.isnan(out))
 
     # Try when a single point is being fed
-    out = scaled(np.ones(1), fct='minmax-scale', mode='do', min_range=1000)
+    out = apply_scaling(np.ones(1), fct='minmax-scale', mode='do', min_range=1000)
     assert out == 0.5
 
     # Try with a min-range
     din = np.array([1,5,9])
-    out = scaled(din, fct='minmax-scale', min_range=10, mode='do')
+    out = apply_scaling(din, fct='minmax-scale', min_range=10, mode='do')
     assert np.all(out == np.array([0.1, 0.5, 0.9]))
 
     # Make sure undoing the minmax-scale without enough info crashes properly.
     with raises(AmpycloudError):
-        scaled(out, fct='minmax-scale', mode='undo')
+        apply_scaling(out, fct='minmax-scale', mode='undo')
 
     # Now actually try the undoing
     (min_val, max_val) = minrange2minmax(din, min_range=10)
-    reout = scaled(out, fct='minmax-scale', mode='undo', min_val=min_val, max_val=max_val)
+    reout = apply_scaling(out, fct='minmax-scale', mode='undo', min_val=min_val, max_val=max_val)
     assert np.all(reout == din)

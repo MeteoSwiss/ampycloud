@@ -95,7 +95,7 @@ def minrange2minmax(vals : np.ndarray, min_range : Union[int, float] = 0) -> tup
 
     Args:
         vals (np.ndarray): values to assess.
-        min_range (int|float, optional): mininum range to meet. Defaults t0 0.
+        min_range (int|float, optional): mininum range to meet. Defaults to 0.
 
     Returns:
         tuple: the min and max values of the data range of at least min_range in size.
@@ -188,21 +188,26 @@ def step_scale(vals : np.ndarray,
 
 @log_func_call(logger)
 def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
-    """ Converts the user-input keywords such that they can be fed to the underlying scaling fcts.
+    """ Converts the user-input keywords such that they can be fed to the underlying scaling
+    functions.
 
     Args:
-        vals (np.ndarray): the values to be prcoessed.
+        vals (np.ndarray): the values to be processed.
         fct (str): the scaling mode, e.g. 'shift-and-scale', etc ....
-        **kwargs: dict of keyowrds arguments to be converted, if warranted.
+        **kwargs: dict of keyword arguments to be converted, if warranted.
 
     Returns:
         dict: the data-adjusted set of kwargs.
 
     Note:
-        This function was originally created to accomodate the creation of secondary axis on the
+        This function was first introduced to accomodate the creation of a secondary axis on the
         ampycloud diagnostic plots. It is a buffer that allows to separate "user" scaling
-        keywords from the "deterministic" scaling keywords required to get a given scaling no
-        matter the udnerlying dataset (as is required for plotting secondary axis).
+        keywords from the "deterministic" scaling keywords required to get a specific scaling, no
+        matter the underlying dataset (as is required for plotting a secondary axis).
+
+        Essentially, this function allows to feed either "user" or "deterministic" keywords to
+        :py:func:`.apply_scaling`, such that the former will be turned into the latter, and the latter will
+        remain untouched.
 
     """
 
@@ -262,7 +267,7 @@ def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
     raise AmpycloudError(f'Ouch ! scaling fct unknown: {fct}')
 
 @log_func_call(logger)
-def scaled(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
+def apply_scaling(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:

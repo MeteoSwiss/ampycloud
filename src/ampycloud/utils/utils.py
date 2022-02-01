@@ -122,13 +122,13 @@ def check_data_consistency(pdf : pd.DataFrame,
     # Make sure the dataframe is not empty.
     # Note: an empty dataframe = no measurements. This is NOT the same as "measuring" clear sky
     # conditions, which would result in NaNs.
-    # If I have no measurements, I cannot issue a METAR. It would make no sense.
+    # If I have no measurements, I cannot issue a AutoMETAR. It would make no sense.
     if len(data) == 0:
         raise AmpycloudError("Ouch ! len(data) is 0. I can't work with no data !")
 
     # Check that all the required columns are present in the data, with the correct format
     for (col, type_req) in req_cols.items():
-        # If the requried column is missing, raise an Exception.
+        # If the required column is missing, raise an Exception.
         if col not in data.columns:
             raise AmpycloudError(f'Ouch ! Column {col} is missing from the input data.')
         # If the column has the wrong data type, complain as well.
