@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.2.1.dev0
+                0.3.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -64,6 +64,7 @@
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.data">ampycloud.data module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.dynamic">ampycloud.dynamic module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.errors">ampycloud.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.hardcoded">ampycloud.hardcoded module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.icao">ampycloud.icao module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.layer">ampycloud.layer module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="ampycloud.html#module-ampycloud.logger">ampycloud.logger module</a></li>
@@ -293,20 +294,12 @@ info about them. Defaults to False.</p>
 <dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.format_slice_axes">
 <span class="sig-name descname"><span class="pre">format_slice_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.format_slice_axes" title="Permalink to this definition"></a></dt>
 <dd><p>Format the duplicate axes related to the slicing part.</p>
-<div class="admonition-todo admonition" id="id1">
-<p class="admonition-title">Todo</p>
-<p>Cleanup the code once #25 is fixed.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.format_group_axes">
 <span class="sig-name descname"><span class="pre">format_group_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.format_group_axes" title="Permalink to this definition"></a></dt>
 <dd><p>Format the duplicate axes related to the grouping part.</p>
-<div class="admonition-todo admonition" id="id2">
-<p class="admonition-title">Todo</p>
-<p>Cleanup the code once #25 is fixed.</p>
-</div>
 </dd></dl>
 
 <dl class="py method">
@@ -388,7 +381,7 @@ Defaults to None == ‘pdf’.</p></li>
 <p>Module contains: secondary plotting functions</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.plots.secondary.scaling_fcts">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.secondary.</span></span><span class="sig-name descname"><span class="pre">scaling_fcts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.secondary.scaling_fcts" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.secondary.</span></span><span class="sig-name descname"><span class="pre">scaling_fcts</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#ampycloud.plots.secondary.scaling_fcts" title="Permalink to this definition"></a></dt>
 <dd><p>Plots the different scaling functions.</p>
 <p>This is a small utility routine to rapidly see the different altitude scaling options used by
 ampycloud.</p>
@@ -397,10 +390,19 @@ ampycloud.</p>
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>show</strong> (<em>bool, optional</em>) – show the plot, or not. Defaults to True.</p></li>
-<li><p><strong>save</strong> (<em>bool, optional</em>) – save the plot to pdf, or not. Defaults to False.</p></li>
+<li><p><strong>save_stem</strong> (<em>str, optional</em>) – if set, will save the plot with this stem (which can include a
+path as well). Defaults to None.</p></li>
+<li><p><strong>save_fmts</strong> (<em>list|str, optional</em>) – a list of file formats to export the plot to. Defaults to
+None = [‘png’].</p></li>
 </ul>
 </dd>
 </dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.plots.secondary</span> <span class="kn">import</span> <span class="n">scaling_fcts</span>
+
+<span class="n">scaling_fcts</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_stem</span><span class="o">=</span><span class="s1">&#39;ampycloud_scaling_fcts&#39;</span><span class="p">,</span> <span class="n">save_fmts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pdf&#39;</span><span class="p">])</span>
+</pre></div>
+</div>
 </dd></dl>
 
 </section>
@@ -460,7 +462,7 @@ installation. In particular, the following LaTeX packages must be installed:</p>
 <dd class="field-odd"><p><em>Callable</em> – the decorator.</p>
 </dd>
 </dl>
-<div class="admonition-todo admonition" id="id3">
+<div class="admonition-todo admonition" id="id1">
 <p class="admonition-title">Todo</p>
 <p>See <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues/18">https://github.com/MeteoSwiss/ampycloud/issues/18</a></p>
 </div>
@@ -479,6 +481,34 @@ current rcParams settings.</p>
 <dd class="field-even"><p><em>str</em> – the robust string.</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.tools.get_scaling_kwargs">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.tools.</span></span><span class="sig-name descname"><span class="pre">get_scaling_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.plots.tools.get_scaling_kwargs" title="Permalink to this definition"></a></dt>
+<dd><p>Utility function to extract the <strong>actual, deterministic</strong> parameters required to scale the
+data, given a set of user-defined parameters.</p>
+<p>This is a utility function to aid in the drawing of secondary axis that require to derive the
+“reverse scaling function”.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.Series</em>) – the data that was originally scaled by the user.</p></li>
+<li><p><strong>mode</strong> (<em>str</em>) – the name of the scaling used by the user. Must be any mode supported by
+<a class="reference internal" href="ampycloud.html#ampycloud.scaler.convert_kwargs" title="ampycloud.scaler.convert_kwargs"><code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.scaler.convert_kwargs()</span></code></a> (e.g. <code class="docutils literal notranslate"><span class="pre">shift-and-scale</span></code>, <code class="docutils literal notranslate"><span class="pre">minmax-scale</span></code>,
+<code class="docutils literal notranslate"><span class="pre">step-scale</span></code>).</p></li>
+<li><p><strong>kwargs</strong> (<em>dict</em>) – the scaling parameter set by the user.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>tuple</em> – (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
+scaling.</p>
+</dd>
+</dl>
+<div class="admonition-todo admonition" id="id2">
+<p class="admonition-title">Todo</p>
+<p>Cleanup the code once #25 is fixed.</p>
+</div>
 </dd></dl>
 
 </section>

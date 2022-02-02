@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.2.1.dev0
+                0.3.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -142,17 +142,15 @@ for details.</p>
 <span class="w">        </span><span class="nt">linkage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">average</span><span class="w"></span>
 <span class="w">        </span><span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Time scaling mode</span><span class="w"></span>
-<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">const</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shift-and-scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Time scaling parameters</span><span class="w"></span>
 <span class="w">    </span><span class="nt">dt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100000</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Altitude scaling mode</span><span class="w"></span>
-<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minmax</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minmax-scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Altitude scaling parameters</span><span class="w"></span>
 <span class="w">    </span><span class="nt">alt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">min_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
 
 <span class="c1"># Clustering parameters</span><span class="w"></span>
 <span class="nt">GROUPING_PRMS</span><span class="p">:</span><span class="w"></span>
@@ -165,18 +163,16 @@ for details.</p>
 <span class="w">        </span><span class="nt">linkage</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">single</span><span class="w"></span>
 <span class="w">        </span><span class="nt">affinity</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">manhattan</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Time scaling mode</span><span class="w"></span>
-<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">const</span><span class="w"></span>
+<span class="w">    </span><span class="nt">dt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">shift-and-scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Time scaling parameters</span><span class="w"></span>
 <span class="w">    </span><span class="nt">dt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Altitude scaling mode</span><span class="w"></span>
-<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">step</span><span class="w"></span>
+<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">step-scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Altitude scaling parameters</span><span class="w"></span>
 <span class="w">    </span><span class="nt">alt_scale_kwargs</span><span class="p">:</span><span class="w"></span>
 <span class="w">        </span><span class="nt">steps</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">8000</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">14000</span><span class="p p-Indicator">]</span><span class="w"></span>
 <span class="w">        </span><span class="nt">scales</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span><span class="w"></span>
-<span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">scale</span><span class="w"></span>
 <span class="w">    </span><span class="c1"># Distance from the mean altitude (in std) below which two slices are considered &quot;overlapping&quot;</span><span class="w"></span>
 <span class="w">    </span><span class="nt">overlap</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2.0</span><span class="w"></span>
 

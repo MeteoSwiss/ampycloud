@@ -31,7 +31,7 @@
             <a href="../index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.2.1.dev0
+                0.3.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -65,6 +65,7 @@
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.data">ampycloud.data module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.dynamic">ampycloud.dynamic module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.errors">ampycloud.errors module</a></li>
+<li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.hardcoded">ampycloud.hardcoded module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.icao">ampycloud.icao module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.layer">ampycloud.layer module</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#module-ampycloud.logger">ampycloud.logger module</a></li>
@@ -264,16 +265,17 @@ using <a class="reference internal" href="#ampycloud.core.copy_prm_file" title="
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.core.run">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span><a class="headerlink" href="#ampycloud.core.run" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span><a class="headerlink" href="#ampycloud.core.run" title="Permalink to this definition"></a></dt>
 <dd><p>Runs the ampycloud algorithm on a given dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a py:class:<cite>pandas.DataFrame</cite>.</p></li>
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p></li>
 <li><p><strong>geoloc</strong> (<em>str, optional</em>) – the name of the geographic location where the data was taken.
 Defaults to None.</p></li>
-<li><p><strong>ref_dt</strong> (<em>str, optional</em>) – reference date and time of the observations, corresponding to
-Delta t = 0. Defaults to None.</p></li>
+<li><p><strong>ref_dt</strong> (<em>str|datetime.datetime, optional</em>) – reference date and time of the observations,
+corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance
+is specified, it will be turned almost immediately to str via <code class="docutils literal notranslate"><span class="pre">str(ref_dt)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -281,32 +283,11 @@ Delta t = 0. Defaults to None.</p></li>
 cleanly.</p>
 </dd>
 </dl>
-<p>All that is required to run the ampycloud algorithm is a properly formatted dataset. At the
-moment, specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance plots
-(should they be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>: as
-long as they are strings, you can set them to whatever you please.</p>
-<p>The input <code class="docutils literal notranslate"><span class="pre">data</span></code> must be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following column names
-(types):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span> <span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s1">&#39;dt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;alt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> columns contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> column contains time deltas, in s, between a given ceilometer observation and
-<code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
-above ground.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integer that correspond to the hit <em>sequence id</em>. E.g. if a given
-ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
-cloud level 2, cloud level 3, etc …), the <code class="docutils literal notranslate"><span class="pre">type</span></code> of these measurements could be <code class="docutils literal notranslate"><span class="pre">1</span></code>,
-<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, … Any data point with a <code class="docutils literal notranslate"><span class="pre">type</span></code> of <code class="docutils literal notranslate"><span class="pre">-1</span></code> will be flagged in the ampycloud
-plots as a vertical Visibility (VV) hits, <strong>but it will not be treated any differently than any
-other regular hit</strong>. Type <code class="docutils literal notranslate"><span class="pre">0</span></code> corresponds to no (cloud) detection.</p>
-<p>It is possible to obtain an example of the required <code class="docutils literal notranslate"><span class="pre">data</span></code> format from the
-<a class="reference internal" href="ampycloud.utils.html#ampycloud.utils.mocker.canonical_demo_data" title="ampycloud.utils.mocker.canonical_demo_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">utils.mocker.canonical_demo_data()</span></code></a> routine of the package, like so:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
-<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>All that is required to run the ampycloud algorithm is
+<a class="reference external" href="https://meteoswiss.github.io/ampycloud/running.html#the-input-data">a properly formatted dataset</a>.
+At the moment, specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance
+plots (should they be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>:
+as long as they are strings, you can set them to whatever you please.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
@@ -410,7 +391,7 @@ demonstration, and the <a class="reference internal" href="#ampycloud.data.Ceilo
 <p>Abstract parent class for data chunk classes.</p>
 <dl class="py attribute">
 <dt class="sig sig-object py" id="ampycloud.data.AbstractChunk.DATA_COLS">
-<span class="sig-name descname"><span class="pre">DATA_COLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'ceilo':</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'type':</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span></em><a class="headerlink" href="#ampycloud.data.AbstractChunk.DATA_COLS" title="Permalink to this definition"></a></dt>
+<span class="sig-name descname"><span class="pre">DATA_COLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'ceilo':</span> <span class="pre">string[python],</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'type':</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span></em><a class="headerlink" href="#ampycloud.data.AbstractChunk.DATA_COLS" title="Permalink to this definition"></a></dt>
 <dd><p>required data columns</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -759,7 +740,7 @@ in the (parent) class attribute <a class="reference internal" href="#ampycloud.d
 
 <dl class="py data">
 <dt class="sig sig-object py" id="ampycloud.dynamic.AMPYCLOUD_PRMS">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.dynamic.</span></span><span class="sig-name descname"><span class="pre">AMPYCLOUD_PRMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GROUPING_PRMS':</span> <span class="pre">{'algo':</span> <span class="pre">'agglomerative',</span> <span class="pre">'algo_kwargs':</span> <span class="pre">{'affinity':</span> <span class="pre">'manhattan',</span> <span class="pre">'distance_threshold':</span> <span class="pre">1,</span> <span class="pre">'linkage':</span> <span class="pre">'single',</span> <span class="pre">'n_clusters':</span> <span class="pre">None},</span> <span class="pre">'alt_scale_kwargs':</span> <span class="pre">{'mode':</span> <span class="pre">'scale',</span> <span class="pre">'scales':</span> <span class="pre">[100,</span> <span class="pre">500,</span> <span class="pre">1000],</span> <span class="pre">'steps':</span> <span class="pre">[8000,</span> <span class="pre">14000]},</span> <span class="pre">'alt_scale_mode':</span> <span class="pre">'step',</span> <span class="pre">'dt_scale_kwargs':</span> <span class="pre">{'mode':</span> <span class="pre">'scale',</span> <span class="pre">'scale':</span> <span class="pre">180},</span> <span class="pre">'dt_scale_mode':</span> <span class="pre">'const',</span> <span class="pre">'overlap':</span> <span class="pre">2.0},</span> <span class="pre">'LAYERING_PRMS':</span> <span class="pre">{'gmm_kwargs':</span> <span class="pre">{'delta_mul_gain':</span> <span class="pre">0.95,</span> <span class="pre">'min_prob':</span> <span class="pre">1.0,</span> <span class="pre">'mode':</span> <span class="pre">'delta',</span> <span class="pre">'rescale_0_to_x':</span> <span class="pre">100,</span> <span class="pre">'scores':</span> <span class="pre">'BIC'},</span> <span class="pre">'min_okta_to_split':</span> <span class="pre">2,</span> <span class="pre">'min_sep_high':</span> <span class="pre">1000,</span> <span class="pre">'min_sep_low':</span> <span class="pre">150},</span> <span class="pre">'LAYER_BASE_FRAC':</span> <span class="pre">0.1,</span> <span class="pre">'MPL_STYLE':</span> <span class="pre">'base',</span> <span class="pre">'MSA':</span> <span class="pre">None,</span> <span class="pre">'MSA_HIT_BUFFER':</span> <span class="pre">1500,</span> <span class="pre">'OKTA_LIM0':</span> <span class="pre">2,</span> <span class="pre">'OKTA_LIM8':</span> <span class="pre">98,</span> <span class="pre">'SLICING_PRMS':</span> <span class="pre">{'algo':</span> <span class="pre">'agglomerative',</span> <span class="pre">'algo_kwargs':</span> <span class="pre">{'affinity':</span> <span class="pre">'manhattan',</span> <span class="pre">'distance_threshold':</span> <span class="pre">0.2,</span> <span class="pre">'linkage':</span> <span class="pre">'average',</span> <span class="pre">'n_clusters':</span> <span class="pre">None},</span> <span class="pre">'alt_scale_kwargs':</span> <span class="pre">{'min_range':</span> <span class="pre">1000,</span> <span class="pre">'mode':</span> <span class="pre">'scale'},</span> <span class="pre">'alt_scale_mode':</span> <span class="pre">'minmax',</span> <span class="pre">'dt_scale_kwargs':</span> <span class="pre">{'mode':</span> <span class="pre">'scale',</span> <span class="pre">'scale':</span> <span class="pre">100000},</span> <span class="pre">'dt_scale_mode':</span> <span class="pre">'const'}}</span></em><a class="headerlink" href="#ampycloud.dynamic.AMPYCLOUD_PRMS" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.dynamic.</span></span><span class="sig-name descname"><span class="pre">AMPYCLOUD_PRMS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'GROUPING_PRMS':</span> <span class="pre">{'algo':</span> <span class="pre">'agglomerative',</span> <span class="pre">'algo_kwargs':</span> <span class="pre">{'affinity':</span> <span class="pre">'manhattan',</span> <span class="pre">'distance_threshold':</span> <span class="pre">1,</span> <span class="pre">'linkage':</span> <span class="pre">'single',</span> <span class="pre">'n_clusters':</span> <span class="pre">None},</span> <span class="pre">'alt_scale_kwargs':</span> <span class="pre">{'scales':</span> <span class="pre">[100,</span> <span class="pre">500,</span> <span class="pre">1000],</span> <span class="pre">'steps':</span> <span class="pre">[8000,</span> <span class="pre">14000]},</span> <span class="pre">'alt_scale_mode':</span> <span class="pre">'step-scale',</span> <span class="pre">'dt_scale_kwargs':</span> <span class="pre">{'scale':</span> <span class="pre">180},</span> <span class="pre">'dt_scale_mode':</span> <span class="pre">'shift-and-scale',</span> <span class="pre">'overlap':</span> <span class="pre">2.0},</span> <span class="pre">'LAYERING_PRMS':</span> <span class="pre">{'gmm_kwargs':</span> <span class="pre">{'delta_mul_gain':</span> <span class="pre">0.95,</span> <span class="pre">'min_prob':</span> <span class="pre">1.0,</span> <span class="pre">'mode':</span> <span class="pre">'delta',</span> <span class="pre">'rescale_0_to_x':</span> <span class="pre">100,</span> <span class="pre">'scores':</span> <span class="pre">'BIC'},</span> <span class="pre">'min_okta_to_split':</span> <span class="pre">2,</span> <span class="pre">'min_sep_high':</span> <span class="pre">1000,</span> <span class="pre">'min_sep_low':</span> <span class="pre">150},</span> <span class="pre">'LAYER_BASE_FRAC':</span> <span class="pre">0.1,</span> <span class="pre">'MPL_STYLE':</span> <span class="pre">'base',</span> <span class="pre">'MSA':</span> <span class="pre">None,</span> <span class="pre">'MSA_HIT_BUFFER':</span> <span class="pre">1500,</span> <span class="pre">'OKTA_LIM0':</span> <span class="pre">2,</span> <span class="pre">'OKTA_LIM8':</span> <span class="pre">98,</span> <span class="pre">'SLICING_PRMS':</span> <span class="pre">{'algo':</span> <span class="pre">'agglomerative',</span> <span class="pre">'algo_kwargs':</span> <span class="pre">{'affinity':</span> <span class="pre">'manhattan',</span> <span class="pre">'distance_threshold':</span> <span class="pre">0.2,</span> <span class="pre">'linkage':</span> <span class="pre">'average',</span> <span class="pre">'n_clusters':</span> <span class="pre">None},</span> <span class="pre">'alt_scale_kwargs':</span> <span class="pre">{'min_range':</span> <span class="pre">1000},</span> <span class="pre">'alt_scale_mode':</span> <span class="pre">'minmax-scale',</span> <span class="pre">'dt_scale_kwargs':</span> <span class="pre">{'scale':</span> <span class="pre">100000},</span> <span class="pre">'dt_scale_mode':</span> <span class="pre">'shift-and-scale'}}</span></em><a class="headerlink" href="#ampycloud.dynamic.AMPYCLOUD_PRMS" title="Permalink to this definition"></a></dt>
 <dd><p>The ampycloud parameters, first set from a config file via <a class="reference internal" href="#ampycloud.dynamic.get_default_prms" title="ampycloud.dynamic.get_default_prms"><code class="xref py py-func docutils literal notranslate"><span class="pre">get_default_prms()</span></code></a></p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>
@@ -787,6 +768,24 @@ in the (parent) class attribute <a class="reference internal" href="#ampycloud.d
 <em class="property"><span class="pre">exception</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ampycloud.errors.</span></span><span class="sig-name descname"><span class="pre">AmpycloudWarning</span></span><a class="headerlink" href="#ampycloud.errors.AmpycloudWarning" title="Permalink to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">Warning</span></code></p>
 <p>The default warning class for ampycloud, which is a child of the <code class="xref py py-class docutils literal notranslate"><span class="pre">Warning</span></code> class.</p>
+</dd></dl>
+
+</section>
+<section id="module-ampycloud.hardcoded">
+<span id="ampycloud-hardcoded-module"></span><h2>ampycloud.hardcoded module<a class="headerlink" href="#module-ampycloud.hardcoded" title="Permalink to this headline"></a></h2>
+<p>Copyright (c) 2022 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: hardcoded data</p>
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.hardcoded.REQ_DATA_COLS">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.hardcoded.</span></span><span class="sig-name descname"><span class="pre">REQ_DATA_COLS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">{'alt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'ceilo':</span> <span class="pre">string[python],</span> <span class="pre">'dt':</span> <span class="pre">&lt;class</span> <span class="pre">'float'&gt;,</span> <span class="pre">'type':</span> <span class="pre">&lt;class</span> <span class="pre">'int'&gt;}</span></em><a class="headerlink" href="#ampycloud.hardcoded.REQ_DATA_COLS" title="Permalink to this definition"></a></dt>
+<dd><p>the columns &amp; associated types required for the pandas DataFrame fed to ampycloud.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type</dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
 </dd></dl>
 
 </section>
@@ -979,57 +978,74 @@ See also <a class="reference external" href="https://docs.python.org/3/library/i
 <p>SPDX-License-Identifier: BSD-3-Clause</p>
 <p>Module contains: data scaling tools</p>
 <dl class="py function">
-<dt class="sig sig-object py" id="ampycloud.scaler.const_scaling">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">const_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'scale'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.const_scaling" title="Permalink to this definition"></a></dt>
-<dd><p>Scale (or descale) values by a constant.</p>
+<dt class="sig sig-object py" id="ampycloud.scaler.shift_and_scale">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">shift_and_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">shift</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scale</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'do'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.shift_and_scale" title="Permalink to this definition"></a></dt>
+<dd><p>Shift (by a constant) and scale (by a constant) the data.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vals</strong> (<em>ndarray</em>) – values to (de-)scale.</p></li>
-<li><p><strong>scale</strong> (<em>int|float</em>) – the scaling value.</p></li>
-<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘scale’ or ‘descale’, i.e. undo the scaling.</p></li>
+<li><p><strong>vals</strong> (<em>ndarray</em>) – values to (un-)shift-and-scale.</p></li>
+<li><p><strong>shift</strong> (<em>int|float, optional</em>) – amount to shift the data by. If not specified, it will be set
+to <code class="docutils literal notranslate"><span class="pre">max(vals)</span></code>.</p></li>
+<li><p><strong>scale</strong> (<em>int|float, optional</em>) – the scaling value. Defaults to 1.</p></li>
+<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘do’ or ‘undo’ the shift-and-scale.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>ndarray</em> – vals/scale if mode==’scale’, and val * scale if mode==’descale’.</p>
+<dd class="field-even"><p><em>np.ndarray</em> – the (un-)shifted-and-scaled array.</p>
+</dd>
+</dl>
+<p>This function converts x to (x-shift)/scale if <code class="docutils literal notranslate"><span class="pre">mode='do'</span></code>, and to x * scale + shift if
+<code class="docutils literal notranslate"><span class="pre">mode='undo'</span></code>.</p>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.scaler.minmax_scale">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">minmax_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'do'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.minmax_scale" title="Permalink to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum</dt><dd><p>interval range.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vals</strong> (<em>ndarray</em>) – values to (un-)minmax-scale.</p></li>
+<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘scale’ or ‘descale’, i.e. undo the scaling.</p></li>
+<li><p><strong>min_val</strong> (<em>int|float, optional</em>) – value to be mapped to 0. If not set, will be <code class="docutils literal notranslate"><span class="pre">min(vals)</span></code>.
+Defaults to None.</p></li>
+<li><p><strong>max_val</strong> (<em>int|float, optional</em>) – value to be mapped to 1. If not set, will be <code class="docutils literal notranslate"><span class="pre">max(vals)</span></code>.
+Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>ndarray</em> – The (un-)minmax-scaled array.</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ampycloud.scaler.minmax_scaling">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">minmax_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'scale'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_val</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.minmax_scaling" title="Permalink to this definition"></a></dt>
-<dd><p>Rescale the data onto a [0, 1] interval, possibly using a minimum interval range.</p>
-<div class="admonition note">
-<p class="admonition-title">Note</p>
-<p>Descaling with this function is a little bit annoying, because the data itself does not
-contain enough information to know what interval vals should be mapped onto.
-Hence the min_val and max_val kwargs, so that the user can tell us …</p>
-</div>
+<dt class="sig sig-object py" id="ampycloud.scaler.minrange2minmax">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">minrange2minmax</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">min_range</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.scaler.minrange2minmax" title="Permalink to this definition"></a></dt>
+<dd><p>Transform a minimum range into a pair of min/max values.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>vals</strong> (<em>ndarray</em>) – values to (de-)scale.</p></li>
-<li><p><strong>min_range</strong> (<em>int|float, optional</em>) – will map the [0, 1] interval to
-[val_mid-min_range/2, val_mid+min_range/2] rather than [val_min, val_max],
-if val_max-val_min &lt; min_range. Note: val_mid=(val_max+val_min)/2. Must be &gt;=0.
-Defaults to 0.</p></li>
-<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘scale’ or ‘descale’, i.e. undo the scaling.</p></li>
-<li><p><strong>min_val</strong> (<em>int|float, optional</em>) – min (target) interval value, in case mode=’descale’.
-Defaults to None.</p></li>
-<li><p><strong>max_val</strong> (<em>int|float, optional</em>) – max (target) interval value, in case mode=’descale’.
-Defaults to None.</p></li>
+<li><p><strong>vals</strong> (<em>np.ndarray</em>) – values to assess.</p></li>
+<li><p><strong>min_range</strong> (<em>int|float, optional</em>) – mininum range to meet. Defaults to 0.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>ndarray</em> – scaled/descaled values.</p>
+<dd class="field-even"><p><em>tuple</em> – the min and max values of the data range of at least min_range in size.</p>
 </dd>
 </dl>
+<p>Essentially, if max(vals)-min(vals) &gt;= min_range, this function returns
+<code class="docutils literal notranslate"><span class="pre">[min(vals),</span> <span class="pre">max(vals)]</span></code>. Else, it returns <code class="docutils literal notranslate"><span class="pre">[val_mid-min_range/2,</span> <span class="pre">val_mid+min_range/2]</span></code>,
+with <code class="docutils literal notranslate"><span class="pre">`val_mid=(max(vals)+min(vals))/2</span></code>.</p>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ampycloud.scaler.step_scaling">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">step_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scales</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'scale'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.step_scaling" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="ampycloud.scaler.step_scale">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">step_scale</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">steps</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">scales</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'do'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.step_scale" title="Permalink to this definition"></a></dt>
 <dd><p>Scales values step-wise, with different constants bewteen specific steps.</p>
 <p>Values are divided by scales[i] between steps[i-1:i].
 Anything outside the range of steps is divided by scales[0] or scale[-1].</p>
@@ -1042,25 +1058,54 @@ scaled data is continuous (no gaps and no overlapping steps) !</p>
 <li><p><strong>steps</strong> (<em>list, optional</em>) – the step <strong>edges</strong>. E.g. [8000, 14000].</p></li>
 <li><p><strong>scales</strong> (<em>list, optional</em>) – the scaling values (=dividers) for each step.
 E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.</p></li>
-<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘scale’ or ‘descale’, i.e. undo the scaling.</p></li>
+<li><p><strong>mode</strong> (<em>str, optional</em>) – whether to ‘do’ or ‘undo’ the scaling.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p><em>ndarray</em> – (de-)scaled values</p>
+<dd class="field-even"><p><em>ndarray</em> – (un-)step-scaled values</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ampycloud.scaler.scaling">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.scaling" title="Permalink to this definition"></a></dt>
+<dt class="sig sig-object py" id="ampycloud.scaler.convert_kwargs">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">convert_kwargs</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ampycloud.scaler.convert_kwargs" title="Permalink to this definition"></a></dt>
+<dd><p>Converts the user-input keywords such that they can be fed to the underlying scaling
+functions.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>vals</strong> (<em>np.ndarray</em>) – the values to be processed.</p></li>
+<li><p><strong>fct</strong> (<em>str</em>) – the scaling mode, e.g. ‘shift-and-scale’, etc ….</p></li>
+<li><p><strong>**kwargs</strong> – dict of keyword arguments to be converted, if warranted.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>dict</em> – the data-adjusted set of kwargs.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This function was first introduced to accomodate the creation of a secondary axis on the
+ampycloud diagnostic plots. It is a buffer that allows to separate “user” scaling
+keywords from the “deterministic” scaling keywords required to get a specific scaling, no
+matter the underlying dataset (as is required for plotting a secondary axis).</p>
+<p>Essentially, this function allows to feed either “user” or “deterministic” keywords to
+<a class="reference internal" href="#ampycloud.scaler.apply_scaling" title="ampycloud.scaler.apply_scaling"><code class="xref py py-func docutils literal notranslate"><span class="pre">apply_scaling()</span></code></a>, such that the former will be turned into the latter, and the latter will
+remain untouched.</p>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.scaler.apply_scaling">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.scaler.</span></span><span class="sig-name descname"><span class="pre">apply_scaling</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">numpy.ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fct</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">**</span></span><span class="n"><span class="pre">kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">numpy.ndarray</span></span></span><a class="headerlink" href="#ampycloud.scaler.apply_scaling" title="Permalink to this definition"></a></dt>
 <dd><p>Umbrella scaling routine, that gathers all the individual ones under a single entry point.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>vals</strong> (<em>ndarray</em>) – values to scale.</p></li>
 <li><p><strong>fct</strong> (<em>str, optional</em>) – name of the scaling function to use. Can be one of
-[‘const’, ‘minmax’, or ‘step’]. Defaults to None =  do nothing.</p></li>
+[‘shift-and-scale’, ‘minmax-scale’, or ‘step-scale’]. Defaults to None = do nothing.</p></li>
 <li><p><strong>**kwargs</strong> – keyword arguments that will be fed to the underlying scaling function.</p></li>
 </ul>
 </dd>
@@ -1079,7 +1124,7 @@ E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.</p></li>
 <p>Module contains: ampycloud version</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="ampycloud.version.VERSION">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.version.</span></span><span class="sig-name descname"><span class="pre">VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.2.1.dev0'</span></em><a class="headerlink" href="#ampycloud.version.VERSION" title="Permalink to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.version.</span></span><span class="sig-name descname"><span class="pre">VERSION</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'0.3.0.dev0'</span></em><a class="headerlink" href="#ampycloud.version.VERSION" title="Permalink to this definition"></a></dt>
 <dd><p>the one-and-only place where the ampycloud version is set.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type</dt>

@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.2.1.dev0
+                0.3.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -44,6 +44,8 @@
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using ampycloud</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#a-no-words-example-for-those-that-want-to-get-started-quickly">A no-words example for those that want to get started quickly</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#the-input-data">The input data</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#running-the-algorithm">Running the algorithm</a><ul>
 <li class="toctree-l3"><a class="reference internal" href="#the-ampycloud-core-run-function">The <code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.core.run()</span></code> function</a></li>
 <li class="toctree-l3"><a class="reference internal" href="#the-ampycloud-data-ceilochunk-class">The <code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk</span></code> class</a></li>
@@ -98,6 +100,123 @@
              
   <section id="using-ampycloud">
 <span id="using"></span><h1>Using ampycloud<a class="headerlink" href="#using-ampycloud" title="Permalink to this headline"></a></h1>
+<section id="a-no-words-example-for-those-that-want-to-get-started-quickly">
+<h2>A no-words example for those that want to get started quickly<a class="headerlink" href="#a-no-words-example-for-those-that-want-to-get-started-quickly" title="Permalink to this headline"></a></h2>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span> <span class="nn">ampycloud</span>
+<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+<span class="kn">from</span> <span class="nn">ampycloud.plots</span> <span class="kn">import</span> <span class="n">diagnostic</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="c1"># Your data should have *exactly* this structure</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Run the ampycloud algorithm on it</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">&#39;Mock data&#39;</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Get the resulting METAR message</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">metar_msg</span><span class="p">())</span>
+
+<span class="c1"># Display the full information available for the layers found</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+
+<span class="c1"># And for the most motivated, plot the diagnostic diagram</span>
+<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">&#39;layers&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_stem</span><span class="o">=</span><span class="s1">&#39;ampycloud_demo&#39;</span><span class="p">)</span>
+</pre></div>
+</div>
+</section>
+<section id="the-input-data">
+<h2>The input data<a class="headerlink" href="#the-input-data" title="Permalink to this headline"></a></h2>
+<p>The ampycloud algorithm is meant to process cloud base <em>hits</em> from ceilometer observations. A given
+set of hits to be processed by the ampycloud package must be stored inside a
+<code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with a specific set of characteristics outlined below. Users can use
+the following utility function to check whether a given <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> meets all the
+requirements of ampycloud.</p>
+<dl class="py function">
+<dt class="sig sig-object py">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_data_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">req_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span></dt>
+<dd><p>Assesses whether a given <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> is compatible with the requirements
+of ampycloud.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>pdf</strong> (<em>pd.DataFrame</em>) – the data to check.</p></li>
+<li><p><strong>req_cols</strong> (<em>dict</em>) – A dictionary in which keys correspond to the required columns, and their
+value are the column type. Defaults to None = the ampycloud requirements.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>pd.DataFrame</em> – the data, possibly cleaned-up of superfluous columns, and with corrected
+dtypes.</p>
+</dd>
+</dl>
+<p>This function will raise an <a class="reference internal" href="modules/ampycloud.html#ampycloud.errors.AmpycloudError" title="ampycloud.errors.AmpycloudError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.errors.AmpycloudError</span></code></a> and/or
+an <a class="reference internal" href="modules/ampycloud.html#ampycloud.errors.AmpycloudWarning" title="ampycloud.errors.AmpycloudWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.errors.AmpycloudWarning</span></code></a> if it identifies very bad and/or very weird
+things in <code class="docutils literal notranslate"><span class="pre">pdf</span></code>.</p>
+<p>Specifically, the input <code class="docutils literal notranslate"><span class="pre">pdf</span></code> must be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following
+column names/types (formally defined in <a class="reference internal" href="modules/ampycloud.html#ampycloud.hardcoded.REQ_DATA_COLS" title="ampycloud.hardcoded.REQ_DATA_COLS"><code class="xref py py-data docutils literal notranslate"><span class="pre">ampycloud.hardcoded.REQ_DATA_COLS</span></code></a>):</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">StringDtype</span><span class="p">(),</span> <span class="s1">&#39;dt&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;alt&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="o">/</span><span class="nb">int</span>
+</pre></div>
+</div>
+<p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> column contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">pd.StringDtype()</span></code>.
+See <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html">the pandas documentation</a>
+for more info about this type.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> column contains time deltas, in seconds, between a given ceilometer
+observation and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">obs_time-ref_dt</span></code>). Ideally, <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> would be the issuing
+time of the METAR message, such that <code class="docutils literal notranslate"><span class="pre">dt</span></code> values are negative, with the smallest one
+corresponding to the oldest measurement.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
+above ground.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integers that correspond to the hit <em>sequence id</em>. If a given
+ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
+cloud level 2, cloud level 3, etc …), the <code class="docutils literal notranslate"><span class="pre">type</span></code> of these measurements would be <code class="docutils literal notranslate"><span class="pre">1</span></code>,
+<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, etc … Any data point with a <code class="docutils literal notranslate"><span class="pre">type</span></code> of <code class="docutils literal notranslate"><span class="pre">-1</span></code> will be flagged in the ampycloud
+plots as a vertical Visibility (VV) hits, <strong>but it will not be treated any differently than any
+other regular hit</strong>. Type <code class="docutils literal notranslate"><span class="pre">0</span></code> corresponds to no (cloud) detection, in which case the
+corresponding hit altitude should be a NaN.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>A <strong>non-detection</strong> corresponds to a valid measurement with a <code class="docutils literal notranslate"><span class="pre">dt</span></code> value, a <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code>,
+and <code class="docutils literal notranslate"><span class="pre">NaN</span></code> as the altitude. It should not be confused with a <strong>non-observation</strong>,
+when no data was acquired at all !</p>
+</div>
+<p>If it all sounds confusing, it is possible to obtain an example of the required data format
+from the <a class="reference internal" href="modules/ampycloud.utils.html#ampycloud.utils.mocker.canonical_demo_data" title="ampycloud.utils.mocker.canonical_demo_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">utils.mocker.canonical_demo_data()</span></code></a> routine of the package, like so:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+</pre></div>
+</div>
+<p>As mentionned above, it is also possible to verify if a given <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> is
+meeting the ampycloud requirements ahead of time via
+<a class="reference internal" href="modules/ampycloud.utils.html#ampycloud.utils.utils.check_data_consistency" title="ampycloud.utils.utils.check_data_consistency"><code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.utils.utils.check_data_consistency()</span></code></a>:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils.utils</span> <span class="kn">import</span> <span class="n">check_data_consistency</span>
+<span class="n">checked_pdf</span> <span class="o">=</span> <span class="n">check_data_consistency</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This will raise an <a class="reference internal" href="modules/ampycloud.html#ampycloud.errors.AmpycloudError" title="ampycloud.errors.AmpycloudError"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.errors.AmpycloudError</span></code></a> if:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> is not a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> is missing a required column.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> has a length of 0.</p></li>
+</ul>
+</div></blockquote>
+<p>In addition, this will raise an <a class="reference internal" href="modules/ampycloud.html#ampycloud.errors.AmpycloudWarning" title="ampycloud.errors.AmpycloudWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.errors.AmpycloudWarning</span></code></a> if:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p>any of <code class="docutils literal notranslate"><span class="pre">pdf</span></code> column type is not as expected. Note that in this case, the code will try
+to correct the type on the fly.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> has any superfluous columns. In this case, the code will drop them automatically.</p></li>
+<li><p>Any hit altitude is negative.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code> hit has a non-NaN altitude.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">1</span></code> hit has a NaN altitude.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">2</span></code> hit does not have a coincident <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">1</span></code> hit.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">3</span></code> hit does not have a coincident <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">2</span></code> hit.</p></li>
+</ul>
+</div></blockquote>
+</dd></dl>
+
+</section>
 <section id="running-the-algorithm">
 <span id="running"></span><h2>Running the algorithm<a class="headerlink" href="#running-the-algorithm" title="Permalink to this headline"></a></h2>
 <section id="the-ampycloud-core-run-function">
@@ -106,16 +225,17 @@
 following function, that is also directly accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.run()</span></code>.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span></dt>
 <dd><p>Runs the ampycloud algorithm on a given dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
-<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a py:class:<cite>pandas.DataFrame</cite>.</p></li>
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p></li>
 <li><p><strong>geoloc</strong> (<em>str, optional</em>) – the name of the geographic location where the data was taken.
 Defaults to None.</p></li>
-<li><p><strong>ref_dt</strong> (<em>str, optional</em>) – reference date and time of the observations, corresponding to
-Delta t = 0. Defaults to None.</p></li>
+<li><p><strong>ref_dt</strong> (<em>str|datetime.datetime, optional</em>) – reference date and time of the observations,
+corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance
+is specified, it will be turned almost immediately to str via <code class="docutils literal notranslate"><span class="pre">str(ref_dt)</span></code>.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -123,32 +243,11 @@ Delta t = 0. Defaults to None.</p></li>
 cleanly.</p>
 </dd>
 </dl>
-<p>All that is required to run the ampycloud algorithm is a properly formatted dataset. At the
-moment, specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance plots
-(should they be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>: as
-long as they are strings, you can set them to whatever you please.</p>
-<p>The input <code class="docutils literal notranslate"><span class="pre">data</span></code> must be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following column names
-(types):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span> <span class="p">(</span><span class="nb">str</span><span class="p">),</span> <span class="s1">&#39;dt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;alt&#39;</span> <span class="p">(</span><span class="nb">float</span><span class="p">),</span> <span class="s1">&#39;type&#39;</span> <span class="p">(</span><span class="nb">int</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> columns contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> column contains time deltas, in s, between a given ceilometer observation and
-<code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
-above ground.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integer that correspond to the hit <em>sequence id</em>. E.g. if a given
-ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
-cloud level 2, cloud level 3, etc …), the <code class="docutils literal notranslate"><span class="pre">type</span></code> of these measurements could be <code class="docutils literal notranslate"><span class="pre">1</span></code>,
-<code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, … Any data point with a <code class="docutils literal notranslate"><span class="pre">type</span></code> of <code class="docutils literal notranslate"><span class="pre">-1</span></code> will be flagged in the ampycloud
-plots as a vertical Visibility (VV) hits, <strong>but it will not be treated any differently than any
-other regular hit</strong>. Type <code class="docutils literal notranslate"><span class="pre">0</span></code> corresponds to no (cloud) detection.</p>
-<p>It is possible to obtain an example of the required <code class="docutils literal notranslate"><span class="pre">data</span></code> format from the
-<a class="reference internal" href="modules/ampycloud.utils.html#ampycloud.utils.mocker.canonical_demo_data" title="ampycloud.utils.mocker.canonical_demo_data"><code class="xref py py-func docutils literal notranslate"><span class="pre">utils.mocker.canonical_demo_data()</span></code></a> routine of the package, like so:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
-<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
-</pre></div>
-</div>
+<p>All that is required to run the ampycloud algorithm is
+<a class="reference external" href="https://meteoswiss.github.io/ampycloud/running.html#the-input-data">a properly formatted dataset</a>.
+At the moment, specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance
+plots (should they be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>:
+as long as they are strings, you can set them to whatever you please.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
