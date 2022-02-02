@@ -9,10 +9,85 @@ Module content: tests for the utils.utils module
 """
 
 # Import form Python
+from pytest import raises, warns
 import numpy as np
+import pandas as pd
 
 # Import from ampycloud
-from ampycloud.utils.utils import tmp_seed
+from ampycloud.utils.utils import check_data_consistency, tmp_seed
+from ampycloud.utils.mocker import canonical_demo_data
+from ampycloud.errors import AmpycloudError, AmpycloudWarning
+from ampycloud import hardcoded
+
+def test_check_data_consistency():
+    """ This routine tests the check_data_consistency method. """
+
+    # Uncomment the line below once pytst 7.0 can be pip-installed
+    #with pytest.does_not_warn():
+    if True:
+        out = check_data_consistency(canonical_demo_data())
+
+        # Make sure the canonical demo data is perfectly compatible with the ampycloud requirements
+        assert np.all(out == canonical_demo_data())
+
+    # Now, let's check specific elements that should raise errors or warnings
+    with raises(AmpycloudError):
+        # Empty DataFrame
+        data = pd.DataFrame(columns=['ceilo', 'dt', 'alt', 'type'])
+        check_data_consistency(data)
+    with raises(AmpycloudError):
+        # Missing column
+        data = pd.DataFrame(np.array([['a', 1, 1]]), columns=['ceilo', 'alt', 'type'])
+        for col in ['ceilo', 'alt', 'type']:
+            data.loc[:, col] = data.loc[:,col].astype(hardcoded.REQ_DATA_COLS[col])
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Bad data type
+        data = pd.DataFrame(np.array([['a', 0, 1, 1]]), columns=['ceilo', 'dt', 'alt', 'type'])
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Extra key
+        data = pd.DataFrame(np.array([['a', 0, 1, 1, 99]]),
+                            columns=['ceilo', 'dt', 'alt', 'type', 'extra'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Negative alts
+        data = pd.DataFrame(np.array([['a', 0, -1, 1]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Type 0 should be NaN
+        data = pd.DataFrame(np.array([['a', 0, 1, 0]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Type 1 should not be NaN
+        data = pd.DataFrame(np.array([['a', 0, np.nan, 1]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Missing type 1 pts
+        data = pd.DataFrame(np.array([['a', 0, 1, 2]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+    with warns(AmpycloudWarning):
+        # Missing type 2 pts
+        data = pd.DataFrame(np.array([['a', 0, 1, 3]]),
+                            columns=['ceilo', 'dt', 'alt', 'type'])
+        for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+            data.loc[:, col] = data.loc[:, col].astype(tpe)
+        check_data_consistency(data)
+
 
 def test_tmp_seed():
     """ This routine tests the tmp_seed. """

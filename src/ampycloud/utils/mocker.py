@@ -18,6 +18,7 @@ import pandas as pd
 from ..logger import log_func_call
 from ..errors import AmpycloudError
 from . import utils
+from .. import hardcoded
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -156,6 +157,9 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
                 if a>0 and np.isnan(alt):
                     layers.drop(index=alts.index[a],
                                 inplace=True)
+                elif np.isnan(alt):
+                    # A non-detection should be type 0
+                    layers.loc[alts.index[a], 'type'] = 0
                 else:
                     layers.loc[alts.index[a], 'type'] = a+1
 
@@ -171,10 +175,8 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
     out = out.sort_values(['dt', 'alt']).reset_index(drop=True)
 
     # Fix the dtypes
-    out.loc[:, 'dt'] = out['dt'].astype(float)
-    out.loc[:, 'alt'] = out['alt'].astype(float)
-    out.loc[:, 'type'] = out['type'].astype(int)
-    out.loc[:, 'ceilo'] = out['ceilo'].astype(str)
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        out.loc[:, col] = out[col].astype(tpe)
 
     return out
 

@@ -13,6 +13,8 @@ import logging
 from typing import Callable
 from functools import wraps
 from pathlib import Path
+import copy
+import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import rcParams
 import yaml
@@ -20,7 +22,7 @@ import yaml
 # Import from ampycloud
 from ..errors import AmpycloudError
 from ..logger import log_func_call
-from .. import dynamic
+from .. import dynamic, scaler
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
@@ -145,3 +147,44 @@ def texify(msg : str) -> str:
         msg = msg.replace(r'\it', r'')
 
     return msg
+
+@log_func_call(logger)
+def get_scaling_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
+    """ Utility function to extract the **actual, deterministic** parameters required to scale the
+    data, given a set of user-defined parameters.
+
+    This is a utility function to aid in the drawing of secondary axis that require to derive the
+    "reverse scaling function".
+
+    Args:
+        data (pd.Series): the data that was originally scaled by the user.
+        mode (str): the name of the scaling used by the user. Must be any mode supported by
+            :py:func:`ampycloud.scaler.convert_kwargs` (e.g. ``shift-and-scale``, ``minmax-scale``,
+            ``step-scale``).
+        kwargs (dict): the scaling parameter set by the user.
+
+    Return:
+        tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
+        scaling.
+
+    Todo:
+        Cleanup the code once #25 is fixed.
+
+    """
+
+    # TODO: Once issue #25 is fixed, maybe update these lines ...
+    # Let's create a storage dict, and fill it with what I got from the user.
+    scale_kwargs = {}
+    scale_kwargs.update(kwargs)
+
+    # Then let's also be explicit about the scaling mode
+    scale_kwargs['mode'] = 'do'
+
+    # Use the actual scaler routine used to covert "user params" into "scaling params"
+    scale_kwargs = scaler.convert_kwargs(data, mode, **kwargs)
+
+    # Now get a copy, change the mode to 'undo', and we're done !
+    descale_kwargs = copy.deepcopy(scale_kwargs)
+    descale_kwargs['mode'] = 'undo'
+
+    return (scale_kwargs, descale_kwargs)

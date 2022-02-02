@@ -12,11 +12,12 @@ Module content: tests for the core module
 #Import from Python
 import os
 from pathlib import Path
+from datetime import datetime
 import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud import dynamic, reset_prms
+from ampycloud import dynamic, hardcoded
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
@@ -43,7 +44,7 @@ def test_reset_prms():
     ref_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
     dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 = -1
     assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == -1
-    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'const'
+    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'shift-and-scale'
 
     # Then try to reset it
     reset_prms()
@@ -81,12 +82,11 @@ def test_run_single_point():
     dynamic.OKTA_LIM0 = 0
 
     # Let's create some data with a single valid point
-    data = pd.DataFrame([['1', -100, 2000, 1], ['1', -99, np.nan, 1]],
+    data = pd.DataFrame([['1', -100, 2000, 1], ['1', -99, np.nan, 0]],
                         columns=['ceilo', 'dt', 'alt', 'type'])
-    data['ceilo'] = data['ceilo'].astype(str)
-    data['dt'] = data['dt'].astype(float)
-    data['alt'] = data['alt'].astype(float)
-    data['type'] = data['type'].astype(int)
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        data.loc[:, col] = data.loc[:, col].astype(tpe)
 
     # Run the code
     out = run(data)
@@ -102,9 +102,20 @@ def test_run_single_point():
     reset_prms()
 
 def test_demo():
-    """ test the demo routine. """
+    """ Test the demo routine. """
 
     mock_data, chunk = demo()
 
     assert isinstance(chunk, CeiloChunk)
     assert isinstance(mock_data, pd.DataFrame)
+
+def test_datetime():
+    """ Test the ability to feed datetime instances. """
+
+    # Get some random data
+    mock_data, _ = demo()
+    # Here, feed a datetime.datetime instance ...
+    out = run(mock_data, ref_dt=datetime(year=2022, month=1, day=26))
+
+    # and make sure it gets converted to str properly.
+    assert out.ref_dt == '2022-01-26 00:00:00'
