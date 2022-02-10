@@ -335,7 +335,7 @@ class DiagnosticPlot:
     def add_vv_legend(self) -> None:
         """ Adds a legend about the VV hits."""
         msg = r'\smaller $\circ\equiv\mathrm{VV\ hit}$'
-        self._axs[0].text(0.01, 1.35, texify(msg),
+        self._axs[0].text(-0.01, 1.35, texify(msg),
                           transform=self._axs[0].transAxes, ha='right', va='top', c='k',
                           bbox=dict(facecolor='w', edgecolor='k', alpha=1))
 
