@@ -367,7 +367,7 @@ class DiagnosticPlot:
         if self._chunk.geoloc is not None:
             msg += [r'{}'.format(self._chunk.geoloc)]
         if self._chunk.ref_dt is not None:
-            msg += [r'\smaller $\Delta t=0$: {}'.format(self._chunk.ref_dt)]
+            msg += [r'\smaller $\Delta t_{\rm ref}$: ' + '{}'.format(self._chunk.ref_dt)]
 
         if not len(msg)==0:
             self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
