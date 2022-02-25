@@ -200,3 +200,38 @@ def tmp_seed(seed : int):
         yield
     finally:
         np.random.set_state(state)
+
+
+@log_func_call(logger)
+def adjust_nested_dict(ref_dict : dict, new_dict : dict, lvls : list = None) -> dict:
+    """ Update a given (nested) dictionnary given a second (possibly incomplete) one.
+
+    Args:
+        ref_dict (dict): reference dict of dict (of dict of dict ...).
+        new_dict (dict): values to update as a dict (of dict or dict of dict ...)
+        lvls (list, optional): levels of the previous nested dict layers, used for reporting useful
+            errors.
+
+    Returns:
+        dict: the updated dict (of dict of dict of dict ...)
+
+    Note:
+        Inspired from the reply of Alex Martelli and Alex Telon on
+        `SO <https://stackoverflow.com/questions/3232943/>`_.
+
+    """
+
+    if lvls is None:
+        lvls = []
+
+    for key, item in new_dict.items():
+        lvls += [key]
+        if key not in ref_dict.keys():
+            warnings.warn(f'Key unknown (and thus ignored): {".".join(lvls)}', AmpycloudWarning)
+            continue
+        if isinstance(item, dict):
+            ref_dict[key] = adjust_nested_dict(ref_dict[key], item, lvls=lvls)
+        else:
+            ref_dict[key] = item
+
+    return ref_dict

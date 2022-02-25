@@ -11,13 +11,14 @@ Module contains: data classes
 # Import from Python
 from typing import Union
 import logging
+import warnings
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
 
 # Import from this package
-from .errors import AmpycloudError
+from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from . import scaler, cluster, layer
 from . import wmo, icao
@@ -34,14 +35,12 @@ class AbstractChunk(ABC):
     DATA_COLS = copy.deepcopy(hardcoded.REQ_DATA_COLS)
 
     @abstractmethod
-    def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
+    def __init__(self, data : pd.DataFrame, prms : dict = None, geoloc : str = None,
+                 ref_dt : str = None) -> None:
         """ Init routine for abstract class."""
 
-        # Here, we initialize a class MSA value using the **currrent** dynamic MSA value.
-        # This ensures that any instance can always function coherently, even if the dynamic MSA
-        # value is changed after the creation of an instance.
-        self._msa = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA)
-        self._msa_hit_buffer = copy.deepcopy(dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER)
+        # before doing anything else, let's set the different algorithm parameters
+        self._prms = self._setup_prms(prms)
 
         # Assign the data using **a deep copy** to avoid messing with the original one.
         self._data = self._cleanup_pdf(copy.deepcopy(data))
@@ -51,15 +50,21 @@ class AbstractChunk(ABC):
         # Date and time at the reference
         self._ref_dt = ref_dt
 
+
     @property
     def msa(self) -> float:
         """ The Minimum Sector Altitude set when initializing this specific instance. """
-        return self._msa
+        return self.prms['MSA']
 
     @property
     def msa_hit_buffer(self) -> float:
         """ The Minimum Sector Altitude hit buffer set when initializing this specific instance. """
-        return self._msa_hit_buffer
+        return self.prms['MSA_HIT_BUFFER']
+
+    @property
+    def data(self) -> pd.DataFrame:
+        """ The data of the chunk, as a pandas DataFrame. """
+        return self._data
 
     @property
     def geoloc(self) -> str:
@@ -72,9 +77,9 @@ class AbstractChunk(ABC):
         return self._ref_dt
 
     @property
-    def data(self) -> pd.DataFrame:
-        """ The data of the chunk, as a pandas DataFrame. """
-        return self._data
+    def prms(self) -> dict:
+        """ The dictionnary of ampycloud parameters set at the init of this class instance. """
+        return self._prms
 
     @log_func_call(logger)
     def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
@@ -101,6 +106,20 @@ class AbstractChunk(ABC):
 
         return data
 
+    @log_func_call(logger)
+    def _setup_prms(self, prms : dict) -> dict:
+        """ Setup a full dict of ampycloud prms given a user input, using default prms where
+        necessary. """
+
+        # First, get a deep copy of the (current) default prms
+        full_prms = copy.deepcopy(dynamic.AMPYCLOUD_PRMS)
+
+        # Adjust the prms as warranted by the user
+        if prms is not None:
+            full_prms = utils.adjust_nested_dict(full_prms, prms)
+
+        return full_prms
+
 class CeiloChunk(AbstractChunk):
     """Child class for timeseries of Ceilometers hits, referred to as data 'chunks'.
 
@@ -115,8 +134,16 @@ class CeiloChunk(AbstractChunk):
     """
 
     @log_func_call(logger)
-    def __init__(self, data : pd.DataFrame, geoloc : str = None, ref_dt : str = None) -> None:
+    def __init__(self, data : pd.DataFrame, prms : dict = None, geoloc : str = None,
+                 ref_dt : str = None) -> None:
         """ CeiloChunk init method.
+
+        Args:
+            data (pd.DataFrame): the input data. See above for details.
+            prms (dict, optional): dictionnary of ampycloud algorithm parameters.
+            geoloc (str, optional): name of the geolocation of the observations.
+            ref_dt (str, optional): reference date and time of the observations, corresponding to
+                Delta t = 0. Defaults to None.
 
         The input data is required to be a pandas DataFrame with 4 columns described in
         CeiloChunk.DATA_COLS, i.e. :
@@ -143,12 +170,6 @@ class CeiloChunk(AbstractChunk):
               timestep. A value of n=-1 indicates that the cloud hit corresponds to a Vertical
               Visibility hit.
 
-        Args:
-            data (pd.DataFrame): the input data. See above for details.
-            geoloc (str, optional): name of the geolocation of the observations.
-            ref_dt (str, optional): reference date and time of the observations, corresponding to
-                Delta t = 0. Defaults to None.
-
         Note:
             For now, geoloc and ref_dt serve no purposes other than improving the diagnostic plots.
             This is also why ref_dt is a str, such that users can specify it however they please.
@@ -156,7 +177,7 @@ class CeiloChunk(AbstractChunk):
         """
 
         # Call the Parent class init
-        super().__init__(data, geoloc=geoloc, ref_dt=ref_dt)
+        super().__init__(data, prms=prms, geoloc=geoloc, ref_dt=ref_dt)
 
         # For now, we have no slices, no groups, and no layers identified
         self._slices = None
@@ -412,17 +433,15 @@ class CeiloChunk(AbstractChunk):
         the identification of cloud layers.
 
         Important:
-            The "parameters" of this function are set in the ``SLICING_PRMS`` entry of
-            :py:data:`.dynamic.AMPYCLOUD_PRMS`, which itself is (initially loaded from
-            src/ampycloud.prms/ampycloud_default_prms.yml.
+            The "parameters" of this function are all set in self.prms['SLICING_PRMS'].
 
         """
 
         # Get a scaled **copy** of the data to feed the clustering algorithm
-        tmp = self.data_rescaled(dt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
-                                 dt_kwargs=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs,
-                                 alt_mode=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
-                                 alt_kwargs=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs,
+        tmp = self.data_rescaled(dt_mode=self.prms['SLICING_PRMS']['dt_scale_mode'],
+                                 dt_kwargs=self.prms['SLICING_PRMS']['dt_scale_kwargs'],
+                                 alt_mode=self.prms['SLICING_PRMS']['alt_scale_mode'],
+                                 alt_kwargs=self.prms['SLICING_PRMS']['alt_scale_kwargs'],
                                  )
 
         # What are the valid points ?
@@ -439,8 +458,8 @@ class CeiloChunk(AbstractChunk):
         elif len(valids[valids]) > 1:
             # ... run the clustering on them ...
             _, labels = cluster.clusterize(tmp[['dt','alt']][valids].to_numpy(),
-                                           algo=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.algo,
-                                           **dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.algo_kwargs)
+                                           algo=self.prms['SLICING_PRMS']['algo'],
+                                           **self.prms['SLICING_PRMS']['algo_kwargs'])
 
             # ... and set the labels in the original data
             self.data.loc[self.data['alt'].notna(), ['slice_id']] = labels
@@ -449,8 +468,7 @@ class CeiloChunk(AbstractChunk):
             pass
 
         # Finally, let's metarize these slices !
-        self.metarize(which='slices', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
-                      lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+        self.metarize(which='slices', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
     def find_groups(self) -> None:
@@ -458,9 +476,7 @@ class CeiloChunk(AbstractChunk):
         stage towards the identification of cloud layers.
 
         Important:
-            The "parameters" of this function are set in the ``GROUPING_PRMS`` entry of
-            :py:data:`.dynamic.AMPYCLOUD_PRMS`, which itself is (initially loaded from
-            src/ampycloud.prms/ampycloud_default_prms.yml.
+            The "parameters" of this function are all set in self.prms['GROUPING_PRMS'].
 
         """
 
@@ -488,15 +504,15 @@ class CeiloChunk(AbstractChunk):
 
             # Let's get ready to measure the slice separation above and below with respect to the
             # other ones.
-            m_lim = row['alt_mean'] - dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap * row['alt_std']
-            p_lim = row['alt_mean'] + dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap * row['alt_std']
+            m_lim = row['alt_mean'] - self.prms['GROUPING_PRMS']['overlap'] * row['alt_std']
+            p_lim = row['alt_mean'] + self.prms['GROUPING_PRMS']['overlap'] * row['alt_std']
 
             # For each other slice below and above, figure out if it is overlapping or not
             seps_m = [m_lim < self.slices.iloc[item]['alt_mean'] +
-                      dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap *
+                      self.prms['GROUPING_PRMS']['overlap'] *
                       self.slices.iloc[item]['alt_std'] for item in range(ind)]
             seps_p = [p_lim > self.slices.iloc[item]['alt_mean'] -
-                      dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap *
+                      self.prms['GROUPING_PRMS']['overlap'] *
                       self.slices.iloc[item]['alt_std']
                       for item in range(ind+1, len(self.slices), 1)]
 
@@ -535,18 +551,18 @@ class CeiloChunk(AbstractChunk):
                                                  for ind in grp])
 
             # Rescale these points if requested by the user
-            tmp = self.data_rescaled(dt_mode=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
-                dt_kwargs=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs,
-                alt_mode=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
-                alt_kwargs=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
+            tmp = self.data_rescaled(dt_mode=self.prms['GROUPING_PRMS']['dt_scale_mode'],
+                dt_kwargs=self.prms['GROUPING_PRMS']['dt_scale_kwargs'],
+                alt_mode=self.prms['GROUPING_PRMS']['alt_scale_mode'],
+                alt_kwargs=self.prms['GROUPING_PRMS']['alt_scale_kwargs'])
 
             # What are the valid points ?
             valids = tmp['alt'].notna() * valids
 
             # Run the clustering
             nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
-                algo=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.algo,
-                **dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.algo_kwargs)
+                algo=self.prms['GROUPING_PRMS']['algo'],
+                **self.prms['GROUPING_PRMS']['algo_kwargs'])
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
             # to which the majority of the identified (clustered) hits belong.
@@ -559,8 +575,7 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'group_id'] = self.data.loc[to_fill, 'slice_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='groups', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
-                      lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+        self.metarize(which='groups', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
     def find_layers(self) -> None:
@@ -569,9 +584,7 @@ class CeiloChunk(AbstractChunk):
         identification of cloud layers.
 
         Important:
-            The "parameters" of this function are set in the ``LAYERING_PRMS`` entry of
-            :py:data:`.dynamic.AMPYCLOUD_PRMS`, which itself is (initially loaded from
-            src/ampycloud.prms/ampycloud_default_prms.yml.
+            The "parameters" of this function are set in self.prms['LAYERING_PRMS'].
 
         """
 
@@ -595,8 +608,7 @@ class CeiloChunk(AbstractChunk):
 
             # Only look for multiple layers if it is worth it ...
             # 1) Layer density is large enough
-            cond1 = self.groups.at[ind, 'okta'] < \
-                    dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_okta_to_split
+            cond1 = self.groups.at[ind, 'okta'] < self.prms['LAYERING_PRMS']['min_okta_to_split']
             # 2) I have more than three valid points (since I will look for up to 3 components)
             cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 3
             if cond1 or cond2:
@@ -612,15 +624,15 @@ class CeiloChunk(AbstractChunk):
 
             # Let's also get the overall group base alt
             if self.groups.at[ind, 'alt_base'] > 10000:
-                min_sep = dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_sep_high
+                min_sep = self.prms['LAYERING_PRMS']['min_sep_high']
             else:
-                min_sep = dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.min_sep_low
+                min_sep = self.prms['LAYERING_PRMS']['min_sep_low']
             logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
             logger.info('min_sep value: %.1f', min_sep)
 
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(gro_alts, min_sep=min_sep,
-                **dynamic.AMPYCLOUD_PRMS.LAYERING_PRMS.gmm_kwargs)
+                **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
             logger.debug(' Cluster %s  has %i components according to GMM.',
@@ -640,8 +652,7 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'layer_id'] = self.data.loc[to_fill, 'group_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='layers', lim0=dynamic.AMPYCLOUD_PRMS.OKTA_LIM0,
-            lim8=dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+        self.metarize(which='layers', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @property
     def n_slices(self) -> Union[None, int]:

@@ -11,10 +11,10 @@ Module content: tests for the data module
 # Import from Python
 import numpy as np
 import pandas as pd
-from pytest import raises
+from pytest import raises, warns
 
 # Import from the module to test
-from ampycloud.errors import AmpycloudError
+from ampycloud.errors import AmpycloudError, AmpycloudWarning
 from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
 from ampycloud import dynamic, reset_prms, hardcoded
@@ -40,8 +40,8 @@ def test_ceilochunk_init():
     assert len(chunk.data) == len(mock_data)
 
     # Now initialize a CeiloChunk with the same data, but with the MSA set to 0 ft
-    dynamic.AMPYCLOUD_PRMS.MSA = 0
-    dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = 0
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 0
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 0
     chunk = CeiloChunk(mock_data)
     # Applying the MSA should crop any Type 2 or more hits, and change Type 1 or less to Type 0.
     assert len(chunk.data) == len(mock_data[mock_data.type <=1])
@@ -50,14 +50,29 @@ def test_ceilochunk_init():
     assert chunk.msa == 0
 
     # And now again, but this time with a large hit buffer that coverts all the data
-    dynamic.AMPYCLOUD_PRMS.MSA = 0
-    dynamic.AMPYCLOUD_PRMS.MSA_HIT_BUFFER = mock_data['alt'].max() + 10
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 0
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = mock_data['alt'].max() + 10
     chunk = CeiloChunk(mock_data)
     assert len(chunk.data) == len(mock_data)
 
     # Check that feeding an empty dataframe crashes properly
     with raises(AmpycloudError):
         _ = CeiloChunk(mock_data[:0])
+
+    # Check the ability to manually specifiy parameters at init without messing up the default ones
+    chunk = CeiloChunk(mock_data, prms={'MSA':-30})
+    assert chunk.msa == -30
+    assert dynamic.AMPYCLOUD_PRMS['MSA'] == 0
+
+    # Check the ability to set nested parameters in one go
+    chunk = CeiloChunk(mock_data, prms={'SLICING_PRMS':{'algo':'test'}})
+    assert chunk.prms['SLICING_PRMS']['algo'] == 'test'
+    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['algo'] == 'agglomerative'
+
+    # Check that warnings are raised in case bad parameters are given
+    with warns(AmpycloudWarning):
+        chunk = CeiloChunk(mock_data, prms={'SMTH_BAD':0})
+        assert chunk.prms == dynamic.AMPYCLOUD_PRMS
 
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
     reset_prms()

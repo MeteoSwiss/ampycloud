@@ -84,19 +84,19 @@ def set_mplstyle(func : Callable) -> Callable:
             prms = yaml.safe_load(fil)
 
         # What is the plotting style chosen by the user
-        spec_style = dynamic.AMPYCLOUD_PRMS.MPL_STYLE
+        spec_style = dynamic.AMPYCLOUD_PRMS['MPL_STYLE']
         # Let's do some sanity checks on the user input.
         # 0) If I was asked to do nothing special, then do nothing special ...
         if spec_style is None or spec_style == 'base':
             pass
         # 2) Else, I need a string or I cry ...
         elif not isinstance(spec_style, str):
-            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS.MPL_STYLE type unknown:'+
+            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] type unknown:'+
                                  f' {type(spec_style)}')
         # 3) Is that a supported style ?
         elif spec_style not in valid_styles():
-            raise AmpycloudError(f'Ouch ! dynamic.AMPYCLOUD_PRMS.MPL_STYLE {spec_style} unknown.'+
-                                 f' Should be one of {valid_styles()}.')
+            raise AmpycloudError(f'Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] {spec_style}'+
+                                 f' unknown. Should be one of {valid_styles()}.')
         # 4) Request seems legit ... let's load the spec_style ...
         else:
             with open(pth / f'{spec_style}.mplstyle') as fil:
@@ -167,12 +167,8 @@ def get_scaling_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
         tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
         scaling.
 
-    Todo:
-        Cleanup the code once #25 is fixed.
-
     """
 
-    # TODO: Once issue #25 is fixed, maybe update these lines ...
     # Let's create a storage dict, and fill it with what I got from the user.
     scale_kwargs = {}
     scale_kwargs.update(kwargs)

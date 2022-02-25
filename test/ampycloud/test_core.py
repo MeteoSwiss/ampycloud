@@ -11,6 +11,7 @@ Module content: tests for the core module
 
 #Import from Python
 import os
+from pytest import warns
 from pathlib import Path
 from datetime import datetime
 import numpy as np
@@ -18,6 +19,7 @@ import pandas as pd
 
 # Import from ampycloud
 from ampycloud import dynamic, hardcoded
+from ampycloud.errors import AmpycloudWarning
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
@@ -41,15 +43,15 @@ def test_reset_prms():
     """ Test the reset_prms routine. """
 
     # First, let's change one of the dynamic parameter
-    ref_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
-    dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 = -1
-    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == -1
-    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'shift-and-scale'
+    ref_val = dynamic.AMPYCLOUD_PRMS['OKTA_LIM0']
+    dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] = -1
+    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == -1
+    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['dt_scale_mode'] == 'shift-and-scale'
 
     # Then try to reset it
     reset_prms()
 
-    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == ref_val
+    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == ref_val
 
 def test_run():
     """ Test the run routine. """
@@ -74,6 +76,16 @@ def test_run():
 
     # While I'm at it, also check the metar routines, that are so close
     assert metar(mock_data) == 'SCT009 SCT019'
+
+    # Test the ability to specific parameters locally only
+    out = run(mock_data, prms={'MSA':0})
+    assert out.metar_msg() == 'NCD'
+    assert dynamic.AMPYCLOUD_PRMS['MSA'] is None
+
+    # Test that warnings are being raised if a bad parameter is being given
+    with warns(AmpycloudWarning):
+        out = run(mock_data, prms={'SMA':0})
+        assert out.metar_msg() == 'SCT009 SCT019'
 
 def test_run_single_point():
     """ Test the code when a single data point is fed to it. """

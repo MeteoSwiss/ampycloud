@@ -61,7 +61,7 @@ def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
 
         # Do I need to set a specific MSA ?
         if 'MSA' in ref_data_file.stem:
-            dynamic.AMPYCLOUD_PRMS.MSA = int(ref_data_file.stem.split('_')[3].split('.')[0][3:])
+            dynamic.AMPYCLOUD_PRMS['MSA'] = int(ref_data_file.stem.split('_')[3].split('.')[0][3:])
         else:
             # Make sure I use the default MSA
             reset_prms()
@@ -73,7 +73,7 @@ def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
         if do_sciplots:
             # Do I need to set a specific plotting style ?
             if mpls:
-                dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+                dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
             # Create the plot
             diagnostic(chunk, upto='layers', ref_metar=ref_metar, ref_metar_origin='Should be',

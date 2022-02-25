@@ -10,13 +10,15 @@ Module contains: dynamic (scientific) parameters, which can be altered during ex
 
 # Import from Python
 from pathlib import Path
-from yaconfigobject import Config
+from ruamel.yaml import YAML
 
-def get_default_prms() -> Config:
+def get_default_prms() -> dict:
     """ Extract the default ampycloud parameters from the YAML configuration file. """
 
-    return Config(paths=[str(Path(__file__).parent/ 'prms')], name='ampycloud_default_prms.yml')
+    yaml=YAML(typ='safe')
+    out = yaml.load(Path(__file__).parent / 'prms' / 'ampycloud_default_prms.yml')
 
+    return out
 
 #:dict: The ampycloud parameters, first set from a config file via :py:func:`.get_default_prms`
 AMPYCLOUD_PRMS = get_default_prms()

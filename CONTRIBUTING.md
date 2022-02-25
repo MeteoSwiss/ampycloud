@@ -288,7 +288,7 @@ def some_plot_function(...):
 ```
 :warning: Note how the `@set_mplstyle` decorator goes above the `@log_func_call()` decorator.
 
-With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS.MPL_STYLE` which can take one of the following values:
+With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS['MPL_STYLE']` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
 
 ### Release mechanisms

@@ -110,7 +110,7 @@ as they see fit. For example:
 
     from ampycloud import dynamic
 
-    dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
+    dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
 
 Note that it is important to always import the entire :py:mod:`ampycloud.dynamic` module and stick to the
 above structure if the updated parameters are to be *seen* by all the ampycloud modules.
@@ -208,7 +208,7 @@ the appropriate ampycloud parameter:
 ::
 
     from ampycloud import dynamic
-    dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'latex'
+    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'latex'
 
 And for the most demanding users that want nothing but the best, they can create plots with actual
 okta symbols if they install the `metsymb LaTeX package <https://github.com/MeteoSwiss/metsymb>`__
@@ -216,7 +216,7 @@ system-wide, and set:
 ::
 
     from ampycloud import dynamic
-    dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'metsymb'
+    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'metsymb'
 
 
 .. important::

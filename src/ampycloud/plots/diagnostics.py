@@ -194,7 +194,7 @@ class DiagnosticPlot:
             # Let's also plot the overlap area of the slice
             slice_mean = self._chunk.slices.loc[ind, 'alt_mean']
             slice_std = self._chunk.slices.loc[ind, 'alt_std']
-            overlap = dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.overlap
+            overlap = self._chunk.prms['GROUPING_PRMS']['overlap']
 
             # Get some fake data spanning the entire data range
             misc = np.linspace(np.nanmin(self._chunk.data['dt']),
@@ -222,7 +222,7 @@ class DiagnosticPlot:
 
             # Show the slice METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
                 ' ' + self._chunk.slices.iloc[ind]['code'] + warn
             self._axs[1].text(0.5, self._chunk.slices.iloc[ind]['alt_base'],
                               texify(msg),
@@ -275,7 +275,7 @@ class DiagnosticPlot:
 
             # Show the group METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.groups.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
                 ' ' + self._chunk.groups.iloc[ind]['code'] + warn
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
@@ -325,7 +325,7 @@ class DiagnosticPlot:
 
             # Display the actual METAR text
             msg = r'\smaller ' + wmo.okta2symb(self._chunk.layers.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS.MPL_STYLE == 'metsymb')) +\
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
                 ' ' + self._chunk.layers.iloc[ind]['code']
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
@@ -351,10 +351,10 @@ class DiagnosticPlot:
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
         msg += r'$^{\uparrow\, '
         msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100*
-                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)))
+                       self._chunk.prms['OKTA_LIM8'])))
         msg += r'}_{\downarrow\, '
         msg += str(int(np.floor(self._chunk.max_hits_per_layer/100*
-                       dynamic.AMPYCLOUD_PRMS.OKTA_LIM0)))
+                       self._chunk.prms['OKTA_LIM0'])))
         msg += r'}$'
 
         self._axs[0].text(-0.14, -0.21, texify(msg),
@@ -427,30 +427,30 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
-                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_kwargs)
+                                   self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
+                                   self._chunk.prms['SLICING_PRMS']['dt_scale_kwargs'])
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['alt'].values,
-                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
-                                  dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_kwargs)
+                                   self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
+                                   self._chunk.prms['SLICING_PRMS']['alt_scale_kwargs'])
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.06,
                 functions=(partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
                                    **dt_scale_kwargs),
                            partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode,
+                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
                                    **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.03,
                 functions=(partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                   fct=self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
                                    **alt_scale_kwargs),
                            partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.alt_scale_mode,
+                                   fct=self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
                                    **alt_descale_kwargs)))
 
             # Add the axis labels
@@ -474,30 +474,30 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
-                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_kwargs)
+                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
+                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_kwargs'])
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['alt'].values,
-                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
-                                  dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_kwargs)
+                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
+                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_kwargs'])
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(1.25,
                 functions=(partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    **dt_scale_kwargs),
                            partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.dt_scale_mode,
+                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    **dt_descale_kwargs)))
 
             secax_y = self._axs[0].secondary_yaxis(1.14,
                 functions=(partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
                                    **alt_scale_kwargs),
                            partial(scaler.apply_scaling,
-                                   fct=dynamic.AMPYCLOUD_PRMS.GROUPING_PRMS.alt_scale_mode,
+                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
                                    **alt_descale_kwargs)))
 
             # Add the axis labels

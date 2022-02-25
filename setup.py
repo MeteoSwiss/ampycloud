@@ -48,7 +48,7 @@ setup(
         "scikit-learn >= 0.24.2",
         "pandas >= 1.3.1",
         "pyyaml",
-        "yaconfigobject"
+        "ruamel.yaml"
     ],
     extras_require={
         'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest']
