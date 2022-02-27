@@ -250,6 +250,10 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
     starttime = datetime.now()
     logger.info('Starting an ampycloud run at %s', starttime)
 
+    # If the user gave me a datetime, convert this to str before proceeding
+    if not isinstance(ref_dt, str) and ref_dt is not None:
+        ref_dt = str(ref_dt)
+
     # First, let's create an CeiloChunk instance ...
     chunk = CeiloChunk(data, prms=prms, geoloc=geoloc, ref_dt=ref_dt)
 

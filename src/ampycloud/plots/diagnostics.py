@@ -24,7 +24,6 @@ from .hardcoded import WIDTH_TWOCOL, MRKS
 from .tools import texify, get_scaling_kwargs
 from .. import wmo
 from ..data import CeiloChunk
-from .. import dynamic
 from ..version import VERSION
 
 # Instantiate the module logger

@@ -11,9 +11,9 @@ Module content: tests for the core module
 
 #Import from Python
 import os
-from pytest import warns
 from pathlib import Path
 from datetime import datetime
+from pytest import warns
 import numpy as np
 import pandas as pd
 

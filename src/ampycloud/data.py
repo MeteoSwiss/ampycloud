@@ -11,14 +11,13 @@ Module contains: data classes
 # Import from Python
 from typing import Union
 import logging
-import warnings
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
 
 # Import from this package
-from .errors import AmpycloudError, AmpycloudWarning
+from .errors import AmpycloudError
 from .logger import log_func_call
 from . import scaler, cluster, layer
 from . import wmo, icao
