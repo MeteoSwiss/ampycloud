@@ -608,11 +608,11 @@ class CeiloChunk(AbstractChunk):
             # Only look for multiple layers if it is worth it ...
             # 1) Layer density is large enough
             cond1 = self.groups.at[ind, 'okta'] < self.prms['LAYERING_PRMS']['min_okta_to_split']
-            # 2) I have more than three valid points (since I will look for up to 3 components)
-            cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 3
+            # 2) I have more than 30 valid points (GMM is unstable below this amount).
+            cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 30
             if cond1 or cond2:
                 # Add some useful info to the log
-                logger.info('Skipping the layering because: MIN_OKTA [%s] | 3PT [%s]',
+                logger.info('Skipping the layering because: <min_okta_to_split [%s] | <30 pts [%s]',
                              cond1, cond2)
                 # Here, set ncomp to -1 to show clearly that I did NOT actually check it ...
                 self.groups.at[ind, 'ncomp'] = -1
