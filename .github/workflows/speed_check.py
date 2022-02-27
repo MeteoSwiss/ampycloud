@@ -23,7 +23,7 @@ def main():
     if (lim := mean + 3*std) >= 1:
         raise Exception('Ouch ! ampycloud speed check failed: mean + 3*std >= 1s ...')
 
-    print(f'Speed check passed: mean + 3*std = {lim} s.')
+    print(f'Speed check passed: mean + 3*std = {lim:.2f} s.')
 
 if __name__ == '__main__':
 
