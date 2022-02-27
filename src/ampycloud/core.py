@@ -198,7 +198,7 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
     Alternatively, the scientific parameters can also be defined and fed to ampycloud via a YAML
     file. See :py:func:`.set_prms()` for details.
 
-    .. warning:
+    Caution:
         By default, the function :py:func:`.run` will use the parameter values set in
         :py:data:`dynamic.AMPYCLOUD_PRMS`, which is not thread safe. Users interested to run
         **multiple concurrent ampycloud calculations with distinct sets of parameters within the
@@ -208,6 +208,7 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
 
         Examples:
         ::
+
             # Define only the parameters that are non-default. To adjust the MSA, use:
             prms = {'MSA': 10000}
 
@@ -235,7 +236,8 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
             mock_data = mocker.canonical_demo_data()
 
             # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
-            chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+            chunk = ampycloud.run(mock_data, prms={'MSA':10000},
+                                  geoloc='Mock data', ref_dt=datetime.now())
 
             # Get the resulting METAR message
             print(chunk.metar_msg())

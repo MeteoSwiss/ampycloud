@@ -38,8 +38,8 @@ Welcome to the ampycloud documentation
   See also the code's :ref:`license & copyright <license:License & Copyright>` information.
 
 * **How:** a scientific article describing the ampycloud **algorithm** is currently in preparation.
-  This article will be complemented by these webpages that contain the official documentation of the
-  ampycloud **Python package**.
+  This article will be complemented by these webpages, that contain the official documentation of
+  the ampycloud **Python package**.
 
 Scope of ampycloud
 ------------------
