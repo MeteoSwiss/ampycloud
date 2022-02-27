@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v0.4.0.dev0]
 ### Added:
+ - [fpavogt, 2022-02-27] Add new speed-check Action.
  - [fpavogt, 2022-02-25] Add the `prms` keyword to set parameters for each run call in a thread-safe manner.
 ### Fixed:
  - [fpavogt, 2022-02-25] Fix #71 and #25.

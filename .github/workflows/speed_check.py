@@ -20,7 +20,7 @@ def main():
     (_, mean, std, _, _, _) = get_speed_benchmark()
 
     # Make sure that we remain below 1s at the 3 sigma level
-    if lim := (mean + 3*std) >= 1:
+    if (lim := mean + 3*std) >= 1:
         raise Exception('Ouch ! ampycloud speed check failed: mean + 3*std >= 1s ...')
 
     print(f'Speed check passed: mean + 3*std = {lim} s.')
