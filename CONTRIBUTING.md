@@ -41,8 +41,7 @@ Please be sure to read (and understand the implications) of the
 
 ## Essential things to know about ampycloud for dev work
 
-For now, ampycloud is being developed in a **private** repository under the [MeteoSwiss organization](https://github.com/MeteoSwiss/ampycloud) on Github. The documentation, generated using Sphinx, is hosted as Github Pages on the `gh-pages` branch of the repo, and is **publicly** visible
-at https://MeteoSwiss.github.io/ampycloud.
+ampycloud is being developed in a **public** repository under the [MeteoSwiss organization](https://github.com/MeteoSwiss/ampycloud) on Github. The documentation, generated using Sphinx, is hosted as Github Pages on the `gh-pages` branch of the repo, and is visible at https://MeteoSwiss.github.io/ampycloud.
 
 
 ### Branching model
@@ -68,7 +67,7 @@ pip install -e .[dev]
 ```
 Note the use of `[dev]` to also install the dependencies required for dev work (i.e. `sphinx`, `pylint`, etc ...).
 
-:warning: If you encouter the error `zsh: no matches found: .[dev]`, add some quotes as follows:
+:warning: If you encounter the error `zsh: no matches found: .[dev]`, add some quotes as follows:
 ```
 pip install -e '.[dev]'
 ```
@@ -81,6 +80,7 @@ Automated CI/CD checks are triggered upon Pull Requests being issued towards the
 
 * code linting using `pylint`
 * code testing using `pytest`
+* check that the base computational speed is ok
 * check that the CHANGELOG was updated
 * check that the Sphinx docs compile
 * automatic publication of the Sphinx docs (for a PR to `master` only)

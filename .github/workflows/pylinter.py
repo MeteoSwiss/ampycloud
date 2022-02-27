@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+Copyright (c) 2020-2022 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 Distributed under the terms of the 3-Clause BSD License.
 

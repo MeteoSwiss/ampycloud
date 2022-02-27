@@ -1,0 +1,45 @@
+#
+# Copyright (c) 2022 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+
+name: CI_speed_check
+
+on:
+  pull_request:
+    branches: [ master, develop, develop_vof ]
+
+jobs:
+  speed_check:
+
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+        python-version: ['3.8', '3.9', '3.10']
+
+    steps:
+      # Checkout our repository
+      - name: Checkout current repository
+        uses: actions/checkout@v2
+
+      # Set up Python
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v2
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      # Install any dependency we require
+      - name: Install dependancies
+        run: |
+          python -m pip install --upgrade pip
+        shell: bash
+
+      # Here, let's install our module to make sure all the dependencies specified in setup.py are
+      # also installed
+      - name: Install our module
+        run: pip install -e .[dev]
+        shell: bash
+
+      # Launch a home-made python script to check the speed
+      - name: Run the speed test
+        run: python .github/workflows/speed_check.py
+        shell: bash

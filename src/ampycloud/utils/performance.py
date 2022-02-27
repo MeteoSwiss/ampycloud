@@ -31,7 +31,7 @@ def get_speed_benchmark(niter : int = 10) -> tuple:
     the mock dataset from its processing.
 
     Returns:
-        int, float, float, float, float, float: niter, mean, std, median, min, max:
+        int, float, float, float, float, float: niter, mean, std, median, min, max, all in s.
 
     """
 
