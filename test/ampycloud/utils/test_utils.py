@@ -9,6 +9,7 @@ Module content: tests for the utils.utils module
 """
 
 # Import form Python
+import warnings
 from pytest import raises, warns
 import numpy as np
 import pandas as pd
@@ -22,9 +23,9 @@ from ampycloud import hardcoded
 def test_check_data_consistency():
     """ This routine tests the check_data_consistency method. """
 
-    # Uncomment the line below once pytst 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         out = check_data_consistency(canonical_demo_data())
 
         # Make sure the canonical demo data is perfectly compatible with the ampycloud requirements

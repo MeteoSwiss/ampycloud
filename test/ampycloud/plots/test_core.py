@@ -10,6 +10,7 @@ Module content: tests for the plots.core module
 
 # Import from Python
 from pathlib import Path
+import warnings
 import numpy as np
 import pandas as pd
 
@@ -42,9 +43,9 @@ def test_large_dts(mpls):
     # Run ampycloud
     chunk = run(data)
 
-    # Uncomment the line below once pytest 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
                    save_stem='pytest_large_dts', save_fmts='png',
                    ref_metar_origin='Large dts', ref_metar='OVC010')
@@ -75,9 +76,9 @@ def test_direct_prms(mpls):
     # Run ampycloud
     chunk = run(data, prms={'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 120}}} )
 
-    # Uncomment the line below once pytest 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
                    save_stem='pytest_direct_prms', save_fmts='png',
                    ref_metar_origin='Direct prms', ref_metar='OVC010')
@@ -145,9 +146,9 @@ def test_empty_plot(mpls):
     # Run ampycloud
     chunk = run(data)
 
-    # Uncomment the line below once pytst 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
                    save_stem='pytest_empty_plot', save_fmts='png',
                    ref_metar_origin='Empty data', ref_metar='NCD')
