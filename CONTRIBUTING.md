@@ -100,7 +100,6 @@ upon a new release or pre-release being published. See the ampycloud
   often how well you are doing using the command `pylint some_modified_file.py`.
 
 
-
 ### Logging
 
   No handlers/formatters are being defined in ampycloud, with the exception of a `NullHandler()` for
@@ -113,7 +112,7 @@ upon a new release or pre-release being published. See the ampycloud
 
     ```
     import logging
-    logger = loggging.getLogger(__name__)
+    logger = logging.getLogger(__name__)
     ```
   * log calls are then simply done via this module logger:
 
