@@ -14,6 +14,7 @@ Created June 2020; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 import subprocess
 
+
 def main():
     ''' The one true function. '''
 
@@ -39,6 +40,7 @@ def main():
     print('Docs compiled ok. Logs follow.')
     for line in lines:
         print(line)
+
 
 if __name__ == '__main__':
 

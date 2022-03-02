@@ -26,7 +26,6 @@ setup(
 
     # Include all packages under src
     packages=find_packages(where="src"),
-
     # Tell setuptools packages are under src
     package_dir={"": "src"},
 
@@ -53,33 +52,25 @@ setup(
     extras_require={
         'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest']
     },
-
     # Setup entry points to use ampycloud directly from a terminal
-    entry_points={'console_scripts':
-        ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test',
-         'ampycloud_copy_prm_file=ampycloud.__main__:ampycloud_copy_prm_file']},
-
+    entry_points={
+        'console_scripts': ['ampycloud_speed_test=ampycloud.__main__:ampycloud_speed_test',
+                            'ampycloud_copy_prm_file=ampycloud.__main__:ampycloud_copy_prm_file']},
     classifiers=[
-
         # How mature is this project? Common values are
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
         'Development Status :: 3 - Alpha',
-
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Atmospheric Science',
-
         # Pick your license as you wish (should match "license" above)
         'License :: OSI Approved :: BSD License',
-
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
         'Programming Language :: Python :: 3.8',
-
     ],
-
     # Let's make sure the parameter non-py files get included in the wheels on pypi.
     include_package_data=True
 )

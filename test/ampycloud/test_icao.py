@@ -11,6 +11,7 @@ Module content: tests for the icao module
 # Import from this package
 from ampycloud.icao import significant_cloud
 
+
 def test_significant_cloud():
     """ Test the significant_cloud function. """
 

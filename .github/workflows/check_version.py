@@ -15,6 +15,7 @@ Created January 2022; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 import argparse
 from pkg_resources import parse_version
 
+
 def main():
     ''' The main function. '''
 
@@ -43,6 +44,7 @@ def main():
         return True
 
     raise Exception('Ouch ! Version was not increased ?!')
+
 
 if __name__ == '__main__':
 

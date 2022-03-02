@@ -17,6 +17,7 @@ from ampycloud.scaler import shift_and_scale, minmax_scale, minrange2minmax, ste
 from ampycloud.scaler import convert_kwargs, apply_scaling
 from ampycloud.errors import AmpycloudError
 
+
 def test_shift_and_scale():
     """ Test the shift_and_scale routine. """
 
@@ -26,12 +27,13 @@ def test_shift_and_scale():
     assert shift_and_scale(np.ones(1), shift=0, mode='do') == 1
     assert np.all(shift_and_scale(np.array([1, 2]), scale=10, mode='do') == np.array([-0.1, 0]))
     assert shift_and_scale(np.zeros(1), shift=10, scale=10, mode='undo') == 10
-    assert np.all(shift_and_scale(np.array([7e5,7e5+1,7e5+2]), scale=10, mode='do') == \
-        np.array([-0.2, -0.1, 0]))
+    assert np.all(shift_and_scale(np.array([7e5, 7e5+1, 7e5+2]), scale=10, mode='do') ==
+                  np.array([-0.2, -0.1, 0]))
     tmp = np.array([1, 12, 3])
     # Check that this is indeed circular
-    assert np.all(shift_and_scale(shift_and_scale(tmp, scale=11, mode='do'),
-        scale=11, mode='undo', shift=np.nanmax(tmp)) == tmp)
+    assert np.all(shift_and_scale(shift_and_scale(
+        tmp, scale=11, mode='do'), scale=11, mode='undo', shift=np.nanmax(tmp)) == tmp)
+
 
 def test_minmax_scale():
     """ Test the minmax_scaling function, inculding the descaling mode. """
@@ -53,6 +55,7 @@ def test_minmax_scale():
     # Check NaNs stay NaNs
     assert np.all(np.isnan(deout[np.isnan(vals)]))
 
+
 def test_step_scale():
     """ Test the step scale function. """
 
@@ -70,16 +73,17 @@ def test_step_scale():
     # Check the continuity condition
     vals = np.arange(0, 25000, 10)
     out = step_scale(vals, steps=[3000, 7000, 10000, 14000], scales=[100, 500, 50, 1000, 10],
-                       mode='do')
+                     mode='do')
     # Basic check to make sure we are always increasing
     assert np.all(np.diff(out) > 0)
     # Check for gaps by looking at the slopes
     # If a slope value were to appear only once, it would be a gap.
-    assert np.all([np.count_nonzero(np.diff(out)==item) for item in np.unique(np.diff(out))])
+    assert np.all([np.count_nonzero(np.diff(out) == item) for item in np.unique(np.diff(out))])
     # Check I can undo the scaling
     deout = step_scale(out, steps=[3000, 7000, 10000, 14000], scales=[100, 500, 50, 1000, 10],
-                         mode='undo')
+                       mode='undo')
     assert np.all(np.round(deout, 1) == vals)
+
 
 def test_convert_kwargs():
     """ Test the convert_kwargs() function """
@@ -121,7 +125,7 @@ def test_apply_scaling():
     assert out == 0.5
 
     # Try with a min-range
-    din = np.array([1,5,9])
+    din = np.array([1, 5, 9])
     out = apply_scaling(din, fct='minmax-scale', min_range=10, mode='do')
     assert np.all(out == np.array([0.1, 0.5, 0.9]))
 

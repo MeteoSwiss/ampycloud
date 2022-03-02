@@ -29,10 +29,11 @@ from ..version import VERSION
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 class DiagnosticPlot:
     """ Class used to create diagnostic plots. """
 
-    def __init__(self, chunk : CeiloChunk) -> None:
+    def __init__(self, chunk: CeiloChunk) -> None:
         """ The init function.
 
         Args:
@@ -87,7 +88,7 @@ class DiagnosticPlot:
         """ Assign the fig attribute. """
         self._fig, self._axs = self.setup_fig()
 
-    def show_hits_only(self, show_ceilos : bool = False) -> None:
+    def show_hits_only(self, show_ceilos: bool = False) -> None:
         """ Shows the ceilometer hits alone.
 
         Args:
@@ -108,7 +109,7 @@ class DiagnosticPlot:
             # Get a list of ceilo colors from the cycler.
             ceilo_clrs = plt.rcParams['axes.prop_cycle'].by_key()['color']
             # Assign them to each hit
-            symb_clrs = [ceilo_clrs[self._chunk.ceilos.index(item)%len(ceilo_clrs)]
+            symb_clrs = [ceilo_clrs[self._chunk.ceilos.index(item) % len(ceilo_clrs)]
                          for item in self._chunk.data['ceilo']]
 
         # What are the VV hits ?
@@ -169,7 +170,6 @@ class DiagnosticPlot:
                           ha='center', va='bottom',
                           transform=self._axs[1].transAxes)
 
-
         # Get a list of approved colors
         all_clrs = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
@@ -220,15 +220,16 @@ class DiagnosticPlot:
                 warn = ''
 
             # Show the slice METAR text
-            msg = r'\smaller ' + wmo.okta2symb(self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
-                ' ' + self._chunk.slices.iloc[ind]['code'] + warn
+            msg = r'\smaller ' + wmo.okta2symb(
+                self._chunk.slices.iloc[ind]['okta'],
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+            ) + ' ' + self._chunk.slices.iloc[ind]['code'] + warn
             self._axs[1].text(0.5, self._chunk.slices.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color=base_clr,
                               bbox=dict(facecolor='none', edgecolor=base_clr, alpha=alpha, ls='--'))
 
-    def show_groups(self, show_points : bool = False) -> None:
+    def show_groups(self, show_points: bool = False) -> None:
         """ Show the group data.
 
         Args:
@@ -249,12 +250,12 @@ class DiagnosticPlot:
             if show_points:
                 # Which hits are in the group ?
                 in_group = np.array(self._chunk.data['group_id'] ==
-                                      self._chunk.groups.at[ind, 'original_id'])
+                                    self._chunk.groups.at[ind, 'original_id'])
 
                 # I can finally show the points ...
                 self._axs[0].scatter(self._chunk.data[in_group]['dt'],
                                      self._chunk.data[in_group]['alt'],
-                                     marker=MRKS[ind%len(MRKS)],
+                                     marker=MRKS[ind % len(MRKS)],
                                      s=40, c='none', edgecolor='gray', lw=1, zorder=10, alpha=0.5)
 
             # Stop here if that group has 0 okta.
@@ -264,18 +265,19 @@ class DiagnosticPlot:
             # Prepare to display the METAR codes for the groups.
             # First, check if it is significant or not.
             if self._chunk.groups.iloc[ind]['significant']:
-                alpha=1
+                alpha = 1
             else:
-                alpha=0
+                alpha = 0
 
             # Then also check if these groups contain multiple sub-layers ...
-            symbs = {-1: r'', 1: r'$-$', 2:r'$=$', 3:r'$\equiv$'}
+            symbs = {-1: r'', 1: r'$-$', 2: r'$=$', 3: r'$\equiv$'}
             warn = ' ' + symbs[self._chunk.groups.iloc[ind]['ncomp']]
 
             # Show the group METAR text
-            msg = r'\smaller ' + wmo.okta2symb(self._chunk.groups.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
-                ' ' + self._chunk.groups.iloc[ind]['code'] + warn
+            msg = r'\smaller ' + wmo.okta2symb(
+                self._chunk.groups.iloc[ind]['okta'],
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+            ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='gray',
@@ -299,7 +301,7 @@ class DiagnosticPlot:
             # I can finally show the points ...
             self._axs[0].scatter(self._chunk.data[in_layer]['dt'],
                                  self._chunk.data[in_layer]['alt'],
-                                 marker=MRKS[ind%len(MRKS)],
+                                 marker=MRKS[ind % len(MRKS)],
                                  s=40, c='none', edgecolor='k', lw=1, zorder=10, alpha=0.5)
 
             # Draw the line of the layer base
@@ -309,7 +311,7 @@ class DiagnosticPlot:
                 lls = '--'
 
             self._axs[0].axhline(self._chunk.layers.iloc[ind]['alt_base'], xmax=1, c='k',
-                        lw=1, zorder=0, ls=lls, clip_on=False)
+                                 lw=1, zorder=0, ls=lls, clip_on=False)
 
             # Stop here for empty layers
             if self._chunk.layers.iloc[ind]['okta'] == 0:
@@ -318,14 +320,15 @@ class DiagnosticPlot:
             # Prepare to display the METAR codes for the layer.
             # First, check if it is significant, or not.
             if self._chunk.layers.iloc[ind]['significant']:
-                alpha=1
+                alpha = 1
             else:
-                alpha=0
+                alpha = 0
 
             # Display the actual METAR text
-            msg = r'\smaller ' + wmo.okta2symb(self._chunk.layers.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')) +\
-                ' ' + self._chunk.layers.iloc[ind]['code']
+            msg = r'\smaller ' + wmo.okta2symb(
+                self._chunk.layers.iloc[ind]['okta'],
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+            ) + ' ' + self._chunk.layers.iloc[ind]['code']
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='k',
@@ -349,10 +352,10 @@ class DiagnosticPlot:
 
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
         msg += r'$^{\uparrow\, '
-        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100*
+        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100 *
                        self._chunk.prms['OKTA_LIM8'])))
         msg += r'}_{\downarrow\, '
-        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100*
+        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100 *
                        self._chunk.prms['OKTA_LIM0'])))
         msg += r'}$'
 
@@ -368,11 +371,11 @@ class DiagnosticPlot:
         if self._chunk.ref_dt is not None:
             msg += [r'\smaller $\Delta t_{\rm ref}$: ' + '{}'.format(self._chunk.ref_dt)]
 
-        if not len(msg)==0:
+        if not len(msg) == 0:
             self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
                               transform=self._axs[2].transAxes, ha='center', va='top')
 
-    def add_ref_metar(self, name : str, metar : str) -> None:
+    def add_ref_metar(self, name: str, metar: str) -> None:
         """ Display a reference METAR, for example from human observers, different code, etc ...
 
         Args:
@@ -386,7 +389,7 @@ class DiagnosticPlot:
             # Show it if it contains something ...
             self._axs[2].text(0.5, 1.3, texify(msg),
                               transform=self._axs[2].transAxes, color='k', ha='center',
-                              #bbox=dict(facecolor='none', edgecolor='k', alpha=1,
+                              # bbox=dict(facecolor='none', edgecolor='k', alpha=1,
                               #          boxstyle='round, pad=0.25')
                               )
 
@@ -436,7 +439,8 @@ class DiagnosticPlot:
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
-            secax_x = self._axs[0].secondary_xaxis(1.06,
+            secax_x = self._axs[0].secondary_xaxis(
+                1.06,
                 functions=(partial(scaler.apply_scaling,
                                    fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
                                    **dt_scale_kwargs),
@@ -444,7 +448,8 @@ class DiagnosticPlot:
                                    fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
                                    **dt_descale_kwargs)))
 
-            secax_y = self._axs[0].secondary_yaxis(1.03,
+            secax_y = self._axs[0].secondary_yaxis(
+                1.03,
                 functions=(partial(scaler.apply_scaling,
                                    fct=self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
                                    **alt_scale_kwargs),
@@ -483,7 +488,8 @@ class DiagnosticPlot:
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
-            secax_x = self._axs[0].secondary_xaxis(1.25,
+            secax_x = self._axs[0].secondary_xaxis(
+                1.25,
                 functions=(partial(scaler.apply_scaling,
                                    fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    **dt_scale_kwargs),
@@ -491,7 +497,8 @@ class DiagnosticPlot:
                                    fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    **dt_descale_kwargs)))
 
-            secax_y = self._axs[0].secondary_yaxis(1.14,
+            secax_y = self._axs[0].secondary_yaxis(
+                1.14,
                 functions=(partial(scaler.apply_scaling,
                                    fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
                                    **alt_scale_kwargs),
@@ -507,7 +514,7 @@ class DiagnosticPlot:
             secax_x.tick_params(axis='x', which='both', labelsize=rcParams['font.size']-2)
             secax_y.tick_params(axis='y', which='both', labelsize=rcParams['font.size']-2)
 
-    def save(self, fn_out : str, fmts : list = None) -> None:
+    def save(self, fn_out: str, fmts: list = None) -> None:
         """ Saves the plot to file.
 
         Args:

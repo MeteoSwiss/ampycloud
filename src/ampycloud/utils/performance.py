@@ -20,8 +20,9 @@ from ..core import demo
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def get_speed_benchmark(niter : int = 10) -> tuple:
+def get_speed_benchmark(niter: int = 10) -> tuple:
     """ This function will run and time :py:func:`ampycloud.core.demo` to assess the code's
     performance on a given machine.
 

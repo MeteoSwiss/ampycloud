@@ -25,10 +25,11 @@ from .tools import texify, set_mplstyle
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @set_mplstyle
 @log_func_call(logger)
 def scaling_fcts(show: bool = True,
-                 save_stem : str = None, save_fmts : Union[list, str] = None) -> None:
+                 save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
     """ Plots the different scaling functions.
 
     This is a small utility routine to rapidly see the different altitude scaling options used by
@@ -69,13 +70,14 @@ def scaling_fcts(show: bool = True,
     alts = np.arange(0, 25000, 10)
 
     # Plot the slicing scale
-    ax1.plot(alts, apply_scaling(alts, fct='shift-and-scale', **{'scale':1000}), c='k', lw=2)
+    ax1.plot(alts, apply_scaling(alts, fct='shift-and-scale', **{'scale': 1000}), c='k', lw=2)
     ax1.set_title(texify(r'\smaller shift-and-scale'))
 
     ax2.plot(alts, apply_scaling(alts, fct='minmax-scale'), c='k', lw=2)
     ax2.set_title(texify(r'\smaller minmax-scale'))
 
-    ax3.plot(alts, apply_scaling(alts, fct='step-scale',
+    ax3.plot(alts, apply_scaling(
+        alts, fct='step-scale',
         **dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_scale_kwargs']), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step-scale'))
 

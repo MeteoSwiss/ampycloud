@@ -52,6 +52,7 @@ def test_large_dts(mpls):
 
     assert Path('pytest_large_dts.pdf').exists
 
+
 def test_direct_prms(mpls):
     """ Test that all goes well if users feed params directly to run().
 
@@ -74,7 +75,7 @@ def test_direct_prms(mpls):
     data['type'] = data['type'].astype(int)
 
     # Run ampycloud
-    chunk = run(data, prms={'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 120}}} )
+    chunk = run(data, prms={'GROUPING_PRMS': {'dt_scale_kwargs': {'scale': 120}}})
 
     # The following should not trigger any warning... let's make sure of that.
     with warnings.catch_warnings():
@@ -84,7 +85,6 @@ def test_direct_prms(mpls):
                    ref_metar_origin='Direct prms', ref_metar='OVC010')
 
     assert Path('pytest_direct_prms.pdf').exists
-
 
 
 def test_diagnostic(mpls):

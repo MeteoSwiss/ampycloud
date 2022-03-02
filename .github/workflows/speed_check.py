@@ -13,6 +13,7 @@ Created February 2022; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 from ampycloud.utils.performance import get_speed_benchmark
 
+
 def main():
     ''' The one true function. '''
 
@@ -24,6 +25,7 @@ def main():
         raise Exception('Ouch ! ampycloud speed check failed: mean + 3*std >= 1s ...')
 
     print(f'Speed check passed: mean + 3*std = {lim:.2f} s.')
+
 
 if __name__ == '__main__':
 

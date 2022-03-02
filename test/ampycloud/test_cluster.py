@@ -14,6 +14,7 @@ import numpy as np
 # Import from the module to test
 from ampycloud.cluster import clusterize
 
+
 def test_clusterize():
     """ Test clusterize(). """
 

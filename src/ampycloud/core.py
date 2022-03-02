@@ -30,8 +30,9 @@ from . import dynamic
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
+def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     """ Create a local copy of a specific ampycloud parameter file.
 
     Args:
@@ -78,8 +79,9 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
     # All looks good, let's copy the file
     copy(ref_loc / fname, save_loc / fname)
 
+
 @log_func_call(logger)
-def set_prms(pth : Union[str, Path]) -> None:
+def set_prms(pth: Union[str, Path]) -> None:
     """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
@@ -116,16 +118,17 @@ def set_prms(pth : Union[str, Path]) -> None:
     if not pth.is_file():
         raise AmpycloudError(f'Ouch ! {pth} is not a file !')
     if (suf := pth.suffix) != '.yml':
-        warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.'+
+        warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.' +
                       ' Are you sure this is ok ?', AmpycloudWarning)
 
     # Extract all the parameters
     logger.info('Opening (user) parameter file: %s', pth)
-    yaml=YAML(typ='safe')
+    yaml = YAML(typ='safe')
     user_prms = yaml.load(pth)
 
     # Now, assign the new prms
     dynamic.AMPYCLOUD_PRMS = utils.adjust_nested_dict(dynamic.AMPYCLOUD_PRMS, user_prms)
+
 
 @log_func_call(logger)
 def reset_prms() -> None:
@@ -147,9 +150,10 @@ def reset_prms() -> None:
 
     dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
+
 @log_func_call(logger)
-def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
-        ref_dt : Union[str, datetime] = None) -> CeiloChunk:
+def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
+        ref_dt: Union[str, datetime] = None) -> CeiloChunk:
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
@@ -167,8 +171,8 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
         :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
         cleanly.
 
-    All that is required to run the ampycloud algorithm is
-    `a properly formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
+    All that is required to run the ampycloud algorithm is a properly
+    `formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
     At the moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance
     plots (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``:
     as long as they are strings, you can set them to whatever you please.
@@ -269,8 +273,9 @@ def run(data : pd.DataFrame, prms : dict = None, geoloc : str = None,
 
     return chunk
 
+
 @log_func_call(logger)
-def metar(data : pd.DataFrame) -> str:
+def metar(data: pd.DataFrame) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
 
     Args:
@@ -300,6 +305,7 @@ def metar(data : pd.DataFrame) -> str:
     # Then, return the METAR message
     return chunk.metar_msg(which='layers')
 
+
 @log_func_call(logger)
 def demo() -> tuple:
     """ Run the ampycloud algorithm on a demonstration dataset.
@@ -315,6 +321,6 @@ def demo() -> tuple:
     assert isinstance(mock_data, pd.DataFrame)
 
     # Run the ampycloud algorithm
-    chunk =  run(mock_data, geoloc='ampycloud demo', ref_dt = str(datetime.now()))
+    chunk = run(mock_data, geoloc='ampycloud demo', ref_dt=str(datetime.now()))
 
     return mock_data, chunk

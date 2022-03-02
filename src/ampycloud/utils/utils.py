@@ -24,9 +24,10 @@ from .. import hardcoded
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def check_data_consistency(pdf : pd.DataFrame,
-                           req_cols : dict = None) -> pd.DataFrame:
+def check_data_consistency(pdf: pd.DataFrame,
+                           req_cols: dict = None) -> pd.DataFrame:
     """ Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
     of ampycloud.
 
@@ -51,7 +52,8 @@ def check_data_consistency(pdf : pd.DataFrame,
         'ceilo'/pd.StringDtype(), 'dt'/float, 'alt'/float, 'type'/int
 
     The ``ceilo`` column contains the names/ids of the ceilometers as ``pd.StringDtype()``.
-    See `the pandas documentation <https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html>`__
+    See the pandas
+    `documentation <https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html>`__
     for more info about this type.
 
     The ``dt`` column contains time deltas, in seconds, between a given ceilometer
@@ -116,7 +118,7 @@ def check_data_consistency(pdf : pd.DataFrame,
 
     # First things first, make sure I was fed a pandas DataFrame
     if not isinstance(data, pd.DataFrame):
-        raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,'+
+        raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,' +
                              f' not: {type(data)}')
 
     # Make sure the dataframe is not empty.
@@ -156,11 +158,11 @@ def check_data_consistency(pdf : pd.DataFrame,
         msgs += ['Huh ! Some type=0 hits have non-NaNs altitude values ?!']
     if np.any(np.isnan(data.loc[data.type == 1, 'alt'])):
         msgs += ['Huh ! Some type=1 hits have NaNs altitude values ?!']
-    if not np.all(np.in1d(data.loc[data.type==2, 'dt'].values,
-                          data.loc[data.type==1, 'dt'].values)):
+    if not np.all(np.in1d(data.loc[data.type == 2, 'dt'].values,
+                          data.loc[data.type == 1, 'dt'].values)):
         msgs += ['Huh ! Some type=2 hits have no coincident type=1 hits ?!']
-    if not np.all(np.in1d(data.loc[data.type==3, 'dt'].values,
-                          data.loc[data.type==2, 'dt'].values)):
+    if not np.all(np.in1d(data.loc[data.type == 3, 'dt'].values,
+                          data.loc[data.type == 2, 'dt'].values)):
         msgs += ['Huh ! Some type=3 hits have no coincident type=2 hits ?!']
 
     # Now save all those messages to the log, and raise Warnings as well.
@@ -173,7 +175,7 @@ def check_data_consistency(pdf : pd.DataFrame,
 
 
 @contextlib.contextmanager
-def tmp_seed(seed : int):
+def tmp_seed(seed: int):
     """ Temporarily reset the :py:func:`numpy.random.seed` value.
 
     Adapted from the reply of Paul Panzer on `SO <https://stackoverflow.com/questions/49555991/>`__.
@@ -203,7 +205,7 @@ def tmp_seed(seed : int):
 
 
 @log_func_call(logger)
-def adjust_nested_dict(ref_dict : dict, new_dict : dict, lvls : list = None) -> dict:
+def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dict:
     """ Update a given (nested) dictionnary given a second (possibly incomplete) one.
 
     Args:
