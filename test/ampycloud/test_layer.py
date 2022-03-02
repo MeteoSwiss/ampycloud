@@ -18,6 +18,7 @@ import numpy as np
 from ampycloud.errors import AmpycloudWarning
 from ampycloud.layer import ncomp_from_gmm, best_gmm, scores2nrl
 
+
 def test_scores2nrl():
     """ Test the scores2nrl() function. """
 
@@ -26,12 +27,13 @@ def test_scores2nrl():
     assert len(np.unique(scores2nrl(np.ones(3)))) == 1
     assert np.unique(scores2nrl(np.ones(4))) == 1/4
 
+
 def test_best_gmm():
     """ Test the best_gmm() function """
 
     # Choose the smallest scores when asked to do so
-    assert best_gmm(np.array([3, 1, 2]), mode='delta', min_prob=1., delta_mul_gain= 1.) == 1
-    assert best_gmm(np.array([3, 1, 2]), mode='prob', min_prob=1., delta_mul_gain= 1.) == 1
+    assert best_gmm(np.array([3, 1, 2]), mode='delta', min_prob=1., delta_mul_gain=1.) == 1
+    assert best_gmm(np.array([3, 1, 2]), mode='prob', min_prob=1., delta_mul_gain=1.) == 1
 
     # Correctly handle delta_mul_gain
     assert best_gmm(np.array([3, 2, 1.9]), mode='delta', min_prob=1., delta_mul_gain=0.75) == 1
@@ -78,6 +80,7 @@ def test_ncomp_from_gmm():
                                delta_mul_gain=0., mode='delta')
     assert out == 1
 
+
 def test_unstable_layers():
     """ The real data from the 4 ceilometers at Geneva airport on 2019.01.10 @ 04:45:34 leads to
     unstable layering depending on the random seed of the system. Let's make sure this is not a
@@ -88,14 +91,14 @@ def test_unstable_layers():
         data = pickle.load(f)
 
     # Drop anything below 6500 ft
-    data = data.drop(data[data['alt']<6500].index)
+    data = data.drop(data[data['alt'] < 6500].index)
 
     # Let's run the the Gaussian Mixture Modelling 100 times ...
     out = [ncomp_from_gmm(data['alt'].to_numpy(),
-                               scores='BIC', rescale_0_to_x=100,
-                               min_sep=200,
-                               random_seed=45,
-                               delta_mul_gain=0.95, mode='delta')[0] for i in range(100)]
+                          scores='BIC', rescale_0_to_x=100,
+                          min_sep=200,
+                          random_seed=45,
+                          delta_mul_gain=0.95, mode='delta')[0] for i in range(100)]
 
     # Do we always find the same number of components ?
     assert len(set(out)) == 1
@@ -118,7 +121,6 @@ def test_unstable_layers():
                                           delta_mul_gain=0.95, mode='delta')
         assert best_ncomp == 2
 
-
     # Once I take into account a suitable min_sep, do the layers not get split anymore ?
     best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
                                       scores='BIC', rescale_0_to_x=100,
@@ -127,3 +129,15 @@ def test_unstable_layers():
                                       delta_mul_gain=0.95, mode='delta')
 
     assert best_ncomp == 1
+
+
+def test_identical_pts():
+    """ Test what happens if all the measurements are exactly the same. """
+
+    data = np.ones(30) * 24270.
+
+    out, _, _ = ncomp_from_gmm(data, scores='BIC', rescale_0_to_x=100, min_sep=200,
+                               random_seed=45, delta_mul_gain=0.95, mode='delta')
+
+    # I should only be getting a single layer
+    assert out == 1

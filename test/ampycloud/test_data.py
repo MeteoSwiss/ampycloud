@@ -19,6 +19,7 @@ from ampycloud.data import CeiloChunk
 from ampycloud.utils import mocker
 from ampycloud import dynamic, reset_prms, hardcoded
 
+
 def test_ceilochunk_init():
     """ Test the init method of the CeiloChunk class. """
 
@@ -29,7 +30,7 @@ def test_ceilochunk_init():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
     # The following line is required as long as the mocker module issues mock data with type 99.
     mock_data.iloc[-1, mock_data.columns.get_loc('type')] = 1
@@ -44,8 +45,8 @@ def test_ceilochunk_init():
     dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 0
     chunk = CeiloChunk(mock_data)
     # Applying the MSA should crop any Type 2 or more hits, and change Type 1 or less to Type 0.
-    assert len(chunk.data) == len(mock_data[mock_data.type <=1])
-    assert not np.any(chunk.data.type>0)
+    assert len(chunk.data) == len(mock_data[mock_data.type <= 1])
+    assert not np.any(chunk.data.type > 0)
     # Verify the class MSA value is correct too ...
     assert chunk.msa == 0
 
@@ -60,22 +61,23 @@ def test_ceilochunk_init():
         _ = CeiloChunk(mock_data[:0])
 
     # Check the ability to manually specifiy parameters at init without messing up the default ones
-    chunk = CeiloChunk(mock_data, prms={'MSA':-30})
+    chunk = CeiloChunk(mock_data, prms={'MSA': -30})
     assert chunk.msa == -30
     assert dynamic.AMPYCLOUD_PRMS['MSA'] == 0
 
     # Check the ability to set nested parameters in one go
-    chunk = CeiloChunk(mock_data, prms={'SLICING_PRMS':{'algo':'test'}})
+    chunk = CeiloChunk(mock_data, prms={'SLICING_PRMS': {'algo': 'test'}})
     assert chunk.prms['SLICING_PRMS']['algo'] == 'test'
     assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['algo'] == 'agglomerative'
 
     # Check that warnings are raised in case bad parameters are given
     with warns(AmpycloudWarning):
-        chunk = CeiloChunk(mock_data, prms={'SMTH_BAD':0})
+        chunk = CeiloChunk(mock_data, prms={'SMTH_BAD': 0})
         assert chunk.prms == dynamic.AMPYCLOUD_PRMS
 
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
     reset_prms()
+
 
 def test_ceilochunk_basic():
     """ Test the basic methods of the CeiloChunk class. """
@@ -87,7 +89,7 @@ def test_ceilochunk_basic():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -135,6 +137,7 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg() == 'OVC009'
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
+
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
 
@@ -145,7 +148,7 @@ def test_ceilochunk_nocld():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 0,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -159,6 +162,7 @@ def test_ceilochunk_nocld():
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'NCD'
 
+
 def test_ceilochunk_2lay():
     """ Test the methods of CeiloChunks when 2 layers are seen in the interval. """
 
@@ -168,9 +172,9 @@ def test_ceilochunk_2lay():
 
     # Create some fake data to get started
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                      'period': 100, 'amplitude': 0},
-                                    {'alt':2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                    {'alt': 2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                        'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -184,6 +188,7 @@ def test_ceilochunk_2lay():
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'SCT009 SCT019'
 
+
 def test_layering_singlepts():
     """ Test the layering step when there is a single time steps. See #62 for the motivation. """
 
@@ -191,7 +196,7 @@ def test_layering_singlepts():
                                        ['dummy', -1, 4000, 2],
                                        ['dummy', -1, 4500, 3],
                                        ['dummy', -1, np.nan, 0]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                             columns=['ceilo', 'dt', 'alt', 'type'])
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
@@ -208,4 +213,28 @@ def test_layering_singlepts():
     # Check that the GMM was never executed
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
     # Check that the resulting layers and groups are the same
-    assert np.all(chunk.groups.loc[:, 'code']==chunk.layers.loc[:, 'code'])
+    assert np.all(chunk.groups.loc[:, 'code'] == chunk.layers.loc[:, 'code'])
+
+
+def test_layering_singleval():
+    """ Test the layering step when there is a single altitude value. See #76 for details. """
+
+    data = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*170000, np.ones(30)])
+
+    mock_data = pd.DataFrame(data.T,
+                             columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Check that the GMM was never executed
+    assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)

@@ -27,6 +27,7 @@ from .utils import utils
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 class AbstractChunk(ABC):
     """ Abstract parent class for data chunk classes."""
 
@@ -34,8 +35,8 @@ class AbstractChunk(ABC):
     DATA_COLS = copy.deepcopy(hardcoded.REQ_DATA_COLS)
 
     @abstractmethod
-    def __init__(self, data : pd.DataFrame, prms : dict = None, geoloc : str = None,
-                 ref_dt : str = None) -> None:
+    def __init__(self, data: pd.DataFrame, prms: dict = None, geoloc: str = None,
+                 ref_dt: str = None) -> None:
         """ Init routine for abstract class."""
 
         # before doing anything else, let's set the different algorithm parameters
@@ -48,7 +49,6 @@ class AbstractChunk(ABC):
         self._geoloc = geoloc
         # Date and time at the reference
         self._ref_dt = ref_dt
-
 
     @property
     def msa(self) -> float:
@@ -81,7 +81,7 @@ class AbstractChunk(ABC):
         return self._prms
 
     @log_func_call(logger)
-    def _cleanup_pdf(self, data : pd.DataFrame) -> pd.DataFrame:
+    def _cleanup_pdf(self, data: pd.DataFrame) -> pd.DataFrame:
         """ Checks the input pandas DataFrame and adjust it as required.
 
         Args:
@@ -106,7 +106,8 @@ class AbstractChunk(ABC):
         return data
 
     @log_func_call(logger)
-    def _setup_prms(self, prms : dict) -> dict:
+    @staticmethod
+    def _setup_prms(prms: dict) -> dict:
         """ Setup a full dict of ampycloud prms given a user input, using default prms where
         necessary. """
 
@@ -118,6 +119,7 @@ class AbstractChunk(ABC):
             full_prms = utils.adjust_nested_dict(full_prms, prms)
 
         return full_prms
+
 
 class CeiloChunk(AbstractChunk):
     """Child class for timeseries of Ceilometers hits, referred to as data 'chunks'.
@@ -133,8 +135,8 @@ class CeiloChunk(AbstractChunk):
     """
 
     @log_func_call(logger)
-    def __init__(self, data : pd.DataFrame, prms : dict = None, geoloc : str = None,
-                 ref_dt : str = None) -> None:
+    def __init__(self, data: pd.DataFrame, prms: dict = None, geoloc: str = None,
+                 ref_dt: str = None) -> None:
         """ CeiloChunk init method.
 
         Args:
@@ -184,8 +186,8 @@ class CeiloChunk(AbstractChunk):
         self._layers = None
 
     @log_func_call(logger)
-    def data_rescaled(self, dt_mode : str = None, alt_mode : str = None,
-                      dt_kwargs : dict = None, alt_kwargs : dict= None) -> pd.DataFrame:
+    def data_rescaled(self, dt_mode: str = None, alt_mode: str = None,
+                      dt_kwargs: dict = None, alt_kwargs: dict = None) -> pd.DataFrame:
         """ Returns a copy of the data, rescaled according to the provided parameters.
 
         Args:
@@ -250,14 +252,15 @@ class CeiloChunk(AbstractChunk):
         """
 
         # For each ceilometer, count the number of individual time stamps ...
-        out = [len(np.unique(self.data[self.data['ceilo']==ceilo]['dt'])) for ceilo in self.ceilos]
+        out = [len(np.unique(self.data[self.data['ceilo'] == ceilo]['dt']))
+               for ceilo in self.ceilos]
 
         # ... and sum these to get the result I want.
         return int(np.sum(out))
 
     @log_func_call(logger)
-    def metarize(self, which : int = 'slices', base_frac : float = 0.1,
-                 lim0 : Union[int, float] = 0, lim8 : Union[int, float] = 100) -> None:
+    def metarize(self, which: int = 'slices', base_frac: float = 0.1,
+                 lim0: Union[int, float] = 0, lim8: Union[int, float] = 100) -> None:
         """ Assembles a :py:class:`pandas.DataFrame` of slice/group/layer METAR properties of
         interest.
 
@@ -303,15 +306,15 @@ class CeiloChunk(AbstractChunk):
         """
 
         # What values am I interested in ?
-        cols = ['n_hits', # Duplicate-corrected number of hits
-                'perc', # Duplicate-corrected hit percentage (in %)
-                'okta', # Corresponding okta value
-                'alt_base', # Slice/Group/Layer base altitude
-                'alt_mean', # Slice/Group/Layer mean altitude
-                'alt_std', # Slice/Group/Layer altitude std
-                'code', # METAR code
-                'significant', # bool, whether this is a slice/group/layer that should be reported
-                'original_id', # Original id of the slice/group/layer set by the clustering algo
+        cols = ['n_hits',  # Duplicate-corrected number of hits
+                'perc',  # Duplicate-corrected hit percentage (in %)
+                'okta',  # Corresponding okta value
+                'alt_base',  # Slice/Group/Layer base altitude
+                'alt_mean',  # Slice/Group/Layer mean altitude
+                'alt_std',  # Slice/Group/Layer altitude std
+                'code',  # METAR code
+                'significant',  # bool, whether this is a slice/group/layer that should be reported
+                'original_id',  # Original id of the slice/group/layer set by the clustering algo
                 ]
 
         # If I am looking at the slices, also keep track of whether they are isolated, or not.
@@ -372,7 +375,7 @@ class CeiloChunk(AbstractChunk):
             # both ! This is to be consistent with the theoretical max hit number per cloud layer,
             # which assume a max of 1 hit/ceilo/time step.
             hits_per_ceilo = [len(np.unique(self.data[in_sligrolay *
-                                            (self.data['ceilo']==ceilo)]['dt']))
+                                            (self.data['ceilo'] == ceilo)]['dt']))
                               for ceilo in self.ceilos]
             pdf.iloc[ind]['n_hits'] = np.sum(hits_per_ceilo)
 
@@ -396,7 +399,7 @@ class CeiloChunk(AbstractChunk):
 
             # Finally, create the METAR-like code for the cluster
             pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
-                                        wmo.alt2code(pdf.iloc[ind]['alt_base'])
+                wmo.alt2code(pdf.iloc[ind]['alt_base'])
 
         # Set the proper column types
         pdf.loc[:, 'n_hits'] = pdf['n_hits'].astype(int)
@@ -404,7 +407,7 @@ class CeiloChunk(AbstractChunk):
         pdf.loc[:, 'okta'] = pdf['okta'].astype(int)
         pdf.loc[:, 'alt_base'] = pdf['alt_base'].astype(float)
         pdf.loc[:, 'alt_mean'] = pdf['alt_mean'].astype(float)
-        pdf.loc[:,'alt_std'] = pdf['alt_std'].astype(float)
+        pdf.loc[:, 'alt_std'] = pdf['alt_std'].astype(float)
         pdf.loc[:, 'code'] = pdf['code'].astype(str)
         pdf.loc[:, 'significant'] = pdf['significant'].astype(bool)
         pdf['original_id'] = pdf['original_id'].astype(int)
@@ -456,7 +459,7 @@ class CeiloChunk(AbstractChunk):
             self.data.loc[valids, ['slice_id']] = 1
         elif len(valids[valids]) > 1:
             # ... run the clustering on them ...
-            _, labels = cluster.clusterize(tmp[['dt','alt']][valids].to_numpy(),
+            _, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
                                            algo=self.prms['SLICING_PRMS']['algo'],
                                            **self.prms['SLICING_PRMS']['algo_kwargs'])
 
@@ -484,7 +487,7 @@ class CeiloChunk(AbstractChunk):
         # slices ...
         if self._slices is None:
             raise AmpycloudError('Ouch ! Slicing not yet done. You cannot find groups without ' +
-                            'finding slices first !')
+                                 'finding slices first !')
 
         # First, make sure that we can keep track of the isolation status of slices.
         self._slices['isolated'] = None
@@ -526,7 +529,7 @@ class CeiloChunk(AbstractChunk):
             # What slices are connected to this one ? This is the list of indices of all the slices
             # that are overlapping with the one currently under scrutiny.
             close_inds = list(np.arange(0, ind, 1)[seps_m]) + \
-                         list(np.arange(ind+1, self.n_slices, 1)[seps_p])
+                list(np.arange(ind+1, self.n_slices, 1)[seps_p])
 
             # Let's add this slice to the list of slices it overlaps with ...
             added = False
@@ -551,17 +554,17 @@ class CeiloChunk(AbstractChunk):
 
             # Rescale these points if requested by the user
             tmp = self.data_rescaled(dt_mode=self.prms['GROUPING_PRMS']['dt_scale_mode'],
-                dt_kwargs=self.prms['GROUPING_PRMS']['dt_scale_kwargs'],
-                alt_mode=self.prms['GROUPING_PRMS']['alt_scale_mode'],
-                alt_kwargs=self.prms['GROUPING_PRMS']['alt_scale_kwargs'])
+                                     dt_kwargs=self.prms['GROUPING_PRMS']['dt_scale_kwargs'],
+                                     alt_mode=self.prms['GROUPING_PRMS']['alt_scale_mode'],
+                                     alt_kwargs=self.prms['GROUPING_PRMS']['alt_scale_kwargs'])
 
             # What are the valid points ?
             valids = tmp['alt'].notna() * valids
 
             # Run the clustering
             nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
-                algo=self.prms['GROUPING_PRMS']['algo'],
-                **self.prms['GROUPING_PRMS']['algo_kwargs'])
+                                                 algo=self.prms['GROUPING_PRMS']['algo'],
+                                                 **self.prms['GROUPING_PRMS']['algo_kwargs'])
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
             # to which the majority of the identified (clustered) hits belong.
@@ -592,7 +595,7 @@ class CeiloChunk(AbstractChunk):
         # groups ...
         if self._groups is None:
             raise AmpycloudError('Ouch ! Grouping not yet done. You cannot find layers without ' +
-                            'finding groups first !')
+                                 'finding groups first !')
 
         # Get ready to add the layering info to the data
         self.data.loc[:, 'layer_id'] = None
@@ -610,10 +613,13 @@ class CeiloChunk(AbstractChunk):
             cond1 = self.groups.at[ind, 'okta'] < self.prms['LAYERING_PRMS']['min_okta_to_split']
             # 2) I have more than 30 valid points (GMM is unstable below this amount).
             cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 30
-            if cond1 or cond2:
+            # 3) Not all the altitudes are the same
+            cond3 = len(np.unique(gro_alts[~np.isnan(gro_alts)])) == 1
+            if cond1 or cond2 or cond3:
                 # Add some useful info to the log
-                logger.info('Skipping the layering because: <min_okta_to_split [%s] | <30 pts [%s]',
-                             cond1, cond2)
+                logger.info(
+                    'Skipping the layering: <min_okta_to_split [%s] | <30 pts [%s] | 1 value [%s]',
+                    cond1, cond2, cond3)
                 # Here, set ncomp to -1 to show clearly that I did NOT actually check it ...
                 self.groups.at[ind, 'ncomp'] = -1
                 continue
@@ -630,8 +636,8 @@ class CeiloChunk(AbstractChunk):
             logger.info('min_sep value: %.1f', min_sep)
 
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
-            ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(gro_alts, min_sep=min_sep,
-                **self.prms['LAYERING_PRMS']['gmm_kwargs'])
+            ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
+                gro_alts, min_sep=min_sep, **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
             logger.debug(' Cluster %s  has %i components according to GMM.',
@@ -713,7 +719,7 @@ class CeiloChunk(AbstractChunk):
         identified by the layering algorithm. """
         return self._layers
 
-    def metar_msg(self, which : str = 'layers') -> str:
+    def metar_msg(self, which: str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
         Args:
@@ -751,12 +757,12 @@ class CeiloChunk(AbstractChunk):
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
         # What layers are significant *AND* below the MSA ?
-        report = sligrolay['significant']*(sligrolay['alt_base']<msa_val)
+        report = sligrolay['significant']*(sligrolay['alt_base'] < msa_val)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
 
         # Here, deal with the situations when all clouds are above the MSA
-        if len(msg) ==0:
+        if len(msg) == 0:
             return 'NCD'
 
         return msg
