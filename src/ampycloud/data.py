@@ -106,8 +106,7 @@ class AbstractChunk(ABC):
         return data
 
     @log_func_call(logger)
-    @staticmethod
-    def _setup_prms(prms: dict) -> dict:
+    def _setup_prms(self, prms: dict) -> dict:
         """ Setup a full dict of ampycloud prms given a user input, using default prms where
         necessary. """
 
