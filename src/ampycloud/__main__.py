@@ -11,6 +11,7 @@ Module contains: high-level entry point routines
 # Import from Python
 import argparse
 import platform
+import multiprocessing as mp
 from datetime import datetime
 
 # Import from ampycloud
@@ -43,7 +44,9 @@ def ampycloud_speed_test() -> None:
     niter, mean, std, median, mmin, mmax = performance.get_speed_benchmark(niter=args.niter)
 
     print('\nTest datetime: %s' % (datetime.now()))
-    print('Platform: %s\n' % (platform.platform()))
+    print('Platform: %s' % (platform.platform()))
+    print('CPU count: %i\n' % (mp.cpu_count()))
+
     print('ampycloud.demo() execution time from %i runs:' % niter)
     print(' * mean [std]: %.2fs [%.2fs]' % (mean, std))
     print(' * median [min; max]: %.2fs [%.2fs; %.2fs]\n' % (median, mmin, mmax))
