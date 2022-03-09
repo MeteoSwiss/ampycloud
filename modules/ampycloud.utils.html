@@ -30,7 +30,7 @@
             <a href="../index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.3.0.dev0
+                0.4.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -227,7 +227,7 @@ which step (slicing, grouping, layering) is the slowest, and also separate the g
 the mock dataset from its processing.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p><em>int, float, float, float, float, float</em> – niter, mean, std, median, min, max:</p>
+<dd class="field-odd"><p><em>int, float, float, float, float, float</em> – niter, mean, std, median, min, max, all in s.</p>
 </dd>
 </dl>
 </dd></dl>
@@ -266,7 +266,8 @@ column names/types (formally defined in <a class="reference internal" href="ampy
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> column contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">pd.StringDtype()</span></code>.
-See <a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html">the pandas documentation</a>
+See the pandas
+<a class="reference external" href="https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html">documentation</a>
 for more info about this type.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">dt</span></code> column contains time deltas, in seconds, between a given ceilometer
 observation and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">obs_time-ref_dt</span></code>). Ideally, <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> would be the issuing
@@ -332,6 +333,31 @@ to correct the type on the fly.</p></li>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="k">with</span> <span class="n">temp_seed</span><span class="p">(</span><span class="mi">42</span><span class="p">):</span>
     <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span>
 </pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.utils.utils.adjust_nested_dict">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">adjust_nested_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.adjust_nested_dict" title="Permalink to this definition"></a></dt>
+<dd><p>Update a given (nested) dictionnary given a second (possibly incomplete) one.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>ref_dict</strong> (<em>dict</em>) – reference dict of dict (of dict of dict …).</p></li>
+<li><p><strong>new_dict</strong> (<em>dict</em>) – values to update as a dict (of dict or dict of dict …)</p></li>
+<li><p><strong>lvls</strong> (<em>list of str, optional</em>) – names of the keys of the parent nested dict layers, used
+for reporting useful errors. This is used by the function itself when it calls itself.
+There is no need for the user to set this to anything at first. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p><em>dict</em> – the updated dict (of dict of dict of dict …)</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Inspired from the reply of Alex Martelli and Alex Telon on
+<a class="reference external" href="https://stackoverflow.com/questions/3232943/">SO</a>.</p>
 </div>
 </dd></dl>
 

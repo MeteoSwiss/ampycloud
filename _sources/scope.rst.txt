@@ -19,7 +19,7 @@ This has the following implications for ampycloud:
         - improve the usability of ampycloud without altering the quality of the results, and/or
         - demonstrate a significant improvement in the quality of the results.
 
-    * The ingestion of external contributions may be delayed to allow for careful, internal
+    * The ingestion of external contributions may be delayed to allow for a careful, internal
       verification that they do not affect the MeteoSwiss operational chain that relies on
       ampycloud.
 

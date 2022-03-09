@@ -19,7 +19,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using ampycloud" href="running.html" />
-    <link rel="prev" title="ampycloud 0.3.0.dev0" href="index.html" /> 
+    <link rel="prev" title="ampycloud 0.4.0.dev0" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -30,7 +30,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.3.0.dev0
+                0.4.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -90,7 +90,7 @@ Typing the following in a terminal should take care of things:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ampycloud</span>
 </pre></div>
 </div>
-<p>ampycloud uses <a class="reference external" href="https://semver.org/">semantic versioning</a>. The latest stable version is 0.3.0.dev0.</p>
+<p>ampycloud uses <a class="reference external" href="https://semver.org/">semantic versioning</a>. The latest stable version is 0.4.0.dev0.</p>
 <p>The different releases of ampycloud are also available for download from its
 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/releases/latest/">Github repository</a>.</p>
 <p>If you plan to do dev-work with ampycloud, you should instead clone the <cite>develop</cite> branch
@@ -109,19 +109,19 @@ first.</p>
 <section id="requirements">
 <h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
 <p>ampycloud is compatible with the following python versions:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">python_requires</span><span class="o">=</span><span class="s1">&#39;&gt;=3.8.0&#39;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span>
 </pre></div>
 </div>
 <p>Furthermore, ampycloud relies on a few external modules, which will be automatically installed by
 <code class="docutils literal notranslate"><span class="pre">pip</span></code> if required:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span>
-        <span class="s2">&quot;matplotlib &gt;= 3.4.2&quot;</span><span class="p">,</span>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span>        <span class="s2">&quot;matplotlib &gt;= 3.4.2&quot;</span><span class="p">,</span>
         <span class="s2">&quot;numpy &gt;= 1.20.3&quot;</span><span class="p">,</span>
         <span class="s2">&quot;scikit-learn &gt;= 0.24.2&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pandas &gt;= 1.3.1&quot;</span><span class="p">,</span>
         <span class="s2">&quot;pyyaml&quot;</span><span class="p">,</span>
-        <span class="s2">&quot;yaconfigobject&quot;</span>
+        <span class="s2">&quot;ruamel.yaml&quot;</span>
     <span class="p">],</span>
+    <span class="n">extras_require</span><span class="o">=</span><span class="p">{</span>
 </pre></div>
 </div>
 </section>
@@ -132,7 +132,7 @@ command line. To see if your installation was successful, the command <code clas
 should return:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>usage: ampycloud_speed_test [-h] [-niter int]
 
-ampycloud 0.3.0.dev0 - Python package to characterize cloud layers using ceilometer measurements.
+ampycloud 0.4.0.dev0 - Python package to characterize cloud layers using ceilometer measurements.
 This entry point lets you measure the performance of ampycloud on your machine.
 
 optional arguments:
@@ -147,12 +147,13 @@ For details: https://MeteoSwiss.github.io/ampycloud
 number of executions via the <code class="docutils literal notranslate"><span class="pre">-niter</span></code> argument. For comparison purposes, here are the performances
 on the machine that was responsible for compiling this documentation:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>
-Test datetime: 2022-02-02 07:35:07.692534
-Platform: Linux-5.11.0-1027-azure-x86_64-with-glibc2.31
+Test datetime: 2022-03-09 10:55:24.237221
+Platform: Linux-5.11.0-1028-azure-x86_64-with-glibc2.31
+CPU count: 2
 
 ampycloud.demo() execution time from 10 runs:
- * mean [std]: 0.53s [0.04s]
- * median [min; max]: 0.51s [0.50s; 0.63s]
+ * mean [std]: 0.56s [0.05s]
+ * median [min; max]: 0.55s [0.53s; 0.70s]
 
 </pre></div>
 </div>
@@ -163,7 +164,7 @@ ampycloud.demo() execution time from 10 runs:
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="ampycloud 0.3.0.dev0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="ampycloud 0.4.0.dev0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="running.html" class="btn btn-neutral float-right" title="Using ampycloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

@@ -19,8 +19,9 @@ A no-words example for those that want to get started quickly
     # Your data should have *exactly* this structure
     mock_data = mocker.canonical_demo_data()
 
-    # Run the ampycloud algorithm on it
-    chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+    # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
+    chunk = ampycloud.run(mock_data, prms={'MSA': 10000},
+                          geoloc='Mock data', ref_dt=datetime.now())
 
     # Get the resulting METAR message
     print(chunk.metar_msg())
@@ -96,35 +97,60 @@ only seek the outcome of the ampycloud algorithm formatted as a METAR-like ``str
 Adjusting the default algorithm parameters
 ..........................................
 
-.. important::
-
-    It is highly recommended to adjust any scientific parameters **before** executing any of the
-    ampycloud routines. Doing otherwise may have un-expected consequences (i.e. parameters may not
-    have the expected value). You have been warned.
-
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
-are accessible in the :py:mod:`ampycloud.dynamic` module.  From there, users can easily adjust them
-as they see fit. For example:
-::
+are accessible via :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` as a nested dictionary. When a new
+:py:class:`ampycloud.data.CeiloChunk` instance is being initiated, a copy of this nested dictionary
+is being stored as an instance variable. It is then possible to adjust specific parameters via the
+``prms`` keyword argument when initializing a :py:class:`ampycloud.data.CeiloChunk` instance.
 
-    from ampycloud import dynamic
+There are thus 2+1 ways to adjust the ampycloud scientific parameters:
 
-    dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
+    * **1.a: Adjust them globally** in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`, like so:
+      ::
 
-Note that it is important to always import the entire :py:mod:`ampycloud.dynamic` module and stick to the
-above structure if the updated parameters are to be *seen* by all the ampycloud modules.
+          from ampycloud import dynamic
 
-Alternatively, all the scientific parameters can be adjusted and fed to ampycloud via a YAML file,
-in which case the following routines, also accessible as ``ampycloud.copy_prm_file()`` and
-``ampycloud.set_prms()``, may be of interest:
-
-.. autofunction:: ampycloud.core.copy_prm_file
-    :noindex:
+          dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
 
 
-.. autofunction:: ampycloud.core.set_prms
-    :noindex:
+      .. important::
+
+          Always import the entire :py:mod:`ampycloud.dynamic` module and stick to the
+          above example structure, if the updated parameters are to be *seen* by all the ampycloud
+          modules.
+
+
+    * **1.b: Adjust them globally** via a YAML file, and :py:func:`ampycloud.core.set_prms`. With
+      this approach, :py:func:`ampycloud.core.copy_prm_file()` can be used to obtain a local
+      copy of the default ampycloud parameters.
+
+
+    * **2: Adjust them for locally** for a given execution of ampycloud by feeding a suitable
+      nested dictionary to :py:func:`ampycloud.core.run` (that will create a new
+      :py:class:`ampycloud.data.CeiloChunk` instance behind the scene). The dictionary, the keys
+      and levels of which should be consistent with :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
+      only needs to contain the specific parameters that one requires to be different from the
+      default values.
+      ::
+
+          # Define only the parameters that are non-default. To adjust the MSA, use:
+          my_prms = {'MSA': 10000}
+
+          # Or to adjust both the MSA and some other algorithm parameter:
+          my_prms = {'MSA': 10000, 'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}}}
+
+          # Then feed them directly to the run call
+          chunk = ampycloud.run(some_data_tbd, prms=my_prms)
+
+
+.. warning::
+
+    Options 1a and 1b are **not** thread-safe. Users planning to launch multiple ampycloud
+    processes simultaneously are urged to use option 2, if they need to set distinct parameters
+    between each. In case of doubts, the parameters used by a given
+    :py:class:`ampycloud.data.CeiloChunk` instance is accessible via the (parent)
+    :py:meth:`ampycloud.data.AbstractChunk.prms` property.
 
 
 If all hope is lost and you wish to revert to the original (default) values of all the
@@ -132,30 +158,6 @@ ampycloud scientific parameters, you can use :py:func:`ampycloud.core.reset_prms
 
 .. autofunction:: ampycloud.core.reset_prms
     :noindex:
-
-
-Advanced info for advanced users
-********************************
-
-The majority of parameters present in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` are fetched
-directly by the methods of the :py:class:`ampycloud.data.CeiloChunk` class when they are required.
-As a result, modifying a specific entry in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` (e.g.
-``OKTA_LIM8``) will be seen by any :py:class:`ampycloud.data.CeiloChunk` instance already in
-existence.
-
-The ``MSA`` and ``MSA_HIT_BUFFER`` entries are the only exception to this rule ! These two
-parameters are being applied (and deep-copied as :py:class:`ampycloud.data.CeiloChunk` instance
-attributes) immediately at the initialization of any :py:class:`ampycloud.data.CeiloChunk` instance.
-This implies that:
-
-    1. any cloud hits above ``MSA + MSA_HIT_BUFFER`` in the data will be cropped immediately in the
-       :py:meth:`ampycloud.data.CeiloChunk.__init__` routine, and thus cannot be recovered by
-       subsequently changing the value of ``MSA`` in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
-       and
-    2. any METAR-like message issued will always be subject to the Minimum Sector Altitude
-       value that was specified in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` at the time the
-       :py:class:`ampycloud.data.CeiloChunk` instance was initialized. This is to ensure
-       consistency with the cropped data at all times.
 
 .. _logging:
 
@@ -208,7 +210,7 @@ the appropriate ampycloud parameter:
 ::
 
     from ampycloud import dynamic
-    dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'latex'
+    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'latex'
 
 And for the most demanding users that want nothing but the best, they can create plots with actual
 okta symbols if they install the `metsymb LaTeX package <https://github.com/MeteoSwiss/metsymb>`__
@@ -216,7 +218,7 @@ system-wide, and set:
 ::
 
     from ampycloud import dynamic
-    dynamic.AMPYCLOUD_PRMS.MPL_STYLE = 'metsymb'
+    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'metsymb'
 
 
 .. important::
