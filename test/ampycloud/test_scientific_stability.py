@@ -18,13 +18,14 @@ import ampycloud
 from ampycloud import dynamic, reset_prms
 from ampycloud.plots import diagnostic
 
-def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
+
+def test_scientific_stability(mpls: str, do_sciplots: bool) -> None:
     """ Test the scientific stability of ampycloud. A series of reference cases is being processed,
     and the resulting METAR are compared with the expected outcome.
 
     Args:
-        mpls (str): False, or the value of MPL_STYLE requested by the user. This is set automatically
-            by a fixture that fetches the corresponding command line argument.
+        mpls (str): False, or the value of MPL_STYLE requested by the user. This is set
+            automatically by a fixture that fetches the corresponding command line argument.
             See conftest.py for details.
         do_sciplots (bool): True to make plots. This is set automatically
             by a fixture that fetches the corresponding command line argument.
@@ -61,7 +62,7 @@ def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
 
         # Do I need to set a specific MSA ?
         if 'MSA' in ref_data_file.stem:
-            dynamic.AMPYCLOUD_PRMS.MSA = int(ref_data_file.stem.split('_')[3].split('.')[0][3:])
+            dynamic.AMPYCLOUD_PRMS['MSA'] = int(ref_data_file.stem.split('_')[3].split('.')[0][3:])
         else:
             # Make sure I use the default MSA
             reset_prms()
@@ -73,7 +74,7 @@ def test_scientific_stability(mpls : str, do_sciplots: bool) -> None:
         if do_sciplots:
             # Do I need to set a specific plotting style ?
             if mpls:
-                dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+                dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
             # Create the plot
             diagnostic(chunk, upto='layers', ref_metar=ref_metar, ref_metar_origin='Should be',

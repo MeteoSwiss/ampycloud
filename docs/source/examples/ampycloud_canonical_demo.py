@@ -16,12 +16,13 @@ import ampycloud.plots as ampyplots
 
 
 # Adjust the ampycloud scientific parameters
-dynamic.AMPYCLOUD_PRMS.MSA = 10000
+dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
 
 # Generate and process the mock data
 mock_data, chunk = ampycloud.demo()
 
 # Plot it
-ampyplots.diagnostic(chunk, upto='layers', show=False, save_fmts=['png'], ref_metar='FEW008 BKN037',
+ampyplots.diagnostic(chunk, upto='layers', show=False, save_fmts=['png'],
+                     ref_metar='FEW009 SCT018 BKN038',
                      ref_metar_origin='Mock data',
                      save_stem=Path(__file__).parent / 'ampycloud_canonical_mock_demo')

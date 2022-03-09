@@ -17,20 +17,22 @@ from pathlib import Path
 from shutil import copy
 from datetime import datetime
 import pandas as pd
-from yaconfigobject import Config
+from ruamel.yaml import YAML
 
 # Import from ampycloud
 from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from .utils.mocker import canonical_demo_data
+from .utils import utils
 from .data import CeiloChunk
 from . import dynamic
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
+def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     """ Create a local copy of a specific ampycloud parameter file.
 
     Args:
@@ -79,7 +81,7 @@ def copy_prm_file(save_loc : str = './', which : str = 'defaults') -> None:
 
 
 @log_func_call(logger)
-def set_prms(pth : Union[str, Path]) -> None:
+def set_prms(pth: Union[str, Path]) -> None:
     """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
@@ -87,10 +89,14 @@ def set_prms(pth : Union[str, Path]) -> None:
 
     .. note::
         It is recommended to first get a copy of the default ampycloud parameter file
-        using :py:func:`.copy_prm_file()`, and edit its content as required.
+        using :py:func:`.copy_prm_file`, and edit its content as required.
 
         Doing so should ensure full compliance with the default structure of
         :py:data:`.dynamic.AMPYCLOUD_PRMS`.
+
+    .. warning::
+        This is NOT a thread-safe way of setting parameters. If you plan on running concurrent
+        ampycloud evaluations, parameters should be fed directly to :py:func:`.run`.
 
     Example:
         ::
@@ -112,26 +118,16 @@ def set_prms(pth : Union[str, Path]) -> None:
     if not pth.is_file():
         raise AmpycloudError(f'Ouch ! {pth} is not a file !')
     if (suf := pth.suffix) != '.yml':
-        warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.'+
+        warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.' +
                       ' Are you sure this is ok ?', AmpycloudWarning)
 
     # Extract all the parameters
-    with open(pth) as fil:
-        logger.info('Opening (user) parameter file: %s', fil)
-        user_prms = Config(paths=[str(fil.parent)], name=str(fil.name))
+    logger.info('Opening (user) parameter file: %s', pth)
+    yaml = YAML(typ='safe')
+    user_prms = yaml.load(pth)
 
-    # Now, assign the prms
-    for (key, item) in user_prms.items():
-        if not isinstance(item, dict):
-            logger.info('Setting %s ...', key)
-            logger.debug('... with value: %s', item)
-            dynamic.AMPYCLOUD_PRMS.key = item
-
-        else:
-            for (subkey, subitem) in item.items():
-                logger.info('Setting %s.%s ...', key, subkey)
-                logger.debug('... with value: %s', subitem)
-                dynamic.AMPYCLOUD_PRMS.key.subkey = subitem
+    # Now, assign the new prms
+    dynamic.AMPYCLOUD_PRMS = utils.adjust_nested_dict(dynamic.AMPYCLOUD_PRMS, user_prms)
 
 
 @log_func_call(logger)
@@ -145,22 +141,26 @@ def reset_prms() -> None:
             from ampycloud import dynamic
 
             # Change a parameter
-            dynamic.AMPYCLOUD_PRMS.OKTA_LIM8 = 95
+            dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
             # Reset them
             ampycloud.reset_prms()
-            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS.OKTA_LIM8)
+            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'])
 
     """
 
     dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
 
+
 @log_func_call(logger)
-def run(data : pd.DataFrame, geoloc : str = None,
-        ref_dt : Union[str, datetime] = None) -> CeiloChunk:
+def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
+        ref_dt: Union[str, datetime] = None) -> CeiloChunk:
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
+        prms (dict, optional): a (nested) dict of parameters to adjust for this specific run.
+            This is meant as a thread-safe way of adjusting parameters for different runs. Any
+            unspecified parameter will be taken from :py:data:`dynamic.AMPYCLOUD_PRMS` at init time.
         geoloc (str, optional): the name of the geographic location where the data was taken.
             Defaults to None.
         ref_dt (str|datetime.datetime, optional): reference date and time of the observations,
@@ -171,8 +171,8 @@ def run(data : pd.DataFrame, geoloc : str = None,
         :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
         cleanly.
 
-    All that is required to run the ampycloud algorithm is
-    `a properly formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
+    All that is required to run the ampycloud algorithm is a properly
+    `formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
     At the moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance
     plots (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``:
     as long as they are strings, you can set them to whatever you please.
@@ -197,10 +197,28 @@ def run(data : pd.DataFrame, geoloc : str = None,
     ::
 
         from ampycloud import dynamic
-        dynamic.AMPYCLOUD_PRMS.MSA = 5000
+        dynamic.AMPYCLOUD_PRMS['MSA'] = 5000
 
-    Alternatively, all the scientific parameters can also be defined and fed to ampycloud via a YAML
+    Alternatively, the scientific parameters can also be defined and fed to ampycloud via a YAML
     file. See :py:func:`.set_prms()` for details.
+
+    Caution:
+        By default, the function :py:func:`.run` will use the parameter values set in
+        :py:data:`dynamic.AMPYCLOUD_PRMS`, which is not thread safe. Users interested to run
+        **multiple concurrent ampycloud calculations with distinct sets of parameters within the
+        same Python session** are thus urged to feed the required parameters directly to
+        :py:func:`.run()` via the ``prms`` keyword argument, which expects a (nested) dictionnary
+        with keys compatible with :py:data:`dynamic.AMPYCLOUD_PRMS`.
+
+        Examples:
+        ::
+
+            # Define only the parameters that are non-default. To adjust the MSA, use:
+            prms = {'MSA': 10000}
+
+            # Or to adjust some other algorithm parameter:
+            prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}}}
+
 
     The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
@@ -221,8 +239,9 @@ def run(data : pd.DataFrame, geoloc : str = None,
             # Generate the canonical demo dataset for ampycloud
             mock_data = mocker.canonical_demo_data()
 
-            # Run the ampycloud algorithm on it
-            chunk = ampycloud.run(mock_data, geoloc='Mock data', ref_dt=datetime.now())
+            # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
+            chunk = ampycloud.run(mock_data, prms={'MSA':10000},
+                                  geoloc='Mock data', ref_dt=datetime.now())
 
             # Get the resulting METAR message
             print(chunk.metar_msg())
@@ -235,8 +254,12 @@ def run(data : pd.DataFrame, geoloc : str = None,
     starttime = datetime.now()
     logger.info('Starting an ampycloud run at %s', starttime)
 
+    # If the user gave me a datetime, convert this to str before proceeding
+    if not isinstance(ref_dt, str) and ref_dt is not None:
+        ref_dt = str(ref_dt)
+
     # First, let's create an CeiloChunk instance ...
-    chunk = CeiloChunk(data, geoloc = geoloc, ref_dt = str(ref_dt))
+    chunk = CeiloChunk(data, prms=prms, geoloc=geoloc, ref_dt=ref_dt)
 
     # Go through the ampycloud cascade:
     # Run the slicing ...
@@ -250,8 +273,9 @@ def run(data : pd.DataFrame, geoloc : str = None,
 
     return chunk
 
+
 @log_func_call(logger)
-def metar(data : pd.DataFrame) -> str:
+def metar(data: pd.DataFrame) -> str:
     """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
 
     Args:
@@ -281,6 +305,7 @@ def metar(data : pd.DataFrame) -> str:
     # Then, return the METAR message
     return chunk.metar_msg(which='layers')
 
+
 @log_func_call(logger)
 def demo() -> tuple:
     """ Run the ampycloud algorithm on a demonstration dataset.
@@ -296,6 +321,6 @@ def demo() -> tuple:
     assert isinstance(mock_data, pd.DataFrame)
 
     # Run the ampycloud algorithm
-    chunk =  run(mock_data, geoloc='ampycloud demo', ref_dt = str(datetime.now()))
+    chunk = run(mock_data, geoloc='ampycloud demo', ref_dt=str(datetime.now()))
 
     return mock_data, chunk

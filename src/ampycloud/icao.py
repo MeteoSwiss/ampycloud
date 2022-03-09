@@ -17,8 +17,9 @@ from .logger import log_func_call
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def significant_cloud(oktas : list) -> list:
+def significant_cloud(oktas: list) -> list:
     """ Assesses which cloud layers in a list are significant, according to the ICAO rules.
 
     Args:

@@ -9,18 +9,21 @@ Module content: tests for the core module
 """
 
 
-#Import from Python
+# Import from Python
 import os
 from pathlib import Path
 from datetime import datetime
+from pytest import warns
 import numpy as np
 import pandas as pd
 
 # Import from ampycloud
 from ampycloud import dynamic, hardcoded
+from ampycloud.errors import AmpycloudWarning
 from ampycloud.utils import mocker
 from ampycloud.data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
+
 
 def test_copy_prm_file():
     """ Test the copy_prm_file routine."""
@@ -37,19 +40,21 @@ def test_copy_prm_file():
     _ = [os.remove(item) for item in save_loc.glob('*')]
     save_loc.rmdir()
 
+
 def test_reset_prms():
     """ Test the reset_prms routine. """
 
     # First, let's change one of the dynamic parameter
-    ref_val = dynamic.AMPYCLOUD_PRMS.OKTA_LIM0
-    dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 = -1
-    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == -1
-    assert dynamic.AMPYCLOUD_PRMS.SLICING_PRMS.dt_scale_mode == 'shift-and-scale'
+    ref_val = dynamic.AMPYCLOUD_PRMS['OKTA_LIM0']
+    dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] = -1
+    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == -1
+    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['dt_scale_mode'] == 'shift-and-scale'
 
     # Then try to reset it
     reset_prms()
 
-    assert dynamic.AMPYCLOUD_PRMS.OKTA_LIM0 == ref_val
+    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == ref_val
+
 
 def test_run():
     """ Test the run routine. """
@@ -62,9 +67,9 @@ def test_run():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt':1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                      'period': 100, 'amplitude': 0},
-                                    {'alt':2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                    {'alt': 2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
                                        'period': 100, 'amplitude': 0}])
 
     out = run(mock_data)
@@ -74,6 +79,17 @@ def test_run():
 
     # While I'm at it, also check the metar routines, that are so close
     assert metar(mock_data) == 'SCT009 SCT019'
+
+    # Test the ability to specific parameters locally only
+    out = run(mock_data, prms={'MSA': 0})
+    assert out.metar_msg() == 'NCD'
+    assert dynamic.AMPYCLOUD_PRMS['MSA'] is None
+
+    # Test that warnings are being raised if a bad parameter is being given
+    with warns(AmpycloudWarning):
+        out = run(mock_data, prms={'SMA': 0})
+        assert out.metar_msg() == 'SCT009 SCT019'
+
 
 def test_run_single_point():
     """ Test the code when a single data point is fed to it. """
@@ -101,6 +117,7 @@ def test_run_single_point():
     # Reset the parameters
     reset_prms()
 
+
 def test_demo():
     """ Test the demo routine. """
 
@@ -108,6 +125,7 @@ def test_demo():
 
     assert isinstance(chunk, CeiloChunk)
     assert isinstance(mock_data, pd.DataFrame)
+
 
 def test_datetime():
     """ Test the ability to feed datetime instances. """

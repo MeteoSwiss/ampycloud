@@ -10,6 +10,7 @@ Module content: tests for the plots.core module
 
 # Import from Python
 from pathlib import Path
+import warnings
 import numpy as np
 import pandas as pd
 
@@ -29,7 +30,7 @@ def test_large_dts(mpls):
     """
 
     if mpls:
-        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+        dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
     # Let's create some data with only NaNs
     data = pd.DataFrame([['1', 7e5, 1000, 1], ['1', 7e5+1, 1001, 1], ['1', 7e5+2, 1002, 1]],
@@ -42,14 +43,48 @@ def test_large_dts(mpls):
     # Run ampycloud
     chunk = run(data)
 
-    # Uncomment the line below once pytst 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
                    save_stem='pytest_large_dts', save_fmts='png',
                    ref_metar_origin='Large dts', ref_metar='OVC010')
 
     assert Path('pytest_large_dts.pdf').exists
+
+
+def test_direct_prms(mpls):
+    """ Test that all goes well if users feed params directly to run().
+
+    Args:
+        mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
+            by a fixture that fetches the corresponding command line argument.
+            See conftest.py for details.
+
+    """
+
+    if mpls:
+        dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
+
+    # Let's create some data with only NaNs
+    data = pd.DataFrame([['1', 0, 1000, 1], ['1', 60, 1001, 1], ['1', 120, 1002, 1]],
+                        columns=['ceilo', 'dt', 'alt', 'type'])
+    data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
+    data['dt'] = data['dt'].astype(float)
+    data['alt'] = data['alt'].astype(float)
+    data['type'] = data['type'].astype(int)
+
+    # Run ampycloud
+    chunk = run(data, prms={'GROUPING_PRMS': {'dt_scale_kwargs': {'scale': 120}}})
+
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
+                   save_stem='pytest_direct_prms', save_fmts='png',
+                   ref_metar_origin='Direct prms', ref_metar='OVC010')
+
+    assert Path('pytest_direct_prms.pdf').exists
 
 
 def test_diagnostic(mpls):
@@ -64,10 +99,10 @@ def test_diagnostic(mpls):
     reset_prms()
 
     if mpls:
-        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+        dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
     # Set some MSA to see it on the plot
-    dynamic.AMPYCLOUD_PRMS.MSA = 12345
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 12345
 
     # Get some demo chunk data
     _, chunk = demo()
@@ -98,7 +133,7 @@ def test_empty_plot(mpls):
     """
 
     if mpls:
-        dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+        dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
     # Let's create some data with only NaNs
     data = pd.DataFrame([['1', -100, np.nan, 0], ['1', -99, np.nan, 0]],
@@ -111,9 +146,9 @@ def test_empty_plot(mpls):
     # Run ampycloud
     chunk = run(data)
 
-    # Uncomment the line below once pytst 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         diagnostic(chunk, upto='layers', show_ceilos=False, show=False,
                    save_stem='pytest_empty_plot', save_fmts='png',
                    ref_metar_origin='Empty data', ref_metar='NCD')

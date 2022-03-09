@@ -11,6 +11,7 @@ Module content: tests for the utils.performance module
 # Import from ampycloud
 from ampycloud.utils.performance import get_speed_benchmark
 
+
 def test_speed_benchmark():
     """ This routine tests the get_speed_benchmark function. """
 

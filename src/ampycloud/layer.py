@@ -25,8 +25,9 @@ from .utils import utils
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def scores2nrl(abics : np.ndarray) -> np.ndarray:
+def scores2nrl(abics: np.ndarray) -> np.ndarray:
     """ Converts AIC or BIC scores into probabilities = normalized relative likelihood.
 
     Specifically, this function computes:
@@ -51,9 +52,10 @@ def scores2nrl(abics : np.ndarray) -> np.ndarray:
 
     return out
 
+
 @log_func_call(logger)
-def best_gmm(abics : np.ndarray, mode : str = 'delta',
-             min_prob : float = 1., delta_mul_gain : float = 1.) -> int:
+def best_gmm(abics: np.ndarray, mode: str = 'delta',
+             min_prob: float = 1., delta_mul_gain: float = 1.) -> int:
     """ Identify which Gaussian Mixture Model is most appropriate given AIC or BIC scores.
 
     Model selection can be based on:
@@ -107,7 +109,7 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
     # Compute the relative probabilities of each model from the scores,
     # i.e. compute the "relative likelihood" of each model, normalized by the sum of all relative
     # likelihoods (if warranted)
-    if mode=='prob':
+    if mode == 'prob':
         nrl = scores2nrl(abics)
 
     # Now figure out if more than one components hides in the data.
@@ -134,13 +136,14 @@ def best_gmm(abics : np.ndarray, mode : str = 'delta',
 
     return best_model_ind
 
+
 @log_func_call(logger)
-def ncomp_from_gmm(vals : np.ndarray,
-                   min_sep : Union[int, float] = 0,
-                   scores : str = 'BIC',
-                   rescale_0_to_x : float = None,
-                   random_seed : int = 42,
-                   **kwargs : dict) -> tuple:
+def ncomp_from_gmm(vals: np.ndarray,
+                   min_sep: Union[int, float] = 0,
+                   scores: str = 'BIC',
+                   rescale_0_to_x: float = None,
+                   random_seed: int = 42,
+                   **kwargs: dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
     components.
 
@@ -173,7 +176,6 @@ def ncomp_from_gmm(vals : np.ndarray,
         `<https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html>`_
     """
 
-
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
         vals = vals.reshape(-1, 1)
@@ -181,15 +183,20 @@ def ncomp_from_gmm(vals : np.ndarray,
     # Keep track of the original values
     vals_orig = copy.deepcopy(vals)
 
+    # If all the points are the same, I should not bother doing anything ...
+    if len(np.unique(vals_orig)) == 1:
+        logger.debug('Skipping the GMM computation: all the values are the same.')
+        return (1, np.zeros(len(vals_orig)), None)
+
     # Estimate the resolution of the data (by measuring the minimum separation between two data
     # points).
     res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
-    res_orig = np.min(res_orig[res_orig>0])
+    res_orig = np.min(res_orig[res_orig > 0])
     logger.debug('res_orig: %.2f', res_orig)
     # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
     # over-layering.
     if min_sep < 5*res_orig:
-        warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.'+
+        warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
                       'This could lead to an over-layering for thin groups !',
                       AmpycloudWarning)
 
@@ -231,7 +238,7 @@ def ncomp_from_gmm(vals : np.ndarray,
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
     # First, let's compute the mean component heights
-    mean_comp_heights = [np.mean(vals_orig[best_ids==i]) for i in range(ncomp[best_model_ind])]
+    mean_comp_heights = [np.mean(vals_orig[best_ids == i]) for i in range(ncomp[best_model_ind])]
 
     # These may not be ordered, so let's keep track of the indices
     # First, let's deal with the fact that they are not ordered.
@@ -247,7 +254,7 @@ def ncomp_from_gmm(vals : np.ndarray,
 
         # Else, I have two components that are "too close" from each other. Let's merge them by
         # re-assigning the ids accordingly.
-        best_ids[best_ids==comp_ids[ind+1]] = comp_ids[ind]
+        best_ids[best_ids == comp_ids[ind+1]] = comp_ids[ind]
         comp_ids[ind+1] = comp_ids[ind]
 
         # Decrease the number of valid ids

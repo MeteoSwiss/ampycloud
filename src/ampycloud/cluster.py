@@ -21,10 +21,11 @@ from .logger import log_func_call
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def agglomerative_cluster(data : np.ndarray, n_clusters : int = None,
-                          affinity : str = 'euclidean', linkage : str = 'single',
-                          distance_threshold : Union[int, float] = 1) -> tuple:
+def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
+                          affinity: str = 'euclidean', linkage: str = 'single',
+                          distance_threshold: Union[int, float] = 1) -> tuple:
     """ Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
 
     Args:
@@ -51,8 +52,9 @@ def agglomerative_cluster(data : np.ndarray, n_clusters : int = None,
     # Return the stuff of interest
     return agg_clu.n_clusters_, agg_clu.labels_
 
+
 @log_func_call(logger)
-def clusterize(data : np.ndarray, algo : str = None, **kwargs : dict) -> tuple:
+def clusterize(data: np.ndarray, algo: str = None, **kwargs: dict) -> tuple:
     """ Umbrella clustering routine, that provides a single access point to the different clustering
     algorithms.
 

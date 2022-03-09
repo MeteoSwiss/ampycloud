@@ -9,10 +9,10 @@ Module contains: hardcoded plotting parameters
 """
 
 #: float: Width of a 1-column plot [inches], to fit in scientific articles when scaled by 50%
-WIDTH_ONECOL : float = 6.92
+WIDTH_ONECOL: float = 6.92
 
 #: float: Width of a 2-column plot [inches], to fit in scientific articles when scaled by 50%
-WIDTH_TWOCOL : float = 14.16
+WIDTH_TWOCOL: float = 14.16
 
 #: list: list of markers, for the different cloud layers
 MRKS = ['s', '^', 'o', 'v', 'D', '>', 'h', '<']

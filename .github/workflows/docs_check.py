@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Copyright (c) 2020-2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2020-2022 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -13,6 +13,7 @@ Created June 2020; F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 '''
 
 import subprocess
+
 
 def main():
     ''' The one true function. '''
@@ -39,6 +40,7 @@ def main():
     print('Docs compiled ok. Logs follow.')
     for line in lines:
         print(line)
+
 
 if __name__ == '__main__':
 

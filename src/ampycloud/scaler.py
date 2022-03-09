@@ -20,9 +20,10 @@ from .logger import log_func_call
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def shift_and_scale(vals : np.ndarray, shift : Union[int, float] = None,
-                    scale : Union[int, float] = 1, mode : str = 'do') -> np.ndarray:
+def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
+                    scale: Union[int, float] = 1, mode: str = 'do') -> np.ndarray:
     """ Shift (by a constant) and scale (by a constant) the data.
 
     Args:
@@ -54,11 +55,12 @@ def shift_and_scale(vals : np.ndarray, shift : Union[int, float] = None,
 
     raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
 
+
 @log_func_call(logger)
-def minmax_scale(vals : np.ndarray,
-                 min_val : Union[float, int] = None,
-                 max_val : Union[float, int] = None,
-                 mode : str = 'do') -> np.ndarray:
+def minmax_scale(vals: np.ndarray,
+                 min_val: Union[float, int] = None,
+                 max_val: Union[float, int] = None,
+                 mode: str = 'do') -> np.ndarray:
     """ Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum
         interval range.
 
@@ -89,8 +91,9 @@ def minmax_scale(vals : np.ndarray,
 
     raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
 
+
 @log_func_call(logger)
-def minrange2minmax(vals : np.ndarray, min_range : Union[int, float] = 0) -> tuple:
+def minrange2minmax(vals: np.ndarray, min_range: Union[int, float] = 0) -> tuple:
     """ Transform a minimum range into a pair of min/max values.
 
     Args:
@@ -119,8 +122,8 @@ def minrange2minmax(vals : np.ndarray, min_range : Union[int, float] = 0) -> tup
 
 
 @log_func_call(logger)
-def step_scale(vals : np.ndarray,
-                 steps : list, scales : list, mode : str = 'do') -> np.ndarray:
+def step_scale(vals: np.ndarray,
+               steps: list, scales: list, mode: str = 'do') -> np.ndarray:
     """ Scales values step-wise, with different constants bewteen specific steps.
 
     Values are divided by scales[i] between steps[i-1:i].
@@ -186,8 +189,9 @@ def step_scale(vals : np.ndarray,
 
     return out
 
+
 @log_func_call(logger)
-def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
+def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
     """ Converts the user-input keywords such that they can be fed to the underlying scaling
     functions.
 
@@ -206,8 +210,8 @@ def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
         matter the underlying dataset (as is required for plotting a secondary axis).
 
         Essentially, this function allows to feed either "user" or "deterministic" keywords to
-        :py:func:`.apply_scaling`, such that the former will be turned into the latter, and the latter will
-        remain untouched.
+        :py:func:`.apply_scaling`, such that the former will be turned into the latter, and the
+        latter will remain untouched.
 
     """
 
@@ -245,7 +249,7 @@ def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
                 (kwargs['min_val'], kwargs['max_val']) = minrange2minmax(vals, min_range)
                 return kwargs
 
-            if kwargs['mode']=='undo':
+            if kwargs['mode'] == 'undo':
                 raise AmpycloudError('Ouch ! I cannot get `min_val` and `max_val` from' +
                                      ' minmax-scaled data !')
 
@@ -266,8 +270,9 @@ def convert_kwargs(vals : np.ndarray, fct : str, **kwargs : dict) -> dict:
 
     raise AmpycloudError(f'Ouch ! scaling fct unknown: {fct}')
 
+
 @log_func_call(logger)
-def apply_scaling(vals : np.ndarray, fct : str = None, **kwargs : dict) -> np.ndarray:
+def apply_scaling(vals: np.ndarray, fct: str = None, **kwargs: dict) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:

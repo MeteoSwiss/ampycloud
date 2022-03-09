@@ -9,22 +9,24 @@ Module content: tests for the utils.utils module
 """
 
 # Import form Python
+import warnings
 from pytest import raises, warns
 import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud.utils.utils import check_data_consistency, tmp_seed
+from ampycloud.utils.utils import check_data_consistency, tmp_seed, adjust_nested_dict
 from ampycloud.utils.mocker import canonical_demo_data
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
 from ampycloud import hardcoded
 
+
 def test_check_data_consistency():
     """ This routine tests the check_data_consistency method. """
 
-    # Uncomment the line below once pytst 7.0 can be pip-installed
-    #with pytest.does_not_warn():
-    if True:
+    # The following should not trigger any warning... let's make sure of that.
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
         out = check_data_consistency(canonical_demo_data())
 
         # Make sure the canonical demo data is perfectly compatible with the ampycloud requirements
@@ -39,7 +41,7 @@ def test_check_data_consistency():
         # Missing column
         data = pd.DataFrame(np.array([['a', 1, 1]]), columns=['ceilo', 'alt', 'type'])
         for col in ['ceilo', 'alt', 'type']:
-            data.loc[:, col] = data.loc[:,col].astype(hardcoded.REQ_DATA_COLS[col])
+            data.loc[:, col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Bad data type
@@ -108,11 +110,31 @@ def test_tmp_seed():
     assert np.all(a == a42)
 
     # Now, actually check the function I am interested in.
-    np.random.seed(43) # Set a seed
-    with tmp_seed(42): # Temporarily set anopther one
+    np.random.seed(43)  # Set a seed
+    with tmp_seed(42):  # Temporarily set anopther one
         assert np.all(a == np.random.random(100))
         assert np.all(b == np.random.random(10))
         assert np.all(c == np.random.random(1))
 
     # Can I recover the original seed ?
     assert np.all(a43 == np.random.random(100))
+
+
+def test_adjust_nested_dict():
+    """ This routine tests the adjust_nested_dict function. """
+
+    ref_dict = {'a': 0, 'b': {1: {0}}}
+    new_dict = {'a': 1}
+
+    out = adjust_nested_dict(ref_dict, new_dict)
+    assert out['a'] == 1
+    assert out['b'] == ref_dict['b']
+
+    # Setting a non-pre-existing key should raise an Warning
+    with warns(AmpycloudWarning):
+        out = adjust_nested_dict(ref_dict, {'b': {'d': {0}}})
+        assert out == ref_dict
+
+    new_dict = {'a': [1, 2, 3], 'b': {1: {2}}}
+    out = adjust_nested_dict(ref_dict, new_dict)
+    assert out == new_dict
