@@ -9,6 +9,7 @@ Module content: tests for the layer module
 """
 
 # Import from Python
+import warnings
 from pathlib import Path
 import pickle
 import pytest
@@ -141,3 +142,27 @@ def test_identical_pts():
 
     # I should only be getting a single layer
     assert out == 1
+
+    # Idem, but this time let's have only 2 distinct values
+    data = np.ones(30) * 24270.
+    data[-1] = 24271.
+
+    # The following code will raise warnings, which is fine. So let's hide them here.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        out, _, _ = ncomp_from_gmm(data, scores='BIC', rescale_0_to_x=100, min_sep=200,
+                                   random_seed=45, delta_mul_gain=0.95, mode='delta')
+
+    assert out == 1
+
+    # And once more, but this time with far away points
+    data = np.ones(30) * 24270.
+    data[-1] = 10000.
+
+    # The following code will raise warnings, which is fine. So let's hide them here.
+    with warnings.catch_warnings():
+        warnings.simplefilter("ignore")
+        out, _, _ = ncomp_from_gmm(data, scores='BIC', rescale_0_to_x=100, min_sep=200,
+                                   random_seed=45, delta_mul_gain=0.95, mode='delta')
+
+    assert out == 2

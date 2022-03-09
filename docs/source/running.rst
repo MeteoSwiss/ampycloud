@@ -99,14 +99,14 @@ Adjusting the default algorithm parameters
 
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
-are accessible via :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` as a nested dictionnary. When a new
+are accessible via :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` as a nested dictionary. When a new
 :py:class:`ampycloud.data.CeiloChunk` instance is being initiated, a copy of this nested dictionary
-is being stored as an instance variable (possibly adjusting specific parameters via the ``prms``
-keyword argument).
+is being stored as an instance variable. It is then possible to adjust specific parameters via the
+``prms`` keyword argument when initializing a :py:class:`ampycloud.data.CeiloChunk` instance.
 
 There are thus 2+1 ways to adjust the ampycloud scientific parameters:
 
-    * **1.a: Adjust them globally** in :py:data:`ampycloud.dynamic.AMPYCOUD_PRMS`, like so:
+    * **1.a: Adjust them globally** in :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`, like so:
       ::
 
           from ampycloud import dynamic
@@ -126,10 +126,12 @@ There are thus 2+1 ways to adjust the ampycloud scientific parameters:
       copy of the default ampycloud parameters.
 
 
-    * **2: Adjust them for locally** for every execution of ampycloud by feeding a suitable nested
-      dictionary to :py:func:`ampycloud.core.run`. The dictionnary, the keys and levels of which
-      should be consistent with :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`, only need to contains
-      the specific parameters that one requires to be different from the default values.
+    * **2: Adjust them for locally** for a given execution of ampycloud by feeding a suitable
+      nested dictionary to :py:func:`ampycloud.core.run` (that will create a new
+      :py:class:`ampycloud.data.CeiloChunk` instance behind the scene). The dictionary, the keys
+      and levels of which should be consistent with :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
+      only needs to contain the specific parameters that one requires to be different from the
+      default values.
       ::
 
           # Define only the parameters that are non-default. To adjust the MSA, use:

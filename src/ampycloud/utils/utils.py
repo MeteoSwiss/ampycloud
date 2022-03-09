@@ -211,8 +211,9 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dic
     Args:
         ref_dict (dict): reference dict of dict (of dict of dict ...).
         new_dict (dict): values to update as a dict (of dict or dict of dict ...)
-        lvls (list, optional): levels of the previous nested dict layers, used for reporting useful
-            errors.
+        lvls (list of str, optional): names of the keys of the parent nested dict layers, used
+            for reporting useful errors. This is used by the function itself when it calls itself.
+            There is no need for the user to set this to anything at first. Defaults to None.
 
     Returns:
         dict: the updated dict (of dict of dict of dict ...)
