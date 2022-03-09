@@ -20,10 +20,11 @@ from .logger import log_func_call
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def perc2okta(val : Union[int, float, np.ndarray],
-              lim0 : Union[int, float] = 0,
-              lim8 : Union[int, float] = 100) -> np.ndarray:
+def perc2okta(val: Union[int, float, np.ndarray],
+              lim0: Union[int, float] = 0,
+              lim8: Union[int, float] = 100) -> np.ndarray:
     """ Converts a sky coverage percentage into oktas.
 
     One okta corresponds to 1/8 of the sky covered by clouds. The cases of 0 and 8 oktas are
@@ -52,7 +53,7 @@ def perc2okta(val : Union[int, float, np.ndarray],
     """
 
     # A basic sanity check
-    if not np.all((val >= 0) * (val <= 100)) :
+    if not np.all((val >= 0) * (val <= 100)):
         raise AmpycloudError(f'Ouch! I need 0<=val<=100, but I got: {val}')
 
     # If I did not receive a numpy array, build one to be efficient afterwards ...
@@ -63,22 +64,23 @@ def perc2okta(val : Union[int, float, np.ndarray],
     out = np.full_like(val, -1., dtype=float)
 
     # Deal with the edge cases first
-    out[(val>=0) * ( val<=lim0)] = 0
-    out[(lim8<=val) * (val<=100)] = 8
+    out[(val >= 0) * (val <= lim0)] = 0
+    out[(lim8 <= val) * (val <= 100)] = 8
 
     # Now deal with the other cases
-    out[out==-1] = val[out==-1]/(100/8)
+    out[out == -1] = val[out == -1]/(100/8)
     # Now we round/floor/ceil as required, remembering that the 1 and 7 okta bins are special.
-    out[out<1] = np.ceil(out[out<1])
-    out[out>7] = np.floor(out[out>7])
+    out[out < 1] = np.ceil(out[out < 1])
+    out[out > 7] = np.floor(out[out > 7])
     # Everything else, we just round as usual
     out = np.round(out)
 
     # Return ints, to make it clear that we do not work with fractional oktas
     return out.astype(int)
 
+
 @log_func_call(logger)
-def okta2code(val : int) -> str:
+def okta2code(val: int) -> str:
     """ Convert an okta value to a METAR code.
 
     Conversion is as follows:
@@ -118,7 +120,7 @@ def okta2code(val : int) -> str:
 
 
 @log_func_call(logger)
-def okta2symb(val : int, use_metsymb : bool = False) -> str:
+def okta2symb(val: int, use_metsymb: bool = False) -> str:
     """ Convert an okta value to a LaTeX string, possibly using the metsymb LaTeX package.
 
     Args:
@@ -161,8 +163,9 @@ def okta2symb(val : int, use_metsymb : bool = False) -> str:
 
     raise AmpycloudError(f'Ouch ! okta value not understood: {val}')
 
+
 @log_func_call(logger)
-def alt2code(val : Union[int, float]) -> str:
+def alt2code(val: Union[int, float]) -> str:
     """ Function that converts a given altitude in hundreds of ft (3 digit number),
     e.g. 5000 ft -> 050, 500 ft -> 005.
 

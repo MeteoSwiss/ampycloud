@@ -23,8 +23,9 @@ from .. import hardcoded
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @log_func_call(logger)
-def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float) -> pd.DataFrame:
+def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -> pd.DataFrame:
     """ Generates a mock, flat, Gaussian cloud layer around a given altitude.
 
     Args:
@@ -47,7 +48,7 @@ def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : floa
     # Generate the random altitude data
     out['alt'] = np.random.normal(loc=alt, scale=alt_std, size=n_pts)
     # Cleanup any negative altitudes, if warranted.
-    out.loc[out['alt']<=0, 'alt'] = np.nan
+    out.loc[out['alt'] <= 0, 'alt'] = np.nan
     out['dt'] = dts
 
     # Empty hits to get the requested sky coverage fraction
@@ -60,9 +61,10 @@ def flat_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : floa
 
     return out
 
+
 @log_func_call(logger)
-def sin_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float,
-              period : Union[int, float], amplitude : Union[int, float]) -> pd.DataFrame:
+def sin_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float,
+              period: Union[int, float], amplitude: Union[int, float]) -> pd.DataFrame:
     """ Generates a sinusoidal cloud layer.
 
     Args:
@@ -87,8 +89,8 @@ def sin_layer(dts : np.array, alt : float, alt_std : float, sky_cov_frac : float
     return out
 
 
-def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
-                layer_prms : list) -> pd.DataFrame:
+def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
+                layer_prms: list) -> pd.DataFrame:
     """ Generate a mock set of cloud layers for a specified number of ceilometers.
 
     Args:
@@ -121,11 +123,11 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
     for (ind, item) in enumerate(layer_prms):
         if not isinstance(item, dict):
             raise AmpycloudError(f'Ouch ! Element {ind} from layer_prms should be a dict,' +
-                                  f' not: {type(item)}')
+                                 f' not: {type(item)}')
         if not all(key in item.keys() for key in ['alt', 'alt_std', 'sky_cov_frac',
                                                   'period', 'amplitude']):
-            raise AmpycloudError('Ouch ! One or more of the following dict keys are missing in '+
-                                 f"layer_prms[{ind}]: 'alt', 'alt_std', 'sky_cov_frac',"+
+            raise AmpycloudError('Ouch ! One or more of the following dict keys are missing in ' +
+                                 f"layer_prms[{ind}]: 'alt', 'alt_std', 'sky_cov_frac'," +
                                  "'period', 'amplitude'.")
 
     # Let's create the layers individually for each ceilometer
@@ -148,13 +150,13 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
         # This needs to be done on a point by point basis, given that layers can cross each other.
         for dt in np.unique(layers['dt']):
             # Get the hit altitudes, and sort them from lowest to highest
-            alts = layers[layers['dt']==dt]['alt'].sort_values(axis=0)
+            alts = layers[layers['dt'] == dt]['alt'].sort_values(axis=0)
 
             # Then deal with the other ones
             for (a, alt) in enumerate(alts):
 
                 # Except for the first one, any NaN hit gets dropped
-                if a>0 and np.isnan(alt):
+                if a > 0 and np.isnan(alt):
                     layers.drop(index=alts.index[a],
                                 inplace=True)
                 elif np.isnan(alt):
@@ -180,6 +182,7 @@ def mock_layers(n_ceilos : int, lookback_time : float, hit_gap: float,
 
     return out
 
+
 def canonical_demo_data() -> pd.DataFrame:
     """ This function creates the canonical ampycloud demonstration dataset, that can be used to
     illustrate the full behavior of the algorithm.
@@ -198,7 +201,6 @@ def canonical_demo_data() -> pd.DataFrame:
             {'alt': 2000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
             {'alt': 5000, 'alt_std': 200, 'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1000},
             ]
-
 
     # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.
     with utils.tmp_seed(42):

@@ -13,6 +13,7 @@ class AmpycloudError(Exception):
     """ The default error class for ampycloud, which is a child of the :py:exc:`Exception` class.
     """
 
+
 class AmpycloudWarning(Warning):
     """ The default warning class for ampycloud, which is a child of the :py:class:`Warning` class.
     """

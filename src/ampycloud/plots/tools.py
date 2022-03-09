@@ -27,17 +27,20 @@ from .. import dynamic, scaler
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 def style_pth() -> Path:
     """ Returns the Path to the ampycloud plotting styles. """
 
     return Path(__file__).parent / 'mpl_styles'
+
 
 def valid_styles() -> list:
     """ Returns the list of valid plotting styles. """
 
     return [item.stem for item in style_pth().glob('*.mplstyle')]
 
-def set_mplstyle(func : Callable) -> Callable:
+
+def set_mplstyle(func: Callable) -> Callable:
     """ Intended to be used as a decorator around plotting functions, to set the plotting style.
 
     By defaults, the ``base`` ampycloud style will be enabled. Motivated users can tweak it further
@@ -84,19 +87,19 @@ def set_mplstyle(func : Callable) -> Callable:
             prms = yaml.safe_load(fil)
 
         # What is the plotting style chosen by the user
-        spec_style = dynamic.AMPYCLOUD_PRMS.MPL_STYLE
+        spec_style = dynamic.AMPYCLOUD_PRMS['MPL_STYLE']
         # Let's do some sanity checks on the user input.
         # 0) If I was asked to do nothing special, then do nothing special ...
         if spec_style is None or spec_style == 'base':
             pass
         # 2) Else, I need a string or I cry ...
         elif not isinstance(spec_style, str):
-            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS.MPL_STYLE type unknown:'+
+            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] type unknown:' +
                                  f' {type(spec_style)}')
         # 3) Is that a supported style ?
         elif spec_style not in valid_styles():
-            raise AmpycloudError(f'Ouch ! dynamic.AMPYCLOUD_PRMS.MPL_STYLE {spec_style} unknown.'+
-                                 f' Should be one of {valid_styles()}.')
+            raise AmpycloudError(f'Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] {spec_style}' +
+                                 f' unknown. Should be one of {valid_styles()}.')
         # 4) Request seems legit ... let's load the spec_style ...
         else:
             with open(pth / f'{spec_style}.mplstyle') as fil:
@@ -106,7 +109,7 @@ def set_mplstyle(func : Callable) -> Callable:
         # Issue #18: I need to set `text.latex.preamble` out of context if I want it to be
         # taken into account.
         if 'text.latex.preamble' in prms.keys():
-            plt.style.use({'text.latex.preamble':prms['text.latex.preamble']})
+            plt.style.use({'text.latex.preamble': prms['text.latex.preamble']})
 
         # Finally, apply the base plotting style
         with plt.style.context(prms):
@@ -118,7 +121,7 @@ def set_mplstyle(func : Callable) -> Callable:
 
 
 @log_func_call(logger)
-def texify(msg : str) -> str:
+def texify(msg: str) -> str:
     """ Small utility function that TeX-ifies a string to make it LaTeX robust if warranted by the
     current rcParams settings.
 
@@ -137,7 +140,7 @@ def texify(msg : str) -> str:
         msg = msg.replace('%', r'\%')
 
         # Here, I want to clean the underscore, but ONLY outside of math mode.
-        msg = [item.replace('_', r'\_') if ind%2==0 else item
+        msg = [item.replace('_', r'\_') if ind % 2 == 0 else item
                for (ind, item) in enumerate(msg.split('$'))]
         msg = '$'.join(msg)
     # Next cleanup any LaTeX-specific stuff ...
@@ -148,8 +151,9 @@ def texify(msg : str) -> str:
 
     return msg
 
+
 @log_func_call(logger)
-def get_scaling_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
+def get_scaling_kwargs(data: np.ndarray, mode: str, kwargs: dict) -> tuple:
     """ Utility function to extract the **actual, deterministic** parameters required to scale the
     data, given a set of user-defined parameters.
 
@@ -167,12 +171,8 @@ def get_scaling_kwargs(data : np.ndarray, mode: str, kwargs : dict) -> tuple:
         tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
         scaling.
 
-    Todo:
-        Cleanup the code once #25 is fixed.
-
     """
 
-    # TODO: Once issue #25 is fixed, maybe update these lines ...
     # Let's create a storage dict, and fill it with what I got from the user.
     scale_kwargs = {}
     scale_kwargs.update(kwargs)

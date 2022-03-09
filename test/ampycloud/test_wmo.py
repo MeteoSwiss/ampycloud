@@ -14,6 +14,7 @@ import numpy as np
 # Import from this package
 from ampycloud.wmo import perc2okta, alt2code
 
+
 def test_perc2okta():
     """ Test the frac2okta function. """
 
@@ -22,6 +23,7 @@ def test_perc2okta():
     assert np.all(perc2okta(2, lim0=3) == np.array([0]))
     assert np.all(perc2okta(np.array([10, 20, 35, 45, 60, 70, 85, 99]), lim8=98) ==
                   np.array([1, 2, 3, 4, 5, 6, 7, 8]))
+
 
 def test_alt2code():
     """ Test the alt2code function, inculding the descaling mode. """

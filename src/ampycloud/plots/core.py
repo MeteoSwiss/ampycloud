@@ -21,12 +21,13 @@ from .tools import set_mplstyle
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
 
+
 @set_mplstyle
 @log_func_call(logger)
-def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = False,
-               ref_metar : str = None, ref_metar_origin : str = None,
-               show : bool = True,
-               save_stem : str = None, save_fmts : Union[list, str] = None) -> None:
+def diagnostic(chunk: CeiloChunk, upto: str = 'layers', show_ceilos: bool = False,
+               ref_metar: str = None, ref_metar_origin: str = None,
+               show: bool = True,
+               save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
     """ A function to create the ampycloud diagnostic plot all the way to the layering step
     (included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).
 
@@ -79,7 +80,7 @@ def diagnostic(chunk : CeiloChunk, upto : str = 'layers', show_ceilos : bool = F
         adp.show_slices()
         adp.format_slice_axes()
     if upto in ['groups', 'layers']:
-        adp.show_groups(show_points= (upto=='groups'))
+        adp.show_groups(show_points=(upto == 'groups'))
         adp.format_group_axes()
     if upto == 'layers':
         adp.show_layers()

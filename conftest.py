@@ -45,7 +45,7 @@ def mpls(request):
         def test_some_func(a, b, mpls):
             ...
             if mpls:
-                dynamic.AMPYCLOUD_PRMS.MPL_STYLE = mpls
+                dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
 
     """
 

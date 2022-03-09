@@ -23,8 +23,7 @@ def test_mock_layers():
     n_ceilos = 1
     lookback_time = 1200
     hit_gap = 60
-    layer_prms =[{'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
-                  'period': 100, 'amplitude': 0}]
+    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1, 'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Correct type ?
@@ -42,8 +41,7 @@ def test_mock_layers():
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms =[{'alt':1000, 'alt_std': 100, 'sky_cov_frac': 0.5,
-                  'period': 100, 'amplitude': 0}]
+    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Correct number of points ?
@@ -58,11 +56,10 @@ def test_mock_layers():
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms =[{'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
-                  'period': 100, 'amplitude': 0},
-                 {'alt':10000, 'alt_std': 200, 'sky_cov_frac': 1,
-                  'period': 100, 'amplitude': 0},
-                ]
+    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1,
+                   'period': 100, 'amplitude': 0},
+                  {'alt': 10000, 'alt_std': 200, 'sky_cov_frac': 1,
+                   'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Correct number of points ?
@@ -72,11 +69,10 @@ def test_mock_layers():
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms =[{'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
-                  'period': 100, 'amplitude': 0},
-                 {'alt':15000, 'alt_std': 200, 'sky_cov_frac': 1,
-                  'period': 100, 'amplitude': 0},
-                ]
+    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1,
+                   'period': 100, 'amplitude': 0},
+                  {'alt': 15000, 'alt_std': 200, 'sky_cov_frac': 1,
+                   'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Holes present ? There should be None, since we have a second layer complete
