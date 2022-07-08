@@ -27,6 +27,16 @@ def perc2okta(val: Union[int, float, np.ndarray],
               lim8: Union[int, float] = 100) -> np.ndarray:
     """ Converts a sky coverage percentage into oktas.
 
+    Args:
+        val (int|float|ndarray): the sky coverage percentage to convert, in percent.
+        lim0 (int|float, optional): the upper limit for the 0 okta bin, in percent.
+            Defaults to 0.
+        lim8 (int|float, optional): the lower limit for the 8 oktas bin, in percent.
+            Defaults to 100.
+
+    Returns:
+        ndarray of int: the okta value(s).
+
     One okta corresponds to 1/8 of the sky covered by clouds. The cases of 0 and 8 oktas are
     special, in that these indicate that the sky is covered at *exactly* 0%, respectively 100%.
     This implies that the 1 okta and 7 okta bins are larger than others.
@@ -41,15 +51,11 @@ def perc2okta(val: Union[int, float, np.ndarray],
         - 7 oktas == 6.5*100/8 < val < lim8
         - 8 oktas == lim8 <= val <= 100
 
-    Args:
-        val (int|float|ndarray): the sky coverage percentage to convert, in percent.
-        lim0 (int|float, optional): the upper limit for the 0 okta bin, in percent.
-            Defaults to 0.
-        lim8 (int|float, optional): the lower limit for the 8 oktas bin, in percent.
-            Defaults to 100.
-
-    Returns:
-        ndarray of int: the okta value(s).
+    Reference:
+        Boers, R., de Haij, M. J., Wauben, W. M. F., Baltink, H. K., van Ulft, L. H.,
+        Savenije, M., and Long, C. N. (2010), Optimized fractional cloudiness determination
+        from five ground-based remote sensing techniques, J. Geophys. Res., 115, D24116,
+        `doi:10.1029/2010JD014661 <https://doi.org/10.1029/2010JD014661>`_.
     """
 
     # A basic sanity check
