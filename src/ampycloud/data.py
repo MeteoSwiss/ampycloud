@@ -236,17 +236,17 @@ class CeiloChunk(AbstractChunk):
     def max_hits_per_layer(self) -> int:
         """ The maximum number of ceilometer hits possible for a given layer, given the chunk data.
 
+        Returns:
+            int: the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
+            the **average** max number of hits per ceilometer per layer (remember: not all
+            ceilometers may have the same number of timestamps over the chunk time period !).
+
         This is the total number of **unique** timesteps from all ceilometers considered.
 
         Note:
             This value assumes that a layer can contain only 1 hit per ceilometer per timestep,
             i.e. 2 simultaneous hits from a given ceilometer can **never** belong to the same cloud
             layer.
-
-        Returns:
-            int: the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
-            the **average** max number of hits per ceilometer per layer (remember: not all
-            ceilometers may have the same number of timestamps over the chunk time period !).
 
         """
 

@@ -89,6 +89,12 @@ def perc2okta(val: Union[int, float, np.ndarray],
 def okta2code(val: int) -> str:
     """ Convert an okta value to a METAR code.
 
+    Args:
+        int: okta value between 0 and 9 (included).
+
+    Returns:
+        str: METAR code
+
     Conversion is as follows:
 
      - 0 okta => NCD
@@ -98,11 +104,6 @@ def okta2code(val: int) -> str:
      - 8 oktas => OVC
      - 9 oktas => None
 
-    Args:
-        int: okta value between 0 and 9 (included).
-
-    Returns:
-        str: METAR code
     """
 
     # Some sanity checks
@@ -175,17 +176,19 @@ def alt2code(val: Union[int, float]) -> str:
     """ Function that converts a given altitude in hundreds of ft (3 digit number),
     e.g. 5000 ft -> 050, 500 ft -> 005.
 
-    Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
-    floored to the nearest 1000 ft.
-
-    Reference: *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*,
-    WMO-No.782, 2020 edition. https://library.wmo.int/?lvl=notice_display&id=716
-
     Args:
         val (int, float): the altitude to convert, in feet.
 
     Returns:
         str: the corresponding METAR code chunk
+
+    Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
+    floored to the nearest 1000 ft.
+
+    Reference:
+        *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*, WMO-No.782, 2020 edition.
+        `<https://library.wmo.int/?lvl=notice_display&id=716>`_
+
     """
 
     if np.isnan(val):

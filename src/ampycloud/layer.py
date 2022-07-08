@@ -30,6 +30,12 @@ logger = logging.getLogger(__name__)
 def scores2nrl(abics: np.ndarray) -> np.ndarray:
     """ Converts AIC or BIC scores into probabilities = normalized relative likelihood.
 
+    Args:
+        abics (ndarray): scores.
+
+    Returns:
+        ndarray: probabilities of the different models.
+
     Specifically, this function computes:
 
     .. math::
@@ -40,11 +46,6 @@ def scores2nrl(abics: np.ndarray) -> np.ndarray:
         The smaller the BIC/AIC scores, the better, but the higher the probabilities = normalized
         relative likelihood, the better !
 
-    Args:
-        abics (ndarray): scores.
-
-    Returns:
-        ndarray: probabilities of the different models.
     """
 
     out = np.exp(-0.5*(abics-np.min(abics)))
@@ -58,7 +59,21 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
              min_prob: float = 1., delta_mul_gain: float = 1.) -> int:
     """ Identify which Gaussian Mixture Model is most appropriate given AIC or BIC scores.
 
-    Model selection can be based on:
+    Args:
+        abics (ndarray): the AICs or BICs scores, ordered from simplest to most complex model.
+        mode (str, optional): one of ['delta', 'prob']. Defaults to 'delta'.
+        min_prob (float, optional): minimum model probability computed from the scores's relative
+            likelihood, below which the other models will be considered. Set it to 1 to select
+            the model with the lowest score, irrespective of its probability. Defaults to 1.
+            This has no effect unless mode='prob'.
+        delta_mul_gain (float, optional): a smaller score will only be considered "valid"
+            if it is smaller than delta_mul_gain*current_best_score. Defaults to 1.
+            This has no effect unless mode='delta'.
+
+    Returns:
+        int: index of the "most appropriate" model.
+
+   Model selection can be based on:
 
         1. the normalized relative likelihood values (see `scores2nrl()`) of the AIC or/and BIC
         scores, or
@@ -86,20 +101,6 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 
         The default arguments of this function lead to selecting the number of components with the
         smallest score.
-
-    Args:
-        abics (ndarray): the AICs or BICs scores, ordered from simplest to most complex model.
-        mode (str, optional): one of ['delta', 'prob']. Defaults to 'delta'.
-        min_prob (float, optional): minimum model probability computed from the scores's relative
-            likelihood, below which the other models will be considered. Set it to 1 to select
-            the model with the lowest score, irrespective of its probability. Defaults to 1.
-            This has no effect unless mode='prob'.
-        delta_mul_gain (float, optional): a smaller score will only be considered "valid"
-            if it is smaller than delta_mul_gain*current_best_score. Defaults to 1.
-            This has no effect unless mode='delta'.
-
-    Returns:
-        int: index of the "most appropriate" model.
 
     """
 
@@ -147,8 +148,6 @@ def ncomp_from_gmm(vals: np.ndarray,
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
     components.
 
-    The default values lead to selecting the number of components with the smallest BIC values.
-
     Args:
         vals (ndarray): the data to process. If ndarray is 1-D, it will be reshaped to 2-D via
             .reshape(-1, 1).
@@ -170,6 +169,8 @@ def ncomp_from_gmm(vals: np.ndarray,
     Returns:
         int, ndarray, ndarray: number of (likely) components, array of component ids to which
         each hit most likely belongs, array of AIC/BIC scores.
+
+    The default values lead to selecting the number of components with the smallest BIC values.
 
     Note:
         This function was inspired from the "1-D Gaussian Mixture Model" example from astroML:
