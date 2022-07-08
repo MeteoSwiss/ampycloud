@@ -110,7 +110,7 @@ def test_unstable_layers():
         best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
                                           scores='BIC', rescale_0_to_x=100,
                                           min_sep=0,
-                                          random_seed=45,
+                                          random_seed=39,
                                           delta_mul_gain=0.95, mode='delta')
         # With this specific seed, I should be finding 3 layers
         assert best_ncomp == 3
