@@ -233,7 +233,7 @@ sh build_docs.sh
 This will create the `.html` pages of the compiled documentation under `./build`. In particular,
 this bash script will automatically update the help message from the high-level ampycloud entry
 point ``ampycloud_speed_test``, create the demo figure for the main page, compile and ingest all the
-docstrings, etc ... . See the ampycloud[release mechanisms](#release-mechansims) for more info about
+docstrings, etc ... . See the ampycloud [release mechanisms](#release-mechansims) for more info about
 the automated publication of the documentation upon new releases.
 
 

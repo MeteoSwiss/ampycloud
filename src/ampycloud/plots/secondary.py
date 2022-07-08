@@ -32,11 +32,6 @@ def scaling_fcts(show: bool = True,
                  save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
     """ Plots the different scaling functions.
 
-    This is a small utility routine to rapidly see the different altitude scaling options used by
-    ampycloud.
-
-    For the "step" scaling plot, the parameters are taken straight from dynamic.GROUPING_PRMS.
-
     Args:
        show (bool, optional): show the plot, or not. Defaults to True.
        save_stem (str, optional): if set, will save the plot with this stem (which can include a
@@ -44,6 +39,10 @@ def scaling_fcts(show: bool = True,
        save_fmts (list|str, optional): a list of file formats to export the plot to. Defaults to
            None = ['png'].
 
+    This is a small utility routine to rapidly see the different altitude scaling options used by
+    ampycloud.
+
+    For the "step" scaling plot, the parameters are taken straight from dynamic.GROUPING_PRMS.
 
     Example:
     ::

@@ -4,6 +4,15 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 
+## [v0.5.0.dev0]
+### Added:
+### Fixed:
+ - [fpavogt, 2022-07-08] Fix #78 and #79.
+### Changed:
+### Deprecated:
+### Removed:
+### Security:
+
 ## [v0.4.0.dev0]
 ### Added:
  - [fpavogt, 2022-02-27] Add new speed-check Action.
@@ -11,8 +20,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed:
  - [fpavogt, 2022-03-02] Fix #75.
  - [fpavogt, 2022-02-25] Fix #71 and #25.
-### Changed:
-### Deprecated:
 ### Removed:
  - [fpavogt, 2022-02-25] Remove yaconfigobject dependency in favor of ruamel.yaml.
 ### Security:
