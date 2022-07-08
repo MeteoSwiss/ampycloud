@@ -634,9 +634,15 @@ class CeiloChunk(AbstractChunk):
             logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
             logger.info('min_sep value: %.1f', min_sep)
 
+            # Handle #78: if the data is comprised of only two distinct altitudes, only look for
+            # up to 2 Gaussian components. Else, up to 3.
+            ncomp_max = np.min([len(np.unique(gro_alts[~np.isnan(gro_alts)])), 3])
+            logger.debug('Setting ncomp_max to: %i', ncomp_max)
+
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
-                gro_alts, min_sep=min_sep, **self.prms['LAYERING_PRMS']['gmm_kwargs'])
+                gro_alts, ncomp_max=ncomp_max, min_sep=min_sep,
+                **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
             logger.debug(' Cluster %s  has %i components according to GMM.',

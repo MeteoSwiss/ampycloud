@@ -140,6 +140,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 
 @log_func_call(logger)
 def ncomp_from_gmm(vals: np.ndarray,
+                   ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
                    scores: str = 'BIC',
                    rescale_0_to_x: float = None,
@@ -151,6 +152,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     Args:
         vals (ndarray): the data to process. If ndarray is 1-D, it will be reshaped to 2-D via
             .reshape(-1, 1).
+        ncomp_max (int, optional): maximum number of Gaussian components to assess. Defaults to 3.
         min_sep (int|float, optional): minimum separation, in data unit,
             required between the mean location of two Gaussian components to consider them distinct.
             Defaults to 0. This is used in complement to any parameters fed to best_gmm(), that will
@@ -205,8 +207,8 @@ def ncomp_from_gmm(vals: np.ndarray,
     if rescale_0_to_x is not None:
         vals = minmax_scale(vals) * rescale_0_to_x
 
-    # I will only look for at most 3 layers.
-    ncomp = np.array([1, 2, 3])
+    # List all the number of components I should try
+    ncomp = np.linspace(1, ncomp_max, ncomp_max, dtype=int)
 
     # Prepare to store the different model fits
     models = {}
