@@ -9,6 +9,7 @@ Module content: tests for the data module
 """
 
 # Import from Python
+import warnings
 import numpy as np
 import pandas as pd
 from pytest import raises, warns
@@ -238,3 +239,27 @@ def test_layering_singleval():
 
     # Check that the GMM was never executed
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
+
+def test_layering_dualeval():
+    """ Test the layering step when there are two single altitude values. See #78 for details. """
+
+    data1 = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*120, np.ones(30)*1])
+    data2 = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*150, np.ones(30)*2])
+
+    mock_data = pd.DataFrame(np.concatenate([data1, data2], axis=1).T,
+                             columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    # The lyering should be solid enough to not complain if there are only two values in the data
+    with warnings.catch_warnings():
+        warnings.simplefilter("error")
+        chunk.find_layers()
