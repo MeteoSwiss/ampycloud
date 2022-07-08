@@ -73,7 +73,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
     Returns:
         int: index of the "most appropriate" model.
 
-   Model selection can be based on:
+    Model selection can be based on:
 
         1. the normalized relative likelihood values (see `scores2nrl()`) of the AIC or/and BIC
         scores, or
