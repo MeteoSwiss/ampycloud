@@ -27,6 +27,16 @@ def perc2okta(val: Union[int, float, np.ndarray],
               lim8: Union[int, float] = 100) -> np.ndarray:
     """ Converts a sky coverage percentage into oktas.
 
+    Args:
+        val (int|float|ndarray): the sky coverage percentage to convert, in percent.
+        lim0 (int|float, optional): the upper limit for the 0 okta bin, in percent.
+            Defaults to 0.
+        lim8 (int|float, optional): the lower limit for the 8 oktas bin, in percent.
+            Defaults to 100.
+
+    Returns:
+        ndarray of int: the okta value(s).
+
     One okta corresponds to 1/8 of the sky covered by clouds. The cases of 0 and 8 oktas are
     special, in that these indicate that the sky is covered at *exactly* 0%, respectively 100%.
     This implies that the 1 okta and 7 okta bins are larger than others.
@@ -41,15 +51,11 @@ def perc2okta(val: Union[int, float, np.ndarray],
         - 7 oktas == 6.5*100/8 < val < lim8
         - 8 oktas == lim8 <= val <= 100
 
-    Args:
-        val (int|float|ndarray): the sky coverage percentage to convert, in percent.
-        lim0 (int|float, optional): the upper limit for the 0 okta bin, in percent.
-            Defaults to 0.
-        lim8 (int|float, optional): the lower limit for the 8 oktas bin, in percent.
-            Defaults to 100.
-
-    Returns:
-        ndarray of int: the okta value(s).
+    Reference:
+        Boers, R., de Haij, M. J., Wauben, W. M. F., Baltink, H. K., van Ulft, L. H.,
+        Savenije, M., and Long, C. N. (2010), Optimized fractional cloudiness determination
+        from five ground-based remote sensing techniques, J. Geophys. Res., 115, D24116,
+        `doi:10.1029/2010JD014661 <https://doi.org/10.1029/2010JD014661>`_.
     """
 
     # A basic sanity check
@@ -83,6 +89,12 @@ def perc2okta(val: Union[int, float, np.ndarray],
 def okta2code(val: int) -> str:
     """ Convert an okta value to a METAR code.
 
+    Args:
+        int: okta value between 0 and 9 (included).
+
+    Returns:
+        str: METAR code
+
     Conversion is as follows:
 
      - 0 okta => NCD
@@ -92,11 +104,6 @@ def okta2code(val: int) -> str:
      - 8 oktas => OVC
      - 9 oktas => None
 
-    Args:
-        int: okta value between 0 and 9 (included).
-
-    Returns:
-        str: METAR code
     """
 
     # Some sanity checks
@@ -169,17 +176,25 @@ def alt2code(val: Union[int, float]) -> str:
     """ Function that converts a given altitude in hundreds of ft (3 digit number),
     e.g. 5000 ft -> 050, 500 ft -> 005.
 
-    Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
-    floored to the nearest 1000 ft.
-
-    Reference: *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*,
-    WMO-No.782, 2020 edition. https://library.wmo.int/?lvl=notice_display&id=716
-
     Args:
         val (int, float): the altitude to convert, in feet.
 
     Returns:
         str: the corresponding METAR code chunk
+
+    Below 10'000 ft, the value is floored to the nearest 100 ft. Above 10'000 ft, the value is
+    floored to the nearest 1000 ft.
+
+    Reference:
+        *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*, WMO-No.782, 2020 edition.
+        `<https://library.wmo.int/?lvl=notice_display&id=716>`_
+
+    Warning:
+        Currently, this function does **not** allow to implement EASA's rule AMC1 MET.TR.205(e)(3)
+        (i.e. setting a resolution of 50 ft up to 300 ft for aerodromes with established
+        low-visibility approach and landing procedures).
+        `<https://www.easa.europa.eu/downloads/22100/en>`_
+
     """
 
     if np.isnan(val):

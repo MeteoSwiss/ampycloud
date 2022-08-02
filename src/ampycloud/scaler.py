@@ -103,7 +103,6 @@ def minrange2minmax(vals: np.ndarray, min_range: Union[int, float] = 0) -> tuple
     Returns:
         tuple: the min and max values of the data range of at least min_range in size.
 
-
     Essentially, if max(vals)-min(vals) >= min_range, this function returns
     ``[min(vals), max(vals)]``. Else, it returns ``[val_mid-min_range/2, val_mid+min_range/2]``,
     with ```val_mid=(max(vals)+min(vals))/2``.
@@ -126,12 +125,6 @@ def step_scale(vals: np.ndarray,
                steps: list, scales: list, mode: str = 'do') -> np.ndarray:
     """ Scales values step-wise, with different constants bewteen specific steps.
 
-    Values are divided by scales[i] between steps[i-1:i].
-    Anything outside the range of steps is divided by scales[0] or scale[-1].
-
-    Note that this function ensures that each step is properly offseted to ensure that the
-    scaled data is continuous (no gaps and no overlapping steps) !
-
     Args:
         vals (ndarray): values to scale.
         steps (list, optional): the step **edges**. E.g. [8000, 14000].
@@ -141,6 +134,13 @@ def step_scale(vals: np.ndarray,
 
     Returns:
         ndarray: (un-)step-scaled values
+
+    Values are divided by scales[i] between steps[i-1:i].
+    Anything outside the range of steps is divided by scales[0] or scale[-1].
+
+    Note that this function ensures that each step is properly offseted to ensure that the
+    scaled data is continuous (no gaps and no overlapping steps) !
+
     """
 
     # Some sanity checks
