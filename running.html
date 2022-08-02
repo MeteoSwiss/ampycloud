@@ -14,6 +14,7 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.4.0.dev0
+                0.5.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -96,9 +97,9 @@
            <div itemprop="articleBody">
              
   <section id="using-ampycloud">
-<span id="using"></span><h1>Using ampycloud<a class="headerlink" href="#using-ampycloud" title="Permalink to this headline"></a></h1>
+<span id="using"></span><h1>Using ampycloud<a class="headerlink" href="#using-ampycloud" title="Permalink to this heading"></a></h1>
 <section id="a-no-words-example-for-those-that-want-to-get-started-quickly">
-<h2>A no-words example for those that want to get started quickly<a class="headerlink" href="#a-no-words-example-for-those-that-want-to-get-started-quickly" title="Permalink to this headline"></a></h2>
+<h2>A no-words example for those that want to get started quickly<a class="headerlink" href="#a-no-words-example-for-those-that-want-to-get-started-quickly" title="Permalink to this heading"></a></h2>
 <div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
 <span class="kn">import</span> <span class="nn">ampycloud</span>
 <span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
@@ -124,7 +125,7 @@
 </div>
 </section>
 <section id="the-input-data">
-<h2>The input data<a class="headerlink" href="#the-input-data" title="Permalink to this headline"></a></h2>
+<h2>The input data<a class="headerlink" href="#the-input-data" title="Permalink to this heading"></a></h2>
 <p>The ampycloud algorithm is meant to process cloud base <em>hits</em> from ceilometer observations. A given
 set of hits to be processed by the ampycloud package must be stored inside a
 <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with a specific set of characteristics outlined below. Users can use
@@ -132,7 +133,7 @@ the following utility function to check whether a given <code class="xref py py-
 requirements of ampycloud.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_data_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">req_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.core.frame.DataFrame</span></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_data_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">req_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span></dt>
 <dd><p>Assesses whether a given <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> is compatible with the requirements
 of ampycloud.</p>
 <dl class="field-list simple">
@@ -217,14 +218,14 @@ to correct the type on the fly.</p></li>
 
 </section>
 <section id="running-the-algorithm">
-<span id="running"></span><h2>Running the algorithm<a class="headerlink" href="#running-the-algorithm" title="Permalink to this headline"></a></h2>
+<span id="running"></span><h2>Running the algorithm<a class="headerlink" href="#running-the-algorithm" title="Permalink to this heading"></a></h2>
 <section id="the-ampycloud-core-run-function">
-<h3>The <a class="reference internal" href="modules/ampycloud.html#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.core.run()</span></code></a> function<a class="headerlink" href="#the-ampycloud-core-run-function" title="Permalink to this headline"></a></h3>
+<h3>The <a class="reference internal" href="modules/ampycloud.html#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.core.run()</span></code></a> function<a class="headerlink" href="#the-ampycloud-core-run-function" title="Permalink to this heading"></a></h3>
 <p>Applying the ampycloud algorithm to a given set of ceilometer cloud base hits is done via the
 following function, that is also directly accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.run()</span></code>.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime.datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">datetime</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">CeiloChunk</span></a></span></span></dt>
 <dd><p>Runs the ampycloud algorithm on a given dataset.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -321,7 +322,7 @@ the algorithm on it, and fetch the resulting METAR-like message:</p>
 
 </section>
 <section id="the-ampycloud-data-ceilochunk-class">
-<h3>The <a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk</span></code></a> class<a class="headerlink" href="#the-ampycloud-data-ceilochunk-class" title="Permalink to this headline"></a></h3>
+<h3>The <a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk</span></code></a> class<a class="headerlink" href="#the-ampycloud-data-ceilochunk-class" title="Permalink to this heading"></a></h3>
 <p>The function <a class="reference internal" href="modules/ampycloud.html#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">ampycloud.core.run()</span></code></a> returns a <a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.data.CeiloChunk</span></code></a> class
 instance, which is at the core of ampycloud. This class is used to load and format the
 user-supplied data, execute the different ampycloud algorithm steps, and format their outcomes.</p>
@@ -391,14 +392,14 @@ fact that clouds have a single base altitude at any given time [<em>citation nee
 
 </section>
 <section id="the-no-plots-required-shortcut">
-<h3>The no-plots-required shortcut<a class="headerlink" href="#the-no-plots-required-shortcut" title="Permalink to this headline"></a></h3>
+<h3>The no-plots-required shortcut<a class="headerlink" href="#the-no-plots-required-shortcut" title="Permalink to this heading"></a></h3>
 <p>The following function, also accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.metar()</span></code>,
 will directly provide interested users with the ampycloud METAR-like message for a given dataset.
 It is a convenience function intended for users that do not want to generate diagnostic plots, but
 only seek the outcome of the ampycloud algorithm formatted as a METAR-like <code class="docutils literal notranslate"><span class="pre">str</span></code>.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.core.frame.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.core.</span></span><span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span></dt>
 <dd><p>Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
@@ -424,7 +425,7 @@ only seek the outcome of the ampycloud algorithm formatted as a METAR-like <code
 
 </section>
 <section id="adjusting-the-default-algorithm-parameters">
-<h3>Adjusting the default algorithm parameters<a class="headerlink" href="#adjusting-the-default-algorithm-parameters" title="Permalink to this headline"></a></h3>
+<h3>Adjusting the default algorithm parameters<a class="headerlink" href="#adjusting-the-default-algorithm-parameters" title="Permalink to this heading"></a></h3>
 <p>The ampycloud parameters with a <strong>scientific</strong> impact on the outcome of the algorithm
 (see <a class="reference internal" href="parameters.html#the-ampycloud-scientific-parameters"><span class="std std-ref">here for the complete list</span></a>)
 are accessible via <a class="reference internal" href="modules/ampycloud.html#ampycloud.dynamic.AMPYCLOUD_PRMS" title="ampycloud.dynamic.AMPYCLOUD_PRMS"><code class="xref py py-data docutils literal notranslate"><span class="pre">ampycloud.dynamic.AMPYCLOUD_PRMS</span></code></a> as a nested dictionary. When a new
@@ -499,7 +500,7 @@ ampycloud scientific parameters, you can use <a class="reference internal" href=
 </section>
 </section>
 <section id="logging">
-<span id="id1"></span><h2>Logging<a class="headerlink" href="#logging" title="Permalink to this headline"></a></h2>
+<span id="id1"></span><h2>Logging<a class="headerlink" href="#logging" title="Permalink to this heading"></a></h2>
 <p>A <code class="xref py py-class docutils literal notranslate"><span class="pre">logging.NullHandler</span></code> instance is being created by ampycloud, such that no logging will
 be apparent to the users unless they explicitly set it up themselves
 (<a class="reference external" href="https://docs.python.org/3/howto/logging.html#configuring-logging-for-a-library">see here</a> for
@@ -520,12 +521,12 @@ can adjust the logging level of each ampycloud module however they desire, e.g.:
 </div>
 </section>
 <section id="plotting-the-diagnostic-diagram">
-<span id="plotting"></span><h2>Plotting the diagnostic diagram<a class="headerlink" href="#plotting-the-diagnostic-diagram" title="Permalink to this headline"></a></h2>
+<span id="plotting"></span><h2>Plotting the diagnostic diagram<a class="headerlink" href="#plotting-the-diagnostic-diagram" title="Permalink to this heading"></a></h2>
 <p>Users interested to plot the ampycloud diagnostic diagram can do using the following function,
 which is also accessible as <code class="docutils literal notranslate"><span class="pre">ampycloud.plots.diagnostic()</span></code>:</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.core.</span></span><span class="sig-name descname"><span class="pre">diagnostic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">ampycloud.data.CeiloChunk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">upto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.core.</span></span><span class="sig-name descname"><span class="pre">diagnostic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">CeiloChunk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">upto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Union</span><span class="p"><span class="pre">[</span></span><span class="pre">list</span><span class="p"><span class="pre">,</span></span><span class="w"> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd><p>A function to create the ampycloud diagnostic plot all the way to the layering step
 (included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).</p>
 <dl class="field-list simple">
@@ -566,7 +567,7 @@ None = [‘pdf’].</p></li>
 </dd></dl>
 
 <section id="adjusting-the-plotting-style">
-<h3>Adjusting the plotting style<a class="headerlink" href="#adjusting-the-plotting-style" title="Permalink to this headline"></a></h3>
+<h3>Adjusting the plotting style<a class="headerlink" href="#adjusting-the-plotting-style" title="Permalink to this heading"></a></h3>
 <p>ampycloud ships with its own set of matplotlib style files, that are used in <cite>context</cite>, and thus
 will not impact any user-specified setups.</p>
 <p>Whereas the default parameters should ensure a decent-enough look for the diagnostic diagrams of

@@ -14,12 +14,13 @@
         <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
         <script src="_static/jquery.js"></script>
         <script src="_static/underscore.js"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
         <script src="_static/doctools.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Using ampycloud" href="running.html" />
-    <link rel="prev" title="ampycloud 0.4.0.dev0" href="index.html" /> 
+    <link rel="prev" title="ampycloud 0.5.0.dev0" href="index.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -30,7 +31,7 @@
             <a href="index.html" class="icon icon-home"> ampycloud
           </a>
               <div class="version">
-                0.4.0.dev0
+                0.5.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -84,13 +85,13 @@
            <div itemprop="articleBody">
              
   <section id="installation">
-<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline"></a></h1>
+<span id="install"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this heading"></a></h1>
 <p>ampycloud is available on pypi, which should make its installation straightforward.
 Typing the following in a terminal should take care of things:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">pip</span> <span class="n">install</span> <span class="n">ampycloud</span>
 </pre></div>
 </div>
-<p>ampycloud uses <a class="reference external" href="https://semver.org/">semantic versioning</a>. The latest stable version is 0.4.0.dev0.</p>
+<p>ampycloud uses <a class="reference external" href="https://semver.org/">semantic versioning</a>. The latest stable version is 0.5.0.dev0.</p>
 <p>The different releases of ampycloud are also available for download from its
 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/releases/latest/">Github repository</a>.</p>
 <p>If you plan to do dev-work with ampycloud, you should instead clone the <cite>develop</cite> branch
@@ -107,7 +108,7 @@ which case the install command becomes:</p>
 first.</p>
 </div>
 <section id="requirements">
-<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this headline"></a></h2>
+<h2>Requirements<a class="headerlink" href="#requirements" title="Permalink to this heading"></a></h2>
 <p>ampycloud is compatible with the following python versions:</p>
 <div class="highlight-python notranslate"><div class="highlight"><pre><span></span>    <span class="n">install_requires</span><span class="o">=</span><span class="p">[</span>
 </pre></div>
@@ -126,13 +127,13 @@ first.</p>
 </div>
 </section>
 <section id="testing-the-installation-speed-benchmark">
-<h2>Testing the installation &amp; Speed benchmark<a class="headerlink" href="#testing-the-installation-speed-benchmark" title="Permalink to this headline"></a></h2>
+<h2>Testing the installation &amp; Speed benchmark<a class="headerlink" href="#testing-the-installation-speed-benchmark" title="Permalink to this heading"></a></h2>
 <p>ampycloud is shipped with a high-level entry point that allows to run a speed check from the
 command line. To see if your installation was successful, the command <code class="docutils literal notranslate"><span class="pre">ampycloud_speed_test</span> <span class="pre">-h</span></code>
 should return:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>usage: ampycloud_speed_test [-h] [-niter int]
 
-ampycloud 0.4.0.dev0 - Python package to characterize cloud layers using ceilometer measurements.
+ampycloud 0.5.0.dev0 - Python package to characterize cloud layers using ceilometer measurements.
 This entry point lets you measure the performance of ampycloud on your machine.
 
 optional arguments:
@@ -147,13 +148,13 @@ For details: https://MeteoSwiss.github.io/ampycloud
 number of executions via the <code class="docutils literal notranslate"><span class="pre">-niter</span></code> argument. For comparison purposes, here are the performances
 on the machine that was responsible for compiling this documentation:</p>
 <div class="highlight-none notranslate"><div class="highlight"><pre><span></span>
-Test datetime: 2022-03-09 10:55:24.237221
-Platform: Linux-5.11.0-1028-azure-x86_64-with-glibc2.31
+Test datetime: 2022-08-02 13:58:22.449273
+Platform: Linux-5.15.0-1014-azure-x86_64-with-glibc2.31
 CPU count: 2
 
 ampycloud.demo() execution time from 10 runs:
- * mean [std]: 0.56s [0.05s]
- * median [min; max]: 0.55s [0.53s; 0.70s]
+ * mean [std]: 0.35s [0.02s]
+ * median [min; max]: 0.34s [0.34s; 0.40s]
 
 </pre></div>
 </div>
@@ -164,7 +165,7 @@ ampycloud.demo() execution time from 10 runs:
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="index.html" class="btn btn-neutral float-left" title="ampycloud 0.4.0.dev0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="index.html" class="btn btn-neutral float-left" title="ampycloud 0.5.0.dev0" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="running.html" class="btn btn-neutral float-right" title="Using ampycloud" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
