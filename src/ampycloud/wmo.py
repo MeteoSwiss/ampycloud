@@ -189,6 +189,12 @@ def alt2code(val: Union[int, float]) -> str:
         *Aerodrome Reports and Forecasts, A Users' Handbook to the Codes*, WMO-No.782, 2020 edition.
         `<https://library.wmo.int/?lvl=notice_display&id=716>`_
 
+    Warning:
+        Currently, this function does **not** allow to implement EASA's rule AMC1 MET.TR.205(e)(3)
+        (i.e. setting a resolution of 50 ft up to 300 ft for aerodromes with established
+        low-visibility approach and landing procedures).
+        `<https://www.easa.europa.eu/downloads/22100/en>`_
+
     """
 
     if np.isnan(val):
