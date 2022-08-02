@@ -236,17 +236,17 @@ class CeiloChunk(AbstractChunk):
     def max_hits_per_layer(self) -> int:
         """ The maximum number of ceilometer hits possible for a given layer, given the chunk data.
 
+        Returns:
+            int: the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
+            the **average** max number of hits per ceilometer per layer (remember: not all
+            ceilometers may have the same number of timestamps over the chunk time period !).
+
         This is the total number of **unique** timesteps from all ceilometers considered.
 
         Note:
             This value assumes that a layer can contain only 1 hit per ceilometer per timestep,
             i.e. 2 simultaneous hits from a given ceilometer can **never** belong to the same cloud
             layer.
-
-        Returns:
-            int: the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
-            the **average** max number of hits per ceilometer per layer (remember: not all
-            ceilometers may have the same number of timestamps over the chunk time period !).
 
         """
 
@@ -634,9 +634,15 @@ class CeiloChunk(AbstractChunk):
             logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
             logger.info('min_sep value: %.1f', min_sep)
 
+            # Handle #78: if the data is comprised of only two distinct altitudes, only look for
+            # up to 2 Gaussian components. Else, up to 3.
+            ncomp_max = np.min([len(np.unique(gro_alts[~np.isnan(gro_alts)])), 3])
+            logger.debug('Setting ncomp_max to: %i', ncomp_max)
+
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
-                gro_alts, min_sep=min_sep, **self.prms['LAYERING_PRMS']['gmm_kwargs'])
+                gro_alts, ncomp_max=ncomp_max, min_sep=min_sep,
+                **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
             logger.debug(' Cluster %s  has %i components according to GMM.',

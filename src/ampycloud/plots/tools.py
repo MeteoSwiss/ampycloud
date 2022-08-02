@@ -43,6 +43,9 @@ def valid_styles() -> list:
 def set_mplstyle(func: Callable) -> Callable:
     """ Intended to be used as a decorator around plotting functions, to set the plotting style.
 
+    Returns:
+        Callable: the decorator.
+
     By defaults, the ``base`` ampycloud style will be enabled. Motivated users can tweak it further
     by setting the ``MPL_STYLE`` entry of :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` to:
 
@@ -65,9 +68,6 @@ def set_mplstyle(func: Callable) -> Callable:
            - ``relsize``
            - ``metsymb`` (only if the ``MPL_STYLE`` entry of
              :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` was set to ``'metsymb'``)
-
-    Returns:
-        Callable: the decorator.
 
     Todo:
         See https://github.com/MeteoSwiss/ampycloud/issues/18
@@ -157,9 +157,6 @@ def get_scaling_kwargs(data: np.ndarray, mode: str, kwargs: dict) -> tuple:
     """ Utility function to extract the **actual, deterministic** parameters required to scale the
     data, given a set of user-defined parameters.
 
-    This is a utility function to aid in the drawing of secondary axis that require to derive the
-    "reverse scaling function".
-
     Args:
         data (pd.Series): the data that was originally scaled by the user.
         mode (str): the name of the scaling used by the user. Must be any mode supported by
@@ -170,6 +167,9 @@ def get_scaling_kwargs(data: np.ndarray, mode: str, kwargs: dict) -> tuple:
     Return:
         tuple: (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
         scaling.
+
+    This is a utility function to aid in the drawing of secondary axis that require to derive the
+    "reverse scaling function".
 
     """
 
