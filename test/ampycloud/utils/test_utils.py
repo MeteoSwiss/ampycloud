@@ -36,21 +36,25 @@ def test_check_data_consistency():
     with raises(AmpycloudError):
         # Empty DataFrame
         data = pd.DataFrame(columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         check_data_consistency(data)
     with raises(AmpycloudError):
         # Missing column
         data = pd.DataFrame(np.array([['a', 1, 1]]), columns=['ceilo', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for col in ['ceilo', 'alt', 'type']:
             data.loc[:, col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Bad data type
         data = pd.DataFrame(np.array([['a', 0, 1, 1]]), columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Extra key
         data = pd.DataFrame(np.array([['a', 0, 1, 1, 99]]),
                             columns=['ceilo', 'dt', 'alt', 'type', 'extra'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -58,6 +62,7 @@ def test_check_data_consistency():
         # Negative alts
         data = pd.DataFrame(np.array([['a', 0, -1, 1]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -65,6 +70,7 @@ def test_check_data_consistency():
         # Type 0 should be NaN
         data = pd.DataFrame(np.array([['a', 0, 1, 0]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -72,6 +78,7 @@ def test_check_data_consistency():
         # Type 1 should not be NaN
         data = pd.DataFrame(np.array([['a', 0, np.nan, 1]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -79,6 +86,7 @@ def test_check_data_consistency():
         # Missing type 1 pts
         data = pd.DataFrame(np.array([['a', 0, 1, 2]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -86,6 +94,7 @@ def test_check_data_consistency():
         # Missing type 2 pts
         data = pd.DataFrame(np.array([['a', 0, 1, 3]]),
                             columns=['ceilo', 'dt', 'alt', 'type'])
+        data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data.loc[:, col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
