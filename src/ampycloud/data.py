@@ -469,7 +469,8 @@ class CeiloChunk(AbstractChunk):
             pass
 
         # Finally, let's metarize these slices !
-        self.metarize(which='slices', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+        self.metarize(which='slices', base_frac=self.prms['LAYER_BASE_FRAC'],
+                    lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
     def find_groups(self) -> None:
@@ -576,7 +577,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'group_id'] = self.data.loc[to_fill, 'slice_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='groups', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+        self.metarize(which='groups', base_frac=self.prms['LAYER_BASE_FRAC'],
+                    lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
     def find_layers(self) -> None:
@@ -662,7 +664,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'layer_id'] = self.data.loc[to_fill, 'group_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='layers', lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+        self.metarize(which='layers', base_frac=self.prms['LAYER_BASE_FRAC'],
+                    lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @property
     def n_slices(self) -> Union[None, int]:
