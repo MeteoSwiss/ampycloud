@@ -258,7 +258,8 @@ class CeiloChunk(AbstractChunk):
         return int(np.sum(out))
 
     @log_func_call(logger)
-    def metarize(self, which: int = 'slices', base_frac: float = 0.1,
+    def metarize(self, which: int = 'slices', base_perc: Union[int, float] = 10,
+                 lookback_perc: Union[int, float] = 100,
                  lim0: Union[int, float] = 0, lim8: Union[int, float] = 100) -> None:
         """ Assembles a :py:class:`pandas.DataFrame` of slice/group/layer METAR properties of
         interest.
@@ -266,10 +267,15 @@ class CeiloChunk(AbstractChunk):
         Args:
             which (str, optional): whether to process 'slices', 'groups', or 'layers'.
                 Defaults to 'slices'.
-            base_frac (float, optional): amount of the lowest slice/group/layer elements,
-                expressed as a fraction (0<=base_frac<=1) of the total hit count, to consider when
-                deriving the slice/group/layer altitude (as a median). Defaults to 0.1, i.e. the
-                cloud base is the median of the lowest 10% of cloud hits of that slice/group/layer.
+            base_perc (int|float, optional): percentile of the cloud hit heights (sorted from smallest
+                to highest) to derive the slice/group/layer altitude. Defaults to 10, i.e. the
+                cloud base is the 10% percentile of cloud heights of that slice/group/layer.
+            lookback_perc (int|float, optional): percentile of the cloud hit times to compute the
+                cloud height of a given layer. This parameter serves to increase the temporal
+                representativity of the cloud height in case of layers that have an increasing height
+                during the reference period.
+                Defaults to 100, i.e. all cloud hits are considered to compute the height.
+                50 -> only 50% of the most recent hits are used.
             lim0 (int|float, optional): upper limit of the sky coverage percentage for the 0 okta
                 bin, in %. Defaults to 0.
             lim8 (int|float, optional): lower limit of the sky coverage percentage for the 8 okta
@@ -384,15 +390,15 @@ class CeiloChunk(AbstractChunk):
             # Compute the corresponding okta level
             pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc'], lim0=lim0, lim8=lim8))
 
-            # What does XX% of the total hits represent, in terms of absolute hit counts ?
-            n_xxp = int(np.ceil(pdf.iloc[ind]['n_hits'] * base_frac))
+            # How many hits are there in the most recent period of that sli/gro/lay according to lookback_perc?
+            n_xxp = int(np.ceil(pdf.iloc[ind]['n_hits'] * lookback_perc/100))
 
             if n_xxp > 0:
-                # Measure the median altitude of the XX% smallest hits in the cluster,
-                # and use this as the layer base.
+                # Compute the cloud height as the percentile of the most recent hits of the sli/gro/lay 
                 pdf.iloc[ind]['alt_base'] = \
-                    np.median(self.data.loc[in_sligrolay, 'alt'].nsmallest(n_xxp))
-                # Measure the mean altitude and associated std of the layer
+                    np.percentile(self.data.loc[in_sligrolay].nlargest(n_xxp, 'dt')['alt'], base_perc)
+
+                # Measure the mean altitude and associated std of the (full) layer
                 pdf.iloc[ind]['alt_mean'] = np.nanmean(self.data.loc[in_sligrolay, 'alt'])
                 pdf.iloc[ind]['alt_std'] = np.nanstd(self.data.loc[in_sligrolay, 'alt'])
 
@@ -469,7 +475,8 @@ class CeiloChunk(AbstractChunk):
             pass
 
         # Finally, let's metarize these slices !
-        self.metarize(which='slices', base_frac=self.prms['LAYER_BASE_FRAC'],
+        self.metarize(which='slices', base_perc=self.prms['LAYER_BASE_PERC'],
+                    lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
@@ -577,7 +584,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'group_id'] = self.data.loc[to_fill, 'slice_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='groups', base_frac=self.prms['LAYER_BASE_FRAC'],
+        self.metarize(which='groups', base_perc=self.prms['LAYER_BASE_PERC'],
+                    lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @log_func_call(logger)
@@ -664,7 +672,8 @@ class CeiloChunk(AbstractChunk):
         self.data.loc[to_fill, 'layer_id'] = self.data.loc[to_fill, 'group_id']
 
         # Finally, let's metarize these !
-        self.metarize(which='layers', base_frac=self.prms['LAYER_BASE_FRAC'],
+        self.metarize(which='layers', base_perc=self.prms['LAYER_BASE_PERC'],
+                    lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @property

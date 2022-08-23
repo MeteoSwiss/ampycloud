@@ -19,8 +19,14 @@ OKTA_LIM0: 2
 # Min sky coverage (in %) down to which the coverage is considered full.
 OKTA_LIM8: 98
 
-# Fraction of smallest layer points to median to compute the layer altitude for the METAR
-LAYER_BASE_FRAC: 0.1
+# Percentile (in %) of the cloud hit heights (sorted from smallest to highest)
+# to compute the layer altitude for the METAR
+LAYER_BASE_PERC: 10
+
+# Percentile (in %) of the cloud hit times to compute the layer altitude for the METAR
+# 100%: it uses all the hits during the period
+# 50%: it uses only the last 50% of hits during the period
+LAYER_LOOKBACK_PERC: 100
 
 # Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
 # in the ampycloud METAR messages. Set it to null for no limit.
