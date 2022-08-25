@@ -636,11 +636,14 @@ class CeiloChunk(AbstractChunk):
             # Reshape the array in anticipation of the GMM routine ...
             gro_alts = gro_alts.reshape(-1, 1)
 
-            # Let's also get the overall group base alt
-            if self.groups.at[ind, 'alt_base'] > 10000:
-                min_sep = self.prms['LAYERING_PRMS']['min_sep_high']
-            else:
-                min_sep = self.prms['LAYERING_PRMS']['min_sep_low']
+            # Get minimum separation based on group base alt
+            min_sep_steps = self.prms['LAYERING_PRMS']['min_sep_kwargs']['steps']
+            min_sep_vals = self.prms['LAYERING_PRMS']['min_sep_kwargs']['separ']
+            if len(min_sep_steps) != len(min_sep_vals)-1:
+                raise AmpycloudError(f'Ouch ! len({min_sep_steps}) should be equal to len({min_sep_vals})-1.')
+
+            idx_sep = utils.index_between(min_sep_steps, self.groups.at[ind, 'alt_base'])
+            min_sep = min_sep_vals[idx_sep]
             logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
             logger.info('min_sep value: %.1f', min_sep)
 
