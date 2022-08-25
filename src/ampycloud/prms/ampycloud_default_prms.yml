@@ -21,7 +21,7 @@ OKTA_LIM8: 98
 
 # Percentile (in %) of the cloud hit heights (sorted from smallest to highest)
 # to compute the layer altitude for the METAR
-LAYER_BASE_PERC: 10
+LAYER_BASE_PERC: 5
 
 # Percentile (in %) of the cloud hit times to compute the layer altitude for the METAR
 # 100%: it uses all the hits during the period
