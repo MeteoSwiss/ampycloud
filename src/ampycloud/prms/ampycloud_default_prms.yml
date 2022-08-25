@@ -70,32 +70,34 @@ GROUPING_PRMS:
         affinity: manhattan
     # Time scaling mode
     dt_scale_mode: shift-and-scale
-    # Time scaling parameters
+    # Time scaling parameters (in min)
     dt_scale_kwargs:
         scale: 180
     # Altitude scaling mode
     alt_scale_mode: step-scale
-    # Altitude scaling parameters
+    # Altitude scaling parameters (in ft)
     alt_scale_kwargs:
         steps: [8000, 14000]
         scales: [100, 500, 1000]
-    # Distance from the mean altitude (in std) below which two slices are considered "overlapping"
+    # Distance from the mean altitude (in std in scaled units) below which two slices are considered "overlapping"
     overlap: 2.0
 
 # Layering parameters
 LAYERING_PRMS:
     # Minimum okta value below which cluster splitting is not attempted
     min_okta_to_split: 2
-    # Minimum separation (in ft) between the mean altitude of identified layers inside groups
-    # with a base altitude <=10'000ft. Any layers separated by less than this value will not be
-    # split. Any value < than 5 times the vertical resolution of the data will raise a warning, as
+    # Minimum layer separation parameters (in ft).
+    # Any number of values is allowed as long as len(steps) = len(separ)-1
+    # Minimum separation between the mean altitude of identified layers inside groups.
+    # Any layers separated by less than the separ value within the steps range will not be split.
+    # Any separ value < than 5 times the vertical resolution of the data will raise a warning, as
     # it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent
     # with the ICAO rules of layer selection, this should be >=100 ft.
-    min_sep_low: 150
-    # Same as min_sep_low, but for layers identified in groups with a base height >10'000 ft. For
-    # the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this
-    # should be >=1000 ft.
-    min_sep_high: 1000
+    # For the ampycloud METAR messages to be consistent with the ICAO rules of layer selection,
+    # the minimum separ value should be >=1000 ft above 10'000 ft.
+    min_sep_kwargs:
+        steps: [2000, 5000]
+        separ: [1000, 500, 1000]
     # Gaussian Mixture Model parameters
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
