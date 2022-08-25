@@ -76,6 +76,14 @@ def test_ceilochunk_init():
         chunk = CeiloChunk(mock_data, prms={'SMTH_BAD': 0})
         assert chunk.prms == dynamic.AMPYCLOUD_PRMS
 
+    with warns(AmpycloudWarning):
+        chunk = CeiloChunk(mock_data, prms={'LAYERING_PRMS':{'min_okkta_to_split':2}})
+        assert chunk.prms == dynamic.AMPYCLOUD_PRMS
+
+    with warns(AmpycloudWarning):
+        chunk = CeiloChunk(mock_data, prms={'LAYERING_PRMS':{'min_sep_kwargs':{'separation':[1500,1500,1500]}}})
+        assert chunk.prms == dynamic.AMPYCLOUD_PRMS
+
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
     reset_prms()
 
@@ -189,6 +197,42 @@ def test_ceilochunk_2lay():
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'SCT009 SCT019'
 
+def test_layering_minimum_separation():
+    """ Test the parameters minimum separation of layers. """
+
+    # Create fake data with two layers
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt': 1000, 'alt_std': 40, 'sky_cov_frac': 0.5,
+                                     'period': 100, 'amplitude': 0},
+                                     {'alt': 1200, 'alt_std': 40, 'sky_cov_frac': 0.5,
+                                     'period': 100, 'amplitude': 0}])
+
+    # Instantiate a CeiloChunk entity with default parameters
+    chunk_2lay = CeiloChunk(mock_data)
+    chunk_2lay.find_slices()
+    chunk_2lay.find_groups()
+    chunk_2lay.find_layers()
+
+    # Instantiate a CeiloChunk entity with large minimum separation
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_kwargs']['steps'] = [500]
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_kwargs']['separ'] = [1000, 1000]
+    # If there are already distinct groups, there is no way to put them together in the layering step
+    # So, make a big group to start with
+    dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['overlap'] = 10
+
+    chunk_1lay = CeiloChunk(mock_data)
+    chunk_1lay.find_slices()
+    chunk_1lay.find_groups()
+    chunk_1lay.find_layers()
+
+    # Assert the final METAR code is correct
+    # assert chunk_2lay.metar_msg() == 'SCT009 SCT014'
+    assert chunk_1lay.metar_msg() == 'BKN009'
+
+    reset_prms()
 
 def test_layering_singlepts():
     """ Test the layering step when there is a single time steps. See #62 for the motivation. """
