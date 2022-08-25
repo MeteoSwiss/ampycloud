@@ -219,6 +219,10 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
             # Or to adjust some other algorithm parameter:
             prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}}}
 
+            # Beware not to overwrite parameters! DO NOT write it as:
+            prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}}, 'GROUPING_PRMS':{'algo': 'agglomerative'}}
+            # but write as:
+            prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}, 'algo': 'agglomerative'}}
 
     The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
