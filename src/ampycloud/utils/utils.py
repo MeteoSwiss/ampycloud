@@ -15,6 +15,7 @@ import contextlib
 import copy
 import numpy as np
 import pandas as pd
+from typing import Union
 
 # Import from this package
 from ..errors import AmpycloudError, AmpycloudWarning
@@ -238,3 +239,42 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dic
             ref_dict[key] = item
 
     return ref_dict
+
+def index_between(limits: list, value: Union[int,float]) -> int:
+    """ Return the index of value in the list limits (between limits[i-1] and limits[i]).
+
+    Args:
+        limits (list): list of limit values, e.g. the grouping steps
+        value (int|float): value to locate.
+
+    Returns:
+        idx (int): index of the value position:
+            0: value is lower than the lowest value of limits
+            len(limits): value is higher than the highest value of limits
+            other: limits[i] <= value < limits[i+1]
+    """
+    if len(limits) == 0:
+        raise AmpycloudError("limits must be a non-empty list.")
+
+    if not isinstance(limits, list):
+        raise AmpycloudError(f"limits should be of type list, but is of type {type(limits)}")
+
+    if len(np.unique(np.array(limits))) != len(np.array(limits)):
+        raise AmpycloudError(f"limits cannot contain duplicate values..")
+
+    if limits != sorted(limits):
+        warnings.warn(f'Huh ! List {limits} shuold be sorted beforehand.',
+                          AmpycloudWarning)
+        logger.warning('Sorting list... but may give unexpected behaviour.')
+        limits = sorted(limits)
+
+    n_steps = len(limits)
+    sep_bool = np.array(limits) > value
+    if np.sum(sep_bool) == n_steps:
+        idx = 0
+    elif np.sum(sep_bool) == 0:
+        idx = n_steps
+    else:
+        idx = sep_bool.argmax()
+
+    return idx

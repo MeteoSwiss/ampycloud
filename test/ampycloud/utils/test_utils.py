@@ -15,7 +15,7 @@ import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud.utils.utils import check_data_consistency, tmp_seed, adjust_nested_dict
+from ampycloud.utils.utils import check_data_consistency, tmp_seed, adjust_nested_dict, index_between
 from ampycloud.utils.mocker import canonical_demo_data
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
 from ampycloud import hardcoded
@@ -147,3 +147,16 @@ def test_adjust_nested_dict():
     new_dict = {'a': [1, 2, 3], 'b': {1: {2}}}
     out = adjust_nested_dict(ref_dict, new_dict)
     assert out == new_dict
+
+def test_index_between():
+    """ This routine tests the function index_between. """
+
+    assert index_between([0,2],-1) == 0
+    assert index_between([0,2],3) == 2
+    assert index_between([0,2],1) == 1
+    assert index_between([1],-1) == 0
+    assert index_between([1],2) == 1
+    with raises(AmpycloudError):
+        assert index_between(np.array([0,2]),2)
+        assert index_between([],2)
+        assert index_between([1,2,2],2)
