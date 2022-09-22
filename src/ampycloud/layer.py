@@ -17,7 +17,7 @@ import numpy as np
 from sklearn.mixture import GaussianMixture
 
 # Import from this module
-from .errors import AmpycloudError, AmpycloudWarning
+from .errors import AmpycloudError
 from .logger import log_func_call
 from .scaler import minmax_scale
 from .utils import utils
@@ -191,18 +191,6 @@ def ncomp_from_gmm(vals: np.ndarray,
         logger.debug('Skipping the GMM computation: all the values are the same.')
         return (1, np.zeros(len(vals_orig)), None)
 
-    # Estimate the resolution of the data (by measuring the minimum separation between two data
-    # points).
-    res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
-    res_orig = np.min(res_orig[res_orig > 0])
-    logger.debug('res_orig: %.2f', res_orig)
-    # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
-    # over-layering.
-    if min_sep < 5*res_orig:
-        warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
-                      'This could lead to an over-layering for thin groups !',
-                      AmpycloudWarning)
-
     # Rescale the data if warranted
     if rescale_0_to_x is not None:
         vals = minmax_scale(vals) * rescale_0_to_x
@@ -235,37 +223,40 @@ def ncomp_from_gmm(vals: np.ndarray,
     logger.debug('best_model_ind (raw): %i', best_model_ind)
     logger.debug('best_ncomp (raw): %i', best_ncomp)
 
-    # If I found only one component, I can stop here
-    if best_ncomp == 1:
-        return best_ncomp, best_ids, abics
+    # Merge too close layers, but only if you are not planning to do it anyway
+    # afterwards based on the function merge_sligrolay in data.py module!
+    if min_sep > 0:
+        # If I found only one component, I can stop here
+        if best_ncomp == 1:
+            return best_ncomp, best_ids, abics
 
-    # If I found more than one component, let's make sure that they are sufficiently far apart.
-    # First, let's compute the mean component heights
-    mean_comp_heights = [np.mean(vals_orig[best_ids == i]) for i in range(ncomp[best_model_ind])]
+        # If I found more than one component, let's make sure that they are sufficiently far apart.
+        # First, let's compute the mean component heights
+        mean_comp_heights = [np.mean(vals_orig[best_ids == i]) for i in range(ncomp[best_model_ind])]
 
-    # These may not be ordered, so let's keep track of the indices
-    # First, let's deal with the fact that they are not ordered.
-    comp_ids = np.argsort(mean_comp_heights)
+        # These may not be ordered, so let's keep track of the indices
+        # First, let's deal with the fact that they are not ordered.
+        comp_ids = np.argsort(mean_comp_heights)
 
-    # Now loop throught the different components, check if they are far sufficiently far apart,
-    # and merge them otherwise.
-    for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
+        # Now loop throught the different components, check if they are far sufficiently far apart,
+        # and merge them otherwise.
+        for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
 
-        # If the the delta is large enough, move on ...
-        if delta >= min_sep:
-            continue
+            # If the the delta is large enough, move on ...
+            if delta >= min_sep:
+                continue
 
-        # Else, I have two components that are "too close" from each other. Let's merge them by
-        # re-assigning the ids accordingly.
-        best_ids[best_ids == comp_ids[ind+1]] = comp_ids[ind]
-        comp_ids[ind+1] = comp_ids[ind]
+            # Else, I have two components that are "too close" from each other. Let's merge them by
+            # re-assigning the ids accordingly.
+            best_ids[best_ids == comp_ids[ind+1]] = comp_ids[ind]
+            comp_ids[ind+1] = comp_ids[ind]
 
-        # Decrease the number of valid ids
-        best_ncomp -= 1
+            # Decrease the number of valid ids
+            best_ncomp -= 1
 
-    if not len(np.unique(best_ids)) == best_ncomp:
-        raise AmpycloudError('Ouch ! This error is impossible !')
+        if not len(np.unique(best_ids)) == best_ncomp:
+            raise AmpycloudError('Ouch ! This error is impossible !')
 
-    logger.debug('best_ncomp (final): %i', best_ncomp)
+        logger.debug('best_ncomp (final): %i', best_ncomp)
 
     return best_ncomp, best_ids, abics
