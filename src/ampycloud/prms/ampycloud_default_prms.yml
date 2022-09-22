@@ -57,6 +57,10 @@ SLICING_PRMS:
     # Altitude scaling parameters
     alt_scale_kwargs:
         min_range: 1000
+    # Minimum layer separation parameters (in ft). See more details below.
+    min_sep_kwargs:
+        steps: [1000, 5000]
+        separ: [150, 300, 1000]
 
 # Clustering parameters
 GROUPING_PRMS:
@@ -81,23 +85,15 @@ GROUPING_PRMS:
         scales: [100, 500, 1000]
     # Distance from the mean altitude (in std in scaled units) below which two slices are considered "overlapping"
     overlap: 2.0
+    # Minimum layer separation parameters (in ft). See more details below.
+    min_sep_kwargs:
+        steps: [1000, 5000]
+        separ: [150, 300, 1000]
 
 # Layering parameters
 LAYERING_PRMS:
     # Minimum okta value below which cluster splitting is not attempted
     min_okta_to_split: 2
-    # Minimum layer separation parameters (in ft).
-    # Any number of values is allowed as long as len(steps) = len(separ)-1
-    # Minimum separation between the mean altitude of identified layers inside groups.
-    # Any layers separated by less than the separ value within the steps range will not be split.
-    # Any separ value < than 5 times the vertical resolution of the data will raise a warning, as
-    # it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent
-    # with the ICAO rules of layer selection, this should be >=100 ft.
-    # For the ampycloud METAR messages to be consistent with the ICAO rules of layer selection,
-    # the minimum separ value should be >=1000 ft above 10'000 ft.
-    min_sep_kwargs:
-        steps: [2000, 5000]
-        separ: [150, 500, 1000]
     # Gaussian Mixture Model parameters
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
@@ -115,3 +111,20 @@ LAYERING_PRMS:
         delta_mul_gain: 0.95
         # If set, rescale each group between 0 and this value before looking for layers using gmm.
         rescale_0_to_x: 100
+    # Minimum layer separation parameters (in ft). See more details below.
+    min_sep_kwargs:
+        steps: [1000, 5000]
+        separ: [150, 300, 1000]
+
+# Minimum layer separation parameters (min_sep_kwargs, in ft).
+# Minimum separation between the altitude of identified layers inside slices/groups/layers.
+# Any layers separated by more than the separ value within the steps range will be remerged.
+# Any separ value < than 5 times the vertical resolution of the data will raise a warning, as
+# it may lead to an over-layering of groups (especially in the layering step). 
+# For the ampycloud METAR to be consistent with the ICAO rules of layer selection, this should be >=100 ft.
+# For the ampycloud METAR to be consistent with the ICAO rules of layer selection,
+# the minimum separ value should be >=1000 ft above 10'000 ft.
+# Possible values of steps and separ:
+#   Any number of values is allowed as long as len(steps) = len(separ)-1
+#   Set the value 'null' to turn off this option.
+
