@@ -15,9 +15,10 @@ import copy
 from abc import ABC, abstractmethod
 import numpy as np
 import pandas as pd
+import warnings
 
 # Import from this package
-from .errors import AmpycloudError
+from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from . import scaler, cluster, layer
 from . import wmo, icao
@@ -258,6 +259,69 @@ class CeiloChunk(AbstractChunk):
         return int(np.sum(out))
 
     @log_func_call(logger)
+    def merge_sligrolay(self, which='groups', min_sep_steps=[2000,5000],
+                        min_sep_vals=[150,500,1000]):
+        """ Method to merge sli/gro/lay whose base altitudes are too close"""
+
+        # Get ids of each point within that sli/gro/lay
+        point_ids = copy.copy(self.data.loc[:, f'{which[:-1]}_id'])
+
+        # Get ids of each sli/gro/lay
+        if which == "slices":
+            comp_ids = np.argsort(self._slices['original_id'])
+            sligroly_heights = np.sort(self._slices['alt_base'])
+        elif which == "groups":
+            comp_ids = np.argsort(self._groups['original_id'])
+            sligroly_heights = np.sort(self._groups['alt_base'])
+        elif which == "layers":
+            comp_ids = np.argsort(self._layers['original_id'])
+            sligroly_heights = np.sort(self._layers['alt_base'])
+
+        best_ncomp = len(sligroly_heights)
+        print(which, sligroly_heights)
+        if best_ncomp > 1:
+            for (ind, delta) in enumerate(np.diff(sligroly_heights)):
+                # Get minimum separation based on group base alt
+                if which == "slices":
+                    idx_sep = utils.index_between(min_sep_steps, self.slices.at[ind, 'alt_base'])
+                elif which == "groups":
+                    idx_sep = utils.index_between(min_sep_steps, self.groups.at[ind, 'alt_base'])
+                elif which == "layers":
+                    idx_sep = utils.index_between(min_sep_steps, self.layers.at[ind, 'alt_base'])
+                min_sep = min_sep_vals[idx_sep]
+
+                # Estimate the resolution of the data (by measuring the minimum separation between two data
+                # points).
+                res_orig = np.diff(np.sort(sligroly_heights.reshape(len(sligroly_heights))))
+                res_orig = np.min(res_orig[res_orig > 0])
+                logger.debug('res_orig: %.2f', res_orig)
+                # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
+                # over-layering.
+                if min_sep < 5*res_orig:
+                    warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
+                                'This could lead to an over-layering for thin groups !',
+                                AmpycloudWarning)
+
+                # If the the delta is large enough, move on ...
+                if delta >= min_sep:
+                    continue
+
+                # Else, I have two components that are "too close" from each other. Let's merge them by
+                # re-assigning the ids accordingly.
+                #print("ind,delta",ind, delta, min_sep)
+                #print("comp_ids", comp_ids)
+                print("point_ids:\n", point_ids)
+                point_ids.loc[point_ids == comp_ids[ind+1]] = comp_ids[ind]
+                point_ids.loc[ind+1] = comp_ids[ind]
+                print("point_ids:\n", point_ids)
+
+                # Decrease the number of valid ids
+                best_ncomp -= 1
+
+            self.data.loc[:, f'{which[:-1]}_id'] = point_ids
+            print(self.data)
+
+    @log_func_call(logger)
     def metarize(self, which: int = 'slices', base_perc: Union[int, float] = 10,
                  lookback_perc: Union[int, float] = 100,
                  lim0: Union[int, float] = 0, lim8: Union[int, float] = 100) -> None:
@@ -479,6 +543,19 @@ class CeiloChunk(AbstractChunk):
                     lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
+        # Merge too close layers and re-metarize
+        if self.prms['SLICING_PRMS']['min_sep_kwargs']['steps'] is not None and \
+                self.prms['SLICING_PRMS']['min_sep_kwargs']['separ'] is not None:
+            # Merge too close slices
+            self.merge_sligrolay(which='slices',
+                    min_sep_steps=self.prms['SLICING_PRMS']['min_sep_kwargs']['steps'],
+                    min_sep_vals=self.prms['SLICING_PRMS']['min_sep_kwargs']['separ'])
+
+            # Re-metarize
+            self.metarize(which='slices', base_perc=self.prms['LAYER_BASE_PERC'],
+                        lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
+                        lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+
     @log_func_call(logger)
     def find_groups(self) -> None:
         """ Identifies groups of coherent hits accross overlapping slices. Intended as the second
@@ -588,6 +665,20 @@ class CeiloChunk(AbstractChunk):
                     lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
+        # Merge too close layers and re-metarize
+        if self.prms['GROUPING_PRMS']['min_sep_kwargs']['steps'] is not None and \
+                self.prms['GROUPING_PRMS']['min_sep_kwargs']['separ'] is not None:
+            # Merge too close groups
+            self.merge_sligrolay(which='groups',
+                    min_sep_steps=self.prms['GROUPING_PRMS']['min_sep_kwargs']['steps'],
+                    min_sep_vals=self.prms['GROUPING_PRMS']['min_sep_kwargs']['separ'])
+
+            # Re-metarize
+            self.metarize(which='groups', base_perc=self.prms['LAYER_BASE_PERC'],
+                        lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
+                        lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+
+
     @log_func_call(logger)
     def find_layers(self) -> None:
         """ Identifies individual layers from a list of groups, splitting these in 2 or 3
@@ -654,7 +745,7 @@ class CeiloChunk(AbstractChunk):
 
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
-                gro_alts, ncomp_max=ncomp_max, min_sep=min_sep,
+                gro_alts, ncomp_max=ncomp_max, min_sep=0,
                 **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
@@ -678,6 +769,19 @@ class CeiloChunk(AbstractChunk):
         self.metarize(which='layers', base_perc=self.prms['LAYER_BASE_PERC'],
                     lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
                     lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
+
+        # Merge too close layers and re-metarize
+        if self.prms['LAYERING_PRMS']['min_sep_kwargs']['steps'] is not None and \
+                self.prms['LAYERING_PRMS']['min_sep_kwargs']['separ'] is not None:
+            # Merge too close layers
+            self.merge_sligrolay(which='layers',
+                    min_sep_steps=self.prms['LAYERING_PRMS']['min_sep_kwargs']['steps'],
+                    min_sep_vals=self.prms['LAYERING_PRMS']['min_sep_kwargs']['separ'])
+
+            # Re-metarize
+            self.metarize(which='layers', base_perc=self.prms['LAYER_BASE_PERC'],
+                        lookback_perc=self.prms['LAYER_LOOKBACK_PERC'],
+                        lim0=self.prms['OKTA_LIM0'], lim8=self.prms['OKTA_LIM8'])
 
     @property
     def n_slices(self) -> Union[None, int]:
