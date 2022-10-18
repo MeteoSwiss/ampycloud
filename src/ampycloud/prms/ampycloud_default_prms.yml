@@ -19,8 +19,14 @@ OKTA_LIM0: 2
 # Min sky coverage (in %) down to which the coverage is considered full.
 OKTA_LIM8: 99
 
-# Fraction of smallest layer points to median to compute the layer altitude for the METAR
-LAYER_BASE_FRAC: 0.1
+# Number (in %) of the cloud hit heights (sorted from smallest to highest) to ignore when
+# computing the cloud altitude base, taken to be the min altitude of the 100-LAYER_BASE_LVL_PERC %
+# remaining points.
+BASE_LVL_ALT_PERC: 5
+
+# Number of Slice/Group/Layer points (in %) - starting from the most recent ones - to use to compute
+# the cloud base altitude. Set to 100 to use all the points.
+BASE_LVL_LOOKBACK_PERC: 100
 
 # Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
 # in the ampycloud METAR messages. Set it to null for no limit.
@@ -43,12 +49,12 @@ SLICING_PRMS:
         affinity: manhattan
     # Time scaling mode
     dt_scale_mode: shift-and-scale
-    # Time scaling parameters
+    # Time scaling parameters (in s)
     dt_scale_kwargs:
         scale: 100000
     # Altitude scaling mode
     alt_scale_mode: minmax-scale
-    # Altitude scaling parameters
+    # Altitude scaling parameters (in ft)
     alt_scale_kwargs:
         min_range: 1000
 
@@ -67,12 +73,12 @@ GROUPING_PRMS:
         affinity: manhattan
     # Time scaling mode
     dt_scale_mode: shift-and-scale
-    # Time scaling parameters
+    # Time scaling parameters (in s)
     dt_scale_kwargs:
         scale: 180
     # Altitude scaling mode
     alt_scale_mode: step-scale
-    # Altitude scaling parameters
+    # Altitude scaling parameters (in ft)
     alt_scale_kwargs:
         steps: [8000, 14000]
         scales: [100, 500, 1000]
@@ -88,7 +94,7 @@ LAYERING_PRMS:
     # messages to be consistent with the ICAO rules of layer selection, this should be >=100 ft
     # below 10'000 ft.
     min_sep_vals: [150, 1000]
-    # Altitude threshold between the min_sep_val elements.
+    # Altitude threshold (in ft) separating the min_sep_val elements.
     min_sep_lims: [10000]
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
@@ -96,11 +102,11 @@ LAYERING_PRMS:
         # Whether to use 'delta', or 'prob' to find the best model.
         # See ampycloud.layer.best_gmm() for details.
         mode: delta
-        # minimum model probability computed from the relative likelihood,
+        # Minimum model probability computed from the relative likelihood,
         # below which alternative models with more components will be considered.
         # Only used if mode='prob'
         min_prob: 1.0
-        # a model with a smaller score will only be considered "valid"
+        # A model with a smaller score will only be considered "valid"
         # if its score is smaller than delta_mul_gain*current_best_score.
         # Only used if mode='delta'
         delta_mul_gain: 0.95

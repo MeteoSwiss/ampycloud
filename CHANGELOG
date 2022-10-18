@@ -6,9 +6,12 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v0.6.0.dev0]
 ### Added:
+ - [fpavogt, 2022-10-18] Add option to use a percentage of the most recent measurements to derive the base altitude
  - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
 ### Fixed:
+ - [fpavogt, 2022-10-18] Fix #84 and #85.
 ### Changed:
+ - [fpavogt, 2022-10-18] Base level is now defined as a percentile of the total number of points.
  - [fpavogt, 2022-10-18] Enable multiple min_sep_vals for the LAYERING step.
  - [fpavogt, 2022-10-18] Cleanup pylint and error messages.
  - [fpavogt, 2022-10-18] Use min/max+padding to assess if slices are overlapping, instead of mean+std.
