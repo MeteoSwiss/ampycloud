@@ -54,6 +54,9 @@ SLICING_PRMS:
 
 # Clustering parameters
 GROUPING_PRMS:
+    # Padding (in % of the slice altitude range) to add above and below slices
+    # before looking for overlaps
+    alt_pad_perc: +10
     # Grouping algorithm name
     algo: agglomerative
     # Grouping algorithm parameters
@@ -73,8 +76,6 @@ GROUPING_PRMS:
     alt_scale_kwargs:
         steps: [8000, 14000]
         scales: [100, 500, 1000]
-    # Distance from the mean altitude (in std) below which two slices are considered "overlapping"
-    overlap: 2.0
 
 # Layering parameters
 LAYERING_PRMS:

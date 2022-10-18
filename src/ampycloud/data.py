@@ -287,6 +287,9 @@ class CeiloChunk(AbstractChunk):
             * ``alt_base (float)``: base altitude
             * ``alt_mean (float)``: mean altitude
             * ``alt_std (float)``: altitude standard deviation
+            * ``alt_min (float)``: minimum altitude
+            * ``alt_max (float)``: maximum altitude
+            * ``thickness (float)``: thickness
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.
@@ -311,6 +314,9 @@ class CeiloChunk(AbstractChunk):
                 'alt_base',  # Slice/Group/Layer base altitude
                 'alt_mean',  # Slice/Group/Layer mean altitude
                 'alt_std',  # Slice/Group/Layer altitude std
+                'alt_min',  # Slice/Group/Layer min altitude
+                'alt_max',  # Slice/Group/Layer max altitude
+                'thickness', # Slice/Group/Layer thickness
                 'code',  # METAR code
                 'significant',  # bool, whether this is a slice/group/layer that should be reported
                 'original_id',  # Original id of the slice/group/layer set by the clustering algo
@@ -396,20 +402,25 @@ class CeiloChunk(AbstractChunk):
                 pdf.iloc[ind]['alt_mean'] = np.nanmean(self.data.loc[in_sligrolay, 'alt'])
                 pdf.iloc[ind]['alt_std'] = np.nanstd(self.data.loc[in_sligrolay, 'alt'])
 
+            # Let's also keep track of the min and max values
+            pdf.iloc[ind]['alt_min'] = np.nanmin(self.data.loc[in_sligrolay, 'alt'])
+            pdf.iloc[ind]['alt_max'] = np.nanmax(self.data.loc[in_sligrolay, 'alt'])
+            pdf.iloc[ind]['thickness'] = pdf.iloc[ind]['alt_max'] - pdf.iloc[ind]['alt_min']
+
             # Finally, create the METAR-like code for the cluster
             pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
                 wmo.alt2code(pdf.iloc[ind]['alt_base'])
 
         # Set the proper column types
-        pdf.loc[:, 'n_hits'] = pdf['n_hits'].astype(int)
-        pdf.loc[:, 'perc'] = pdf['perc'].astype(float)
-        pdf.loc[:, 'okta'] = pdf['okta'].astype(int)
-        pdf.loc[:, 'alt_base'] = pdf['alt_base'].astype(float)
-        pdf.loc[:, 'alt_mean'] = pdf['alt_mean'].astype(float)
-        pdf.loc[:, 'alt_std'] = pdf['alt_std'].astype(float)
-        pdf.loc[:, 'code'] = pdf['code'].astype(str)
-        pdf.loc[:, 'significant'] = pdf['significant'].astype(bool)
-        pdf['original_id'] = pdf['original_id'].astype(int)
+        for cname in ['n_hits', 'okta', 'original_id']:
+            pdf.loc[:, cname] = pdf[cname].astype(int)
+        for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max']:
+            pdf.loc[:, cname] = pdf[cname].astype(float)
+        for cname in ['code']:
+            pdf.loc[:, cname] = pdf[cname].astype(str)
+        for cname in ['significant']:
+            pdf.loc[:, cname] = pdf[cname].astype(bool)
+
         if which == 'slices':
             pdf.loc[:, 'isolated'] = pdf['isolated'].astype(bool)
         if which == 'groups':
@@ -505,16 +516,15 @@ class CeiloChunk(AbstractChunk):
 
             # Let's get ready to measure the slice separation above and below with respect to the
             # other ones.
-            m_lim = row['alt_mean'] - self.prms['GROUPING_PRMS']['overlap'] * row['alt_std']
-            p_lim = row['alt_mean'] + self.prms['GROUPING_PRMS']['overlap'] * row['alt_std']
+            alt_pad = self.prms['GROUPING_PRMS']['alt_pad_perc']/100
+            m_lim = row['alt_min'] - alt_pad * row['thickness']
+            p_lim = row['alt_max'] + alt_pad * row['thickness']
 
             # For each other slice below and above, figure out if it is overlapping or not
-            seps_m = [m_lim < self.slices.iloc[item]['alt_mean'] +
-                      self.prms['GROUPING_PRMS']['overlap'] *
-                      self.slices.iloc[item]['alt_std'] for item in range(ind)]
-            seps_p = [p_lim > self.slices.iloc[item]['alt_mean'] -
-                      self.prms['GROUPING_PRMS']['overlap'] *
-                      self.slices.iloc[item]['alt_std']
+            seps_m = [m_lim < self.slices.iloc[item]['alt_max'] +
+                      alt_pad * self.slices.iloc[item]['thickness'] for item in range(ind)]
+            seps_p = [p_lim > self.slices.iloc[item]['alt_min'] -
+                      alt_pad * self.slices.iloc[item]['thickness']
                       for item in range(ind+1, len(self.slices), 1)]
 
             # If the slice is isolated, I can stop here and move on ...

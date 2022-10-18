@@ -191,16 +191,17 @@ class DiagnosticPlot:
                                  marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
 
             # Let's also plot the overlap area of the slice
-            slice_mean = self._chunk.slices.loc[ind, 'alt_mean']
-            slice_std = self._chunk.slices.loc[ind, 'alt_std']
-            overlap = self._chunk.prms['GROUPING_PRMS']['overlap']
+            slice_min = self._chunk.slices.loc[ind, 'alt_min']
+            slice_max = self._chunk.slices.loc[ind, 'alt_max']
+            thickness = self._chunk.slices.loc[ind, 'thickness']
+            alt_pad = self._chunk.prms['GROUPING_PRMS']['alt_pad_perc']/100
 
             # Get some fake data spanning the entire data range
             misc = np.linspace(np.nanmin(self._chunk.data['dt']),
                                np.nanmax(self._chunk.data['dt']), 3)
             self._axs[0].fill_between(misc,
-                                      np.ones_like(misc) * (slice_mean - overlap * slice_std),
-                                      np.ones_like(misc) * (slice_mean + overlap * slice_std),
+                                      np.ones_like(misc) * (slice_min - alt_pad * thickness),
+                                      np.ones_like(misc) * (slice_max + alt_pad * thickness),
                                       edgecolor='none', alpha=0.1, zorder=0,
                                       facecolor=base_clr)
 
