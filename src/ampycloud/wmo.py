@@ -60,7 +60,7 @@ def perc2okta(val: Union[int, float, np.ndarray],
 
     # A basic sanity check
     if not np.all((val >= 0) * (val <= 100)):
-        raise AmpycloudError(f'Ouch! I need 0<=val<=100, but I got: {val}')
+        raise AmpycloudError(f'I need 0<=val<=100, but I got: {val}')
 
     # If I did not receive a numpy array, build one to be efficient afterwards ...
     if isinstance(val, (float, int)):
@@ -108,7 +108,7 @@ def okta2code(val: int) -> str:
 
     # Some sanity checks
     if not isinstance(val, int):
-        raise AmpycloudError(f'Ouch ! val should be of type int, not: {type(val)}')
+        raise AmpycloudError(f'val should be of type int, not: {type(val)}')
 
     if val == 0:
         return 'NCD'
@@ -123,7 +123,7 @@ def okta2code(val: int) -> str:
     if val == 9:
         return None
 
-    raise AmpycloudError(f'Ouch ! okta value not understood: {val}')
+    raise AmpycloudError(f'okta value not understood: {val}')
 
 
 @log_func_call(logger)
@@ -168,7 +168,7 @@ def okta2symb(val: int, use_metsymb: bool = False) -> str:
     if val == 9:
         return r'\nineoktas\ '
 
-    raise AmpycloudError(f'Ouch ! okta value not understood: {val}')
+    raise AmpycloudError(f'okta value not understood: {val}')
 
 
 @log_func_call(logger)
@@ -207,4 +207,4 @@ def alt2code(val: Union[int, float]) -> str:
     else:
         out = np.floor(val/1000)*10
 
-    return '%03i' % (out)
+    return f'{int(out):03}'

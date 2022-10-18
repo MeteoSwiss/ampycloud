@@ -22,7 +22,7 @@ def main():
 
     # Make sure that we remain below 1s at the 3 sigma level
     if (lim := mean + 3*std) >= 1:
-        raise Exception('Ouch ! ampycloud speed check failed: mean + 3*std >= 1s ...')
+        raise Exception('ampycloud speed check failed: mean + 3*std >= 1s ...')
 
     print(f'Speed check passed: mean + 3*std = {lim:.2f} s.')
 

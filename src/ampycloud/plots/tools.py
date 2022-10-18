@@ -94,11 +94,11 @@ def set_mplstyle(func: Callable) -> Callable:
             pass
         # 2) Else, I need a string or I cry ...
         elif not isinstance(spec_style, str):
-            raise AmpycloudError('Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] type unknown:' +
+            raise AmpycloudError('dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] type unknown:' +
                                  f' {type(spec_style)}')
         # 3) Is that a supported style ?
         elif spec_style not in valid_styles():
-            raise AmpycloudError(f'Ouch ! dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] {spec_style}' +
+            raise AmpycloudError(f'dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] {spec_style}' +
                                  f' unknown. Should be one of {valid_styles()}.')
         # 4) Request seems legit ... let's load the spec_style ...
         else:

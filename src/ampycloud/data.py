@@ -316,7 +316,7 @@ class CeiloChunk(AbstractChunk):
                 'alt_std',  # Slice/Group/Layer altitude std
                 'alt_min',  # Slice/Group/Layer min altitude
                 'alt_max',  # Slice/Group/Layer max altitude
-                'thickness', # Slice/Group/Layer thickness
+                'thickness',  # Slice/Group/Layer thickness
                 'code',  # METAR code
                 'significant',  # bool, whether this is a slice/group/layer that should be reported
                 'original_id',  # Original id of the slice/group/layer set by the clustering algo
@@ -337,7 +337,7 @@ class CeiloChunk(AbstractChunk):
         # Be unforgiving and raise an error.
         # Note: this is NOT the same as finding 0 sli/gro/lay, in which case n_ind would be 0.
         if n_ind is None:
-            raise AmpycloudError(f'Ouch ! No {which} found. Have they been computed ?')
+            raise AmpycloudError(f'No {which} found. Have they been computed ?')
 
         # Prepare a pandas DataFrame to store all the info
         pdf = pd.DataFrame(index=range(n_ind), columns=cols)
@@ -361,7 +361,7 @@ class CeiloChunk(AbstractChunk):
                 # be metarizing clusters ! This is one of those places where it is assumed that
                 # the layering step comes *after* the grouping step.
                 if self._layers is not None:
-                    raise AmpycloudError('Ouch ! Layering already done.' +
+                    raise AmpycloudError('Layering already done.' +
                                          ' If you metarize your groups now, you will loose the' +
                                          ' layering information !')
 
@@ -496,7 +496,7 @@ class CeiloChunk(AbstractChunk):
         # This is one of those location where it is expected that groups are found after
         # slices ...
         if self._slices is None:
-            raise AmpycloudError('Ouch ! Slicing not yet done. You cannot find groups without ' +
+            raise AmpycloudError('Slicing not yet done. You cannot find groups without ' +
                                  'finding slices first !')
 
         # First, make sure that we can keep track of the isolation status of slices.
@@ -603,7 +603,7 @@ class CeiloChunk(AbstractChunk):
         # This is one of those location where it is expected that layers are found after
         # groups ...
         if self._groups is None:
-            raise AmpycloudError('Ouch ! Grouping not yet done. You cannot find layers without ' +
+            raise AmpycloudError('Grouping not yet done. You cannot find layers without ' +
                                  'finding groups first !')
 
         # Get ready to add the layering info to the data
@@ -655,7 +655,7 @@ class CeiloChunk(AbstractChunk):
                 **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log
-            logger.debug(' Cluster %s  has %i components according to GMM.',
+            logger.debug(' Cluster %s has %i components according to GMM.',
                          {self.groups.at[ind, "code"]}, ncomp)
 
             # Keep track of what I just found ...
@@ -763,7 +763,7 @@ class CeiloChunk(AbstractChunk):
 
         # Some sanity checks to begin with
         if (sligrolay := getattr(self, which)) is None:
-            raise AmpycloudError(f'Ouch ! No {which} information found. Have they been computed ?')
+            raise AmpycloudError(f'No {which} information found. Have they been computed ?')
 
         # Deal with the 0 layer situation
         if getattr(self, f'n_{which}') == 0:

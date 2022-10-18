@@ -129,7 +129,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
         elif mode == 'delta':
             better = abics[m_ind + 1] < delta_mul_gain * abics[best_model_ind]
         else:
-            raise AmpycloudError(f'Ouch ! Unknown mode: {mode}')
+            raise AmpycloudError(f'Unknown mode: {mode}')
 
         # If the requested conditions are met, then this next model is better !
         if better:
@@ -199,7 +199,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
     # over-layering.
     if min_sep < 5*res_orig:
-        warnings.warn(f'Huh ! min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
+        warnings.warn(f'min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
                       'This could lead to an over-layering for thin groups !',
                       AmpycloudWarning)
 
@@ -224,7 +224,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     elif scores == 'BIC':
         abics = np.array([models[item].bic(vals) for item in models])
     else:
-        raise AmpycloudError(f'Ouch ! Unknown scores: {scores}')
+        raise AmpycloudError(f'Unknown scores: {scores}')
 
     # Get the interesting information out
     best_model_ind = best_gmm(abics, **kwargs)
@@ -264,7 +264,7 @@ def ncomp_from_gmm(vals: np.ndarray,
         best_ncomp -= 1
 
     if not len(np.unique(best_ids)) == best_ncomp:
-        raise AmpycloudError('Ouch ! This error is impossible !')
+        raise AmpycloudError('This error is impossible !')
 
     logger.debug('best_ncomp (final): %i', best_ncomp)
 

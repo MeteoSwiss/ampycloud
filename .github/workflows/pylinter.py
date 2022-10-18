@@ -87,7 +87,7 @@ def main():
         print('pylint stderr:')
         print(err_msgs)
 
-        raise Exception('Ouch! The linting crashed ?!')
+        raise Exception('The linting crashed ?!')
 
     # Extract the score ...
     score = re.search(r'\s([\+\-\d\.]+)/10', msgs)[1]
@@ -98,7 +98,7 @@ def main():
     if args.restrict is not None and score < 10:
         # Display the output, so we can learn something from it if needed
         print(msgs)
-        raise Exception('Ouch! Some forbidden pylint error codes are present!')
+        raise Exception('Some forbidden pylint error codes are present!')
 
     # If I do not have any restricted errors, then simply show the pylint errors without failing.
     print(msgs)
@@ -107,7 +107,7 @@ def main():
     # by a Github Action.
     if args.min_score is not None:
         if score < args.min_score:
-            raise Exception('''Ouch! pylint final score of %.2f is smaller than the specified
+            raise Exception('''pylint final score of %.2f is smaller than the specified
                                threshold of %.2f !''' % (float(score), args.min_score))
 
 

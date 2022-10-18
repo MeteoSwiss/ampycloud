@@ -368,9 +368,9 @@ class DiagnosticPlot:
 
         msg = []
         if self._chunk.geoloc is not None:
-            msg += [r'{}'.format(self._chunk.geoloc)]
+            msg += [rf'{self._chunk.geoloc}']
         if self._chunk.ref_dt is not None:
-            msg += [r'\smaller $\Delta t_{\rm ref}$: ' + '{}'.format(self._chunk.ref_dt)]
+            msg += [r'\smaller $\Delta t_{\rm ref}$: ' + f'{self._chunk.ref_dt}']
 
         if not len(msg) == 0:
             self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
@@ -385,7 +385,7 @@ class DiagnosticPlot:
         """
 
         if name is not None or metar is not None:
-            msg = r'\smaller \bf %s: %s' % (name, metar)
+            msg = rf'\smaller \bf {name}: {metar}'
 
             # Show it if it contains something ...
             self._axs[2].text(0.5, 1.3, texify(msg),
@@ -401,7 +401,7 @@ class DiagnosticPlot:
         msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg()
 
         if self._chunk.msa is not None:
-            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(self._chunk.msa)
+            msg += '\n' + rf'\smaller\smaller MSA: {self._chunk.msa} ft'
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.25, texify(msg),

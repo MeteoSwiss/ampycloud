@@ -79,4 +79,4 @@ def clusterize(data: np.ndarray, algo: str = None, **kwargs: dict) -> tuple:
         return agglomerative_cluster(data, **kwargs)
 
     # Else, complain ...
-    raise AmpycloudError(f'Ouch ! Clustering algorithm unknown: {algo}')
+    raise AmpycloudError(f'Clustering algorithm unknown: {algo}')

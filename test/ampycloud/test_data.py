@@ -240,6 +240,7 @@ def test_layering_singleval():
     # Check that the GMM was never executed
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
 
+
 def test_layering_dualeval():
     """ Test the layering step when there are two single altitude values. See #78 for details. """
 
