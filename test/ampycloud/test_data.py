@@ -139,6 +139,36 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
 
+def test_bad_layer_sep_lims():
+    """ Test that giving problematic layer separation limits does raise an error. """
+
+    # Make sure that bad layering min sep values raises an error
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_vals'] = [150, 1000]
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_lims'] = [5000, 10000]
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                     'period': 100, 'amplitude': 0}])
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+
+    with raises(AmpycloudError):
+        chunk.find_layers()
+
+    reset_prms()
+
+
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
 

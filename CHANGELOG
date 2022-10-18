@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
 ### Fixed:
 ### Changed:
+ - [fpavogt, 2022-10-18] Enable multiple min_sep_vals for the LAYERING step.
  - [fpavogt, 2022-10-18] Cleanup pylint and error messages.
  - [fpavogt, 2022-10-18] Use min/max+padding to assess if slices are overlapping, instead of mean+std.
  - [fpavogt, 2022-10-18] Default value of OKTA_LIM8 is changed from 98 to 99.
