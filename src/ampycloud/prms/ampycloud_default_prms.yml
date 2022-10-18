@@ -17,7 +17,7 @@ MPL_STYLE: 'base'
 OKTA_LIM0: 2
 
 # Min sky coverage (in %) down to which the coverage is considered full.
-OKTA_LIM8: 98
+OKTA_LIM8: 99
 
 # Fraction of smallest layer points to median to compute the layer altitude for the METAR
 LAYER_BASE_FRAC: 0.1
