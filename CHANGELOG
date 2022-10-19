@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v0.6.0.dev0]
 ### Added:
+ - [fpavogt, 2022-10-19] Add scipy to the list of required dependencies.
  - [fpavogt, 2022-10-19] The metarize routine now also computes the "fluffiness" of cloud layers.
  - [fpavogt, 2022-10-18] Add option to use a percentage of the most recent measurements to derive the base altitude
  - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
