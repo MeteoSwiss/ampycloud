@@ -70,7 +70,7 @@ GROUPING_PRMS:
         n_clusters: null # null = None
         distance_threshold: 1
         linkage: single
-        affinity: manhattan
+        affinity: euclidean
     # Time scaling mode
     dt_scale_mode: shift-and-scale
     # Time scaling parameters (in s)
