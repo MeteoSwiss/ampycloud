@@ -148,7 +148,7 @@ def step_scale(vals: np.ndarray,
         raise AmpycloudError('Steps and scales have incompatible lengths.')
 
     if np.any(np.diff(steps) < 0):
-        raise AmpycloudError('Steps should be oredered from smallest to largest !')
+        raise AmpycloudError('Steps should be ordered from smallest to largest !')
 
     # What is the offset of each bin ?
     offsets = [0] + steps
@@ -167,8 +167,12 @@ def step_scale(vals: np.ndarray,
     for (sid, sval) in enumerate(scales):
 
         # What is this specific step offset (to ensure continuity between steps) ?
-        cont_corr = np.concatenate((np.array([steps[0]/scales[0]]), np.diff(steps)/scales[1:-1]))
-        cont_corr = np.sum(cont_corr[:sid])
+        if len(steps) > 0:
+            cont_corr = np.concatenate((np.array([steps[0]/scales[0]]),
+                                        np.diff(steps)/scales[1:-1]))
+            cont_corr = np.sum(cont_corr[:sid])
+        else:
+            cont_corr = 0  # Special case for when I have a single scaling for the entire interval
 
         if mode == 'do':
 
