@@ -14,8 +14,8 @@ import logging
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
-from scipy.spatial import ConvexHull
-from scipy.spatial.qhull import QhullError
+from scipy.spatial import ConvexHull  # pylint: disable-msg=E0611
+from scipy.spatial.qhull import QhullError  # pylint: disable-msg=E0611
 import pandas as pd
 
 # Import from this package
