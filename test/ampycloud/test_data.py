@@ -271,6 +271,27 @@ def test_layering_singleval():
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
 
 
+def test_coplanar_hull():
+    """ Test that the complex hull calculation does not crash the code if points are co-planar. """
+
+    data = np.array([np.ones(10), np.arange(0, 10, 1), np.arange(0, 10, 1), np.ones(10)])
+
+    mock_data = pd.DataFrame(data.T,
+                             columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+
+    # Points are coplanar, the fluffiness should be forced to 0
+    assert chunk.slices.loc[0, 'fluffiness'] == 0
+
 def test_layering_dualeval():
     """ Test the layering step when there are two single altitude values. See #78 for details. """
 

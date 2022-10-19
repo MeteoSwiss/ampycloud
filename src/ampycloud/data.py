@@ -14,6 +14,8 @@ import logging
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
+from scipy.spatial import ConvexHull
+from scipy.spatial.qhull import QhullError
 import pandas as pd
 
 # Import from this package
@@ -296,6 +298,7 @@ class CeiloChunk(AbstractChunk):
             * ``alt_min (float)``: minimum altitude
             * ``alt_max (float)``: maximum altitude
             * ``thickness (float)``: thickness
+            # ``fluffiness (float)``: fluffiness of the cloud layer, from 0 (sharp) to 1 (fluffy)
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.
@@ -323,6 +326,7 @@ class CeiloChunk(AbstractChunk):
                 'alt_min',  # Slice/Group/Layer min altitude
                 'alt_max',  # Slice/Group/Layer max altitude
                 'thickness',  # Slice/Group/Layer thickness
+                'fluffiness',  # Slice/Group/Layer fluffiness
                 'code',  # METAR code
                 'significant',  # bool, whether this is a slice/group/layer that should be reported
                 'original_id',  # Original id of the slice/group/layer set by the clustering algo
@@ -396,7 +400,7 @@ class CeiloChunk(AbstractChunk):
             # Compute the corresponding okta level
             pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc'], lim0=lim0, lim8=lim8))
 
-            # Start compute the base altitude
+            # Start computing the base altitude
             # First, compute which points should be considered in terms of lookback time
             n_to_use = int(np.floor(len(self.data.loc[in_sligrolay]) * base_lvl_lookback_perc/100))
             # Then, actually compute the base altitude, possibly ignoring the lowest points
@@ -405,13 +409,38 @@ class CeiloChunk(AbstractChunk):
                               base_lvl_alt_perc)
 
             # Measure the mean altitude and associated std of the layer
-            pdf.iloc[ind]['alt_mean'] = np.nanmean(self.data.loc[in_sligrolay, 'alt'])
-            pdf.iloc[ind]['alt_std'] = np.nanstd(self.data.loc[in_sligrolay, 'alt'])
+            pdf.iloc[ind]['alt_mean'] = self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
+            pdf.iloc[ind]['alt_std'] = self.data.loc[in_sligrolay, 'alt'].std(skipna=True)
 
             # Let's also keep track of the min and max values
-            pdf.iloc[ind]['alt_min'] = np.nanmin(self.data.loc[in_sligrolay, 'alt'])
-            pdf.iloc[ind]['alt_max'] = np.nanmax(self.data.loc[in_sligrolay, 'alt'])
+            pdf.iloc[ind]['alt_min'] = self.data.loc[in_sligrolay, 'alt'].min(skipna=True)
+            pdf.iloc[ind]['alt_max'] = self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
             pdf.iloc[ind]['thickness'] = pdf.iloc[ind]['alt_max'] - pdf.iloc[ind]['alt_min']
+
+            # Let's also compute the "fluffiness" of the cloud sli-gro-lay
+            if np.count_nonzero(in_sligrolay) >= 3 and pdf.iloc[ind]['thickness'] > 0:
+                # First, compute the convex hull encompassing all the points
+                try:
+                    hull = ConvexHull(self.data.loc[in_sligrolay, ('alt', 'dt')].values)
+                except QhullError as qhe:
+                    msg = 'QhullError raised. Forcing fluffiness to 0. Are cloud hits co-planar ?'
+                    logger.error(msg)
+                    logger.error(qhe)
+                    pdf.iloc[ind]['fluffiness'] = 0
+                    break
+                # Next, find the full area of the sli-gro-lay (i.e. max extent of detections)
+                sligrolay_area = pdf.iloc[ind]['thickness'] * \
+                    (self.data.loc[in_sligrolay, 'dt'].max(skipna=True) -
+                     self.data.loc[in_sligrolay, 'dt'].min(skipna=True))
+                # ... and derive the "fluffiness"
+                pdf.iloc[ind]['fluffiness'] = hull.volume / sligrolay_area
+
+                if pdf.iloc[ind]['fluffiness'] < 0 or pdf.iloc[ind]['fluffiness'] > 1:
+                    raise AmpycloudError(
+                        f'Fluffiness out-of-range: {pdf.iloc[ind]["fluffiness"]:.5f}')
+            else:
+                # Not enough points to compute a fluffiness
+                pdf.iloc[ind]['fluffiness'] = 0
 
             # Finally, create the METAR-like code for the cluster
             pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
@@ -420,7 +449,8 @@ class CeiloChunk(AbstractChunk):
         # Set the proper column types
         for cname in ['n_hits', 'okta', 'original_id']:
             pdf.loc[:, cname] = pdf[cname].astype(int)
-        for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max']:
+        for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max', 'thickness',
+                      'fluffiness']:
             pdf.loc[:, cname] = pdf[cname].astype(float)
         for cname in ['code']:
             pdf.loc[:, cname] = pdf[cname].astype(str)

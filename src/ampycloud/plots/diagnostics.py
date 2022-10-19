@@ -194,16 +194,23 @@ class DiagnosticPlot:
             slice_min = self._chunk.slices.loc[ind, 'alt_min']
             slice_max = self._chunk.slices.loc[ind, 'alt_max']
             thickness = self._chunk.slices.loc[ind, 'thickness']
+            fluffiness = self._chunk.slices.loc[ind, 'fluffiness']
             alt_pad = self._chunk.prms['GROUPING_PRMS']['alt_pad_perc']/100
 
             # Get some fake data spanning the entire data range
-            misc = np.linspace(np.nanmin(self._chunk.data['dt']),
-                               np.nanmax(self._chunk.data['dt']), 3)
+            misc = np.linspace(self._chunk.data['dt'].min(skipna=True),
+                               self._chunk.data['dt'].max(skipna=True), 3)
             self._axs[0].fill_between(misc,
                                       np.ones_like(misc) * (slice_min - alt_pad * thickness),
                                       np.ones_like(misc) * (slice_max + alt_pad * thickness),
                                       edgecolor='none', alpha=0.1, zorder=0,
                                       facecolor=base_clr)
+            # Let's also print the slice fluffiness
+            if fluffiness is not None and not np.isnan(fluffiness):
+                self._axs[0].text(self._chunk.data['dt'].min(skipna=True)-15,
+                                  0.5*(slice_max + slice_min),
+                                  rf'$f:{self._chunk.slices.loc[ind, "fluffiness"]:.1f}$',
+                                  color=base_clr, rotation=90, va='center', ha='center')
 
             # Stop here if that slice has 0 okta.
             if self._chunk.slices.iloc[ind]['okta'] == 0:
