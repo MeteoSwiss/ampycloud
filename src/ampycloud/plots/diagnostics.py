@@ -19,7 +19,7 @@ from matplotlib.lines import Line2D
 from matplotlib import rcParams
 
 # Import from this package
-from .. import scaler
+from .. import scaler, fluffer
 from .hardcoded import WIDTH_TWOCOL, MRKS
 from .tools import texify, get_scaling_kwargs
 from .. import wmo
@@ -61,7 +61,7 @@ class DiagnosticPlot:
 
         # Use gridspec for a fine control of the figure area.
         fig_gs = gridspec.GridSpec(1, 5,
-                                   height_ratios=[1], width_ratios=[1, 0.25, 0.18, 0.18, 0.18],
+                                   height_ratios=[1], width_ratios=[1, 0.1, 0.3, 0.18, 0.18],
                                    left=0.08, right=0.99, bottom=0.15, top=0.75,
                                    wspace=0.0, hspace=0.05)
 
@@ -186,15 +186,20 @@ class DiagnosticPlot:
             fcs[is_vv] = 'none'
 
             # I can finally show the points ...
-            self._axs[0].scatter(self._chunk.data[in_slice]['dt'],
-                                 self._chunk.data[in_slice]['alt'],
+            self._axs[0].scatter(self._chunk.data.loc[in_slice, 'dt'],
+                                 self._chunk.data.loc[in_slice, 'alt'],
                                  marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
+
+            # ... and the corresponding LOWESS-fit used to derive their fluffiness
+            _, lowess_pts = fluffer.get_fluffiness(
+                self._chunk.data.loc[in_slice, ['dt', 'alt']].values, **self._chunk.prms['LOWESS'])
+            self._axs[0].plot(lowess_pts[:, 0], lowess_pts[:, 1],
+                              ls='-', lw=1.5, c=base_clr, drawstyle='steps-mid', zorder=0)
 
             # Let's also plot the overlap area of the slice
             slice_min = self._chunk.slices.loc[ind, 'alt_min']
             slice_max = self._chunk.slices.loc[ind, 'alt_max']
             thickness = self._chunk.slices.loc[ind, 'thickness']
-            fluffiness = self._chunk.slices.loc[ind, 'fluffiness']
             alt_pad = self._chunk.prms['GROUPING_PRMS']['alt_pad_perc']/100
 
             # Get some fake data spanning the entire data range
@@ -205,12 +210,6 @@ class DiagnosticPlot:
                                       np.ones_like(misc) * (slice_max + alt_pad * thickness),
                                       edgecolor='none', alpha=0.1, zorder=0,
                                       facecolor=base_clr)
-            # Let's also print the slice fluffiness
-            if fluffiness is not None and not np.isnan(fluffiness):
-                self._axs[0].text(self._chunk.data['dt'].min(skipna=True)-15,
-                                  0.5*(slice_max + slice_min),
-                                  rf'$f:{self._chunk.slices.loc[ind, "fluffiness"]:.1f}$',
-                                  color=base_clr, rotation=90, va='center', ha='center')
 
             # Stop here if that slice has 0 okta.
             if self._chunk.slices.iloc[ind]['okta'] == 0:
@@ -227,12 +226,15 @@ class DiagnosticPlot:
             else:
                 warn = ''
 
-            # Show the slice METAR text
-            msg = r'\smaller ' + wmo.okta2symb(
+            # Show the slice METAR text, plus the fluffiness, plus the isolation status
+            msg = r'\smaller '
+            msg += wmo.okta2symb(
                 self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
-            ) + ' ' + self._chunk.slices.iloc[ind]['code'] + warn
-            self._axs[1].text(0.5, self._chunk.slices.iloc[ind]['alt_base'],
+                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb'))
+            msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
+                   rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
+            msg += warn
+            self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'alt_base'],
                               texify(msg),
                               va='center', ha='center', color=base_clr,
                               bbox=dict(facecolor='none', edgecolor=base_clr, alpha=alpha, ls='--'))
@@ -476,6 +478,8 @@ class DiagnosticPlot:
     def format_group_axes(self) -> None:
         """ Format the duplicate axes related to the grouping part.
 
+        TODO: add secondary axis for the altitude rescaling as well. See #91.
+
         """
 
         # Only proceed if I have found some clusters ...
@@ -489,11 +493,6 @@ class DiagnosticPlot:
                                    self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    self._chunk.prms['GROUPING_PRMS']['dt_scale_kwargs'])
 
-            (alt_scale_kwargs, alt_descale_kwargs) = \
-                get_scaling_kwargs(self._chunk.data['alt'].values,
-                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_kwargs'])
-
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(
@@ -505,22 +504,11 @@ class DiagnosticPlot:
                                    fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
                                    **dt_descale_kwargs)))
 
-            secax_y = self._axs[0].secondary_yaxis(
-                1.14,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   **alt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   **alt_descale_kwargs)))
-
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Grouping $\Delta t$'))
-            secax_y.set_ylabel(texify(r'\smaller Grouping Alt.'))
 
             # And reduce the fontsize while we're at it ...
             secax_x.tick_params(axis='x', which='both', labelsize=rcParams['font.size']-2)
-            secax_y.tick_params(axis='y', which='both', labelsize=rcParams['font.size']-2)
 
     def save(self, fn_out: str, fmts: list = None) -> None:
         """ Saves the plot to file.

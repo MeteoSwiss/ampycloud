@@ -28,6 +28,15 @@ BASE_LVL_ALT_PERC: 5
 # the cloud base altitude. Set to 100 to use all the points.
 BASE_LVL_LOOKBACK_PERC: 100
 
+# LOWESS parameters used to fit Slice/Groups/Layers
+LOWESS:
+    # Fraction of the slice/group/layer points to consider when deriving the LOWESS smooth fit.
+    # Values too small will result in overfitting. Values too large risk missing rapid
+    # altitude fluctuations.
+    frac: 0.35
+    # Number of LOWESS fitting iterations
+    it: 3
+
 # Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
 # in the ampycloud METAR messages. Set it to null for no limit.
 MSA: null
@@ -76,12 +85,11 @@ GROUPING_PRMS:
     # Time scaling parameters (in s)
     dt_scale_kwargs:
         scale: 180
-    # Altitude scaling mode
-    alt_scale_mode: step-scale
-    # Altitude scaling parameters (in ft)
-    alt_scale_kwargs:
-        steps: [8000, 14000]
-        scales: [100, 500, 1000]
+    # Boost factor applied to the slice fluffiness to derive the altitude scaling factor
+    fluffiness_boost: 2
+    # Range of allowed altitude scaling factor (in ft). The fluffiness_boost will never be allowed
+    # to push the alt_scaling beyond this range.
+    alt_scale_range: [100, 500]
 
 # Layering parameters
 LAYERING_PRMS:

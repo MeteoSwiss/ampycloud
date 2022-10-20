@@ -18,7 +18,6 @@ import matplotlib.gridspec as gridspec
 # Import from this package
 from ..logger import log_func_call
 from ..scaler import apply_scaling
-from .. import dynamic
 from .hardcoded import WIDTH_TWOCOL
 from .tools import texify, set_mplstyle
 
@@ -77,7 +76,7 @@ def scaling_fcts(show: bool = True,
 
     ax3.plot(alts, apply_scaling(
         alts, fct='step-scale',
-        **dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_scale_kwargs']), c='k', lw=2)
+        **{'steps': [3000, 8000], 'scales': [100, 500, 1000]}), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step-scale'))
 
     for ax in [ax1, ax2, ax3]:

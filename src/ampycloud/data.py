@@ -14,14 +14,12 @@ import logging
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
-from scipy.spatial import ConvexHull  # pylint: disable-msg=E0611
-from scipy.spatial.qhull import QhullError  # pylint: disable-msg=E0611
 import pandas as pd
 
 # Import from this package
 from .errors import AmpycloudError
 from .logger import log_func_call
-from . import scaler, cluster, layer
+from . import scaler, cluster, layer, fluffer
 from . import wmo, icao
 from . import dynamic, hardcoded
 from .utils import utils
@@ -412,35 +410,12 @@ class CeiloChunk(AbstractChunk):
             pdf.iloc[ind]['alt_mean'] = self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
             pdf.iloc[ind]['alt_std'] = self.data.loc[in_sligrolay, 'alt'].std(skipna=True)
 
-            # Let's also keep track of the min and max values
+            # Let's also keep track of the min, max, thickness, and fluffiness values
             pdf.iloc[ind]['alt_min'] = self.data.loc[in_sligrolay, 'alt'].min(skipna=True)
             pdf.iloc[ind]['alt_max'] = self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
             pdf.iloc[ind]['thickness'] = pdf.iloc[ind]['alt_max'] - pdf.iloc[ind]['alt_min']
-
-            # Let's also compute the "fluffiness" of the cloud sli-gro-lay
-            if np.count_nonzero(in_sligrolay) >= 3 and pdf.iloc[ind]['thickness'] > 0:
-                # First, compute the convex hull encompassing all the points
-                try:
-                    hull = ConvexHull(self.data.loc[in_sligrolay, ('alt', 'dt')].values)
-                except QhullError as qhe:
-                    msg = 'QhullError raised. Forcing fluffiness to 0. Are cloud hits co-planar ?'
-                    logger.error(msg)
-                    logger.error(qhe)
-                    pdf.iloc[ind]['fluffiness'] = 0
-                    break
-                # Next, find the full area of the sli-gro-lay (i.e. max extent of detections)
-                sligrolay_area = pdf.iloc[ind]['thickness'] * \
-                    (self.data.loc[in_sligrolay, 'dt'].max(skipna=True) -
-                     self.data.loc[in_sligrolay, 'dt'].min(skipna=True))
-                # ... and derive the "fluffiness"
-                pdf.iloc[ind]['fluffiness'] = hull.volume / sligrolay_area
-
-                if pdf.iloc[ind]['fluffiness'] < 0 or pdf.iloc[ind]['fluffiness'] > 1:
-                    raise AmpycloudError(
-                        f'Fluffiness out-of-range: {pdf.iloc[ind]["fluffiness"]:.5f}')
-            else:
-                # Not enough points to compute a fluffiness
-                pdf.iloc[ind]['fluffiness'] = 0
+            pdf.iloc[ind]['fluffiness'], _ = fluffer.get_fluffiness(
+                self.data.loc[in_sligrolay, ['dt', 'alt']].values, **self.prms['LOWESS'])
 
             # Finally, create the METAR-like code for the cluster
             pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
@@ -599,11 +574,25 @@ class CeiloChunk(AbstractChunk):
             valids = self.data['slice_id'].isin([self.slices.iloc[ind]['original_id']
                                                  for ind in grp])
 
-            # Rescale these points if requested by the user
+            # Rescale these points in dt and alt prior to running the single-linkage clustering.
+            # dt scaling is provided by the user.
+            # alt scaling is derived from the smallest fluffiness of the slice bundle.
+            grp_alt_scale = self.slices.loc[grp, 'fluffiness'].min(skipna=True)
+            logger.debug('Bundle min. fluffiness: %.1f ft', grp_alt_scale)
+            # Apply a user-defined boost factor ...
+            grp_alt_scale *= self.prms['GROUPING_PRMS']['fluffiness_boost']
+            logger.debug('Bundle boosted min. fluffiness: %.1f ft', grp_alt_scale)
+            # ... and check against the allowed scaling range
+            grp_alt_scale = np.max([np.min(self.prms['GROUPING_PRMS']['alt_scale_range']),
+                                    grp_alt_scale])
+            grp_alt_scale = np.min([np.max(self.prms['GROUPING_PRMS']['alt_scale_range']),
+                                    grp_alt_scale])
+            logger.debug('Bundle alt. scale: %.1f ft', grp_alt_scale)
+            # Ready to trigger the data rescaling
             tmp = self.data_rescaled(dt_mode=self.prms['GROUPING_PRMS']['dt_scale_mode'],
                                      dt_kwargs=self.prms['GROUPING_PRMS']['dt_scale_kwargs'],
-                                     alt_mode=self.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                     alt_kwargs=self.prms['GROUPING_PRMS']['alt_scale_kwargs'])
+                                     alt_mode='shift-and-scale',
+                                     alt_kwargs={'shift': 0, 'scale': grp_alt_scale})
 
             # What are the valid points ?
             valids = tmp['alt'].notna() * valids
