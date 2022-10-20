@@ -296,7 +296,7 @@ class CeiloChunk(AbstractChunk):
             * ``alt_min (float)``: minimum altitude
             * ``alt_max (float)``: maximum altitude
             * ``thickness (float)``: thickness
-            # ``fluffiness (float)``: fluffiness of the cloud layer, from 0 (sharp) to 1 (fluffy)
+            * ``fluffiness (float)``: fluffiness of the cloud layer, from 0 (sharp) to 1 (fluffy)
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.

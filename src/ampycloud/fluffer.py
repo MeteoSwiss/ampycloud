@@ -28,8 +28,6 @@ def get_fluffiness(pts, **kwargs):
 
     Args:
         pts (ndarray): 2D array of [dt, alt] ceilometer hits. None must have NaNs altitudes.
-         (float): time resolution (in s) to derive the LOWESS frac value, assuming a uniform
-            density of points over the interval.
         **kwargs (optional): additional arguments to be fed to statsmodels.nonparameteric.lowess().
 
     Returns:
