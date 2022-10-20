@@ -12,10 +12,10 @@ from pathlib import Path
 from setuptools import setup, find_packages  # Always prefer setuptools over distutils
 
 # Run the version file
-with open(Path('.') / 'src' / 'ampycloud' / 'version.py') as fid:
+with open(Path('.') / 'src' / 'ampycloud' / 'version.py', encoding='utf-8') as fid:
     version = next(line.split("'")[1] for line in fid.readlines() if 'VERSION' in line)
 
-with open("README.md", "r") as fh:
+with open("README.md", "r", encoding='utf-8') as fh:
     long_description = fh.read()
 
 setup(

@@ -296,7 +296,7 @@ class CeiloChunk(AbstractChunk):
             * ``alt_min (float)``: minimum altitude
             * ``alt_max (float)``: maximum altitude
             * ``thickness (float)``: thickness
-            * ``fluffiness (float)``: fluffiness of the cloud layer, from 0 (sharp) to 1 (fluffy)
+            * ``fluffiness (float)``: fluffiness (expressed in altitude units, i.e. ft)
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.
@@ -313,6 +313,9 @@ class CeiloChunk(AbstractChunk):
             fact that clouds have a single base altitude at any given time [*citation needed*].
 
         """
+
+        # TODO: base_lvl_alt_perc, base_lvl_lookback_perc, lim0, lim8 are all accessible via
+        # self.prms. So why do I bother having them as keyword in this function ???
 
         # What values am I interested in ?
         cols = ['n_hits',  # Duplicate-corrected number of hits

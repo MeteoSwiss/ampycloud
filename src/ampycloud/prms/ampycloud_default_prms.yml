@@ -20,18 +20,19 @@ OKTA_LIM0: 2
 OKTA_LIM8: 99
 
 # Number (in %) of the cloud hit heights (sorted from smallest to highest) to ignore when
-# computing the cloud altitude base, taken to be the min altitude of the 100-LAYER_BASE_LVL_PERC %
-# remaining points.
+# computing the cloud altitude base, taken to be the min altitude of the
+# 100-LAYER_BASE_LVL_PERC % remaining points.
 BASE_LVL_ALT_PERC: 5
 
-# Number of Slice/Group/Layer points (in %) - starting from the most recent ones - to use to compute
-# the cloud base altitude. Set to 100 to use all the points.
+# Number of Slice/Group/Layer points (in %) - starting from the most recent ones -
+# to use to compute the cloud base altitude. 30 would use only the 30% youngest hits.
+# Set to 100 to use all the points.
 BASE_LVL_LOOKBACK_PERC: 100
 
-# LOWESS parameters used to fit Slice/Groups/Layers
+# LOWESS parameters used to fit Slice/Groups/Layers altitude trends
 LOWESS:
     # Fraction of the slice/group/layer points to consider when deriving the LOWESS smooth fit.
-    # Values too small will result in overfitting. Values too large risk missing rapid
+    # Values too small will result in overfitting. Values too large will miss rapid
     # altitude fluctuations.
     frac: 0.35
     # Number of LOWESS fitting iterations
@@ -63,7 +64,7 @@ GROUPING_PRMS:
     # Padding (in % of the slice altitude range) to add above and below slices
     # before looking for overlaps
     alt_pad_perc: +10
-    # Time scaling factor
+    # Time scaling factor (in s)
     dt_scale: 180
     # Boost factor, applied to the slice fluffiness to derive the altitude scaling factor
     fluffiness_boost: 2

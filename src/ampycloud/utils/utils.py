@@ -68,7 +68,7 @@ def check_data_consistency(pdf: pd.DataFrame,
     ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
     cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements would be ``1``,
     ``2``, ``3``, etc ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
-    plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
+    plots as a vertical Visibility (VV) hit, **but it will not be treated any differently than any
     other regular hit**. Type ``0`` corresponds to no (cloud) detection, in which case the
     corresponding hit altitude should be a NaN.
 
