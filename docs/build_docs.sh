@@ -30,7 +30,8 @@ ampycloud_speed_test -h > source/ampycloud_speed_test_help_msg.txt
 ampycloud_speed_test > source/ampycloud_speed_test_msg.txt
 
 # Generate the demo diagram for the docs
-python ./source/examples/ampycloud_canonical_demo.py
+# Deal with pesky FutureWarning from pandas by simply ignoring all of them ... sigh ... #87
+python -W ignore::FutureWarning ./source/examples/ampycloud_canonical_demo.py
 
 # Generate the documentation, storing it in the build directory
 sphinx-build -a -b html ./source ./build
