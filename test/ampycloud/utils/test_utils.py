@@ -27,6 +27,7 @@ def test_check_data_consistency():
     # The following should not trigger any warning... let's make sure of that.
     with warnings.catch_warnings():
         warnings.simplefilter("error")
+        warnings.simplefilter("default", category=FutureWarning)  # Fixes #87
         out = check_data_consistency(canonical_demo_data())
 
         # Make sure the canonical demo data is perfectly compatible with the ampycloud requirements

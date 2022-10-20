@@ -312,7 +312,8 @@ def test_layering_dualeval():
     # Do the dance ...
     chunk.find_slices()
     chunk.find_groups()
-    # The lyering should be solid enough to not complain if there are only two values in the data
+    # The layering should be solid enough to not complain if there are only two values in the data
     with warnings.catch_warnings():
         warnings.simplefilter("error")
+        warnings.simplefilter("default", category=FutureWarning)  # Fixes #87
         chunk.find_layers()
