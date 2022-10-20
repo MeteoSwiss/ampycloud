@@ -13,6 +13,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ### Fixed:
  - [fpavogt, 2022-10-18] Fix #84 and #85.
 ### Changed:
+ - [fpavogt, 2022-10-18] Fluffiness is now computed via LOWESS instead of a Convex Hull.
  - [fpavogt, 2022-10-18] Base level is now defined as a percentile of the total number of points.
  - [fpavogt, 2022-10-18] Enable multiple min_sep_vals for the LAYERING step.
  - [fpavogt, 2022-10-18] Cleanup pylint and error messages.

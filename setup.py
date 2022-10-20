@@ -44,8 +44,9 @@ setup(
     install_requires=[
         "matplotlib >= 3.4.2",
         "numpy >= 1.20.3",
-        "scipy >= 1.7.3",
         "scikit-learn >= 0.24.2",
+        "scipy >= 1.7.3",
+        "statsmodels",
         "pandas >= 1.3.1",
         "pyyaml",
         "ruamel.yaml"
