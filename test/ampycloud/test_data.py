@@ -67,9 +67,9 @@ def test_ceilochunk_init():
     assert dynamic.AMPYCLOUD_PRMS['MSA'] == 0
 
     # Check the ability to set nested parameters in one go
-    chunk = CeiloChunk(mock_data, prms={'SLICING_PRMS': {'algo': 'test'}})
-    assert chunk.prms['SLICING_PRMS']['algo'] == 'test'
-    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['algo'] == 'agglomerative'
+    chunk = CeiloChunk(mock_data, prms={'GROUPING_PRMS': {'alt_pad_perc': 'test'}})
+    assert chunk.prms['GROUPING_PRMS']['alt_pad_perc'] == 'test'
+    assert dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_pad_perc'] == +10
 
     # Check that warnings are raised in case bad parameters are given
     with warns(AmpycloudWarning):
@@ -291,6 +291,7 @@ def test_coplanar_hull():
 
     # Points are coplanar, the fluffiness should be forced to 0
     assert chunk.slices.loc[0, 'fluffiness'] == 0
+
 
 def test_layering_dualeval():
     """ Test the layering step when there are two single altitude values. See #78 for details. """

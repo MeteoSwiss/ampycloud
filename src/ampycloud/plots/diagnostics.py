@@ -14,12 +14,12 @@ from functools import partial
 from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from matplotlib.lines import Line2D
 from matplotlib import rcParams
 
 # Import from this package
-from .. import scaler, fluffer
+from .. import dynamic, scaler, fluffer
 from .hardcoded import WIDTH_TWOCOL, MRKS
 from .tools import texify, get_scaling_kwargs
 from .. import wmo
@@ -61,7 +61,7 @@ class DiagnosticPlot:
 
         # Use gridspec for a fine control of the figure area.
         fig_gs = gridspec.GridSpec(1, 5,
-                                   height_ratios=[1], width_ratios=[1, 0.1, 0.3, 0.18, 0.18],
+                                   height_ratios=[1], width_ratios=[1, 0.12, 0.3, 0.18, 0.18],
                                    left=0.08, right=0.99, bottom=0.15, top=0.75,
                                    wspace=0.0, hspace=0.05)
 
@@ -230,7 +230,7 @@ class DiagnosticPlot:
             msg = r'\smaller '
             msg += wmo.okta2symb(
                 self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb'))
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb'))
             msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
                    rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
             msg += warn
@@ -286,7 +286,7 @@ class DiagnosticPlot:
             # Show the group METAR text
             msg = r'\smaller ' + wmo.okta2symb(
                 self._chunk.groups.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
             ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
@@ -337,7 +337,7 @@ class DiagnosticPlot:
             # Display the actual METAR text
             msg = r'\smaller ' + wmo.okta2symb(
                 self._chunk.layers.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
             ) + ' ' + self._chunk.layers.iloc[ind]['code']
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
@@ -439,8 +439,8 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                   self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   self._chunk.prms['SLICING_PRMS']['dt_scale_kwargs'])
+                                   'shift-and-scale',
+                                   {'scale': self._chunk.prms['SLICING_PRMS']['dt_scale']})
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['alt'].values,
@@ -451,12 +451,9 @@ class DiagnosticPlot:
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(
                 1.06,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   **dt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   **dt_descale_kwargs)))
+                functions=(partial(scaler.apply_scaling, fct='shift-and-scale', **dt_scale_kwargs),
+                           partial(scaler.apply_scaling, fct='shift-and-scale', **dt_descale_kwargs)
+                           ))
 
             secax_y = self._axs[0].secondary_yaxis(
                 1.03,
@@ -490,19 +487,16 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_kwargs'])
+                                   'shift-and-scale',
+                                   {'scale': self._chunk.prms['GROUPING_PRMS']['dt_scale']})
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(
                 1.25,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   **dt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   **dt_descale_kwargs)))
+                functions=(partial(scaler.apply_scaling, fct='shift-and-scale', **dt_scale_kwargs),
+                           partial(scaler.apply_scaling, fct='shift-and-scale', **dt_descale_kwargs)
+                           ))
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Grouping $\Delta t$'))

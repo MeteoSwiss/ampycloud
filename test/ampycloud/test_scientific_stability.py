@@ -83,10 +83,9 @@ def test_scientific_stability(mpls: str, do_sciplots: bool, ref_data_file: Path)
         # Do I need to set a specific plotting style ?
         if mpls:
             dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
-
         # Create the plot
         diagnostic(chunk, upto='layers', ref_metar=ref_metar, ref_metar_origin='Should be',
-                   show=False, save_stem=ref_data_file.stem, save_fmts=['png'])
+                   show=False, save_stem=ref_data_file.stem, save_fmts=['png', 'pdf'])
 
     # Was the computed METAR as expected ?
     assert chunk.metar_msg() == ref_metar

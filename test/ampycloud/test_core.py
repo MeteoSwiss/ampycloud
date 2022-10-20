@@ -48,7 +48,7 @@ def test_reset_prms():
     ref_val = dynamic.AMPYCLOUD_PRMS['OKTA_LIM0']
     dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] = -1
     assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == -1
-    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['dt_scale_mode'] == 'shift-and-scale'
+    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['alt_scale_mode'] == 'minmax-scale'
 
     # Then try to reset it
     reset_prms()

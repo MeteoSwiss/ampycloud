@@ -217,7 +217,7 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
             prms = {'MSA': 10000}
 
             # Or to adjust some other algorithm parameters:
-            prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}, 'algo': 'agglomerative'}}
+            prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}
 
 
     The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information

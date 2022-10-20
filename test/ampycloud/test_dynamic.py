@@ -36,10 +36,10 @@ def test_dynamic_module():
 
     # Also test with new dictionnary keys, that seems to behave differently
     tmp = {}
-    tmp.update(dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['dt_scale_kwargs'])
+    tmp.update(dynamic.AMPYCLOUD_PRMS['SLICING_PRMS'])
     tmp['new_entry'] = 'rubbish'
     assert 'new_entry' in tmp.keys()
-    assert 'new_entry' not in dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['dt_scale_kwargs'].keys()
+    assert 'new_entry' not in dynamic.AMPYCLOUD_PRMS['SLICING_PRMS'].keys()
 
     # Reset everything so as to not break havoc with the other tests
     reset_prms()

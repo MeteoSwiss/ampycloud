@@ -461,8 +461,8 @@ class CeiloChunk(AbstractChunk):
         """
 
         # Get a scaled **copy** of the data to feed the clustering algorithm
-        tmp = self.data_rescaled(dt_mode=self.prms['SLICING_PRMS']['dt_scale_mode'],
-                                 dt_kwargs=self.prms['SLICING_PRMS']['dt_scale_kwargs'],
+        tmp = self.data_rescaled(dt_mode='shift-and-scale',
+                                 dt_kwargs={'scale': self.prms['SLICING_PRMS']['dt_scale']},
                                  alt_mode=self.prms['SLICING_PRMS']['alt_scale_mode'],
                                  alt_kwargs=self.prms['SLICING_PRMS']['alt_scale_kwargs'],
                                  )
@@ -480,9 +480,10 @@ class CeiloChunk(AbstractChunk):
             self.data.loc[valids, ['slice_id']] = 1
         elif len(valids[valids]) > 1:
             # ... run the clustering on them ...
-            _, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
-                                           algo=self.prms['SLICING_PRMS']['algo'],
-                                           **self.prms['SLICING_PRMS']['algo_kwargs'])
+            _, labels = cluster.clusterize(
+                tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
+                **{'linkage': 'average', 'affinity': 'manhattan',
+                   'distance_threshold': self.prms['SLICING_PRMS']['distance_threshold']})
 
             # ... and set the labels in the original data
             self.data.loc[self.data['alt'].notna(), ['slice_id']] = labels
@@ -589,8 +590,8 @@ class CeiloChunk(AbstractChunk):
                                     grp_alt_scale])
             logger.debug('Bundle alt. scale: %.1f ft', grp_alt_scale)
             # Ready to trigger the data rescaling
-            tmp = self.data_rescaled(dt_mode=self.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                     dt_kwargs=self.prms['GROUPING_PRMS']['dt_scale_kwargs'],
+            tmp = self.data_rescaled(dt_mode='shift-and-scale',
+                                     dt_kwargs={'scale': self.prms['GROUPING_PRMS']['dt_scale']},
                                      alt_mode='shift-and-scale',
                                      alt_kwargs={'shift': 0, 'scale': grp_alt_scale})
 
@@ -598,9 +599,9 @@ class CeiloChunk(AbstractChunk):
             valids = tmp['alt'].notna() * valids
 
             # Run the clustering
-            nlabels, labels = cluster.clusterize(tmp[['dt', 'alt']][valids].to_numpy(),
-                                                 algo=self.prms['GROUPING_PRMS']['algo'],
-                                                 **self.prms['GROUPING_PRMS']['algo_kwargs'])
+            nlabels, labels = cluster.clusterize(
+                tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
+                **{'linkage': 'single', 'affinity': 'euclidean', 'distance_threshold': 1})
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
             # to which the majority of the identified (clustered) hits belong.

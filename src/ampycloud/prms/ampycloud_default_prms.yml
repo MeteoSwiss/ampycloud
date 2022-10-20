@@ -48,19 +48,10 @@ MSA_HIT_BUFFER: 1500
 
 # Slicing parameters
 SLICING_PRMS:
-    # Clustering algorithm name
-    algo: agglomerative
-    # Clustering algorithm parameters
-    algo_kwargs:
-        n_clusters:
-        distance_threshold: 0.2
-        linkage: average
-        affinity: manhattan
-    # Time scaling mode
-    dt_scale_mode: shift-and-scale
-    # Time scaling parameters (in s)
-    dt_scale_kwargs:
-        scale: 100000
+    # Clustering distance threshold
+    distance_threshold: 0.2
+    # Time scaling factor
+    dt_scale: 100000
     # Altitude scaling mode
     alt_scale_mode: minmax-scale
     # Altitude scaling parameters (in ft)
@@ -72,20 +63,9 @@ GROUPING_PRMS:
     # Padding (in % of the slice altitude range) to add above and below slices
     # before looking for overlaps
     alt_pad_perc: +10
-    # Grouping algorithm name
-    algo: agglomerative
-    # Grouping algorithm parameters
-    algo_kwargs:
-        n_clusters: null # null = None
-        distance_threshold: 1
-        linkage: single
-        affinity: euclidean
-    # Time scaling mode
-    dt_scale_mode: shift-and-scale
-    # Time scaling parameters (in s)
-    dt_scale_kwargs:
-        scale: 180
-    # Boost factor applied to the slice fluffiness to derive the altitude scaling factor
+    # Time scaling factor
+    dt_scale: 180
+    # Boost factor, applied to the slice fluffiness to derive the altitude scaling factor
     fluffiness_boost: 2
     # Range of allowed altitude scaling factor (in ft). The fluffiness_boost will never be allowed
     # to push the alt_scaling beyond this range.
