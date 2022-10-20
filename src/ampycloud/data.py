@@ -423,19 +423,19 @@ class CeiloChunk(AbstractChunk):
 
         # Set the proper column types
         for cname in ['n_hits', 'okta', 'original_id']:
-            pdf.loc[:, cname] = pdf[cname].astype(int)
+            pdf[cname] = pdf[cname].astype(int)
         for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max', 'thickness',
                       'fluffiness']:
-            pdf.loc[:, cname] = pdf[cname].astype(float)
+            pdf[cname] = pdf[cname].astype(float)
         for cname in ['code']:
-            pdf.loc[:, cname] = pdf[cname].astype(str)
+            pdf[cname] = pdf[cname].astype(str)
         for cname in ['significant']:
-            pdf.loc[:, cname] = pdf[cname].astype(bool)
+            pdf[cname] = pdf[cname].astype(bool)
 
         if which == 'slices':
-            pdf.loc[:, 'isolated'] = pdf['isolated'].astype(bool)
+            pdf['isolated'] = pdf['isolated'].astype(bool)
         if which == 'groups':
-            pdf.loc[:, 'ncomp'] = pdf['ncomp'].astype(int)
+            pdf['ncomp'] = pdf['ncomp'].astype(int)
 
         # Sort the table as a function of the base altitude of the sli/gro/lay.
         # This is why having the 'original_id' info is useful (so I remember which they are).
@@ -473,7 +473,7 @@ class CeiloChunk(AbstractChunk):
         # Add a column to the original data to keep track of the slice id.
         # First, set them all to -1 and force the correct dtype. I hate pandas for this ...
         self.data.loc[:, 'slice_id'] = -1
-        self.data.loc[:, 'slice_id'] = self.data.loc[:, 'slice_id'].astype(int)
+        self.data['slice_id'] = self.data.loc[:, 'slice_id'].astype(int)
 
         # If I have only 1 valid point ...
         if len(valids[valids]) == 1:

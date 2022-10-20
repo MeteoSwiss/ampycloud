@@ -178,7 +178,7 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
 
     # Fix the dtypes
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        out.loc[:, col] = out[col].astype(tpe)
+        out[col] = out[col].astype(tpe)
 
     return out
 

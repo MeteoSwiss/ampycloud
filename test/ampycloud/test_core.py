@@ -102,7 +102,7 @@ def test_run_single_point():
                         columns=['ceilo', 'dt', 'alt', 'type'])
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        data.loc[:, col] = data.loc[:, col].astype(tpe)
+        data[col] = data.loc[:, col].astype(tpe)
 
     # Run the code
     out = run(data)

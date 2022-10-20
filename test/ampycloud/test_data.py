@@ -231,7 +231,7 @@ def test_layering_singlepts():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -257,7 +257,7 @@ def test_layering_singleval():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -281,7 +281,7 @@ def test_coplanar_hull():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -304,7 +304,7 @@ def test_layering_dualeval():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)

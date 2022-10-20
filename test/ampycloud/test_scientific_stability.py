@@ -61,7 +61,7 @@ def test_scientific_stability(mpls: str, do_sciplots: bool, ref_data_file: Path)
         data = pickle.load(f)
 
     # Fix the dtype of the ceilo column
-    data.loc[:, 'ceilo'] = data.loc[:, 'ceilo'].astype(pd.StringDtype())
+    data['ceilo'] = data.loc[:, 'ceilo'].astype(pd.StringDtype())
 
     # Get other useful info
     geoloc = ref_data_file.stem.split('_')[0]
