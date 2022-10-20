@@ -27,6 +27,10 @@ def main():
     lines = result.stdout.decode('utf-8').split('\n')
     warn_lines = result.stderr.decode('utf-8').split('\n')
 
+    # Here, let's ignore any FutureWarning from Python, which may cause havoc for no valid reason
+    # See #87 for (a few) more details
+    warn_lines = [line for line in warn_lines if 'FutureWarning' not in line]
+
     if len(warn_lines) > 1:
         # Something went wrong: display the relevant info
         print('Something went wrong when generating the docs:')
