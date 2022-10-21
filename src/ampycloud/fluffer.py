@@ -23,15 +23,22 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def get_fluffiness(pts, **kwargs):
+def get_fluffiness(pts, boost=2, **kwargs):
     """ Utility functions to compute the fluffiness of a set of ceilometer hits.
 
     Args:
         pts (ndarray): 2D array of [dt, alt] ceilometer hits. None must have NaNs altitudes.
+        boost (float): the fluffiness boost factor. Defaults to 2.
         **kwargs (optional): additional arguments to be fed to statsmodels.nonparameteric.lowess().
 
     Returns:
         float, ndarray: the fluffiness (in alt units) and LOWESS-smoothed (dt, alt) values (sorted).
+
+    The *fluffiness* is computed as `boost * mean(abs(y - lowess))`, where lowess is the smooth
+    LOWESS fit to the ceilometer hits.
+
+    To avoid LOWESS warning, hits with identical x coordinates (= time steps) are being offset
+    by a small factor (1e-5).
     """
 
     if pts.ndim != 2:
@@ -58,5 +65,5 @@ def get_fluffiness(pts, **kwargs):
     lowess_pts = sm.nonparametric.lowess(pts[:, 1], unique_xs, return_sorted=True,
                                          is_sorted=True, missing='none', **kwargs)
 
-    fluffiness = np.mean(np.abs(pts[:, 1] - lowess_pts[:, 1]))
+    fluffiness = boost * np.mean(np.abs(pts[:, 1] - lowess_pts[:, 1]))
     return fluffiness, lowess_pts

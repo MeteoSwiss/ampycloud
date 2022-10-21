@@ -418,7 +418,9 @@ class CeiloChunk(AbstractChunk):
             pdf.iloc[ind]['alt_max'] = self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
             pdf.iloc[ind]['thickness'] = pdf.iloc[ind]['alt_max'] - pdf.iloc[ind]['alt_min']
             pdf.iloc[ind]['fluffiness'], _ = fluffer.get_fluffiness(
-                self.data.loc[in_sligrolay, ['dt', 'alt']].values, **self.prms['LOWESS'])
+                self.data.loc[in_sligrolay, ['dt', 'alt']].values,
+                boost=self.prms['GROUPING_PRMS']['fluffiness_boost'],
+                **self.prms['LOWESS'])
 
             # Finally, create the METAR-like code for the cluster
             pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
@@ -583,9 +585,6 @@ class CeiloChunk(AbstractChunk):
             # alt scaling is derived from the smallest fluffiness of the slice bundle.
             grp_alt_scale = self.slices.loc[grp, 'fluffiness'].min(skipna=True)
             logger.debug('Bundle min. fluffiness: %.1f ft', grp_alt_scale)
-            # Apply a user-defined boost factor ...
-            grp_alt_scale *= self.prms['GROUPING_PRMS']['fluffiness_boost']
-            logger.debug('Bundle boosted min. fluffiness: %.1f ft', grp_alt_scale)
             # ... and check against the allowed scaling range
             grp_alt_scale = np.max([np.min(self.prms['GROUPING_PRMS']['alt_scale_range']),
                                     grp_alt_scale])
