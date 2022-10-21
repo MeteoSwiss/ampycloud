@@ -87,7 +87,8 @@ def test_unstable_layers():
     unstable layering depending on the random seed of the system. Let's make sure this is not a
     problem anymore. """
 
-    with open(Path(__file__).parent / 'ref_data' / 'Geneva_2019.01.10-04.45.34_FEW040-BKN070.pkl',
+    with open(Path(__file__).parent / 'ref_data' /
+              'Geneva_2019.01.10-04.50.00_SCT040-BKN070.pkl',
               'rb') as f:
         data = pickle.load(f)
 
