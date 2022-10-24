@@ -13,6 +13,15 @@
 # Plotting style. Can be one of 'base', 'latex', 'metsymb'
 MPL_STYLE: 'base'
 
+# Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
+# in the ampycloud METAR messages. Set it to null for no limit.
+MSA: null
+
+# Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by
+# ampycloud. This is to ensure that cloud layers with cloud base heights close to the MSA value are
+# still detected with the correct densities.
+MSA_HIT_BUFFER: 1500
+
 # Max sky coverage (in %) up to which the coverage is considered null.
 OKTA_LIM0: 2
 
@@ -37,15 +46,6 @@ LOWESS:
     frac: 0.35
     # Number of LOWESS fitting iterations
     it: 3
-
-# Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
-# in the ampycloud METAR messages. Set it to null for no limit.
-MSA: null
-
-# Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by
-# ampycloud. This is to ensure that cloud layers with cloud base heights close to the MSA value are
-# still detected with the correct densities.
-MSA_HIT_BUFFER: 1500
 
 # Slicing parameters
 SLICING_PRMS:
@@ -84,6 +84,8 @@ LAYERING_PRMS:
     # below 10'000 ft.
     min_sep_vals: [150, 1000]
     # Altitude threshold (in ft) separating the min_sep_val elements.
+    # The 0 and + infty extrema will be automatically added to the list by ampycloud.
+    # Just list here the intermediate steps.
     min_sep_lims: [10000]
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
