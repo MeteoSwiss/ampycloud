@@ -494,7 +494,7 @@ class CeiloChunk(AbstractChunk):
             # ... run the clustering on them ...
             _, labels = cluster.clusterize(
                 tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
-                **{'linkage': 'average', 'affinity': 'manhattan',
+                **{'linkage': 'average', 'metric': 'manhattan',
                    'distance_threshold': self.prms['SLICING_PRMS']['distance_threshold']})
 
             # ... and set the labels in the original data
@@ -610,7 +610,7 @@ class CeiloChunk(AbstractChunk):
             # Run the clustering
             nlabels, labels = cluster.clusterize(
                 tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
-                **{'linkage': 'single', 'affinity': 'euclidean', 'distance_threshold': 1})
+                **{'linkage': 'single', 'metric': 'euclidean', 'distance_threshold': 1})
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
             # to which the majority of the identified (clustered) hits belong.

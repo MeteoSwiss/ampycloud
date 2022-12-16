@@ -44,7 +44,7 @@ setup(
     install_requires=[
         "matplotlib >= 3.4.2",
         "numpy >= 1.20.3",
-        "scikit-learn >= 0.24.2",
+        "scikit-learn >= 1.2.0",
         "scipy >= 1.7.3",
         "statsmodels",
         "pandas >= 1.3.1",
