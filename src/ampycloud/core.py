@@ -141,10 +141,10 @@ def reset_prms() -> None:
             from ampycloud import dynamic
 
             # Change a parameter
-            dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
+            dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = 0
             # Reset them
             ampycloud.reset_prms()
-            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'])
+            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'])
 
     """
 

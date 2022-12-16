@@ -361,12 +361,10 @@ class DiagnosticPlot:
         """ Adds the max_hit_per_layer info. """
 
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
-        msg += r'$^{\uparrow\, '
-        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100 *
-                       self._chunk.prms['OKTA_LIM8'])))
-        msg += r'}_{\downarrow\, '
-        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100 *
-                       self._chunk.prms['OKTA_LIM0'])))
+        msg += r'$^{'
+        msg += f'8:{self._chunk.prms["MAX_HOLES_OKTA8"]}'
+        msg += r'}_{'
+        msg += f'0:{self._chunk.prms["MAX_HITS_OKTA0"]}'
         msg += r'}$'
 
         self._axs[0].text(-0.14, -0.21, texify(msg),

@@ -22,11 +22,11 @@ MSA: null
 # still detected with the correct densities.
 MSA_HIT_BUFFER: 1500
 
-# Max sky coverage (in %) up to which the coverage is considered null.
-OKTA_LIM0: 2
+# Max number of hits in a layer to still consider it to be of 0 oktas.
+MAX_HITS_OKTA0: 3
 
-# Min sky coverage (in %) down to which the coverage is considered full.
-OKTA_LIM8: 99
+# Max number of holes (=non-detection of cloud) in a layer to still consider it to be of 8 oktas.
+MAX_HOLES_OKTA8: 1
 
 # Number (in %) of the cloud hit heights (sorted from smallest to highest) to ignore when
 # computing the cloud altitude base, taken to be the min altitude of the

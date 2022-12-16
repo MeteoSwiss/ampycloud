@@ -45,15 +45,15 @@ def test_reset_prms():
     """ Test the reset_prms routine. """
 
     # First, let's change one of the dynamic parameter
-    ref_val = dynamic.AMPYCLOUD_PRMS['OKTA_LIM0']
-    dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] = -1
-    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == -1
+    ref_val = dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0']
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = -1
+    assert dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] == -1
     assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['alt_scale_mode'] == 'minmax-scale'
 
     # Then try to reset it
     reset_prms()
 
-    assert dynamic.AMPYCLOUD_PRMS['OKTA_LIM0'] == ref_val
+    assert dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] == ref_val
 
 
 def test_run():
@@ -95,7 +95,7 @@ def test_run_single_point():
     """ Test the code when a single data point is fed to it. """
 
     # Set no lower limits to compute oktas
-    dynamic.OKTA_LIM0 = 0
+    dynamic.MAX_HITS_OKTA0 = 0
 
     # Let's create some data with a single valid point
     data = pd.DataFrame([['1', -100, 2000, 1], ['1', -99, np.nan, 0]],
@@ -106,13 +106,13 @@ def test_run_single_point():
 
     # Run the code
     out = run(data)
-    assert out.metar_msg() == 'SCT020'
+    assert out.metar_msg() == 'NCD'
 
     # Do it with a single point
     data.drop(1, inplace=True)
     # Run the code
     out = run(data)
-    assert out.metar_msg() == 'OVC020'
+    assert out.metar_msg() == 'NCD'
 
     # Reset the parameters
     reset_prms()

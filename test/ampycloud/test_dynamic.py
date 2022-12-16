@@ -18,9 +18,9 @@ def test_dynamic_module():
     interactively if/when needed. """
 
     # Check that I can set a value and store it just fine.
-    val_orig = dynamic.AMPYCLOUD_PRMS['OKTA_LIM0']
-    dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = -1
-    new_val = dynamic.AMPYCLOUD_PRMS['OKTA_LIM8']
+    val_orig = dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0']
+    dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = -1
+    new_val = dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8']
 
     assert 0 <= val_orig <= 100
     assert val_orig != new_val
