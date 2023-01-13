@@ -57,6 +57,9 @@ def get_fluffiness(pts, boost=2, **kwargs):
         unique_xs = pts[:, 0]
     else:
         diffs = np.diff(pts[:, 0])
+        # Let's add (ind * 1e-5) to any duplicated point. We use the point index "ind"
+        # to make sure tri-/quadru-/multi-ple points all get shifted to distinct
+        # positions.
         unique_xs = [pts[0, 0]] + [item if diffs[ind] > 0 else item + (ind + 1) * 1e-5
                                    for (ind, item) in enumerate(pts[1:, 0])]
         unique_xs = np.array(unique_xs)

@@ -247,7 +247,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     # First, let's deal with the fact that they are not ordered.
     comp_ids = np.argsort(mean_comp_heights)
 
-    # Now loop throught the different components, check if they are far sufficiently far apart,
+    # Now loop throught the different components, check if they are sufficiently far apart,
     # and merge them otherwise.
     for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
 
@@ -263,8 +263,8 @@ def ncomp_from_gmm(vals: np.ndarray,
         # Decrease the number of valid ids
         best_ncomp -= 1
 
-    if not len(np.unique(best_ids)) == best_ncomp:
-        raise AmpycloudError('This error is impossible !')
+    # Brief sanity check, to make sure I did not mess up
+    assert len(np.unique(best_ids)) == best_ncomp, "Something very bad happened here ..."
 
     logger.debug('best_ncomp (final): %i', best_ncomp)
 

@@ -35,7 +35,6 @@ def test_get_fluffiness():
     # For some reason, pytest refuses to convert the LOWESS warning into an error ...
     # ... so I need to catch it a bit differently ... sigh !
     with warnings.catch_warnings(record=True) as w_list:
-        # warnings.simplefilter("error")
         out = get_fluffiness(pts)
 
     if len(w_list) > 0:

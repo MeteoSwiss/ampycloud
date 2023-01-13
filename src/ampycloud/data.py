@@ -315,7 +315,7 @@ class CeiloChunk(AbstractChunk):
 
         """
 
-        # TODO: base_lvl_alt_perc, base_lvl_lookback_perc, lim0, lim8 are all accessible via
+        # Note-to-self: base_lvl_alt_perc, base_lvl_lookback_perc, lim0, lim8 are all accessible via
         # self.prms. So why do I bother having them as keyword in this function ???
 
         # What values am I interested in ?
