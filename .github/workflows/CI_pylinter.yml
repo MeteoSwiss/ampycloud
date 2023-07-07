@@ -1,6 +1,6 @@
 # Inspired from: https://github.com/PyCQA/pylint/pull/2758#issuecomment-561164761
 #
-# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_pylinter
 

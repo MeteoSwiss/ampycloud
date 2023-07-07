@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
