@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 '''
-Copyright (c) 2020-2022 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -14,13 +14,13 @@ script will raise an Exception if it is not met.
 
 Created May 2020; fpavogt; frederic.vogt@meteoswiss.ch
 Adapted Jan 2022; fpavogt; frederic.vogt@meteoswiss.ch
+Updated Jul 2023; fpavogt; frederic.vogt@meteoswiss.ch
 '''
 
 import argparse
 import glob
 import os
-import re
-from pylint import epylint as lint
+from pylint import lint
 
 
 def main():
@@ -52,16 +52,16 @@ def main():
     if args.restrict is not None:
 
         error_codes = ','.join(args.restrict)
-        pylint_command = '--disable=all --enable='+error_codes
+        pylint_args = ['--disable=all --enable=' + error_codes]
 
     # or do I rather want to simply exclude some errors ?
     elif args.exclude is not None:
         error_codes = ','.join(args.exclude)
-        pylint_command = '--disable='+error_codes
+        pylint_args = ['--disable=' + error_codes]
 
     else:  # just run pylint without tweaks
 
-        pylint_command = ''
+        pylint_args = []
 
     # Get a list of all the .py files here and in all the subfolders.
     fn_list = glob.glob(os.path.join('.', '**', '*.py'), recursive=True)
@@ -70,45 +70,21 @@ def main():
     for bad_item in [os.path.join('.', 'build'), os.path.join('.', 'docs')]:
         fn_list = [item for item in fn_list if bad_item not in item]
 
-    # Turn this into a string to feed pylint
-    fn_list = ' '.join(fn_list)
-
     # Launch pylint with the appropriate options
-    (pylint_stdout, pylint_stderr) = lint.py_run(fn_list + ' ' + pylint_command, return_std=True)
+    run = lint.Run(pylint_args + fn_list, do_exit=False)
+    # Collect the total score
+    score = run.linter.stats.global_note
 
-    # Extract the actual messages
-    msgs = pylint_stdout.getvalue()
-
-    # fpavogt, 2020-12-09: let's check the error messages, in case something went very wrong ...
-    err_msgs = pylint_stderr.getvalue()
-    if err_msgs != '':
-        print('pylint stdout:')
-        print(msgs)
-        print('pylint stderr:')
-        print(err_msgs)
-
-        raise Exception('The linting crashed ?!')
-
-    # Extract the score ...
-    score = re.search(r'\s([\+\-\d\.]+)/10', msgs)[1]
-    # ... and turn it into a float
-    score = round(float(score), 2)
-
-    # For the Github Action, raise an exception in case I get any restricted errors.
+    # Raise an exception in case I get any restricted errors.
     if args.restrict is not None and score < 10:
-        # Display the output, so we can learn something from it if needed
-        print(msgs)
-        raise Exception('Some forbidden pylint error codes are present!')
-
-    # If I do not have any restricted errors, then simply show the pylint errors without failing.
-    print(msgs)
+        raise RuntimeError('Some forbidden pylint error codes are present!')
 
     # If a minimum score was set, raise an Exception if it is not met, so that it can be picked-up
     # by a Github Action.
     if args.min_score is not None:
         if score < args.min_score:
-            raise Exception('''pylint final score of %.2f is smaller than the specified
-                               threshold of %.2f !''' % (float(score), args.min_score))
+            raise RuntimeError(f'pylint final score of {score:.2f} is smaller than' +
+                               ' the specified threshold of {args.min_score:.2f} !')
 
 
 if __name__ == '__main__':
