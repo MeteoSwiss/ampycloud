@@ -52,7 +52,7 @@ def main():
     if args.restrict is not None:
 
         error_codes = ','.join(args.restrict)
-        pylint_args = ['--disable=all --enable=' + error_codes]
+        pylint_args = ['--disable=all', '--enable=' + error_codes]
 
     # or do I rather want to simply exclude some errors ?
     elif args.exclude is not None:
