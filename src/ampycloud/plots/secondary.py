@@ -13,7 +13,7 @@ from typing import Union
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 
 # Import from this package
 from ..logger import log_func_call

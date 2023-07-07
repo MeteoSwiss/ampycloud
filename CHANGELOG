@@ -11,9 +11,11 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-10-18] Add option to use a percentage of the most recent measurements to derive the base altitude
  - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
 ### Fixed:
+ - [fpavogt, 2023-07-07] Fix #95 (pylint 3.0 deprecation of epylinter)
  - [fpavogt, 2023-07-03] Fix #98 (pkg_resources -> packaging in test_version.py).
  - [fpavogt, 2022-10-18] Fix #84 and #85.
 ### Changed:
+ - [fpavogt, 2023-07-07] Demo datasets are now stored as csv and not pkl (fixes #102)
  - [fpavogt, 2022-12-16] Replace OKTA_LIM0 (OKTA_LIM8) with MIN_HITS_OKTA0 (MAX_HOLES_OKTA8) - fixes #92.
  - [fpavogt, 2022-10-20] Remove superfluous parameters from the default set.
  - [fpavogt, 2022-10-18] Fluffiness is now computed via LOWESS instead of a Convex Hull.
