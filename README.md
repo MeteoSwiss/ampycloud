@@ -4,6 +4,7 @@
 [![last-commit](https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000)](https://github.com/MeteoSwiss/ampycloud)
 [![issues](https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e)](https://github.com/MeteoSwiss/ampycloud/issues)
 [![pypi](https://img.shields.io/pypi/v/ampycloud.svg?colorB=<brightgreen>)](https://pypi.python.org/pypi/ampycloud/)
+[![pytest-weekly](https://img.shields.io/github/actions/workflow/status/MeteoSwiss/ampycloud/CI_pytest.yml?branch=master&label=pytest-weekly)](https://github.com/MeteoSwiss/ampycloud/actions/workflows/CI_pytest_weekly.yml)
 
 ### Introduction
 

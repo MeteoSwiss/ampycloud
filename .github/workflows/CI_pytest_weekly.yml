@@ -11,7 +11,7 @@ name: CI_pytest_weekly
 
 on:
   schedule:
-    - cron: '43 21 * * 1,4'  # Run at 21:34 UTC every Monday and Thursday
+    - cron: '50 * * * 1,3,4'  # Run at 21:34 UTC every Monday and Thursday
 
 jobs:
   pytest:
@@ -28,6 +28,7 @@ jobs:
     # are released (and not when we decide to update ampycloud).
     - name: Checkout current repository
       uses: actions/checkout@v3
+      with:
         ref: 'master'
 
     # Setup python
