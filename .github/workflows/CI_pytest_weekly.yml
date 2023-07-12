@@ -29,11 +29,11 @@ jobs:
     - name: Checkout current repository
       uses: actions/checkout@v3
       with:
-        ref: 'master'
+        ref: master
 
     # Setup python
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
         python-version: ${{ matrix.python-version }}
 
