@@ -11,7 +11,7 @@ name: CI_pytest_weekly
 
 on:
   schedule:
-    - cron: '50 * * * 1,3,4'  # Run at 21:34 UTC every Monday and Thursday
+    - cron: '0/5 * * * 1,3,4'  # Run at 21:34 UTC every Monday and Thursday
 
 jobs:
   pytest:
