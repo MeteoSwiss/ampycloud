@@ -3,7 +3,7 @@
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
 #
-# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_pytest
 
@@ -21,7 +21,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.9', '3.10', '3.11']
 
     steps:
     # Checkout the repository

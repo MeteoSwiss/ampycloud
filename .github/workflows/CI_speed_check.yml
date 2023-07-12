@@ -1,5 +1,5 @@
 #
-# Copyright (c) 2022 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2022-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_speed_check
 
@@ -14,7 +14,7 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.8', '3.9', '3.10']
+        python-version: ['3.9', '3.10', '3.11']
 
     steps:
       # Checkout our repository

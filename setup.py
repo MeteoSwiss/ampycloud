@@ -40,14 +40,14 @@ setup(
     description="Characterization of cloud layers from ceilometer measurements",
     long_description=long_description,
     long_description_content_type="text/markdown",
-    python_requires='>=3.8.0',
+    python_requires='>=3.9.0',
     install_requires=[
         "matplotlib >= 3.4.2",
         "numpy >= 1.20.3",
         "scikit-learn >= 1.2.0",
         "scipy >= 1.7.3",
         "statsmodels",
-        "pandas >= 1.3.1",
+        "pandas >= 1.5",
         "pyyaml",
         "ruamel.yaml"
     ],
