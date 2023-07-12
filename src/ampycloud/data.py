@@ -406,7 +406,7 @@ class CeiloChunk(AbstractChunk):
             elif (self.max_hits_per_layer - pdf.iloc[ind]['n_hits']) <= lim8:
                 pdf.iloc[ind]['okta'] = 8
             else:
-                pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc']))
+                pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc'])[0])
 
             # Start computing the base altitude
             # First, compute which points should be considered in terms of lookback time
