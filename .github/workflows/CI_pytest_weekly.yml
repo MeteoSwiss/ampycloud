@@ -11,7 +11,7 @@ name: CI_pytest_weekly
 
 on:
   schedule:
-    - cron: '0/5 * * * 1,3,4'  # Run at 21:34 UTC every Monday and Thursday
+    - cron: '0/5 * * * 1,3,4'  # Run at 21:43 UTC every Monday and Thursday
 
 jobs:
   pytest:
@@ -29,7 +29,7 @@ jobs:
     - name: Checkout current repository
       uses: actions/checkout@v3
       with:
-        ref: master
+        ref: pandas2x_etal
 
     # Setup python
     - name: Set up Python ${{ matrix.python-version }}
