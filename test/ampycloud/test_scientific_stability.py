@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -10,7 +10,6 @@ Module content: tests for the scientific stability of the package
 
 # Import from Python
 from pathlib import Path
-import pickle
 import pytest
 import pandas as pd
 
@@ -29,7 +28,7 @@ def get_cases():
 
     # Where is the data located, and how many cases do I have ?
     ref_data_path = Path(__file__).parent / 'ref_data'
-    return sorted(ref_data_path.glob('*.pkl'))
+    return sorted(ref_data_path.glob('*.csv'))
 
 
 @pytest.mark.parametrize("ref_data_file", get_cases())
@@ -58,7 +57,7 @@ def test_scientific_stability(mpls: str, do_sciplots: bool, ref_data_file: Path)
 
     # Extract the reference data
     with open(ref_data_file, 'rb') as f:
-        data = pickle.load(f)
+        data = pd.read_csv(f)
 
     # Fix the dtype of the ceilo column
     data['ceilo'] = data.loc[:, 'ceilo'].astype(pd.StringDtype())

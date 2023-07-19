@@ -6,7 +6,7 @@
 # 10.0.1, 10.0.2.dev0 is valid
 # 10.0, 10, is NOT valid !
 #
-# Copyright (c) 2022 fpavogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2022-2023 fpavogt; frederic.vogt@meteoswiss.ch
 
 name: CI_check_version
 
@@ -21,12 +21,12 @@ jobs:
     steps:
 
     - name: Checkout current repository
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Set up Python
-      uses: actions/setup-python@v2
+      uses: actions/setup-python@v4
       with:
-        python-version: '3.10'
+        python-version: '3.11'
 
     - name: Install dependancies
       run: |

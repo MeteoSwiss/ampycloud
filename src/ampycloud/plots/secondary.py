@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -13,7 +13,7 @@ from typing import Union
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 
 # Import from this package
 from ..logger import log_func_call

@@ -4,7 +4,7 @@
 ampycloud |version| |stars| |watch|
 ===================================
 
-|copyright| |license| |github| |pypi| |last-commit| |issues|
+|copyright| |license| |github| |pypi| |last-commit| |issues| |pytest-weekly|
 
 .. todo::
 

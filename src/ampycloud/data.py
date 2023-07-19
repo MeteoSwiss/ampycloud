@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -394,44 +394,54 @@ class CeiloChunk(AbstractChunk):
             hits_per_ceilo = [len(np.unique(self.data[in_sligrolay *
                                             (self.data['ceilo'] == ceilo)]['dt']))
                               for ceilo in self.ceilos]
-            pdf.iloc[ind]['n_hits'] = np.sum(hits_per_ceilo)
+            pdf.iloc[ind, pdf.columns.get_loc('n_hits')] = np.sum(hits_per_ceilo)
 
             # Transform this into a percentage
-            pdf.iloc[ind]['perc'] = pdf.iloc[ind]['n_hits']/self.max_hits_per_layer * 100
+            pdf.iloc[ind, pdf.columns.get_loc('perc')] = \
+                pdf.iloc[ind, pdf.columns.get_loc('n_hits')]/self.max_hits_per_layer * 100
 
             # Compute the corresponding okta level, not fogetting to account for possible buffers
             # for the 0 and 8 okta bins.
-            if pdf.iloc[ind]['n_hits'] <= lim0:
-                pdf.iloc[ind]['okta'] = 0
-            elif (self.max_hits_per_layer - pdf.iloc[ind]['n_hits']) <= lim8:
-                pdf.iloc[ind]['okta'] = 8
+            if pdf.iloc[ind, pdf.columns.get_loc('n_hits')] <= lim0:
+                pdf.iloc[ind, pdf.columns.get_loc('okta')] = 0
+            elif (self.max_hits_per_layer - pdf.iloc[ind, pdf.columns.get_loc('n_hits')]) <= lim8:
+                pdf.iloc[ind, pdf.columns.get_loc('okta')] = 8
             else:
-                pdf.iloc[ind]['okta'] = int(wmo.perc2okta(pdf.iloc[ind]['perc']))
+                pdf.iloc[ind, pdf.columns.get_loc('okta')] = \
+                    int(wmo.perc2okta(pdf.iloc[ind, pdf.columns.get_loc('perc')])[0])
 
             # Start computing the base altitude
             # First, compute which points should be considered in terms of lookback time
             n_to_use = int(np.floor(len(self.data.loc[in_sligrolay]) * base_lvl_lookback_perc/100))
             # Then, actually compute the base altitude, possibly ignoring the lowest points
-            pdf.iloc[ind]['alt_base'] = \
+            pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = \
                 np.percentile(self.data.loc[in_sligrolay].nlargest(n_to_use, 'dt')['alt'],
                               base_lvl_alt_perc)
 
             # Measure the mean altitude and associated std of the layer
-            pdf.iloc[ind]['alt_mean'] = self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
-            pdf.iloc[ind]['alt_std'] = self.data.loc[in_sligrolay, 'alt'].std(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('alt_mean')] = \
+                self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('alt_std')] = \
+                self.data.loc[in_sligrolay, 'alt'].std(skipna=True)
 
             # Let's also keep track of the min, max, thickness, and fluffiness values
-            pdf.iloc[ind]['alt_min'] = self.data.loc[in_sligrolay, 'alt'].min(skipna=True)
-            pdf.iloc[ind]['alt_max'] = self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
-            pdf.iloc[ind]['thickness'] = pdf.iloc[ind]['alt_max'] - pdf.iloc[ind]['alt_min']
-            pdf.iloc[ind]['fluffiness'], _ = fluffer.get_fluffiness(
+            pdf.iloc[ind, pdf.columns.get_loc('alt_min')] = \
+                self.data.loc[in_sligrolay, 'alt'].min(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('alt_max')] = \
+                self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('thickness')] = \
+                pdf.iloc[ind, pdf.columns.get_loc('alt_max')] - \
+                pdf.iloc[ind, pdf.columns.get_loc('alt_min')]
+            pdf.iloc[ind, pdf.columns.get_loc('fluffiness')], _ = \
+                fluffer.get_fluffiness(
                 self.data.loc[in_sligrolay, ['dt', 'alt']].values,
                 boost=self.prms['GROUPING_PRMS']['fluffiness_boost'],
                 **self.prms['LOWESS'])
 
             # Finally, create the METAR-like code for the cluster
-            pdf.iloc[ind]['code'] = wmo.okta2code(pdf.iloc[ind]['okta']) + \
-                wmo.alt2code(pdf.iloc[ind]['alt_base'])
+            pdf.iloc[ind, pdf.columns.get_loc('code')] = \
+                wmo.okta2code(pdf.iloc[ind, pdf.columns.get_loc('okta')]) + \
+                wmo.alt2code(pdf.iloc[ind, pdf.columns.get_loc('alt_base')])
 
         # Set the proper column types
         for cname in ['n_hits', 'okta', 'original_id']:

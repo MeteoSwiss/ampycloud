@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -230,14 +230,15 @@ class DiagnosticPlot:
             msg = r'\smaller '
             msg += wmo.okta2symb(
                 self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb'))
+                use_metsymb = dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
             msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
                    rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
             msg += warn
             self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'alt_base'],
                               texify(msg),
                               va='center', ha='center', color=base_clr,
-                              bbox=dict(facecolor='none', edgecolor=base_clr, alpha=alpha, ls='--'))
+                              bbox={'facecolor': 'none', 'edgecolor': base_clr,
+                                    'alpha': alpha, 'ls': '--'})
 
     def show_groups(self, show_points: bool = False) -> None:
         """ Show the group data.
@@ -291,7 +292,8 @@ class DiagnosticPlot:
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='gray',
-                              bbox=dict(facecolor='none', edgecolor='gray', alpha=alpha, ls='--'))
+                              bbox={'facecolor': 'none', 'edgecolor': 'gray',
+                                    'alpha': alpha, 'ls': '--'})
 
     def show_layers(self) -> None:
         """ Show the layer data. """
@@ -342,14 +344,14 @@ class DiagnosticPlot:
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='k',
-                              bbox=dict(facecolor='none', edgecolor='k', alpha=alpha))
+                              bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': alpha})
 
     def add_vv_legend(self) -> None:
         """ Adds a legend about the VV hits."""
         msg = r'\smaller $\circ\equiv\mathrm{VV\ hit}$'
         self._axs[0].text(-0.01, 1.35, texify(msg),
                           transform=self._axs[0].transAxes, ha='right', va='top', c='k',
-                          bbox=dict(facecolor='w', edgecolor='k', alpha=1))
+                          bbox={'facecolor': 'w', 'edgecolor': 'k', 'alpha': 1})
 
     def add_ceilo_count(self) -> None:
         """ Adds the number of ceilometer present in the data. """
@@ -414,8 +416,8 @@ class DiagnosticPlot:
         self._axs[2].text(0.5, 1.25, texify(msg),
                           transform=self._axs[2].transAxes, color='k', ha='center',
                           va='top',
-                          bbox=dict(facecolor='none', edgecolor='k', alpha=1,
-                                    boxstyle='round, pad=0.4'))
+                          bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': 1,
+                                'boxstyle': 'round, pad=0.4'})
 
     def format_primary_axes(self) -> None:
         """ Deals with the main plot axes """
