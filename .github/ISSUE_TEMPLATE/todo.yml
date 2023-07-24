@@ -2,9 +2,8 @@ name: New Feature
 description: Keep track of an (approved) new feature of ampycloud
 title: "[New Feature]: "
 labels: ["todo"]
-assignees:
 body:
-- type: markdown
+  - type: markdown
     attributes:
       value: |
         This is to keep track of **dev-approved** changes.
