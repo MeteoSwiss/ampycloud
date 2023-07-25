@@ -22,8 +22,8 @@ def main():
     # Run the default speed check
     (_, mean, std, _, _, _) = get_speed_benchmark()
 
-    print('Platform: %s' % (platform.platform()))
-    print('CPU count: %i\n' % (mp.cpu_count()))
+    print(f'Platform: {platform.platform()}')
+    print(f'CPU count: {mp.cpu_count()}\n')
     print(f'Mean (std) processing time of the mock dataset: {mean:.2f} s ({std:.2f} s)')
 
     # Make sure that we remain below 1s at the 3 sigma level
