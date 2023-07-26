@@ -82,7 +82,7 @@ LAYERING_PRMS:
     # raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR
     # messages to be consistent with the ICAO rules of layer selection, this should be >=100 ft
     # below 10'000 ft.
-    min_sep_vals: [150, 1000]
+    min_sep_vals: [250, 1000]
     # Altitude threshold (in ft) separating the min_sep_val elements.
     # The 0 and + infty extrema will be automatically added to the list by ampycloud.
     # Just list here the intermediate steps.

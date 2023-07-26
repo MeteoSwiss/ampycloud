@@ -15,6 +15,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2023-07-03] Fix #98 (pkg_resources -> packaging in test_version.py).
  - [fpavogt, 2022-10-18] Fix #84 and #85.
 ### Changed:
+ - [fpavogt, 2023-07-26] Require layers to be at least 250ft appart before splitting a group.
  - [fpavogt, 2023-07-13] Deployment of the new Issue form in YAML format (fixes #93).
  - [fpavogt, 2023-07-07] Demo datasets are now stored as csv and not pkl (fixes #102).
  - [fpavogt, 2022-12-16] Replace OKTA_LIM0 (OKTA_LIM8) with MIN_HITS_OKTA0 (MAX_HOLES_OKTA8) - fixes #92.
