@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -82,7 +82,7 @@ def set_mplstyle(func: Callable) -> Callable:
         pth = style_pth()
 
         # First, always extract the 'base' ampycloud plotting parameters
-        with open(pth / 'base.mplstyle') as fil:
+        with open(pth / 'base.mplstyle', encoding='utf-8') as fil:
             logger.debug("Loading the 'base' style")
             prms = yaml.safe_load(fil)
 
@@ -102,14 +102,9 @@ def set_mplstyle(func: Callable) -> Callable:
                                  f' unknown. Should be one of {valid_styles()}.')
         # 4) Request seems legit ... let's load the spec_style ...
         else:
-            with open(pth / f'{spec_style}.mplstyle') as fil:
+            with open(pth / f'{spec_style}.mplstyle', encoding='utf-8') as fil:
                 logger.debug('Loading spec_style: %s', spec_style)
                 prms.update(yaml.safe_load(fil))
-
-        # Issue #18: I need to set `text.latex.preamble` out of context if I want it to be
-        # taken into account.
-        if 'text.latex.preamble' in prms.keys():
-            plt.style.use({'text.latex.preamble': prms['text.latex.preamble']})
 
         # Finally, apply the base plotting style
         with plt.style.context(prms):

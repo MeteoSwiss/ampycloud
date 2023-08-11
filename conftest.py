@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -10,6 +10,7 @@ Module contains: pytest utilities
 
 # Import from python packages and modules
 import pytest
+
 
 def pytest_addoption(parser) -> None:
     """ A nifty little function that allows to feed command line arguments to the pytest command,
@@ -29,7 +30,7 @@ def pytest_addoption(parser) -> None:
                      " Defaults to base.")
 
     parser.addoption("--DO_SCIPLOTS", action="store_true", default=False,
-                     help="If used, will generate the plots when running the scientific stability"+
+                     help="If used, will generate the plots when running the scientific stability" +
                      "tests.")
 
 
@@ -50,6 +51,7 @@ def mpls(request):
     """
 
     return request.config.getoption("--MPL_STYLE")
+
 
 @pytest.fixture(scope='session')
 def do_sciplots(request):
