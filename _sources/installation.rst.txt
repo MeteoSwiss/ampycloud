@@ -17,13 +17,13 @@ ampycloud uses `semantic versioning <https://semver.org/>`_. The latest stable v
 The different releases of ampycloud are also available for download from its
 `Github repository <https://github.com/MeteoSwiss/ampycloud/releases/latest/>`_.
 
-If you plan to do dev-work with ampycloud, you should instead clone the `develop` branch
+If you plan to do dev-work with ampycloud, you should instead clone/fork the `develop` branch
 `of the ampycloud Github repository <https://github.com/MeteoSwiss/ampycloud/tree/develop>`__, in
 which case the install command becomes:
 
 .. code-block:: python
 
-    cd ./where/you/stored/ampycloud/
+    cd ./where/you/forked/ampycloud/
     pip install -e .[dev]
 
 .. note::
@@ -37,14 +37,14 @@ ampycloud is compatible with the following python versions:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 44
+    :lines: 43
 
 Furthermore, ampycloud relies on a few external modules, which will be automatically installed by
 ``pip`` if required:
 
 .. literalinclude:: ../../setup.py
     :language: python
-    :lines: 45-52
+    :lines: 44-53
 
 Testing the installation & Speed benchmark
 ------------------------------------------

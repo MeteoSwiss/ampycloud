@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" >
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Acknowledging ampycloud &mdash; ampycloud  documentation</title>
@@ -11,11 +11,11 @@
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
   
-        <script data-url_root="./" id="documentation_options" src="_static/documentation_options.js"></script>
-        <script src="_static/jquery.js"></script>
-        <script src="_static/underscore.js"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js"></script>
-        <script src="_static/doctools.js"></script>
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=5929fcd5"></script>
+        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -28,14 +28,18 @@
     <nav data-toggle="wy-nav-shift" class="wy-nav-side">
       <div class="wy-side-scroll">
         <div class="wy-side-nav-search" >
-            <a href="index.html" class="icon icon-home"> ampycloud
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            ampycloud
           </a>
               <div class="version">
-                0.5.0.dev0
+                0.6.0.dev0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
-    <input type="text" name="q" placeholder="Search docs" />
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
@@ -69,8 +73,8 @@
         <div class="rst-content">
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
-      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
-      <li>Acknowledging ampycloud</li>
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">Acknowledging ampycloud</li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/acknowledge.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -81,12 +85,12 @@
            <div itemprop="articleBody">
              
   <section id="acknowledging-ampycloud">
-<h1>Acknowledging ampycloud<a class="headerlink" href="#acknowledging-ampycloud" title="Permalink to this heading"></a></h1>
+<h1>Acknowledging ampycloud<a class="headerlink" href="#acknowledging-ampycloud" title="Link to this heading"></a></h1>
 <ol class="arabic">
 <li><p>Only use lower case letters when mentioning ampycloud, and always include the version number.
 Ideally, you should also include the Digital Object Identifier (DOI) associated to the specific
 release you have been using:</p>
-<p>ampycloud 0.5.0.dev0 (DOI:)</p>
+<p>ampycloud 0.6.0.dev0 (DOI:)</p>
 </li>
 <li><p>If ampycloud was useful for your research, please cite the dedicated article:</p>
 <div class="admonition-todo admonition" id="id1">
@@ -100,7 +104,8 @@ own right. The following LaTeX blurb is one way to do so:</p>
 Python package. <span class="k">\textit</span><span class="nb">{</span>ampycloud<span class="nb">}</span> relies, in part, on the following Python packages:
 <span class="k">\textsc</span><span class="nb">{</span>matplotlib<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>Hunter2007<span class="nb">}</span>, <span class="k">\textit</span><span class="nb">{</span>numpy<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>Oliphant2006, Van2011<span class="nb">}</span>,
 <span class="k">\textsc</span><span class="nb">{</span>pandas<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>McKinney2010,reback2020<span class="nb">}</span>,
-and <span class="k">\textit</span><span class="nb">{</span>scikit-learn<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>Pedregosa2011<span class="nb">}</span>.
+<span class="k">\textit</span><span class="nb">{</span>scikit-learn<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>Pedregosa2011<span class="nb">}</span>, <span class="k">\textsf</span><span class="nb">{</span>scipy<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>Virtanen2020<span class="nb">}</span>,
+and <span class="k">\textit</span><span class="nb">{</span>statsmodels<span class="nb">}</span> <span class="k">\citep</span><span class="nb">{</span>seabold2010<span class="nb">}</span>.
 
 @article<span class="nb">{</span>Hunter2007,
   Author    = <span class="nb">{</span>Hunter, J. D.<span class="nb">}</span>,
@@ -158,6 +163,13 @@ and <span class="k">\textit</span><span class="nb">{</span>scikit-learn<span cla
     url     = <span class="nb">{</span>https://doi.org/10.5281/zenodo.3509134<span class="nb">}</span>
 <span class="nb">}</span>
 
+@inproceedings<span class="nb">{</span>seabold2010,
+    title=<span class="nb">{</span>statsmodels: Econometric and statistical modeling with python<span class="nb">}</span>,
+    author=<span class="nb">{</span>Seabold, Skipper and Perktold, Josef<span class="nb">}</span>,
+    booktitle=<span class="nb">{</span>9th Python in Science Conference<span class="nb">}</span>,
+    year=<span class="nb">{</span>2010<span class="nb">}</span>,
+<span class="nb">}</span>
+
 @article<span class="nb">{</span>Van2011,
   title     = <span class="nb">{</span>The NumPy array: a structure for efficient numerical computation<span class="nb">}</span>,
   author    = <span class="nb">{</span>Van Der Walt, Stefan and Colbert, S Chris and Varoquaux, Gael<span class="nb">}</span>,
@@ -168,6 +180,30 @@ and <span class="k">\textit</span><span class="nb">{</span>scikit-learn<span cla
   year      = <span class="nb">{</span>2011<span class="nb">}</span>,
   publisher = <span class="nb">{</span>IEEE Computer Society<span class="nb">}</span>
 <span class="nb">}</span>
+
+@ARTICLE<span class="nb">{</span>Virtanen2020,
+    author  = <span class="nb">{</span>Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and
+    Haberland, Matt and Reddy, Tyler and Cournapeau, David and
+    Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and
+    Bright, Jonathan and <span class="nb">{</span>van der Walt<span class="nb">}</span>, St<span class="nb">{</span><span class="k">\&#39;</span>e<span class="nb">}</span>fan J. and
+    Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and
+    Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and
+    Kern, Robert and Larson, Eric and Carey, C J and
+    Polat, <span class="nb">{</span><span class="k">\.</span>I<span class="nb">}</span>lhan and Feng, Yu and Moore, Eric W. and
+    <span class="nb">{</span>VanderPlas<span class="nb">}</span>, Jake and Laxalde, Denis and Perktold, Josef and
+    Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and
+    Harris, Charles R. and Archibald, Anne M. and
+    Ribeiro, Ant<span class="nb">{</span><span class="k">\^</span>o<span class="nb">}</span>nio H. and Pedregosa, Fabian and
+    <span class="nb">{</span>van Mulbregt<span class="nb">}</span>, Paul and <span class="nb">{</span>SciPy 1.0 Contributors<span class="nb">}}</span>,
+    title   = <span class="nb">{{{</span>SciPy<span class="nb">}</span> 1.0: Fundamental Algorithms for Scientific
+    Computing in Python<span class="nb">}}</span>,
+    journal = <span class="nb">{</span>Nature Methods<span class="nb">}</span>,
+    year    = <span class="nb">{</span>2020<span class="nb">}</span>,
+    volume  = <span class="nb">{</span>17<span class="nb">}</span>,
+    pages   = <span class="nb">{</span>261--272<span class="nb">}</span>,
+    adsurl  = <span class="nb">{</span>https://rdcu.be/b08Wh<span class="nb">}</span>,
+    doi     = <span class="nb">{</span>10.1038/s41592-019-0686-2<span class="nb">}</span>,
+    <span class="nb">}</span>
 </pre></div>
 </div>
 </li>
@@ -185,7 +221,7 @@ and <span class="k">\textit</span><span class="nb">{</span>scikit-learn<span cla
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2022, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
