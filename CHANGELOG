@@ -11,7 +11,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-10-18] Add option to use a percentage of the most recent measurements to derive the base altitude.
  - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
 ### Fixed:
- - [fpavogt, 2023-07-07] Fix #95 (pylint 3.0 deprecation of epylinter)
+ - [fpavogt, 2023-08-11] Fix #18 (all matplotlib params are now strictly set in context).
+ - [fpavogt, 2023-07-07] Fix #95 (pylint 3.0 deprecation of epylinter).
  - [fpavogt, 2023-07-03] Fix #98 (pkg_resources -> packaging in test_version.py).
  - [fpavogt, 2022-10-18] Fix #84 and #85.
 ### Changed:
