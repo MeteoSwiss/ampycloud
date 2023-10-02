@@ -59,9 +59,9 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     save_loc = Path(save_loc)
     # I won't create stuff for the users. ampycloud is not that nice.
     if not save_loc.exists():
-        raise AmpycloudError('Ouch ! save_loc does not appear to exist !')
+        raise AmpycloudError('save_loc does not appear to exist !')
     if not save_loc.is_dir():
-        raise AmpycloudError('Ouch ! save_loc does not appear to be a directory !')
+        raise AmpycloudError('save_loc does not appear to be a directory !')
 
     # Next, let's look at all the parameter files available ...
     ref_loc = Path(__file__).resolve().parent / 'prms'
@@ -112,11 +112,11 @@ def set_prms(pth: Union[str, Path]) -> None:
         pth = Path(pth)
 
     if not isinstance(pth, Path):
-        raise AmpycloudError(f'Ouch ! pth should of type str or pathlib.Path, not {type(pth)}')
+        raise AmpycloudError(f'pth should of type str or pathlib.Path, not {type(pth)}')
     if not pth.exists():
-        raise AmpycloudError(f'Ouch ! I cannot find {pth}')
+        raise AmpycloudError(f'I cannot find {pth}')
     if not pth.is_file():
-        raise AmpycloudError(f'Ouch ! {pth} is not a file !')
+        raise AmpycloudError(f'{pth} is not a file !')
     if (suf := pth.suffix) != '.yml':
         warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.' +
                       ' Are you sure this is ok ?', AmpycloudWarning)
@@ -141,10 +141,10 @@ def reset_prms() -> None:
             from ampycloud import dynamic
 
             # Change a parameter
-            dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
+            dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = 0
             # Reset them
             ampycloud.reset_prms()
-            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'])
+            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'])
 
     """
 
@@ -216,8 +216,8 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
             # Define only the parameters that are non-default. To adjust the MSA, use:
             prms = {'MSA': 10000}
 
-            # Or to adjust some other algorithm parameter:
-            prms = {'GROUPING_PRMS':{'dt_scale_kwargs':{'scale': 300}}}
+            # Or to adjust some other algorithm parameters:
+            prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}
 
 
     The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information

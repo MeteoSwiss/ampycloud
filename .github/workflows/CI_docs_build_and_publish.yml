@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 #
 # This will build the docs and push them to the gh-pages branch of the repo
 # Assumes a few things: 1) docs live in ./docs; 2) there is a doc_build.sh bash script that takes
@@ -23,16 +23,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: [3.9]
+        python-version: ['3.11']
 
     steps:
       # Checkout our repository
       - name: Checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Also check out the live docs, placing it into a pseudo "build" folder for the docs
       - name: Checkout live docs
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
             repository: MeteoSwiss/ampycloud
             ref: gh-pages
@@ -51,7 +51,7 @@ jobs:
 
       # Set up Python
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
             python-version: ${{ matrix.python-version }}
 

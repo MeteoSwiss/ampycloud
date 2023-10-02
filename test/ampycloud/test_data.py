@@ -67,9 +67,9 @@ def test_ceilochunk_init():
     assert dynamic.AMPYCLOUD_PRMS['MSA'] == 0
 
     # Check the ability to set nested parameters in one go
-    chunk = CeiloChunk(mock_data, prms={'SLICING_PRMS': {'algo': 'test'}})
-    assert chunk.prms['SLICING_PRMS']['algo'] == 'test'
-    assert dynamic.AMPYCLOUD_PRMS['SLICING_PRMS']['algo'] == 'agglomerative'
+    chunk = CeiloChunk(mock_data, prms={'GROUPING_PRMS': {'alt_pad_perc': 'test'}})
+    assert chunk.prms['GROUPING_PRMS']['alt_pad_perc'] == 'test'
+    assert dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_pad_perc'] == +10
 
     # Check that warnings are raised in case bad parameters are given
     with warns(AmpycloudWarning):
@@ -139,6 +139,36 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
 
+def test_bad_layer_sep_lims():
+    """ Test that giving problematic layer separation limits does raise an error. """
+
+    # Make sure that bad layering min sep values raises an error
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_vals'] = [150, 1000]
+    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_lims'] = [5000, 10000]
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
+                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                     'period': 100, 'amplitude': 0}])
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+
+    with raises(AmpycloudError):
+        chunk.find_layers()
+
+    reset_prms()
+
+
 def test_ceilochunk_nocld():
     """ Test the methods of CeiloChunks when no clouds are seen in the interval. """
 
@@ -201,7 +231,7 @@ def test_layering_singlepts():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -227,7 +257,7 @@ def test_layering_singleval():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -240,6 +270,29 @@ def test_layering_singleval():
     # Check that the GMM was never executed
     assert np.all(chunk.groups.loc[:, 'ncomp'] == -1)
 
+
+def test_coplanar_hull():
+    """ Test that the complex hull calculation does not crash the code if points are co-planar. """
+
+    data = np.array([np.ones(10), np.arange(0, 10, 1), np.arange(0, 10, 1), np.ones(10)])
+
+    mock_data = pd.DataFrame(data.T,
+                             columns=['ceilo', 'dt', 'alt', 'type'])
+
+    # Set the proper column types
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+
+    # Points are coplanar, the fluffiness should be forced to 0
+    assert chunk.slices.loc[0, 'fluffiness'] == 0
+
+
 def test_layering_dualeval():
     """ Test the layering step when there are two single altitude values. See #78 for details. """
 
@@ -251,7 +304,7 @@ def test_layering_dualeval():
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        mock_data.loc[:, col] = mock_data.loc[:, col].astype(tpe)
+        mock_data[col] = mock_data.loc[:, col].astype(tpe)
 
     # Instantiate a CeiloChunk entity ...
     chunk = CeiloChunk(mock_data)
@@ -259,7 +312,8 @@ def test_layering_dualeval():
     # Do the dance ...
     chunk.find_slices()
     chunk.find_groups()
-    # The lyering should be solid enough to not complain if there are only two values in the data
+    # The layering should be solid enough to not complain if there are only two values in the data
     with warnings.catch_warnings():
         warnings.simplefilter("error")
+        warnings.simplefilter("default", category=FutureWarning)  # Fixes #87
         chunk.find_layers()

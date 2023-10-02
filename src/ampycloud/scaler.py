@@ -53,7 +53,7 @@ def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
     if mode == 'undo':
         return vals * scale + shift
 
-    raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
+    raise AmpycloudError(f'Mode unknown: {mode}')
 
 
 @log_func_call(logger)
@@ -89,7 +89,7 @@ def minmax_scale(vals: np.ndarray,
     if mode == 'undo':
         return vals * (max_val - min_val) + min_val
 
-    raise AmpycloudError(f' Ouch ! mode unknown: {mode}')
+    raise AmpycloudError(f'Mode unknown: {mode}')
 
 
 @log_func_call(logger)
@@ -145,10 +145,10 @@ def step_scale(vals: np.ndarray,
 
     # Some sanity checks
     if len(steps) != len(scales)-1:
-        raise AmpycloudError('Ouch ! steps and scales have incompatible lengths.')
+        raise AmpycloudError('Steps and scales have incompatible lengths.')
 
     if np.any(np.diff(steps) < 0):
-        raise AmpycloudError('Ouch ! steps should be oredered from smallest to largest !')
+        raise AmpycloudError('Steps should be ordered from smallest to largest !')
 
     # What is the offset of each bin ?
     offsets = [0] + steps
@@ -167,8 +167,12 @@ def step_scale(vals: np.ndarray,
     for (sid, sval) in enumerate(scales):
 
         # What is this specific step offset (to ensure continuity between steps) ?
-        cont_corr = np.concatenate((np.array([steps[0]/scales[0]]), np.diff(steps)/scales[1:-1]))
-        cont_corr = np.sum(cont_corr[:sid])
+        if len(steps) > 0:
+            cont_corr = np.concatenate((np.array([steps[0]/scales[0]]),
+                                        np.diff(steps)/scales[1:-1]))
+            cont_corr = np.sum(cont_corr[:sid])
+        else:
+            cont_corr = 0  # Special case for when I have a single scaling for the entire interval
 
         if mode == 'do':
 
@@ -185,7 +189,7 @@ def step_scale(vals: np.ndarray,
             out[cond] = (vals[cond] - cont_corr) * sval + offsets[sid]
 
         else:
-            raise AmpycloudError(f'Ouch ! mode unknown: {mode}')
+            raise AmpycloudError(f'Mode unknown: {mode}')
 
     return out
 
@@ -224,9 +228,9 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
             if kwargs['mode'] == 'do':
                 kwargs['shift'] = np.nanmax(vals)
             elif kwargs['mode'] == 'undo':
-                raise AmpycloudError('Ouch ! I cannot get `shift` from the shift-and-scaled data !')
+                raise AmpycloudError('I cannot get `shift` from the shift-and-scaled data !')
             else:
-                raise AmpycloudError(f"Ouch ! mode unknown: {kwargs['mode']}")
+                raise AmpycloudError(f"mode unknown: {kwargs['mode']}")
             return kwargs
 
         # 'mode' is not set -> it will be "do" by default.
@@ -250,10 +254,10 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
                 return kwargs
 
             if kwargs['mode'] == 'undo':
-                raise AmpycloudError('Ouch ! I cannot get `min_val` and `max_val` from' +
+                raise AmpycloudError('I cannot get `min_val` and `max_val` from' +
                                      ' minmax-scaled data !')
 
-            raise AmpycloudError(f"Ouch ! mode unknown: {kwargs['mode']}")
+            raise AmpycloudError(f"Mode unknown: {kwargs['mode']}")
 
         # 'mode' not set -> will default to 'do'
         if 'min_range' in kwargs.keys():
@@ -268,7 +272,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
         # Nothing to be done here
         return kwargs
 
-    raise AmpycloudError(f'Ouch ! scaling fct unknown: {fct}')
+    raise AmpycloudError(f'Scaling fct unknown: {fct}')
 
 
 @log_func_call(logger)
@@ -305,4 +309,4 @@ def apply_scaling(vals: np.ndarray, fct: str = None, **kwargs: dict) -> np.ndarr
     if fct == 'step-scale':
         return step_scale(vals, **kwargs)
 
-    raise AmpycloudError(f'Ouch ! Scaling function name unknown: {fct}')
+    raise AmpycloudError(f'Scaling function name unknown: {fct}')

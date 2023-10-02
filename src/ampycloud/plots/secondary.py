@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -13,12 +13,11 @@ from typing import Union
 import logging
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 
 # Import from this package
 from ..logger import log_func_call
 from ..scaler import apply_scaling
-from .. import dynamic
 from .hardcoded import WIDTH_TWOCOL
 from .tools import texify, set_mplstyle
 
@@ -77,7 +76,7 @@ def scaling_fcts(show: bool = True,
 
     ax3.plot(alts, apply_scaling(
         alts, fct='step-scale',
-        **dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_scale_kwargs']), c='k', lw=2)
+        **{'steps': [3000, 8000], 'scales': [100, 500, 1000]}), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step-scale'))
 
     for ax in [ax1, ax2, ax3]:

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -14,12 +14,12 @@ from functools import partial
 from copy import deepcopy
 import numpy as np
 import matplotlib.pyplot as plt
-import matplotlib.gridspec as gridspec
+from matplotlib import gridspec
 from matplotlib.lines import Line2D
 from matplotlib import rcParams
 
 # Import from this package
-from .. import scaler
+from .. import dynamic, scaler, fluffer
 from .hardcoded import WIDTH_TWOCOL, MRKS
 from .tools import texify, get_scaling_kwargs
 from .. import wmo
@@ -61,7 +61,7 @@ class DiagnosticPlot:
 
         # Use gridspec for a fine control of the figure area.
         fig_gs = gridspec.GridSpec(1, 5,
-                                   height_ratios=[1], width_ratios=[1, 0.25, 0.18, 0.18, 0.18],
+                                   height_ratios=[1], width_ratios=[1, 0.12, 0.3, 0.18, 0.18],
                                    left=0.08, right=0.99, bottom=0.15, top=0.75,
                                    wspace=0.0, hspace=0.05)
 
@@ -186,21 +186,28 @@ class DiagnosticPlot:
             fcs[is_vv] = 'none'
 
             # I can finally show the points ...
-            self._axs[0].scatter(self._chunk.data[in_slice]['dt'],
-                                 self._chunk.data[in_slice]['alt'],
+            self._axs[0].scatter(self._chunk.data.loc[in_slice, 'dt'],
+                                 self._chunk.data.loc[in_slice, 'alt'],
                                  marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
 
+            # ... and the corresponding LOWESS-fit used to derive their fluffiness
+            _, lowess_pts = fluffer.get_fluffiness(
+                self._chunk.data.loc[in_slice, ['dt', 'alt']].values, **self._chunk.prms['LOWESS'])
+            self._axs[0].plot(lowess_pts[:, 0], lowess_pts[:, 1],
+                              ls='-', lw=1.5, c=base_clr, drawstyle='steps-mid', zorder=0)
+
             # Let's also plot the overlap area of the slice
-            slice_mean = self._chunk.slices.loc[ind, 'alt_mean']
-            slice_std = self._chunk.slices.loc[ind, 'alt_std']
-            overlap = self._chunk.prms['GROUPING_PRMS']['overlap']
+            slice_min = self._chunk.slices.loc[ind, 'alt_min']
+            slice_max = self._chunk.slices.loc[ind, 'alt_max']
+            thickness = self._chunk.slices.loc[ind, 'thickness']
+            alt_pad = self._chunk.prms['GROUPING_PRMS']['alt_pad_perc']/100
 
             # Get some fake data spanning the entire data range
-            misc = np.linspace(np.nanmin(self._chunk.data['dt']),
-                               np.nanmax(self._chunk.data['dt']), 3)
+            misc = np.linspace(self._chunk.data['dt'].min(skipna=True),
+                               self._chunk.data['dt'].max(skipna=True), 3)
             self._axs[0].fill_between(misc,
-                                      np.ones_like(misc) * (slice_mean - overlap * slice_std),
-                                      np.ones_like(misc) * (slice_mean + overlap * slice_std),
+                                      np.ones_like(misc) * (slice_min - alt_pad * thickness),
+                                      np.ones_like(misc) * (slice_max + alt_pad * thickness),
                                       edgecolor='none', alpha=0.1, zorder=0,
                                       facecolor=base_clr)
 
@@ -219,15 +226,19 @@ class DiagnosticPlot:
             else:
                 warn = ''
 
-            # Show the slice METAR text
-            msg = r'\smaller ' + wmo.okta2symb(
+            # Show the slice METAR text, plus the fluffiness, plus the isolation status
+            msg = r'\smaller '
+            msg += wmo.okta2symb(
                 self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
-            ) + ' ' + self._chunk.slices.iloc[ind]['code'] + warn
-            self._axs[1].text(0.5, self._chunk.slices.iloc[ind]['alt_base'],
+                use_metsymb = dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
+            msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
+                   rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
+            msg += warn
+            self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'alt_base'],
                               texify(msg),
                               va='center', ha='center', color=base_clr,
-                              bbox=dict(facecolor='none', edgecolor=base_clr, alpha=alpha, ls='--'))
+                              bbox={'facecolor': 'none', 'edgecolor': base_clr,
+                                    'alpha': alpha, 'ls': '--'})
 
     def show_groups(self, show_points: bool = False) -> None:
         """ Show the group data.
@@ -276,12 +287,13 @@ class DiagnosticPlot:
             # Show the group METAR text
             msg = r'\smaller ' + wmo.okta2symb(
                 self._chunk.groups.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
             ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
             self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='gray',
-                              bbox=dict(facecolor='none', edgecolor='gray', alpha=alpha, ls='--'))
+                              bbox={'facecolor': 'none', 'edgecolor': 'gray',
+                                    'alpha': alpha, 'ls': '--'})
 
     def show_layers(self) -> None:
         """ Show the layer data. """
@@ -327,19 +339,19 @@ class DiagnosticPlot:
             # Display the actual METAR text
             msg = r'\smaller ' + wmo.okta2symb(
                 self._chunk.layers.iloc[ind]['okta'],
-                use_metsymb=(self._chunk.prms['MPL_STYLE'] == 'metsymb')
+                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
             ) + ' ' + self._chunk.layers.iloc[ind]['code']
             self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
                               texify(msg),
                               va='center', ha='center', color='k',
-                              bbox=dict(facecolor='none', edgecolor='k', alpha=alpha))
+                              bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': alpha})
 
     def add_vv_legend(self) -> None:
         """ Adds a legend about the VV hits."""
         msg = r'\smaller $\circ\equiv\mathrm{VV\ hit}$'
         self._axs[0].text(-0.01, 1.35, texify(msg),
                           transform=self._axs[0].transAxes, ha='right', va='top', c='k',
-                          bbox=dict(facecolor='w', edgecolor='k', alpha=1))
+                          bbox={'facecolor': 'w', 'edgecolor': 'k', 'alpha': 1})
 
     def add_ceilo_count(self) -> None:
         """ Adds the number of ceilometer present in the data. """
@@ -351,12 +363,10 @@ class DiagnosticPlot:
         """ Adds the max_hit_per_layer info. """
 
         msg = r'\smaller max. hits per layer: ' + str(self._chunk.max_hits_per_layer)
-        msg += r'$^{\uparrow\, '
-        msg += str(int(np.ceil(self._chunk.max_hits_per_layer/100 *
-                       self._chunk.prms['OKTA_LIM8'])))
-        msg += r'}_{\downarrow\, '
-        msg += str(int(np.floor(self._chunk.max_hits_per_layer/100 *
-                       self._chunk.prms['OKTA_LIM0'])))
+        msg += r'$^{'
+        msg += f'8:{self._chunk.prms["MAX_HOLES_OKTA8"]}'
+        msg += r'}_{'
+        msg += f'0:{self._chunk.prms["MAX_HITS_OKTA0"]}'
         msg += r'}$'
 
         self._axs[0].text(-0.14, -0.21, texify(msg),
@@ -367,9 +377,9 @@ class DiagnosticPlot:
 
         msg = []
         if self._chunk.geoloc is not None:
-            msg += [r'{}'.format(self._chunk.geoloc)]
+            msg += [rf'{self._chunk.geoloc}']
         if self._chunk.ref_dt is not None:
-            msg += [r'\smaller $\Delta t_{\rm ref}$: ' + '{}'.format(self._chunk.ref_dt)]
+            msg += [r'\smaller $\Delta t_{\rm ref}$: ' + f'{self._chunk.ref_dt}']
 
         if not len(msg) == 0:
             self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
@@ -384,7 +394,7 @@ class DiagnosticPlot:
         """
 
         if name is not None or metar is not None:
-            msg = r'\smaller \bf %s: %s' % (name, metar)
+            msg = rf'\smaller \bf {name}: {metar}'
 
             # Show it if it contains something ...
             self._axs[2].text(0.5, 1.3, texify(msg),
@@ -400,14 +410,14 @@ class DiagnosticPlot:
         msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg()
 
         if self._chunk.msa is not None:
-            msg += '\n'+r'\smaller\smaller MSA: {} ft'.format(self._chunk.msa)
+            msg += '\n' + rf'\smaller\smaller MSA: {self._chunk.msa} ft'
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.25, texify(msg),
                           transform=self._axs[2].transAxes, color='k', ha='center',
                           va='top',
-                          bbox=dict(facecolor='none', edgecolor='k', alpha=1,
-                                    boxstyle='round, pad=0.4'))
+                          bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': 1,
+                                'boxstyle': 'round, pad=0.4'})
 
     def format_primary_axes(self) -> None:
         """ Deals with the main plot axes """
@@ -429,8 +439,8 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                   self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   self._chunk.prms['SLICING_PRMS']['dt_scale_kwargs'])
+                                   'shift-and-scale',
+                                   {'scale': self._chunk.prms['SLICING_PRMS']['dt_scale']})
 
             (alt_scale_kwargs, alt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['alt'].values,
@@ -441,12 +451,9 @@ class DiagnosticPlot:
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(
                 1.06,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   **dt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['dt_scale_mode'],
-                                   **dt_descale_kwargs)))
+                functions=(partial(scaler.apply_scaling, fct='shift-and-scale', **dt_scale_kwargs),
+                           partial(scaler.apply_scaling, fct='shift-and-scale', **dt_descale_kwargs)
+                           ))
 
             secax_y = self._axs[0].secondary_yaxis(
                 1.03,
@@ -468,6 +475,8 @@ class DiagnosticPlot:
     def format_group_axes(self) -> None:
         """ Format the duplicate axes related to the grouping part.
 
+        TODO: add secondary axis for the altitude rescaling as well. See #91.
+
         """
 
         # Only proceed if I have found some clusters ...
@@ -478,41 +487,22 @@ class DiagnosticPlot:
             # we need to derive them by hand given what was requested by the user.
             (dt_scale_kwargs, dt_descale_kwargs) = \
                 get_scaling_kwargs(self._chunk.data['dt'].values,
-                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   self._chunk.prms['GROUPING_PRMS']['dt_scale_kwargs'])
-
-            (alt_scale_kwargs, alt_descale_kwargs) = \
-                get_scaling_kwargs(self._chunk.data['alt'].values,
-                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   self._chunk.prms['GROUPING_PRMS']['alt_scale_kwargs'])
+                                   'shift-and-scale',
+                                   {'scale': self._chunk.prms['GROUPING_PRMS']['dt_scale']})
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
             secax_x = self._axs[0].secondary_xaxis(
                 1.25,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   **dt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['dt_scale_mode'],
-                                   **dt_descale_kwargs)))
-
-            secax_y = self._axs[0].secondary_yaxis(
-                1.14,
-                functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   **alt_scale_kwargs),
-                           partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['GROUPING_PRMS']['alt_scale_mode'],
-                                   **alt_descale_kwargs)))
+                functions=(partial(scaler.apply_scaling, fct='shift-and-scale', **dt_scale_kwargs),
+                           partial(scaler.apply_scaling, fct='shift-and-scale', **dt_descale_kwargs)
+                           ))
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Grouping $\Delta t$'))
-            secax_y.set_ylabel(texify(r'\smaller Grouping Alt.'))
 
             # And reduce the fontsize while we're at it ...
             secax_x.tick_params(axis='x', which='both', labelsize=rcParams['font.size']-2)
-            secax_y.tick_params(axis='y', which='both', labelsize=rcParams['font.size']-2)
 
     def save(self, fn_out: str, fmts: list = None) -> None:
         """ Saves the plot to file.

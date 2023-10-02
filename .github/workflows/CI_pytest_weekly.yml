@@ -1,18 +1,17 @@
 # This workflow will install Python dependencies and run tests with a variety of Python
-# versions. For more information see:
+# versions, with a trigger based on specific schedule.  For more information see:
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# https://docs.github.com/en/actions/using-workflows/events-that-trigger-workflows#schedule
+#
 # Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
 #
 # Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
-name: CI_pytest
+name: CI_pytest_weekly
 
 on:
-  # Not required on push: no code should go to master directly.
-  #push:
-  #  branches: [ master ]
-  pull_request:
-    branches: [ master, develop, develop_vof ]
+  schedule:
+    - cron: '43 21 * * 1,4'  # Run at 21:43 UTC every Monday and Thursday
 
 jobs:
   pytest:
@@ -21,18 +20,23 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest, macos-latest, windows-latest]
-        python-version: ['3.9', '3.10', '3.11']
+        #python-version: # Use the latest Python version available for this test.
 
     steps:
-    # Checkout the repository
+    # Checkout the master branch from the repository
+    # The idea for this Action is to spot issues with new dependency versions as soon as they
+    # are released (and not when we decide to update ampycloud).
     - name: Checkout current repository
       uses: actions/checkout@v3
+      with:
+        repository: MeteoSwiss/ampycloud
+        ref: master
 
     # Setup python
-    - name: Set up Python ${{ matrix.python-version }}
+    - name: Set up Python
       uses: actions/setup-python@v4
-      with:
-        python-version: ${{ matrix.python-version }}
+      #with:
+      #  python-version: ${{ matrix.python-version }}
 
     # Check the python/conda setup (can be useful to diagnose bug with this Action)
     # Powershell syntax adapted from:

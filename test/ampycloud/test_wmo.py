@@ -19,10 +19,9 @@ def test_perc2okta():
     """ Test the frac2okta function. """
 
     assert isinstance(perc2okta(43), np.ndarray)
-    assert np.all(perc2okta(2, lim0=0) == np.array([1]))
-    assert np.all(perc2okta(2, lim0=3) == np.array([0]))
-    assert np.all(perc2okta(np.array([10, 20, 35, 45, 60, 70, 85, 99]), lim8=98) ==
-                  np.array([1, 2, 3, 4, 5, 6, 7, 8]))
+    assert np.all(perc2okta(2) == np.array([1]))
+    assert np.all(perc2okta(np.array([0, 10, 20, 35, 45, 60, 70, 85, 100])) ==
+                  np.array([0, 1, 2, 3, 4, 5, 6, 7, 8]))
 
 
 def test_alt2code():

@@ -34,7 +34,7 @@ def main():
         for warn in warn_lines:
             print(warn)
 
-        raise Exception('Ouch ! Some errors/warning were detected when building the docs.')
+        raise Exception('Some errors/warning were detected when building the docs.')
 
     # Docs compiled ok. Print the log FYI.
     print('Docs compiled ok. Logs follow.')

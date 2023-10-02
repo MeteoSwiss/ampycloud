@@ -24,7 +24,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
-                          affinity: str = 'euclidean', linkage: str = 'single',
+                          metric: str = 'euclidean', linkage: str = 'single',
                           distance_threshold: Union[int, float] = 1) -> tuple:
     """ Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
 
@@ -32,7 +32,7 @@ def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
         data (ndarray): array of [x, y] pairs to run the clustering on.
         n_clusters (int, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering`
             for details. Defaults to None.
-        affinity (str, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering` for
+        metric (str, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering` for
             details. Defaults to 'euclidian'.
         linkage (str, optional): see :py:class:`sklearn.cluster.AgglomerativeClustering` for
             details. Defaults to 'single'.
@@ -46,7 +46,7 @@ def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
     """
 
     # Set things up
-    agg_clu = AgglomerativeClustering(linkage=linkage, n_clusters=n_clusters, affinity=affinity,
+    agg_clu = AgglomerativeClustering(linkage=linkage, n_clusters=n_clusters, metric=metric,
                                       distance_threshold=distance_threshold).fit(data)
 
     # Return the stuff of interest
@@ -79,4 +79,4 @@ def clusterize(data: np.ndarray, algo: str = None, **kwargs: dict) -> tuple:
         return agglomerative_cluster(data, **kwargs)
 
     # Else, complain ...
-    raise AmpycloudError(f'Ouch ! Clustering algorithm unknown: {algo}')
+    raise AmpycloudError(f'Clustering algorithm unknown: {algo}')
