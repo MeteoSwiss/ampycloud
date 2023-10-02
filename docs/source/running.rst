@@ -111,7 +111,7 @@ There are thus 2+1 ways to adjust the ampycloud scientific parameters:
 
           from ampycloud import dynamic
 
-          dynamic.AMPYCLOUD_PRMS['OKTA_LIM8'] = 95
+          dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = 0
 
 
       .. important::
@@ -126,7 +126,7 @@ There are thus 2+1 ways to adjust the ampycloud scientific parameters:
       copy of the default ampycloud parameters.
 
 
-    * **2: Adjust them for locally** for a given execution of ampycloud by feeding a suitable
+    * **2: Adjust them locally** for a given execution of ampycloud by feeding a suitable
       nested dictionary to :py:func:`ampycloud.core.run` (that will create a new
       :py:class:`ampycloud.data.CeiloChunk` instance behind the scene). The dictionary, the keys
       and levels of which should be consistent with :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,

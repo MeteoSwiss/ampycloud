@@ -68,7 +68,7 @@ def check_data_consistency(pdf: pd.DataFrame,
     ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
     cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements would be ``1``,
     ``2``, ``3``, etc ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
-    plots as a vertical Visibility (VV) hits, **but it will not be treated any differently than any
+    plots as a vertical Visibility (VV) hit, **but it will not be treated any differently than any
     other regular hit**. Type ``0`` corresponds to no (cloud) detection, in which case the
     corresponding hit altitude should be a NaN.
 
@@ -118,7 +118,7 @@ def check_data_consistency(pdf: pd.DataFrame,
 
     # First things first, make sure I was fed a pandas DataFrame
     if not isinstance(data, pd.DataFrame):
-        raise AmpycloudError('Ouch ! I was expecting data as a pandas DataFrame,' +
+        raise AmpycloudError('I was expecting data as a pandas DataFrame,' +
                              f' not: {type(data)}')
 
     # Make sure the dataframe is not empty.
@@ -126,16 +126,16 @@ def check_data_consistency(pdf: pd.DataFrame,
     # conditions, which would result in NaNs.
     # If I have no measurements, I cannot issue a AutoMETAR. It would make no sense.
     if len(data) == 0:
-        raise AmpycloudError("Ouch ! len(data) is 0. I can't work with no data !")
+        raise AmpycloudError("len(data) is 0. I can't work with no data !")
 
     # Check that all the required columns are present in the data, with the correct format
     for (col, type_req) in req_cols.items():
         # If the required column is missing, raise an Exception.
         if col not in data.columns:
-            raise AmpycloudError(f'Ouch ! Column {col} is missing from the input data.')
+            raise AmpycloudError(f'Column {col} is missing from the input data.')
         # If the column has the wrong data type, complain as well.
         if (type_in := data[col].dtype) != type_req:
-            warnings.warn(f'Huh ! Column {col} has type {type_in} instead of {type_req}.',
+            warnings.warn(f'Column {col} has type "{type_in}" instead of "{type_req}".',
                           AmpycloudWarning)
             logger.warning('Adjusting the dtype of column %s from %s to %s',
                            col, type_in, type_req)
@@ -144,7 +144,7 @@ def check_data_consistency(pdf: pd.DataFrame,
     # Drop any columns that I do not need for processing
     for key in data.columns:
         if key not in req_cols.keys():
-            warnings.warn(f'Huh ! Column {key} is not required by ampycloud.',
+            warnings.warn(f'Column {key} is not required by ampycloud.',
                           AmpycloudWarning)
             logger.warning('Dropping the superfluous %s column from the input data.', key)
             data.drop((key), axis=1, inplace=True)
@@ -153,17 +153,17 @@ def check_data_consistency(pdf: pd.DataFrame,
     # with those elements: we simply raise Warnings.
     msgs = []
     if np.any(data.loc[:, 'alt'].values < 0):
-        msgs += ['Huh ! Some hit altitudes are negative ?!']
+        msgs += ['Some hit altitudes are negative ?!']
     if not np.all(np.isnan(data.loc[data.type == 0, 'alt'])):
-        msgs += ['Huh ! Some type=0 hits have non-NaNs altitude values ?!']
+        msgs += ['Some type=0 hits have non-NaNs altitude values ?!']
     if np.any(np.isnan(data.loc[data.type == 1, 'alt'])):
-        msgs += ['Huh ! Some type=1 hits have NaNs altitude values ?!']
+        msgs += ['Some type=1 hits have NaNs altitude values ?!']
     if not np.all(np.in1d(data.loc[data.type == 2, 'dt'].values,
                           data.loc[data.type == 1, 'dt'].values)):
-        msgs += ['Huh ! Some type=2 hits have no coincident type=1 hits ?!']
+        msgs += ['Some type=2 hits have no coincident type=1 hits ?!']
     if not np.all(np.in1d(data.loc[data.type == 3, 'dt'].values,
                           data.loc[data.type == 2, 'dt'].values)):
-        msgs += ['Huh ! Some type=3 hits have no coincident type=2 hits ?!']
+        msgs += ['Some type=3 hits have no coincident type=2 hits ?!']
 
     # Now save all those messages to the log, and raise Warnings as well.
     for msg in msgs:

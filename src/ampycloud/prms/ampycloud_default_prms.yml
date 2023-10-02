@@ -13,15 +13,6 @@
 # Plotting style. Can be one of 'base', 'latex', 'metsymb'
 MPL_STYLE: 'base'
 
-# Max sky coverage (in %) up to which the coverage is considered null.
-OKTA_LIM0: 2
-
-# Min sky coverage (in %) down to which the coverage is considered full.
-OKTA_LIM8: 98
-
-# Fraction of smallest layer points to median to compute the layer altitude for the METAR
-LAYER_BASE_FRAC: 0.1
-
 # Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported
 # in the ampycloud METAR messages. Set it to null for no limit.
 MSA: null
@@ -31,77 +22,82 @@ MSA: null
 # still detected with the correct densities.
 MSA_HIT_BUFFER: 1500
 
+# Max number of hits in a layer to still consider it to be of 0 oktas.
+MAX_HITS_OKTA0: 3
+
+# Max number of holes (=non-detection of cloud) in a layer to still consider it to be of 8 oktas.
+MAX_HOLES_OKTA8: 1
+
+# Number (in %) of the cloud hit heights (sorted from smallest to highest) to ignore when
+# computing the cloud altitude base, taken to be the min altitude of the
+# 100-LAYER_BASE_LVL_PERC % remaining points.
+BASE_LVL_ALT_PERC: 5
+
+# Number of Slice/Group/Layer points (in %) - starting from the most recent ones -
+# to use to compute the cloud base altitude. 30 would use only the 30% youngest hits.
+# Set to 100 to use all the points.
+BASE_LVL_LOOKBACK_PERC: 100
+
+# LOWESS parameters used to fit Slice/Groups/Layers altitude trends
+LOWESS:
+    # Fraction of the slice/group/layer points to consider when deriving the LOWESS smooth fit.
+    # Values too small will result in overfitting. Values too large will miss rapid
+    # altitude fluctuations.
+    frac: 0.35
+    # Number of LOWESS fitting iterations
+    it: 3
+
 # Slicing parameters
 SLICING_PRMS:
-    # Clustering algorithm name
-    algo: agglomerative
-    # Clustering algorithm parameters
-    algo_kwargs:
-        n_clusters:
-        distance_threshold: 0.2
-        linkage: average
-        affinity: manhattan
-    # Time scaling mode
-    dt_scale_mode: shift-and-scale
-    # Time scaling parameters
-    dt_scale_kwargs:
-        scale: 100000
+    # Clustering distance threshold
+    distance_threshold: 0.2
+    # Time scaling factor
+    dt_scale: 100000
     # Altitude scaling mode
     alt_scale_mode: minmax-scale
-    # Altitude scaling parameters
+    # Altitude scaling parameters (in ft)
     alt_scale_kwargs:
         min_range: 1000
 
 # Clustering parameters
 GROUPING_PRMS:
-    # Grouping algorithm name
-    algo: agglomerative
-    # Grouping algorithm parameters
-    algo_kwargs:
-        n_clusters: null # null = None
-        distance_threshold: 1
-        linkage: single
-        affinity: manhattan
-    # Time scaling mode
-    dt_scale_mode: shift-and-scale
-    # Time scaling parameters
-    dt_scale_kwargs:
-        scale: 180
-    # Altitude scaling mode
-    alt_scale_mode: step-scale
-    # Altitude scaling parameters
-    alt_scale_kwargs:
-        steps: [8000, 14000]
-        scales: [100, 500, 1000]
-    # Distance from the mean altitude (in std) below which two slices are considered "overlapping"
-    overlap: 2.0
+    # Padding (in % of the slice altitude range) to add above and below slices
+    # before looking for overlaps
+    alt_pad_perc: +10
+    # Time scaling factor (in s)
+    dt_scale: 180
+    # Boost factor, applied to the slice fluffiness to derive the altitude scaling factor
+    fluffiness_boost: 2
+    # Range of allowed altitude scaling factor (in ft). The fluffiness_boost will never be allowed
+    # to push the alt_scaling beyond this range.
+    alt_scale_range: [100, 500]
 
 # Layering parameters
 LAYERING_PRMS:
     # Minimum okta value below which cluster splitting is not attempted
     min_okta_to_split: 2
     # Minimum separation (in ft) between the mean altitude of identified layers inside groups
-    # with a base altitude <=10'000ft. Any layers separated by less than this value will not be
-    # split. Any value < than 5 times the vertical resolution of the data will raise a warning, as
-    # it may lead to an over-layering of groups. For the ampycloud METAR messages to be consistent
-    # with the ICAO rules of layer selection, this should be >=100 ft.
-    min_sep_low: 150
-    # Same as min_sep_low, but for layers identified in groups with a base height >10'000 ft. For
-    # the ampycloud METAR messages to be consistent with the ICAO rules of layer selection, this
-    # should be >=1000 ft.
-    min_sep_high: 1000
-    # Gaussian Mixture Model parameters
+    # with a base altitude in the bins set by min_sep_lims. Any layers separated by less than this
+    # value will not be split. Any value < than 5 times the vertical resolution of the data will
+    # raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR
+    # messages to be consistent with the ICAO rules of layer selection, this should be >=100 ft
+    # below 10'000 ft.
+    min_sep_vals: [250, 1000]
+    # Altitude threshold (in ft) separating the min_sep_val elements.
+    # The 0 and + infty extrema will be automatically added to the list by ampycloud.
+    # Just list here the intermediate steps.
+    min_sep_lims: [10000]
     gmm_kwargs:
         # Whether to use 'BIC' or 'AIC' scores to decide which model is "best".
         scores: BIC
         # Whether to use 'delta', or 'prob' to find the best model.
         # See ampycloud.layer.best_gmm() for details.
         mode: delta
-        # minimum model probability computed from the relative likelihood,
+        # Minimum model probability computed from the relative likelihood,
         # below which alternative models with more components will be considered.
         # Only used if mode='prob'
         min_prob: 1.0
-        # a model with a smaller score will only be considered "valid"
+        # A model with a smaller score will only be considered "valid"
         # if its score is smaller than delta_mul_gain*current_best_score.
         # Only used if mode='delta'
         delta_mul_gain: 0.95

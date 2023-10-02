@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -11,9 +11,9 @@ Module content: tests for the layer module
 # Import from Python
 import warnings
 from pathlib import Path
-import pickle
 import pytest
 import numpy as np
+import pandas as pd
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudWarning
@@ -87,9 +87,10 @@ def test_unstable_layers():
     unstable layering depending on the random seed of the system. Let's make sure this is not a
     problem anymore. """
 
-    with open(Path(__file__).parent / 'ref_data' / 'Geneva_2019.01.10-04.45.34_FEW040-BKN070.pkl',
+    with open(Path(__file__).parent / 'ref_data' /
+              'Geneva_2019.01.10-04.50.00_SCT040-BKN070.csv',
               'rb') as f:
-        data = pickle.load(f)
+        data = pd.read_csv(f)
 
     # Drop anything below 6500 ft
     data = data.drop(data[data['alt'] < 6500].index)
@@ -118,7 +119,7 @@ def test_unstable_layers():
         best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
                                           scores='BIC', rescale_0_to_x=100,
                                           min_sep=0,
-                                          random_seed=42,
+                                          random_seed=45,
                                           delta_mul_gain=0.95, mode='delta')
         assert best_ncomp == 2
 

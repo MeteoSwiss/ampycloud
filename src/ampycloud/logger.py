@@ -44,12 +44,12 @@ def log_func_call(logger: logging.Logger) -> Callable:
             bound_args.apply_defaults()
 
             # Assemble a log message witht he function name ...
-            log_msg = ' Executing %s() ...' % (func.__name__)
+            log_msg = f' Executing {func.__name__}() ...'
             # ... and log it at the INFO level.
             logger.info(log_msg)
 
             # Then get extra information about the arguments ...
-            log_msg = ' ... with the following input: %s' % (str(dict(bound_args.arguments)))
+            log_msg = f' ... with the following input: {str(dict(bound_args.arguments))}'
             # ... and log it at the DEBUG level.
             logger.debug(log_msg)
 

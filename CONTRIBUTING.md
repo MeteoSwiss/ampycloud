@@ -86,6 +86,9 @@ Automated CI/CD checks are triggered upon Pull Requests being issued towards the
 * automatic publication of the Sphinx docs (for a PR to `master` only)
 * check that the code version was incremented (for PR to `master` only)
 
+To test the code with the latest Python developments, a `pytest-weeklz` workflow runs the
+ampycloud tests twice a week using the latest version of Python and of the ampycloud dependencies.
+
 There is another Github action responsible for publishing the code onto pypi, that gets triggered
 upon a new release or pre-release being published. See the ampycloud
 [release mechanisms](#release-mechanisms) for details.
@@ -255,7 +258,7 @@ or `metsymb`. :warning: For this to work, pytest must be called from the package
 
 The tests defined under `test/ampycloud/test_scientific_stability.py` are meant to catch any unexpected alteration of the **scientific behavior** of ampycloud. Specifically, they process real
 datasets of reference, and check whether the computed METARs are as expected. The reference
-datasets are provided as Python pickle files under `test/ampycloud/ref_dat`. The idea is to keep
+datasets are provided as CSV files under `test/ampycloud/ref_dat`. The idea is to keep
 this list of scientific tests *as short as possible, but as complete as necessary*.
 
 If one of these tests fail, it is possible to generate the corresponding diagnostic plot with the

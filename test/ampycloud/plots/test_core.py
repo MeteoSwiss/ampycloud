@@ -75,7 +75,7 @@ def test_direct_prms(mpls):
     data['type'] = data['type'].astype(int)
 
     # Run ampycloud
-    chunk = run(data, prms={'GROUPING_PRMS': {'dt_scale_kwargs': {'scale': 120}}})
+    chunk = run(data, prms={'GROUPING_PRMS': {'dt_scale': 120}})
 
     # The following should not trigger any warning... let's make sure of that.
     with warnings.catch_warnings():

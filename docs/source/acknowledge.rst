@@ -23,7 +23,8 @@ Acknowledging ampycloud
         Python package. \textit{ampycloud} relies, in part, on the following Python packages:
         \textsc{matplotlib} \citep{Hunter2007}, \textit{numpy} \citep{Oliphant2006, Van2011},
         \textsc{pandas} \citep{McKinney2010,reback2020},
-        and \textit{scikit-learn} \citep{Pedregosa2011}.
+        \textit{scikit-learn} \citep{Pedregosa2011}, \textsf{scipy} \citep{Virtanen2020},
+        and \textit{statsmodels} \citep{seabold2010}.
 
         @article{Hunter2007,
           Author    = {Hunter, J. D.},
@@ -81,6 +82,13 @@ Acknowledging ampycloud
             url     = {https://doi.org/10.5281/zenodo.3509134}
         }
 
+        @inproceedings{seabold2010,
+            title={statsmodels: Econometric and statistical modeling with python},
+            author={Seabold, Skipper and Perktold, Josef},
+            booktitle={9th Python in Science Conference},
+            year={2010},
+        }
+
         @article{Van2011,
           title     = {The NumPy array: a structure for efficient numerical computation},
           author    = {Van Der Walt, Stefan and Colbert, S Chris and Varoquaux, Gael},
@@ -91,3 +99,27 @@ Acknowledging ampycloud
           year      = {2011},
           publisher = {IEEE Computer Society}
         }
+
+        @ARTICLE{Virtanen2020,
+            author  = {Virtanen, Pauli and Gommers, Ralf and Oliphant, Travis E. and
+            Haberland, Matt and Reddy, Tyler and Cournapeau, David and
+            Burovski, Evgeni and Peterson, Pearu and Weckesser, Warren and
+            Bright, Jonathan and {van der Walt}, St{\'e}fan J. and
+            Brett, Matthew and Wilson, Joshua and Millman, K. Jarrod and
+            Mayorov, Nikolay and Nelson, Andrew R. J. and Jones, Eric and
+            Kern, Robert and Larson, Eric and Carey, C J and
+            Polat, {\.I}lhan and Feng, Yu and Moore, Eric W. and
+            {VanderPlas}, Jake and Laxalde, Denis and Perktold, Josef and
+            Cimrman, Robert and Henriksen, Ian and Quintero, E. A. and
+            Harris, Charles R. and Archibald, Anne M. and
+            Ribeiro, Ant{\^o}nio H. and Pedregosa, Fabian and
+            {van Mulbregt}, Paul and {SciPy 1.0 Contributors}},
+            title   = {{{SciPy} 1.0: Fundamental Algorithms for Scientific
+            Computing in Python}},
+            journal = {Nature Methods},
+            year    = {2020},
+            volume  = {17},
+            pages   = {261--272},
+            adsurl  = {https://rdcu.be/b08Wh},
+            doi     = {10.1038/s41592-019-0686-2},
+            }

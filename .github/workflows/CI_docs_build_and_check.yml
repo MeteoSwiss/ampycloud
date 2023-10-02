@@ -1,4 +1,4 @@
-# Copyright (c) 2020-2021 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_docs_check
 
@@ -16,16 +16,16 @@ jobs:
     strategy:
       matrix:
         os: [ubuntu-latest]
-        python-version: ['3.8']
+        python-version: ['3.11']
 
     steps:
       # Checkout our repository
       - name: Checkout current repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       # Set up Python
       - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v2
+        uses: actions/setup-python@v4
         with:
           python-version: ${{ matrix.python-version }}
 

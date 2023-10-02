@@ -84,6 +84,13 @@ def test_step_scale():
                        mode='undo')
     assert np.all(np.round(deout, 1) == vals)
 
+    # Check step_scale with a uniform scaling
+    vals = np.array([-1, 5, 15, 25, 35])
+    out = step_scale(vals, steps=[], scales=[10], mode='do')
+    assert np.array_equal(out, vals/10)
+    out = step_scale(out, steps=[], scales=[10], mode='undo')
+    assert np.array_equal(out, vals)
+
 
 def test_convert_kwargs():
     """ Test the convert_kwargs() function """

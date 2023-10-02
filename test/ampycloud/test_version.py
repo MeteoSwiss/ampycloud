@@ -9,7 +9,7 @@ Module content: tests for the version module
 """
 
 # Import from Python
-from pkg_resources import parse_version
+import packaging
 
 # Import from this package
 from ampycloud.version import VERSION
@@ -23,4 +23,4 @@ def test_version():
     # not converted into a LegacyVersion. Any valid version should be greater than 0.
     # Only LegacyVersion wouldn't.
     # Not the most elegant, but better than nothing.
-    assert parse_version(VERSION) > parse_version('0')
+    assert packaging.version.parse(VERSION) > packaging.version.parse('0')

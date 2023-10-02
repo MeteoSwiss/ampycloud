@@ -119,14 +119,14 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
 
     # A sanity check of the input type, since it is a bit convoluted.
     if not isinstance(layer_prms, list):
-        raise AmpycloudError(f'Ouch ! layer_prms should be a list, not: {type(layer_prms)}')
+        raise AmpycloudError(f'layer_prms should be a list, not: {type(layer_prms)}')
     for (ind, item) in enumerate(layer_prms):
         if not isinstance(item, dict):
-            raise AmpycloudError(f'Ouch ! Element {ind} from layer_prms should be a dict,' +
+            raise AmpycloudError(f'Element {ind} from layer_prms should be a dict,' +
                                  f' not: {type(item)}')
         if not all(key in item.keys() for key in ['alt', 'alt_std', 'sky_cov_frac',
                                                   'period', 'amplitude']):
-            raise AmpycloudError('Ouch ! One or more of the following dict keys are missing in ' +
+            raise AmpycloudError('One or more of the following dict keys are missing in ' +
                                  f"layer_prms[{ind}]: 'alt', 'alt_std', 'sky_cov_frac'," +
                                  "'period', 'amplitude'.")
 
@@ -178,7 +178,7 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
 
     # Fix the dtypes
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
-        out.loc[:, col] = out[col].astype(tpe)
+        out[col] = out[col].astype(tpe)
 
     return out
 
