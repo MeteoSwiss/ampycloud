@@ -71,7 +71,7 @@ def main():
         fn_list = [item for item in fn_list if bad_item not in item]
 
     # Launch pylint with the appropriate options
-    run = lint.Run(pylint_args + fn_list, do_exit=False)
+    run = lint.Run(pylint_args + fn_list, exit=False)
     # Collect the total score
     score = run.linter.stats.global_note
 
