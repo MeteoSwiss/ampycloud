@@ -257,6 +257,37 @@ class CeiloChunk(AbstractChunk):
         # ... and sum these to get the result I want.
         return int(np.sum(out))
 
+    def _calculate_base_height_for_selection(
+            self,
+            data_indexer: pd.Series(dtype=bool),
+            base_lvl_lookback_perc: float,
+            base_lvl_alt_perc: float,
+    ) -> float:
+        # Start computing the base altitude
+        # First, compute which points should be considered in terms of lookback time
+        n_to_use = int(np.floor(len(self.data.loc[data_indexer]) * base_lvl_lookback_perc/100))
+        # Then, actually compute the base altitude, possibly ignoring the lowest points
+        return np.percentile(
+            self.data.loc[data_indexer].nlargest(n_to_use, 'dt')['alt'],
+            base_lvl_alt_perc,
+        )
+
+    def _get_min_sep_for_altitude(self, altitude: float) -> float:
+        if len(self.prms['MIN_SEP_LIMS']) != \
+            len(self.prms['MIN_SEP_VALS']) - 1:
+                raise AmpycloudError(
+                    '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
+                    'Got MIN_SEP_LIMS %i and MIN_SEP_VALS %i',
+                    self.prms['MIN_SEP_LIMS'], self.prms['MIN_SEP_VALS']
+                )
+
+        min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
+                                         altitude)
+        min_sep = self.prms['MIN_SEP_VALS'][min_sep_val_id]
+        logger.info('Alt: %.1f', altitude)
+        logger.info('min_sep value: %.1f', min_sep)
+        return min_sep
+
     @log_func_call(logger)
     def metarize(self, which: int = 'slices', base_lvl_alt_perc: float = 5.,
                  base_lvl_lookback_perc: float = 100.,
@@ -410,13 +441,12 @@ class CeiloChunk(AbstractChunk):
                 pdf.iloc[ind, pdf.columns.get_loc('okta')] = \
                     int(wmo.perc2okta(pdf.iloc[ind, pdf.columns.get_loc('perc')])[0])
 
-            # Start computing the base altitude
-            # First, compute which points should be considered in terms of lookback time
-            n_to_use = int(np.floor(len(self.data.loc[in_sligrolay]) * base_lvl_lookback_perc/100))
-            # Then, actually compute the base altitude, possibly ignoring the lowest points
-            pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = \
-                np.percentile(self.data.loc[in_sligrolay].nlargest(n_to_use, 'dt')['alt'],
-                              base_lvl_alt_perc)
+            # Compute the base altitude
+            pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = self._calculate_base_height_for_selection(
+                in_sligrolay,
+                base_lvl_lookback_perc,
+                base_lvl_alt_perc,
+            )
 
             # Measure the mean altitude and associated std of the layer
             pdf.iloc[ind, pdf.columns.get_loc('alt_mean')] = \
@@ -632,10 +662,44 @@ class CeiloChunk(AbstractChunk):
         to_fill = self.data['group_id'].isna()
         self.data.loc[to_fill, 'group_id'] = self.data.loc[to_fill, 'slice_id']
 
-        # Finally, let's metarize these !
+        # Let's metarize these to get a groups df!
         self.metarize(which='groups', base_lvl_alt_perc=self.prms['BASE_LVL_ALT_PERC'],
                       base_lvl_lookback_perc=self.prms['BASE_LVL_LOOKBACK_PERC'],
                       lim0=self.prms['MAX_HITS_OKTA0'], lim8=self.prms['MAX_HOLES_OKTA8'])
+
+        min_seps_grp = self.groups['alt_base'].apply(self._get_min_sep_for_altitude)
+        base_alt_diffs = self.groups['alt_base'].diff()
+        # create a boolean series to select values, fillna is necessary as
+        # first entry of diff will be nan
+        lt_min_sep_indexer = (base_alt_diffs < min_seps_grp).fillna(False)
+        while len(self.groups[lt_min_sep_indexer]) > 0:
+            # start with the two lowest layers that are too close
+            idx = self.groups[lt_min_sep_indexer].index[0]
+            # set the group id in the ceilo data to id of group below
+            data_idxer = self.data['group_id'] == self.groups['original_id'].loc[idx]
+            self.data.loc[data_idxer, 'group_id'] = self.groups['original_id'].iloc[idx - 1]
+            # drop the group
+            self.groups.drop(index=idx, inplace=True)
+            # resetting because we must not have index gaps in the next iteration
+            self.groups.reset_index(drop=True, inplace=True)
+            # now we recalculate the base alt for the merged supergroup
+            data_idxer = self.data['group_id'] == self.groups['original_id'].iloc[idx - 1]
+            self.groups.iloc[idx - 1, self.groups.columns.get_loc('alt_base')] = self._calculate_base_height_for_selection(
+                data_idxer,
+                self.prms['BASE_LVL_LOOKBACK_PERC'],
+                self.prms['BASE_LVL_ALT_PERC'],
+            )
+            # as this changes base alt, it is possible that we now are closer
+            # to another group, so we have to continue iteratively.
+            min_seps_grp = self.groups['alt_base'].apply(self._get_min_sep_for_altitude)
+            base_alt_diffs = self.groups['alt_base'].diff()
+            lt_min_sep_indexer = (base_alt_diffs < min_seps_grp).fillna(False)
+        #finally, let's metarize again
+        self.metarize(
+            which='groups', base_lvl_alt_perc=self.prms['BASE_LVL_ALT_PERC'],
+            base_lvl_lookback_perc=self.prms['BASE_LVL_LOOKBACK_PERC'],
+            lim0=self.prms['MAX_HITS_OKTA0'], lim8=self.prms['MAX_HOLES_OKTA8']
+        )
 
     @log_func_call(logger)
     def find_layers(self) -> None:
@@ -686,15 +750,7 @@ class CeiloChunk(AbstractChunk):
             gro_alts = gro_alts.reshape(-1, 1)
 
             # Identify the minimum layer separation given the overall group base altitude
-            if len(self.prms['LAYERING_PRMS']['min_sep_lims']) != \
-               len(self.prms['LAYERING_PRMS']['min_sep_vals']) - 1:
-                raise AmpycloudError('"min_sep_lims" must have one less item than "min_sep_vals".')
-
-            min_sep_val_id = np.searchsorted(self.prms['LAYERING_PRMS']['min_sep_lims'],
-                                             self.groups.at[ind, 'alt_base'])
-            min_sep = self.prms['LAYERING_PRMS']['min_sep_vals'][min_sep_val_id]
-            logger.info('Group base alt: %.1f', self.groups.at[ind, 'alt_base'])
-            logger.info('min_sep value: %.1f', min_sep)
+            min_sep = self._get_min_sep_for_altitude(self.groups.at[ind, 'alt_base'])
 
             # Handle #78: if the data is comprised of only two distinct altitudes, only look for
             # up to 2 Gaussian components. Else, up to 3.
@@ -704,6 +760,10 @@ class CeiloChunk(AbstractChunk):
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
                 gro_alts, ncomp_max=ncomp_max, min_sep=min_sep,
+                layer_base_params={
+                    'lookback_perc': self.prms['BASE_LVL_LOOKBACK_PERC'],
+                    'alt_perc': self.prms['BASE_LVL_ALT_PERC']
+                },
                 **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
             # Add this info to the log

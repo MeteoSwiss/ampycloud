@@ -143,8 +143,8 @@ def test_bad_layer_sep_lims():
     """ Test that giving problematic layer separation limits does raise an error. """
 
     # Make sure that bad layering min sep values raises an error
-    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_vals'] = [150, 1000]
-    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_lims'] = [5000, 10000]
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_VALS'] = [150, 1000]
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_LIMS'] = [5000, 10000]
 
     n_ceilos = 4
     lookback_time = 1200
@@ -161,9 +161,9 @@ def test_bad_layer_sep_lims():
 
     # Do the dance ...
     chunk.find_slices()
-    chunk.find_groups()
 
     with raises(AmpycloudError):
+        chunk.find_groups()
         chunk.find_layers()
 
     reset_prms()
