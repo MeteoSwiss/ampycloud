@@ -142,6 +142,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
+                   layer_base_params: dict[str, int] = {'lookback_perc': 100, 'alt_perc': 5},
                    scores: str = 'BIC',
                    rescale_0_to_x: float = None,
                    random_seed: int = 42,
@@ -240,8 +241,24 @@ def ncomp_from_gmm(vals: np.ndarray,
         return best_ncomp, best_ids, abics
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
-    # First, let's compute the mean component heights
-    mean_comp_heights = [np.mean(vals_orig[best_ids == i]) for i in range(ncomp[best_model_ind])]
+    # First, let's compute the component base altitude
+    def _calc_base_alt(vals, lookback_perc, alt_perc):
+        n_largest_idxs = vals.argsort()[
+            - int(len(vals) * lookback_perc / 100):
+        ]
+        n_largest_elements = vals[n_largest_idxs]
+        print("NLARGEST")
+        print(n_largest_elements)
+        print(vals)
+        return np.percentile(n_largest_elements, alt_perc)
+
+    mean_comp_heights = [
+        _calc_base_alt(
+            vals_orig[best_ids == i].flatten(),
+            layer_base_params['lookback_perc'],
+            layer_base_params['alt_perc']
+        ) for i in range(ncomp[best_model_ind])
+    ]
 
     # These may not be ordered, so let's keep track of the indices
     # First, let's deal with the fact that they are not ordered.
