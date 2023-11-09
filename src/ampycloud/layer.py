@@ -247,9 +247,12 @@ def ncomp_from_gmm(vals: np.ndarray,
             - int(len(vals) * lookback_perc / 100):
         ]
         n_largest_elements = vals[n_largest_idxs]
-        print("NLARGEST")
-        print(n_largest_elements)
-        print(vals)
+        if len(n_largest_elements) == 0:
+            warnings.warn(
+                'Cloud base calculation got an empty array.'
+                'Maybe check lookback percentage (is set to %i)' %lookback_perc
+            )
+            return np.nan
         return np.percentile(n_largest_elements, alt_perc)
 
     mean_comp_heights = [
