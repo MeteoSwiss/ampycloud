@@ -1,16 +1,10 @@
 
 .. include:: ./substitutions.rst
 
-ampycloud |version| |stars| |watch|
-===================================
-
-|copyright| |license| |github| |pypi| |last-commit| |issues| |pytest-weekly|
-
-.. todo::
-
-    Tags for the latest DOI should be added when releasing the code
-    for the first time. These should also be added to the :ref:`acknowledge:Acknowledging ampycloud`
-    page.
+ampycloud |version| |stars| |watch| |doi|
+=========================================
+|copyright| |license|
+|pypi| |last-commit| |issues| |pytest-weekly|
 
 .. _fig-demo:
 .. figure:: ./examples/ampycloud_canonical_mock_demo.png
@@ -18,7 +12,7 @@ ampycloud |version| |stars| |watch|
     :align: center
     :alt: ampycloud demo diagnostic diagram
 
-    the ampycloud diagnostic diagram for its canonical mock dataset.
+    The ampycloud diagnostic diagram for its canonical mock dataset.
 
 Welcome to the ampycloud documentation
 --------------------------------------
@@ -65,4 +59,3 @@ Table of contents
     Contributing <https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md>
     Github repository <https://github.com/MeteoSwiss/ampycloud>
     modules
-    doc_todo

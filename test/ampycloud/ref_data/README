@@ -10,7 +10,7 @@ or alternatively, to set a specific MSA value:
 geoloc_YYYY.MMM.DD-hh.mm.ss_ref-metar_MSAXXXXX.pkl
 
 
-Each file is required to be a Python binary pickle, containing data ready to be fed to
+Each file is required to be a CSV ASCII, containing data ready to be fed to
 ampycloud.run(), together with the geoloc and ref_dt extracted from the filename.
 
 Simply adding a file to this folder is sufficient to have it processed by the ampycloud test suite.
