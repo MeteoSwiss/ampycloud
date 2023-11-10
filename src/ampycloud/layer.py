@@ -191,6 +191,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     if len(np.unique(vals_orig)) == 1:
         logger.debug('Skipping the GMM computation: all the values are the same.')
         return (1, np.zeros(len(vals_orig)), None)
+    elif len(np.unique(vals_orig)) < ncomp_max:
+        ncomp_max = len(np.unique(vals_orig))
+        warnings.warn(f'Restricting ncomp_max to the max number of individual values: {ncomp_max}')
 
     # Estimate the resolution of the data (by measuring the minimum separation between two data
     # points).
@@ -248,7 +251,7 @@ def ncomp_from_gmm(vals: np.ndarray,
         ]
         n_largest_elements = vals[n_largest_idxs]
         if len(n_largest_elements) == 0:
-            warnings.warn(
+            raise ValueError(
                 'Cloud base calculation got an empty array.'
                 'Maybe check lookback percentage (is set to %i)' %lookback_perc
             )
