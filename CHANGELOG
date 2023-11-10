@@ -3,7 +3,14 @@ All notable changes to ampycloud will be documented in this file.
 The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-
+## [v0.7.0]
+### Added
+ - [regDaniel, 2023-11-09] Add minimum separation condition for grouping step
+### Fixed
+ - [regDaniel, 2023-11-09] Fix #107 (no more reporting of two layers at same height)
+### Changed
+- [regDaniel, 2023-11-09] Changed min sep in layering from layer mean to layer base altitude
+- [regDaniel, 2023-11-10] Refactoring (modularization) of metarize method
 ## [v0.6.0.dev0]
 ### Added:
  - [fpavogt, 2022-10-19] Add scipy to the list of required dependencies.
