@@ -571,9 +571,6 @@ class CeiloChunk(AbstractChunk):
         prelim_groups = self._calculate_sligrolay_base_height(
             'groups', prelim_groups, oids
         )
-        prelim_groups = self._add_sligrolay_information(
-            'groups', prelim_groups, oids
-        )
         # Ordering by altitude
         prelim_groups.sort_values('alt_base', inplace=True)
         prelim_groups.reset_index(drop=True, inplace=True)
