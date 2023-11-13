@@ -251,11 +251,10 @@ def ncomp_from_gmm(vals: np.ndarray,
         ]
         n_largest_elements = vals[n_largest_idxs]
         if len(n_largest_elements) == 0:
-            raise ValueError(
+            raise AmpycloudError(
                 'Cloud base calculation got an empty array.'
                 'Maybe check lookback percentage (is set to %i)' %lookback_perc
             )
-            return np.nan
         return np.percentile(n_largest_elements, alt_perc)
 
     mean_comp_heights = [
