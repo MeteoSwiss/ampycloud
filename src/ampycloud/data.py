@@ -664,7 +664,7 @@ class CeiloChunk(AbstractChunk):
             which='slices',
         )
 
-    def _merge_close_groups(self) _> None:
+    def _merge_close_groups(self) -> None:
         """Merge groups that are closer than the minimum separation at their
         respective altitudes.
 
