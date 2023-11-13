@@ -12,7 +12,7 @@ Module content: tests for the data module
 import warnings
 import numpy as np
 import pandas as pd
-from pytest import raises, warns
+from pytest import raises, warns, mark, param
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
@@ -138,6 +138,36 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg() == 'OVC009'
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
+
+@mark.parametrize('altitude1,altitude2,ngroups_expected', [
+    param(250., 800., 2, id='gt min sep'),
+    param(250., 500., 2, id='eq min sep'),
+    param(250., 350., 1, id='gt min sep'),
+])
+def test_group_separation(altitude1: float, altitude2: float, ngroups_expected: int):
+    """Test if the separation of close groups works as intended."""
+
+    #create some fake data:
+    fake_hits = [altitude1] * 50 + [altitude2] * 50
+    fake_data = pd.DataFrame({
+        'ceilo': ['Ceilometer.PO'] * 100,
+        'dt': [t for t in range(-1000, 0, 10)],
+        'alt': fake_hits,
+        'type': [1] * 100,
+    })
+    fake_grp_ids = [1] * 50 + [2] * 50
+    fake_data['ceilo'] = fake_data['ceilo'].astype(pd.StringDtype())
+    fake_data['dt'] = fake_data['dt'].astype(np.float64)
+    ceilo_chunk = CeiloChunk(
+        fake_data,
+        prms={'MIN_SEP_VALS': [250, 1000], 'MIN_SEP_LIMS': [10000]}
+    )
+    ceilo_chunk.data['group_id'] = fake_grp_ids
+    ceilo_chunk._merge_close_groups()
+
+    assert len(ceilo_chunk.data['group_id'].unique()) == ngroups_expected
+
+    reset_prms()
 
 def test_bad_layer_sep_lims():
     """ Test that giving problematic layer separation limits does raise an error. """
