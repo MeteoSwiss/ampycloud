@@ -157,6 +157,10 @@ def _calc_base_alt(
     Returns:
         float: The layer base altitude.
 
+    Raises:
+        AmpycloudError: If the array passed to the n_largest percentile calculation
+            is empty.
+
     """
     n_largest_idxs = vals.argsort()[
         - int(len(vals) * lookback_perc / 100):

@@ -267,6 +267,7 @@ class CeiloChunk(AbstractChunk):
         Args:
             data_indexer (pd.Series(dtype=bool)): Boolean series with which we
                 want to select the data for which we want to calculate the base height.
+
         Returns:
             float: The base height of the given data selection.
 
@@ -335,6 +336,7 @@ class CeiloChunk(AbstractChunk):
 
         Args:
             which (str): One of 'slices', 'groups', 'layers'
+
         Returns:
             pd.DataFrame: A mostly empty data frame to store slices, groups or layers.
             npt.ArrayLike: The values of the original IDs as given by the clustering/ gmm
