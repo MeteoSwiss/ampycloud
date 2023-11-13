@@ -262,6 +262,15 @@ class CeiloChunk(AbstractChunk):
             self,
             data_indexer: pd.Series(dtype=bool),
     ) -> float:
+        """Caclulate the cloud base height for a selection of data.
+
+        Args:
+            data_indexer (pd.Series(dtype=bool)): Boolean series with which we
+                want to select the data for which we want to calculate the base height.
+        Returns:
+            float: The base height of the given data selection.
+
+        """
         # Start computing the base altitude
         # First, compute which points should be considered in terms of lookback time
         n_to_use = int(np.floor(len(
@@ -274,6 +283,20 @@ class CeiloChunk(AbstractChunk):
         )
 
     def _get_min_sep_for_altitude(self, altitude: float) -> float:
+        """Get the minimum separation for a given altitude.
+
+        Args:
+            altitude (float): The altitude for which we want to know the minimum
+                separation
+
+        Returns:
+            float: The minimum separation for the given altitude.
+
+        Raises:
+            AmpycloudError: If the length of MIN_SEP_LIMS is not one less than
+                MIN_SEP_VALS
+
+        """
         if len(self.prms['MIN_SEP_LIMS']) != \
             len(self.prms['MIN_SEP_VALS']) - 1:
                 raise AmpycloudError(
@@ -289,7 +312,16 @@ class CeiloChunk(AbstractChunk):
         logger.info('min_sep value: %.1f', min_sep)
         return min_sep
 
-    def _get_original_ids(self, which):
+    def _get_original_ids(self, which: str) -> npt.ArrayLike:
+        """Get the original IDs of slices, groups or layers.
+
+        Args:
+            which (str): 'slice', 'group' or 'array'
+
+        Returns:
+            The original IDs
+
+        """
          # What are the original sli/gro/lay ids ?
         oids = np.unique(self.data[which[:-1] + '_id'])
 
@@ -299,6 +331,19 @@ class CeiloChunk(AbstractChunk):
         return np.delete(oids, np.where(oids == -1))
 
     def _setup_sligrolay_pdf(self, which: str = 'slices') -> tuple[pd.DataFrame, npt.ArrayLike]:
+        """Setup a data frame for slices, groups or layers and keep track of IDs.
+
+        Args:
+            which (str): One of 'slices', 'groups', 'layers'
+        Returns:
+            pd.DataFrame: A mostly empty data frame to store slices, groups or layers.
+            npt.ArrayLike: The values of the original IDs as given by the clustering/ gmm
+                algorithms.
+
+        Raises:
+            AmpycloudError: If which is not in ['slices', 'groups', 'layers']
+
+        """
         # What values am I interested in ?
         cols = ['n_hits',  # Duplicate-corrected number of hits
                 'perc',  # Duplicate-corrected hit percentage (in %)
@@ -314,6 +359,15 @@ class CeiloChunk(AbstractChunk):
                 'significant',  # bool, whether this is a slice/group/layer that should be reported
                 'original_id',  # Original id of the slice/group/layer set by the clustering algo
                 ]
+
+        # We want to raise early if 'which' is unknown.
+        if not which in ['slices', 'groups', 'layers']:
+            raise AmpycloudError(
+                'Trying to initialize a data frame for %s '
+                'which is unknown. Keyword arg "which" must be one of'
+                '"slices", "groups" or "layers"'
+                %which
+            )
 
         # If I am looking at the slices, also keep track of whether they are isolated, or not.
         if which == 'slices':
@@ -356,8 +410,23 @@ class CeiloChunk(AbstractChunk):
 
         return pdf, original_ids
 
-    def _calculate_cloud_cover(self, which, pdf, original_ids) -> pd.DataFrame:
+    def _calculate_cloud_cover(
+            self, which: str, pdf: pd.DataFrame, original_ids: npt.ArrayLike
+        ) -> pd.DataFrame:
+        """Calculate cloud cover for a given slice, group or layer.
 
+        Args:
+            which (str): One of 'slices', 'groups' or 'layers'
+            pdf (pd.DataFrame): A data frame with slices/ groups/ layers.
+            original_ids (npt.ArrayLike): the original IDs of the slices/ groups/
+                layers.
+
+        Returns:
+            pd.DataFrame: The input data frame with results in the okta column.
+
+        Results are written to the "okta" column of the DF.
+
+        """
         for ind, oid in enumerate(original_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == oid
@@ -389,8 +458,25 @@ class CeiloChunk(AbstractChunk):
 
         return pdf
 
-    def _add_sligrolay_information(self, which, pdf, original_ids):
+    def _add_sligrolay_information(
+            self,
+            which: str,
+            pdf: pd.DataFrame,
+            original_ids: npt.ArrayLike
+        ) -> pd.DataFrame:
+        """Add additional information for slices/ groups/ layers.
 
+        Args:
+            which (str): One of "slices", "groups" or "layers".
+            pdf (pd.DataFrame): The data frame holding slices/ groups/ layers.
+            original_ids (npt.ArrayLike): The original ids of the slices/
+                groups/ layers.
+
+        Returns:
+            pd.DataFrame: with additional results in the columns alt_min,
+                alt_mean, alt_max, alt_std, thickness, fluffiness.
+
+        """
         for ind, oid in enumerate(original_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == oid
@@ -415,8 +501,20 @@ class CeiloChunk(AbstractChunk):
 
         return pdf
 
-    def _calculate_sligrolay_base_height(self, which, pdf, original_ids):
+    def _calculate_sligrolay_base_height(
+            self, which: str, pdf: pd.DataFrame, original_ids: npt.ArrayLike
+        ) -> pd.DataFrame:
+        """Calculate base height for all slices/ groups/ layers.
 
+        Args:
+            which (str): One of slices/ groups/ layers.
+            pdf (pd.DataFrame): DF holding slices/ groups/ layers.
+            original_ids (npt.ArrayLike): Original IDs of slices/ groups/ layers.
+
+        Returns:
+            pd.DataFrame: with calculatio results in columnm alt_base
+
+        """
         for ind, oid in enumerate(original_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == oid
@@ -466,6 +564,9 @@ class CeiloChunk(AbstractChunk):
             **from the same ceilometer, at the same observation time** are included in a given
             slice/group/layer, they are counted as one hit only. This is a direct consequence of the
             fact that clouds have a single base altitude at any given time [*citation needed*].
+
+        Note:
+            The metarize function is modularized in private submethods defined above.
 
         """
 
@@ -563,7 +664,23 @@ class CeiloChunk(AbstractChunk):
             which='slices',
         )
 
-    def _merge_close_groups(self):
+    def _merge_close_groups(self) _> None:
+        """Merge groups that are closer than the minimum separation at their
+        respective altitudes.
+
+        Algorithm steps:
+            1. Calculate preliminery group base altitude
+            2. Start from bottom and search for the first two groups that are
+            too close.
+            3. Merge these groups and recalculate all base altitudes.
+            4. Repeat 2. and 3. until all groups are enough separated.
+
+        The reason this is done iteratively is that there can be multiple overlaps.
+        In these cases merging two groups often separates their new (combined)
+        base altitude far enough from the base altitude of the next layer above.
+        Doing the merging all at once would thus lead to unwanted overgrouping.
+
+        """
         # Let's setup a groups df and get the groups base altitude.
         # setup pd.DataFrame to store slices/ groups/ layers
         prelim_groups, oids = self._setup_sligrolay_pdf('groups')
