@@ -9,7 +9,7 @@ Module contains: data classes
 """
 
 # Import from Python
-from typing import Union
+from typing import Optional, Union
 import logging
 import copy
 from abc import ABC, abstractmethod
@@ -36,8 +36,8 @@ class AbstractChunk(ABC):
     DATA_COLS = copy.deepcopy(hardcoded.REQ_DATA_COLS)
 
     @abstractmethod
-    def __init__(self, data: pd.DataFrame, prms: dict = None, geoloc: str = None,
-                 ref_dt: str = None) -> None:
+    def __init__(self, data: pd.DataFrame, prms: Optional[dict] = None,
+                 geoloc: Optional[str] = None, ref_dt: Optional[str] = None) -> None:
         """ Init routine for abstract class."""
 
         # before doing anything else, let's set the different algorithm parameters
@@ -67,12 +67,12 @@ class AbstractChunk(ABC):
         return self._data
 
     @property
-    def geoloc(self) -> str:
+    def geoloc(self) -> Union[str, None]:
         """ The name of the geographic location of the observations. """
         return self._geoloc
 
     @property
-    def ref_dt(self) -> str:
+    def ref_dt(self) -> Union[str, None]:
         """ The reference date and time for the data, i.e. Delta t = 0. """
         return self._ref_dt
 
@@ -135,8 +135,8 @@ class CeiloChunk(AbstractChunk):
     """
 
     @log_func_call(logger)
-    def __init__(self, data: pd.DataFrame, prms: dict = None, geoloc: str = None,
-                 ref_dt: str = None) -> None:
+    def __init__(self, data: pd.DataFrame, prms: Optional[dict] = None,
+                 geoloc: Optional[str] = None, ref_dt: Optional[str] = None) -> None:
         """ CeiloChunk init method.
 
         Args:
@@ -186,8 +186,8 @@ class CeiloChunk(AbstractChunk):
         self._layers = None
 
     @log_func_call(logger)
-    def data_rescaled(self, dt_mode: str = None, alt_mode: str = None,
-                      dt_kwargs: dict = None, alt_kwargs: dict = None) -> pd.DataFrame:
+    def data_rescaled(self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
+                      dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None) -> pd.DataFrame:
         """ Returns a copy of the data, rescaled according to the provided parameters.
 
         Args:
@@ -528,7 +528,7 @@ class CeiloChunk(AbstractChunk):
 
     @log_func_call(logger)
     def metarize(
-        self, which: int = 'slices') -> None:
+        self, which: str = 'slices') -> None:
         """ Assembles a :py:class:`pandas.DataFrame` of slice/group/layer METAR properties of
         interest.
 
@@ -681,6 +681,10 @@ class CeiloChunk(AbstractChunk):
         In these cases merging two groups often separates their new (combined)
         base altitude far enough from the base altitude of the next layer above.
         Doing the merging all at once would thus lead to unwanted overgrouping.
+
+        Attention: This method only recalculates height, not amount! If you want
+        to have the amounts of the merged groups you need to either call the private method
+        _calculate_cloud_amount or the public metarize() method.
 
         """
         # Let's setup a groups df and get the groups base altitude.

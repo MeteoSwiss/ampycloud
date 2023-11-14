@@ -158,7 +158,7 @@ def _calc_base_alt(
         float: The layer base altitude.
 
     Raises:
-        AmpycloudError: If the array passed to the n_largest percentile calculation
+        AmpycloudError: Raised if the array passed to the n_largest percentile calculation
             is empty.
 
     """
@@ -281,7 +281,7 @@ def ncomp_from_gmm(vals: np.ndarray,
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
     # First, let's compute the component base altitude
-    mean_comp_heights = [
+    base_comp_heights = [
         _calc_base_alt(
             vals_orig[best_ids == i].flatten(),
             layer_base_params['lookback_perc'],
@@ -291,11 +291,11 @@ def ncomp_from_gmm(vals: np.ndarray,
 
     # These may not be ordered, so let's keep track of the indices
     # First, let's deal with the fact that they are not ordered.
-    comp_ids = np.argsort(mean_comp_heights)
+    comp_ids = np.argsort(base_comp_heights)
 
     # Now loop throught the different components, check if they are sufficiently far apart,
     # and merge them otherwise.
-    for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
+    for (ind, delta) in enumerate(np.diff(np.sort(base_comp_heights))):
 
         # If the the delta is large enough, move on ...
         if delta >= min_sep:
