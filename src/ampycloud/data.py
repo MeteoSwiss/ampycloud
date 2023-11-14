@@ -707,6 +707,9 @@ class CeiloChunk(AbstractChunk):
             # start with the two lowest layers that are too close
             idx = prelim_groups[lt_min_sep_indexer].index[0]
             # set the group id in the ceilo data to id of group below
+            # note: diff() assigns the difference of series elements
+            # k, k-1 to k in the difference series. that is why we merge groups
+            # with indices k and k-1.
             data_idxer = self.data['group_id'] == prelim_groups['original_id'].loc[idx]
             self.data.loc[data_idxer, 'group_id'] = prelim_groups['original_id'].iloc[idx - 1]
             # drop the group
