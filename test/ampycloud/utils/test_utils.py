@@ -12,7 +12,6 @@ Module content: tests for the utils.utils module
 import warnings
 from pytest import mark, param, raises, warns
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 
 # Import from ampycloud
@@ -153,6 +152,7 @@ def test_calc_base_alt(
         alt_perc: int,
         q_expected: np.float64,
     ):
+        """Test the calculation of the slice/ group/ layer base altitude."""
         vals = np.arange(1., 101.)
         q = calc_base_alt(vals, lookback_perc, alt_perc)
         np.testing.assert_almost_equal(q, q_expected, decimal=1)
