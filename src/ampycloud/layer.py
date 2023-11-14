@@ -14,7 +14,6 @@ import warnings
 import copy
 from typing import Union
 import numpy as np
-import numpy.typing as npt
 from sklearn.mixture import GaussianMixture
 
 # Import from this module
@@ -139,41 +138,6 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
     return best_model_ind
 
 
-def _calc_base_alt(
-        vals: npt.ArrayLike,
-        lookback_perc: int,
-        alt_perc: int,
-    ) -> float:
-    """Calculate the layer base altitude.
-
-    Args:
-        vals (npt.ArrayLike): Ceilometer hits of a given layer. Must be a flat
-            array/ Series of scalars.
-        lookback_perc (int): Percentage of points to take into account. 100% would
-            correspond to all points, 50% to the most recent half, etc.
-        alt_perc (int): Percentage of points that should be neglected when calculating
-            the base height. Base height will be the minimum of the remaining points.
-
-    Returns:
-        float: The layer base altitude.
-
-    Raises:
-        AmpycloudError: Raised if the array passed to the n_largest percentile calculation
-            is empty.
-
-    """
-    n_largest_idxs = vals.argsort()[
-        - int(len(vals) * lookback_perc / 100):
-    ]
-    n_largest_elements = vals[n_largest_idxs]
-    if len(n_largest_elements) == 0:
-        raise AmpycloudError(
-            'Cloud base calculation got an empty array.'
-            'Maybe check lookback percentage (is set to %i)' %lookback_perc
-        )
-    return np.percentile(n_largest_elements, alt_perc)
-
-
 @log_func_call(logger)
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
@@ -282,7 +246,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     # If I found more than one component, let's make sure that they are sufficiently far apart.
     # First, let's compute the component base altitude
     base_comp_heights = [
-        _calc_base_alt(
+        utils.calc_base_alt(
             vals_orig[best_ids == i].flatten(),
             layer_base_params['lookback_perc'],
             layer_base_params['alt_perc']

@@ -274,14 +274,12 @@ class CeiloChunk(AbstractChunk):
         """
         # Start computing the base altitude
         # First, compute which points should be considered in terms of lookback time
-        n_to_use = int(np.floor(len(
-            self.data.loc[data_indexer]) * self.prms['BASE_LVL_LOOKBACK_PERC']/100
-        ))
-        # Then, actually compute the base altitude, possibly ignoring the lowest points
-        return np.percentile(
-            self.data.loc[data_indexer].nlargest(n_to_use, 'dt')['alt'],
+        return utils.calc_base_alt(
+            self.data.sort_values('dt').loc[data_indexer]['alt'].values,
+            self.prms['BASE_LVL_LOOKBACK_PERC'],
             self.prms['BASE_LVL_ALT_PERC'],
         )
+
 
     def _get_min_sep_for_altitude(self, altitude: float) -> float:
         """Get the minimum separation for a given altitude.

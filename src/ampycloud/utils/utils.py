@@ -14,6 +14,7 @@ import warnings
 import contextlib
 import copy
 import numpy as np
+import numpy.typing as npt
 import pandas as pd
 
 # Import from this package
@@ -238,3 +239,35 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dic
             ref_dict[key] = item
 
     return ref_dict
+
+
+def calc_base_alt(
+        vals: npt.ArrayLike,
+        lookback_perc: int,
+        alt_perc: int,
+    ) -> float:
+    """Calculate the layer base altitude.
+
+    Args:
+        vals (npt.ArrayLike): Ceilometer hits of a given layer. Must be a flat
+            array/ Series of scalars and ordered in time, most recent entries last.
+        lookback_perc (int): Percentage of points to take into account. 100% would
+            correspond to all points, 50% to the recent half, etc.
+        alt_perc (int): Percentage of points that should be neglected when calculating
+            the base height. Base height will be the minimum of the remaining points.
+
+    Returns:
+        float: The layer base altitude.
+
+    Raises:
+        AmpycloudError: Raised if the array passed to the n_largest percentile calculation
+            is empty.
+
+    """
+    n_latest_elements = vals[- int(len(vals) * lookback_perc / 100):]
+    if len(n_latest_elements) == 0:
+        raise AmpycloudError(
+            'Cloud base calculation got an empty array.'
+            'Maybe check lookback percentage (is set to %i)' %lookback_perc
+        )
+    return np.percentile(n_latest_elements, alt_perc)
