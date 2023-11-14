@@ -311,7 +311,7 @@ class CeiloChunk(AbstractChunk):
         logger.info('min_sep value: %.1f', min_sep)
         return min_sep
 
-    def _get_original_ids(self, which: str) -> npt.ArrayLike:
+    def _get_cluster_ids(self, which: str) -> npt.ArrayLike:
         """Get the original IDs of slices, groups or layers.
 
         Args:
@@ -322,12 +322,12 @@ class CeiloChunk(AbstractChunk):
 
         """
          # What are the original sli/gro/lay ids ?
-        oids = np.unique(self.data[which[:-1] + '_id'])
+        cids = np.unique(self.data[which[:-1] + '_id'])
 
         # For the moment, happily ignore anything that was not assigned to a sli-gro-lay
         # WARNING: *if* the chosen clustering approach changes, one may need to start keeping track
         # of hits that do not get assigned to a sli/gro/lay.
-        return np.delete(oids, np.where(oids == -1))
+        return np.delete(cids, np.where(cids == -1))
 
     def _setup_sligrolay_pdf(self, which: str = 'slices') -> tuple[pd.DataFrame, npt.ArrayLike]:
         """Setup a data frame for slices, groups or layers and keep track of IDs.
@@ -357,7 +357,7 @@ class CeiloChunk(AbstractChunk):
                 'fluffiness',  # Slice/Group/Layer fluffiness
                 'code',  # METAR code
                 'significant',  # bool, whether this is a slice/group/layer that should be reported
-                'original_id',  # Original id of the slice/group/layer set by the clustering algo
+                'cluster_id',  # Original id of the slice/group/layer set by the clustering algo
                 ]
 
         # We want to raise early if 'which' is unknown.
@@ -389,9 +389,9 @@ class CeiloChunk(AbstractChunk):
         # Prepare a pandas DataFrame to store all the info
         pdf = pd.DataFrame(index=range(n_ind), columns=cols)
 
-        original_ids = self._get_original_ids(which)
+        cluster_ids = self._get_cluster_ids(which)
 
-        for ind, oid in enumerate(original_ids):
+        for ind, cid in enumerate(cluster_ids):
             if which == 'groups':
                 # Here, check if the layering was already done ... in which case one should NOT
                 # be metarizing clusters ! This is one of those places where it is assumed that
@@ -406,19 +406,19 @@ class CeiloChunk(AbstractChunk):
                 # the layering step decides otherwise (possibly).
                 pdf.loc[ind, 'ncomp'] = -1
             # Keep track of the original sli/gro/lay id
-            pdf.loc[ind, 'original_id'] = oid
+            pdf.loc[ind, 'cluster_id'] = cid
 
-        return pdf, original_ids
+        return pdf, cluster_ids
 
     def _calculate_cloud_cover(
-            self, which: str, pdf: pd.DataFrame, original_ids: npt.ArrayLike
+            self, which: str, pdf: pd.DataFrame, cluster_ids: npt.ArrayLike
         ) -> pd.DataFrame:
         """Calculate cloud cover for a given slice, group or layer.
 
         Args:
             which (str): One of 'slices', 'groups' or 'layers'
             pdf (pd.DataFrame): A data frame with slices/ groups/ layers.
-            original_ids (npt.ArrayLike): the original IDs of the slices/ groups/
+            cluster_ids (npt.ArrayLike): the original IDs of the slices/ groups/
                 layers.
 
         Returns:
@@ -427,9 +427,9 @@ class CeiloChunk(AbstractChunk):
         Results are written to the "okta" column of the DF.
 
         """
-        for ind, oid in enumerate(original_ids):
+        for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
-            in_sligrolay = self.data[which[:-1]+'_id'] == oid
+            in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the number of hits of this slice/group/layer for each ceilometer,
             # removing any duplicates.
             # I.e. if hit from layers 2 & 3 from ceilo 1 belong to this sli/gro/lay, count them as
@@ -462,14 +462,14 @@ class CeiloChunk(AbstractChunk):
             self,
             which: str,
             pdf: pd.DataFrame,
-            original_ids: npt.ArrayLike
+            cluster_ids: npt.ArrayLike
         ) -> pd.DataFrame:
         """Add additional information for slices/ groups/ layers.
 
         Args:
             which (str): One of "slices", "groups" or "layers".
             pdf (pd.DataFrame): The data frame holding slices/ groups/ layers.
-            original_ids (npt.ArrayLike): The original ids of the slices/
+            cluster_ids (npt.ArrayLike): The original ids of the slices/
                 groups/ layers.
 
         Returns:
@@ -477,9 +477,9 @@ class CeiloChunk(AbstractChunk):
                 alt_mean, alt_max, alt_std, thickness, fluffiness.
 
         """
-        for ind, oid in enumerate(original_ids):
+        for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
-            in_sligrolay = self.data[which[:-1]+'_id'] == oid
+            in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Measure the mean altitude and associated std of the layer
             pdf.iloc[ind, pdf.columns.get_loc('alt_mean')] = \
                 self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
@@ -502,22 +502,22 @@ class CeiloChunk(AbstractChunk):
         return pdf
 
     def _calculate_sligrolay_base_height(
-            self, which: str, pdf: pd.DataFrame, original_ids: npt.ArrayLike
+            self, which: str, pdf: pd.DataFrame, cluster_ids: npt.ArrayLike
         ) -> pd.DataFrame:
         """Calculate base height for all slices/ groups/ layers.
 
         Args:
             which (str): One of slices/ groups/ layers.
             pdf (pd.DataFrame): DF holding slices/ groups/ layers.
-            original_ids (npt.ArrayLike): Original IDs of slices/ groups/ layers.
+            cluster_ids (npt.ArrayLike): Original IDs of slices/ groups/ layers.
 
         Returns:
             pd.DataFrame: with calculatio results in columnm alt_base
 
         """
-        for ind, oid in enumerate(original_ids):
+        for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
-            in_sligrolay = self.data[which[:-1]+'_id'] == oid
+            in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the base altitude
             pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = self._calculate_base_height_for_selection(
                 in_sligrolay,
@@ -553,7 +553,7 @@ class CeiloChunk(AbstractChunk):
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.
-            * ``original_id (int)``: an ampycloud-internal identification number
+            * ``cluster_id (int)``: an ampycloud-internal identification number
             * ``isolated (bool)``: isolation status (for slices only)
             * ``ncomp (int)``: the number of subcomponents (for groups only)
 
@@ -571,26 +571,26 @@ class CeiloChunk(AbstractChunk):
         """
 
         # setup pd.DataFrame to store slices/ groups/ layers
-        pdf, oids = self._setup_sligrolay_pdf(which)
+        pdf, cids = self._setup_sligrolay_pdf(which)
 
         # calculate cloud cover
-        pdf = self._calculate_cloud_cover(which, pdf, oids)
+        pdf = self._calculate_cloud_cover(which, pdf, cids)
 
         # calculate slice/ group/ layer base altitude
-        pdf = self._calculate_sligrolay_base_height(which, pdf, oids)
+        pdf = self._calculate_sligrolay_base_height(which, pdf, cids)
 
         # collect some more information, including fluffiness
-        pdf = self._add_sligrolay_information(which, pdf, oids)
+        pdf = self._add_sligrolay_information(which, pdf, cids)
 
         # Then loop through all of the layers/ groups/ slices and add METAR codes
-        for ind, _ in enumerate(oids):
+        for ind, _ in enumerate(cids):
 
             pdf.iloc[ind, pdf.columns.get_loc('code')] = \
                 wmo.okta2code(pdf.iloc[ind, pdf.columns.get_loc('okta')]) + \
                 wmo.alt2code(pdf.iloc[ind, pdf.columns.get_loc('alt_base')])
 
         # Set the proper column types
-        for cname in ['n_hits', 'okta', 'original_id']:
+        for cname in ['n_hits', 'okta', 'cluster_id']:
             pdf[cname] = pdf[cname].astype(int)
         for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max', 'thickness',
                       'fluffiness']:
@@ -606,7 +606,7 @@ class CeiloChunk(AbstractChunk):
             pdf['ncomp'] = pdf['ncomp'].astype(int)
 
         # Sort the table as a function of the base altitude of the sli/gro/lay.
-        # This is why having the 'original_id' info is useful (so I remember which they are).
+        # This is why having the 'cluster_id' info is useful (so I remember which they are).
         pdf.sort_values('alt_base', inplace=True)
 
         # Reset the index, 'cause I only need the one.
@@ -687,10 +687,10 @@ class CeiloChunk(AbstractChunk):
         """
         # Let's setup a groups df and get the groups base altitude.
         # setup pd.DataFrame to store slices/ groups/ layers
-        prelim_groups, oids = self._setup_sligrolay_pdf('groups')
+        prelim_groups, cids = self._setup_sligrolay_pdf('groups')
         # calculate bae altitude
         prelim_groups = self._calculate_sligrolay_base_height(
-            'groups', prelim_groups, oids
+            'groups', prelim_groups, cids
         )
         # Ordering by altitude
         prelim_groups.sort_values('alt_base', inplace=True)
@@ -710,14 +710,14 @@ class CeiloChunk(AbstractChunk):
             # note: diff() assigns the difference of series elements
             # k, k-1 to k in the difference series. that is why we merge groups
             # with indices k and k-1.
-            data_idxer = self.data['group_id'] == prelim_groups['original_id'].loc[idx]
-            self.data.loc[data_idxer, 'group_id'] = prelim_groups['original_id'].iloc[idx - 1]
+            data_idxer = self.data['group_id'] == prelim_groups['cluster_id'].loc[idx]
+            self.data.loc[data_idxer, 'group_id'] = prelim_groups['cluster_id'].iloc[idx - 1]
             # drop the group
             prelim_groups.drop(index=idx, inplace=True)
             # resetting because we must not have index gaps in the next iteration
             prelim_groups.reset_index(drop=True, inplace=True)
             # now we recalculate the base alt for the merged supergroup
-            data_idxer = self.data['group_id'] == prelim_groups['original_id'].iloc[idx - 1]
+            data_idxer = self.data['group_id'] == prelim_groups['cluster_id'].iloc[idx - 1]
             prelim_groups.iloc[
                 idx - 1, prelim_groups.columns.get_loc('alt_base')
             ] = self._calculate_base_height_for_selection(data_idxer)
@@ -803,7 +803,7 @@ class CeiloChunk(AbstractChunk):
         for grp in slice_bundles:
 
             # Which ceilometer hits belong to this slice bundle ?
-            valids = self.data['slice_id'].isin([self.slices.iloc[ind]['original_id']
+            valids = self.data['slice_id'].isin([self.slices.iloc[ind]['cluster_id']
                                                  for ind in grp])
 
             # Rescale these points in dt and alt prior to running the single-linkage clustering.
@@ -873,7 +873,7 @@ class CeiloChunk(AbstractChunk):
 
             # Let's extract the altitudes of all the hits in this group ...
             gro_alts = self.data.loc[self.data.loc[:, 'group_id'] ==
-                                     self._groups.at[ind, 'original_id'],
+                                     self._groups.at[ind, 'cluster_id'],
                                      'alt'].to_numpy()
 
             # Only look for multiple layers if it is worth it ...
@@ -922,7 +922,7 @@ class CeiloChunk(AbstractChunk):
             # If I need to split it, assign suitable layer ids
             if ncomp > 1:
                 self.data.loc[self.data.loc[:, 'group_id'] ==
-                              self._groups.at[ind, 'original_id'], 'layer_id'] = \
+                              self._groups.at[ind, 'cluster_id'], 'layer_id'] = \
                     100+10*ind+sub_layers_id
 
         # Deal with the points that have not been assigned a layer id yet
