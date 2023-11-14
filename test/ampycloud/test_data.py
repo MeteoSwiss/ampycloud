@@ -12,7 +12,7 @@ Module content: tests for the data module
 import warnings
 import numpy as np
 import pandas as pd
-from pytest import raises, warns
+from pytest import raises, warns, mark, param
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
@@ -139,12 +139,46 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
 
+@mark.parametrize('altitude1,altitude2,altitude3,ngroups_expected', [
+    param(250., 800., 1200., 3, id='gt min sep'),
+    param(250., 500., 1200., 3, id='eq min sep'),
+    param(250., 350., 1200., 2, id='gt min sep'),
+    param(250., 350., 500., 2, id='multiple overlaps no second merge'),
+    param(250., 350., 400., 1, id='multiple overlaps with second merge'),
+])
+def test_group_separation(
+    altitude1: float, altitude2: float, altitude3: float, ngroups_expected: int
+):
+    """Test if the separation of close groups works as intended."""
+
+    #create some fake data:
+    fake_hits = [altitude1] * 50 + [altitude2] * 50 + [altitude3] * 50
+    fake_data = pd.DataFrame({
+        'ceilo': ['Ceilometer.PO'] * 150,
+        'dt': [t for t in range(-1500, 0, 10)],
+        'alt': fake_hits,
+        'type': [1] * 150,
+    })
+    fake_grp_ids = [1] * 50 + [2] * 50 + [3] * 50
+    fake_data['ceilo'] = fake_data['ceilo'].astype(pd.StringDtype())
+    fake_data['dt'] = fake_data['dt'].astype(np.float64)
+    ceilo_chunk = CeiloChunk(
+        fake_data,
+        prms={'MIN_SEP_VALS': [250, 1000], 'MIN_SEP_LIMS': [10000]}
+    )
+    ceilo_chunk.data['group_id'] = fake_grp_ids
+    ceilo_chunk._merge_close_groups()
+
+    assert len(ceilo_chunk.data['group_id'].unique()) == ngroups_expected
+
+    reset_prms()
+
 def test_bad_layer_sep_lims():
     """ Test that giving problematic layer separation limits does raise an error. """
 
     # Make sure that bad layering min sep values raises an error
-    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_vals'] = [150, 1000]
-    dynamic.AMPYCLOUD_PRMS['LAYERING_PRMS']['min_sep_lims'] = [5000, 10000]
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_VALS'] = [150, 1000]
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_LIMS'] = [5000, 10000]
 
     n_ceilos = 4
     lookback_time = 1200
@@ -161,9 +195,9 @@ def test_bad_layer_sep_lims():
 
     # Do the dance ...
     chunk.find_slices()
-    chunk.find_groups()
 
     with raises(AmpycloudError):
+        chunk.find_groups()
         chunk.find_layers()
 
     reset_prms()

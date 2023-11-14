@@ -10,12 +10,13 @@ Module content: tests for the utils.utils module
 
 # Import form Python
 import warnings
-from pytest import raises, warns
+from pytest import mark, param, raises, warns
 import numpy as np
 import pandas as pd
 
 # Import from ampycloud
-from ampycloud.utils.utils import check_data_consistency, tmp_seed, adjust_nested_dict
+from ampycloud.utils.utils import (check_data_consistency, tmp_seed,
+    adjust_nested_dict, calc_base_alt)
 from ampycloud.utils.mocker import canonical_demo_data
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
 from ampycloud import hardcoded
@@ -139,3 +140,19 @@ def test_adjust_nested_dict():
     new_dict = {'a': [1, 2, 3], 'b': {1: {2}}}
     out = adjust_nested_dict(ref_dict, new_dict)
     assert out == new_dict
+
+
+@mark.parametrize('lookback_perc,alt_perc,q_expected', [
+    param(50, 90, 95, id='both params'),
+    param(100, 98, 98, id='alt_perc only'),
+    param(42, 100, 100., id='lookback_only'),
+])
+def test_calc_base_alt(
+        lookback_perc: int,
+        alt_perc: int,
+        q_expected: np.float64,
+    ):
+        """Test the calculation of the slice/ group/ layer base altitude."""
+        vals = np.arange(1., 101.)
+        q = calc_base_alt(vals, lookback_perc, alt_perc)
+        np.testing.assert_almost_equal(q, q_expected, decimal=1)

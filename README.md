@@ -1,5 +1,6 @@
 # ampycloud
 
+[![DOI](https://zenodo.org/badge/435391098.svg)](https://zenodo.org/doi/10.5281/zenodo.8399683)
 [![github](https://img.shields.io/github/release/MeteoSwiss/ampycloud.svg)](https://github.com/MeteoSwiss/ampycloud/releases)
 [![last-commit](https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000)](https://github.com/MeteoSwiss/ampycloud)
 [![issues](https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e)](https://github.com/MeteoSwiss/ampycloud/issues)

@@ -142,6 +142,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
+                   layer_base_params: dict[str, int] = {'lookback_perc': 100, 'alt_perc': 5},
                    scores: str = 'BIC',
                    rescale_0_to_x: float = None,
                    random_seed: int = 42,
@@ -190,6 +191,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     if len(np.unique(vals_orig)) == 1:
         logger.debug('Skipping the GMM computation: all the values are the same.')
         return (1, np.zeros(len(vals_orig)), None)
+    elif len(np.unique(vals_orig)) < ncomp_max:
+        ncomp_max = len(np.unique(vals_orig))
+        warnings.warn(f'Restricting ncomp_max to the max number of individual values: {ncomp_max}')
 
     # Estimate the resolution of the data (by measuring the minimum separation between two data
     # points).
@@ -240,16 +244,22 @@ def ncomp_from_gmm(vals: np.ndarray,
         return best_ncomp, best_ids, abics
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
-    # First, let's compute the mean component heights
-    mean_comp_heights = [np.mean(vals_orig[best_ids == i]) for i in range(ncomp[best_model_ind])]
+    # First, let's compute the component base altitude
+    base_comp_heights = [
+        utils.calc_base_alt(
+            vals_orig[best_ids == i].flatten(),
+            layer_base_params['lookback_perc'],
+            layer_base_params['alt_perc']
+        ) for i in range(ncomp[best_model_ind])
+    ]
 
     # These may not be ordered, so let's keep track of the indices
     # First, let's deal with the fact that they are not ordered.
-    comp_ids = np.argsort(mean_comp_heights)
+    comp_ids = np.argsort(base_comp_heights)
 
     # Now loop throught the different components, check if they are sufficiently far apart,
     # and merge them otherwise.
-    for (ind, delta) in enumerate(np.diff(np.sort(mean_comp_heights))):
+    for (ind, delta) in enumerate(np.diff(np.sort(base_comp_heights))):
 
         # If the the delta is large enough, move on ...
         if delta >= min_sep:
