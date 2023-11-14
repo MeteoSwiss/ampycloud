@@ -262,7 +262,7 @@ class CeiloChunk(AbstractChunk):
             self,
             data_indexer: pd.Series(dtype=bool),
     ) -> float:
-        """Caclulate the cloud base height for a selection of data.
+        """Calculate the cloud base height for a selection of data.
 
         Args:
             data_indexer (pd.Series(dtype=bool)): Boolean series with which we
@@ -464,7 +464,7 @@ class CeiloChunk(AbstractChunk):
             pdf: pd.DataFrame,
             cluster_ids: npt.ArrayLike
         ) -> pd.DataFrame:
-        """Add additional information for slices/ groups/ layers.
+        """Add statistical properties to slices/ groups/ layers .
 
         Args:
             which (str): One of "slices", "groups" or "layers".
@@ -669,7 +669,7 @@ class CeiloChunk(AbstractChunk):
         respective altitudes.
 
         Algorithm steps:
-            1. Calculate preliminery group base altitude
+            1. Calculate preliminary group base altitude
             2. Start from bottom and search for the first two groups that are
             too close.
             3. Merge these groups and recalculate all base altitudes.
