@@ -35,7 +35,7 @@
             ampycloud
           </a>
               <div class="version">
-                0.6.0.dev0
+                1.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -73,7 +73,6 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -344,29 +343,13 @@ algorithm are accessible, as <code class="xref py py-class docutils literal notr
 parameters.</p>
 <dl class="py function">
 <dt class="sig sig-object py">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.data.CeiloChunk.</span></span><span class="sig-name descname"><span class="pre">metarize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'slices'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_lvl_alt_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">5.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">base_lvl_lookback_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">100.0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim0</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lim8</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.data.CeiloChunk.</span></span><span class="sig-name descname"><span class="pre">metarize</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">self</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'slices'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span></dt>
 <dd><p>Assembles a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> of slice/group/layer METAR properties of
 interest.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>which</strong> (<em>str, optional</em>) – whether to process ‘slices’, ‘groups’, or ‘layers’.
-Defaults to ‘slices’.</p></li>
-<li><p><strong>base_lvl_alt_perc</strong> (<em>float, optional</em>) – amount of the lowest slice/group/layer elements,
-expressed in percent of the total hit count, to ignore when
-deriving the slice/group/layer altitude (as the min value of the remaining points).
-Defaults to 5, i.e. the cloud base is the min alt value ignoring the lowest 5% of
-cloud hits of that slice/group/layer.</p></li>
-<li><p><strong>base_lvl_lookback_perc</strong> (<em>float, optional</em>) – amount of the slice/group/layer elements to
-include in the calculation of the base altitude, expressed in percent of the total
-number of points, and starting from the most recent ones. Defaults to 100, i.e.
-use all the available points to derive the cloud base altitude.</p></li>
-<li><p><strong>lim0</strong> (<em>int, optional</em>) – maximum (absolute) number of hits allowed in a slice/group/layer
-for it to be considered to be 0 oktas. Defaults to 0.</p></li>
-<li><p><strong>lim8</strong> (<em>int, optional</em>) – maximum (absolute) number of holes (=non-detection of a cloud
-base) allowed in a slice/group/layer for it to be considered to be 8 oktas.
-Defaults to 0.</p></li>
-</ul>
+<dd class="field-odd"><p><strong>which</strong> (<em>str, optional</em>) – whether to process ‘slices’, ‘groups’, or ‘layers’.
+Defaults to ‘slices’.</p>
 </dd>
 </dl>
 <p>The <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> generated by this method is subsequently available via the
@@ -388,7 +371,7 @@ or <a class="reference internal" href="modules/ampycloud.html#ampycloud.data.Cei
 <li><p><code class="docutils literal notranslate"><span class="pre">code</span> <span class="pre">(str)</span></code>: METAR-like code</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">significant</span> <span class="pre">(bool)</span></code>: whether the layer is significant according to the ICAO rules.
 See <a class="reference internal" href="modules/ampycloud.html#ampycloud.icao.significant_cloud" title="ampycloud.icao.significant_cloud"><code class="xref py py-func docutils literal notranslate"><span class="pre">icao.significant_cloud()</span></code></a> for details.</p></li>
-<li><p><code class="docutils literal notranslate"><span class="pre">original_id</span> <span class="pre">(int)</span></code>: an ampycloud-internal identification number</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">cluster_id</span> <span class="pre">(int)</span></code>: an ampycloud-internal identification number</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">isolated</span> <span class="pre">(bool)</span></code>: isolation status (for slices only)</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">ncomp</span> <span class="pre">(int)</span></code>: the number of subcomponents (for groups only)</p></li>
 </ul>
@@ -401,6 +384,10 @@ same ceilometer</em> are counted as one only. In other words, if a Type <code cl
 <strong>from the same ceilometer, at the same observation time</strong> are included in a given
 slice/group/layer, they are counted as one hit only. This is a direct consequence of the
 fact that clouds have a single base altitude at any given time [<em>citation needed</em>].</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The metarize function is modularized in private submethods defined above.</p>
 </div>
 </dd></dl>
 

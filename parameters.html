@@ -35,7 +35,7 @@
             ampycloud
           </a>
               <div class="version">
-                0.6.0.dev0
+                1.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +57,6 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -152,6 +151,18 @@ for details.</p>
 <span class="w">    </span><span class="c1"># Number of LOWESS fitting iterations</span>
 <span class="w">    </span><span class="nt">it</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 
+<span class="c1"># Minimum separation (in ft) between the base altitudes of identified layers inside groups</span>
+<span class="c1"># with a base altitude in the bins set by min_sep_lims. Any layers separated by less than this</span>
+<span class="c1"># value will be remerged into one layer. Any value &lt; than 5 times the vertical resolution of the data will</span>
+<span class="c1"># raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR</span>
+<span class="c1"># messages to be consistent with the ICAO rules of layer selection, this should be &gt;=100 ft</span>
+<span class="c1"># below 10&#39;000 ft.</span>
+<span class="nt">MIN_SEP_VALS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span>
+<span class="c1"># Altitude threshold (in ft) separating the min_sep_val elements.</span>
+<span class="c1"># The 0 and + infty extrema will be automatically added to the list by ampycloud.</span>
+<span class="c1"># Just list here the intermediate steps.</span>
+<span class="nt">MIN_SEP_LIMS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10000</span><span class="p p-Indicator">]</span>
+
 <span class="c1"># Slicing parameters</span>
 <span class="nt">SLICING_PRMS</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Clustering distance threshold</span>
@@ -181,17 +192,6 @@ for details.</p>
 <span class="nt">LAYERING_PRMS</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Minimum okta value below which cluster splitting is not attempted</span>
 <span class="w">    </span><span class="nt">min_okta_to_split</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="w">    </span><span class="c1"># Minimum separation (in ft) between the mean altitude of identified layers inside groups</span>
-<span class="w">    </span><span class="c1"># with a base altitude in the bins set by min_sep_lims. Any layers separated by less than this</span>
-<span class="w">    </span><span class="c1"># value will not be split. Any value &lt; than 5 times the vertical resolution of the data will</span>
-<span class="w">    </span><span class="c1"># raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR</span>
-<span class="w">    </span><span class="c1"># messages to be consistent with the ICAO rules of layer selection, this should be &gt;=100 ft</span>
-<span class="w">    </span><span class="c1"># below 10&#39;000 ft.</span>
-<span class="w">    </span><span class="nt">min_sep_vals</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span>
-<span class="w">    </span><span class="c1"># Altitude threshold (in ft) separating the min_sep_val elements.</span>
-<span class="w">    </span><span class="c1"># The 0 and + infty extrema will be automatically added to the list by ampycloud.</span>
-<span class="w">    </span><span class="c1"># Just list here the intermediate steps.</span>
-<span class="w">    </span><span class="nt">min_sep_lims</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10000</span><span class="p p-Indicator">]</span>
 <span class="w">    </span><span class="nt">gmm_kwargs</span><span class="p">:</span>
 <span class="w">        </span><span class="c1"># Whether to use &#39;BIC&#39; or &#39;AIC&#39; scores to decide which model is &quot;best&quot;.</span>
 <span class="w">        </span><span class="nt">scores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BIC</span>

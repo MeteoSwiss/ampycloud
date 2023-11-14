@@ -35,7 +35,7 @@
             ampycloud
           </a>
               <div class="version">
-                0.6.0.dev0
+                1.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -57,7 +57,6 @@
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="doc_todo.html">TODO list</a></li>
 </ul>
 
         </div>
@@ -94,6 +93,15 @@
 The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v1.0.0]
+### Added
+ - [regDaniel, 2023-11-09] Add minimum separation condition for grouping step
+### Fixed
+ - [regDaniel, 2023-11-09] Fix #107 (no more reporting of two layers at same height)
+### Changed
+- [fpavogt, 2023-11-05] Updated version to 1.0.0 for first full release, incl. misc documentation changes.
+- [regDaniel, 2023-11-09] Changed min sep in layering from layer mean to layer base altitude
+- [regDaniel, 2023-11-10] Refactoring (modularization) of metarize method
 
 ## [v0.6.0.dev0]
 ### Added:
@@ -118,9 +126,6 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [fpavogt, 2022-10-18] Cleanup pylint and error messages.
  - [fpavogt, 2022-10-18] Use min/max+padding to assess if slices are overlapping, instead of mean+std.
  - [fpavogt, 2022-10-18] Default value of OKTA_LIM8 is changed from 98 to 99.
-### Deprecated:
-### Removed:
-### Security:
 
 ## [v0.5.0.dev0]
 ### Fixed:
