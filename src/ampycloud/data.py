@@ -410,10 +410,10 @@ class CeiloChunk(AbstractChunk):
 
         return pdf, cluster_ids
 
-    def _calculate_cloud_cover(
+    def _calculate_cloud_amount(
             self, which: str, pdf: pd.DataFrame, cluster_ids: npt.ArrayLike
         ) -> pd.DataFrame:
-        """Calculate cloud cover for a given slice, group or layer.
+        """Calculate cloud amount for a given slice, group or layer.
 
         Args:
             which (str): One of 'slices', 'groups' or 'layers'
@@ -573,8 +573,8 @@ class CeiloChunk(AbstractChunk):
         # setup pd.DataFrame to store slices/ groups/ layers
         pdf, cids = self._setup_sligrolay_pdf(which)
 
-        # calculate cloud cover
-        pdf = self._calculate_cloud_cover(which, pdf, cids)
+        # calculate cloud amount in okta
+        pdf = self._calculate_cloud_amount(which, pdf, cids)
 
         # calculate slice/ group/ layer base altitude
         pdf = self._calculate_sligrolay_base_height(which, pdf, cids)
