@@ -178,7 +178,7 @@ class DiagnosticPlot:
 
             # Which hits are in the slice ?
             in_slice = np.array(self._chunk.data['slice_id'] ==
-                                self._chunk.slices.at[ind, 'original_id'])
+                                self._chunk.slices.at[ind, 'cluster_id'])
 
             # Create an array of facecolors ... choose them from my set of colors
             base_clr = all_clrs[ind % len(all_clrs)]
@@ -261,7 +261,7 @@ class DiagnosticPlot:
             if show_points:
                 # Which hits are in the group ?
                 in_group = np.array(self._chunk.data['group_id'] ==
-                                    self._chunk.groups.at[ind, 'original_id'])
+                                    self._chunk.groups.at[ind, 'cluster_id'])
 
                 # I can finally show the points ...
                 self._axs[0].scatter(self._chunk.data[in_group]['dt'],
@@ -308,7 +308,7 @@ class DiagnosticPlot:
 
             # Which hits are in the layer?
             in_layer = np.array(self._chunk.data['layer_id'] ==
-                                self._chunk.layers.at[ind, 'original_id'])
+                                self._chunk.layers.at[ind, 'cluster_id'])
 
             # I can finally show the points ...
             self._axs[0].scatter(self._chunk.data[in_layer]['dt'],
