@@ -47,9 +47,9 @@ LOWESS:
     # Number of LOWESS fitting iterations
     it: 3
 
-# Minimum separation (in ft) between the mean altitude of identified layers inside groups
+# Minimum separation (in ft) between the base altitudes of identified layers inside groups
 # with a base altitude in the bins set by min_sep_lims. Any layers separated by less than this
-# value will not be split. Any value < than 5 times the vertical resolution of the data will
+# value will be remerged into one layer. Any value < than 5 times the vertical resolution of the data will
 # raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR
 # messages to be consistent with the ICAO rules of layer selection, this should be >=100 ft
 # below 10'000 ft.

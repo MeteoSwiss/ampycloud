@@ -150,7 +150,7 @@ def _calc_base_alt(
         vals (npt.ArrayLike): Ceilometer hits of a given layer. Must be a flat
             array/ Series of scalars.
         lookback_perc (int): Percentage of points to take into account. 100% would
-            correspond to all points, 50% to the recent half, etc.
+            correspond to all points, 50% to the most recent half, etc.
         alt_perc (int): Percentage of points that should be neglected when calculating
             the base height. Base height will be the minimum of the remaining points.
 
