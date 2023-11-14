@@ -1,3 +1,4 @@
+.. include:: ./substitutions.rst
 
 Acknowledging ampycloud
 =======================
@@ -6,7 +7,7 @@ Acknowledging ampycloud
    Ideally, you should also include the Digital Object Identifier (DOI) associated to the specific
    release you have been using:
 
-   ampycloud |version| (DOI:)
+   ampycloud |version| |doi|
 
 2. If ampycloud was useful for your research, please cite the dedicated article:
 

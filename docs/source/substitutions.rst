@@ -25,3 +25,6 @@
 
 .. |pytest-weekly| image:: https://github.com/MeteoSwiss/ampycloud/actions/workflows/CI_pytest_weekly.yml/badge.svg
    :target: https://github.com/MeteoSwiss/ampycloud/actions/workflows/CI_pytest_weekly.yml
+
+.. |doi| image:: https://zenodo.org/badge/435391098.svg
+  :target: https://zenodo.org/doi/10.5281/zenodo.8399683
