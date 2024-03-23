@@ -194,12 +194,12 @@ def canonical_demo_data() -> pd.DataFrame:
 
     # Create the "famous" mock dataset
     n_ceilos = 4
-    lookback_time = 1200
-    hit_gap = 30
+    lookback_time = 900
+    hit_gap = 15
 
     lyrs = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 0.1, 'period': 10, 'amplitude': 0},
             {'alt': 2000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
-            {'alt': 5000, 'alt_std': 200, 'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1000},
+            {'alt': 5000, 'alt_std': 200, 'sky_cov_frac': 1, 'period': 1800, 'amplitude': 1000},
             ]
 
     # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.
