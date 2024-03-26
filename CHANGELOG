@@ -3,17 +3,25 @@ All notable changes to ampycloud will be documented in this file.
 The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [v1.1.0]
- - [regDaniel, 2024-04-09] Add flag for clouds above (MSA + MSA_HIT_BUFFER) and allow for NSC in METAR message
+## [v2.0.0]
+### Added:
+ - [regDaniel, 2024-04-09] Add flag for clouds above (MSA + MSA_HIT_BUFFER) and allow for NSC in METAR message.
+ - [fpavogt, 2024-03-26] Add option to reset only a single parameter.
+### Fixed:
+ - [regDaniel, 2024-04-09] Minor adaptions to better comply with PEP standards.
+ - [fpavogt, 2024-03-26] Use "height" in "ft aal" throughout.
+### Changed:
+ - [fpavogt, 2024-03-23] Changed default mock dataset to be 900s long (instead of 2400s).
+
 ## [v1.0.0]
-### Added
- - [regDaniel, 2023-11-09] Add minimum separation condition for grouping step
-### Fixed
- - [regDaniel, 2023-11-09] Fix #107 (no more reporting of two layers at same height)
-### Changed
+### Added:
+ - [regDaniel, 2023-11-09] Add minimum separation condition for grouping step.
+### Fixed:
+ - [regDaniel, 2023-11-09] Fix #107 (no more reporting of two layers at same height).
+### Changed:
 - [fpavogt, 2023-11-05] Updated version to 1.0.0 for first full release, incl. misc documentation changes.
-- [regDaniel, 2023-11-09] Changed min sep in layering from layer mean to layer base altitude
-- [regDaniel, 2023-11-10] Refactoring (modularization) of metarize method
+- [regDaniel, 2023-11-09] Changed min sep in layering from layer mean to layer base altitude.
+- [regDaniel, 2023-11-10] Refactoring (modularization) of metarize method.
 
 ## [v0.6.0.dev0]
 ### Added:
