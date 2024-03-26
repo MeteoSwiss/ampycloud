@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -34,10 +34,10 @@ def test_large_dts(mpls):
 
     # Let's create some data with only NaNs
     data = pd.DataFrame([['1', 7e5, 1000, 1], ['1', 7e5+1, 1001, 1], ['1', 7e5+2, 1002, 1]],
-                        columns=['ceilo', 'dt', 'alt', 'type'])
+                        columns=['ceilo', 'dt', 'height', 'type'])
     data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
     data['dt'] = data['dt'].astype(float)
-    data['alt'] = data['alt'].astype(float)
+    data['height'] = data['height'].astype(float)
     data['type'] = data['type'].astype(int)
 
     # Run ampycloud
@@ -68,10 +68,10 @@ def test_direct_prms(mpls):
 
     # Let's create some data with only NaNs
     data = pd.DataFrame([['1', 0, 1000, 1], ['1', 60, 1001, 1], ['1', 120, 1002, 1]],
-                        columns=['ceilo', 'dt', 'alt', 'type'])
+                        columns=['ceilo', 'dt', 'height', 'type'])
     data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
     data['dt'] = data['dt'].astype(float)
-    data['alt'] = data['alt'].astype(float)
+    data['height'] = data['height'].astype(float)
     data['type'] = data['type'].astype(int)
 
     # Run ampycloud
@@ -137,10 +137,10 @@ def test_empty_plot(mpls):
 
     # Let's create some data with only NaNs
     data = pd.DataFrame([['1', -100, np.nan, 0], ['1', -99, np.nan, 0]],
-                        columns=['ceilo', 'dt', 'alt', 'type'])
+                        columns=['ceilo', 'dt', 'height', 'type'])
     data['ceilo'] = data['ceilo'].astype(pd.StringDtype())
     data['dt'] = data['dt'].astype(float)
-    data['alt'] = data['alt'].astype(float)
+    data['height'] = data['height'].astype(float)
     data['type'] = data['type'].astype(int)
 
     # Run ampycloud

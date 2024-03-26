@@ -19,7 +19,7 @@ A no-words example for those that want to get started quickly
     # Your data should have *exactly* this structure
     mock_data = mocker.canonical_demo_data()
 
-    # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
+    # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal
     chunk = ampycloud.run(mock_data, prms={'MSA': 10000},
                           geoloc='Mock data', ref_dt=datetime.now())
 

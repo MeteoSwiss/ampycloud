@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -27,12 +27,13 @@ def get_fluffiness(pts, boost=2, **kwargs):
     """ Utility functions to compute the fluffiness of a set of ceilometer hits.
 
     Args:
-        pts (ndarray): 2D array of [dt, alt] ceilometer hits. None must have NaNs altitudes.
+        pts (ndarray): 2D array of [dt, height] ceilometer hits. None must have NaNs heights.
         boost (float): the fluffiness boost factor. Defaults to 2.
         **kwargs (optional): additional arguments to be fed to statsmodels.nonparameteric.lowess().
 
     Returns:
-        float, ndarray: the fluffiness (in alt units) and LOWESS-smoothed (dt, alt) values (sorted).
+        float, ndarray: the fluffiness (in height units) and LOWESS-smoothed (dt, height) values
+            (sorted).
 
     The *fluffiness* is computed as `boost * mean(abs(y - lowess))`, where lowess is the smooth
     LOWESS fit to the ceilometer hits.

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2022-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -50,7 +50,7 @@ def check_data_consistency(pdf: pd.DataFrame,
     column names/types (formally defined in :py:data:`ampycloud.hardcoded.REQ_DATA_COLS`):
     ::
 
-        'ceilo'/pd.StringDtype(), 'dt'/float, 'alt'/float, 'type'/int
+        'ceilo'/pd.StringDtype(), 'dt'/float, 'height'/float, 'type'/int
 
     The ``ceilo`` column contains the names/ids of the ceilometers as ``pd.StringDtype()``.
     See the pandas
@@ -62,8 +62,8 @@ def check_data_consistency(pdf: pd.DataFrame,
     time of the METAR message, such that ``dt`` values are negative, with the smallest one
     corresponding to the oldest measurement.
 
-    The ``alt`` column contains the cloud base hit altitudes reported by the ceilometers, in ft
-    above ground.
+    The ``height`` column contains the cloud base hit heights reported by the ceilometers, in ft
+    above aerodrome level.
 
     The ``type`` column contains integers that correspond to the hit *sequence id*. If a given
     ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
@@ -71,11 +71,11 @@ def check_data_consistency(pdf: pd.DataFrame,
     ``2``, ``3``, etc ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
     plots as a vertical Visibility (VV) hit, **but it will not be treated any differently than any
     other regular hit**. Type ``0`` corresponds to no (cloud) detection, in which case the
-    corresponding hit altitude should be a NaN.
+    corresponding hit height should be a NaN.
 
     Important:
         A **non-detection** corresponds to a valid measurement with a ``dt`` value, a ``type 0``,
-        and ``NaN`` as the altitude. It should not be confused with a **non-observation**,
+        and ``NaN`` as the height. It should not be confused with a **non-observation**,
         when no data was acquired at all !
 
     If it all sounds confusing, it is possible to obtain an example of the required data format
@@ -102,9 +102,9 @@ def check_data_consistency(pdf: pd.DataFrame,
         * any of ``pdf`` column type is not as expected. Note that in this case, the code will try
           to correct the type on the fly.
         * ``pdf`` has any superfluous columns. In this case, the code will drop them automatically.
-        * Any hit altitude is negative.
-        * Any ``type 0`` hit has a non-NaN altitude.
-        * Any ``type 1`` hit has a NaN altitude.
+        * Any hit height is negative.
+        * Any ``type 0`` hit has a non-NaN height.
+        * Any ``type 1`` hit has a NaN height.
         * Any ``type 2`` hit does not have a coincident ``type 1`` hit.
         * Any ``type 3`` hit does not have a coincident ``type 2`` hit.
 
@@ -150,15 +150,15 @@ def check_data_consistency(pdf: pd.DataFrame,
             logger.warning('Dropping the superfluous %s column from the input data.', key)
             data.drop((key), axis=1, inplace=True)
 
-    # A brief sanity check of the altitudes. We do not issue Errors, since the code can cope
+    # A brief sanity check of the heights. We do not issue Errors, since the code can cope
     # with those elements: we simply raise Warnings.
     msgs = []
-    if np.any(data.loc[:, 'alt'].values < 0):
-        msgs += ['Some hit altitudes are negative ?!']
-    if not np.all(np.isnan(data.loc[data.type == 0, 'alt'])):
-        msgs += ['Some type=0 hits have non-NaNs altitude values ?!']
-    if np.any(np.isnan(data.loc[data.type == 1, 'alt'])):
-        msgs += ['Some type=1 hits have NaNs altitude values ?!']
+    if np.any(data.loc[:, 'height'].values < 0):
+        msgs += ['Some hit heights are negative ?!']
+    if not np.all(np.isnan(data.loc[data.type == 0, 'height'])):
+        msgs += ['Some type=0 hits have non-NaNs height values ?!']
+    if np.any(np.isnan(data.loc[data.type == 1, 'height'])):
+        msgs += ['Some type=1 hits have NaNs height values ?!']
     if not np.all(np.in1d(data.loc[data.type == 2, 'dt'].values,
                           data.loc[data.type == 1, 'dt'].values)):
         msgs += ['Some type=2 hits have no coincident type=1 hits ?!']
@@ -241,23 +241,22 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dic
     return ref_dict
 
 
-def calc_base_alt(
-        vals: npt.ArrayLike,
-        lookback_perc: int,
-        alt_perc: int,
-    ) -> float:
-    """Calculate the layer base altitude.
+def calc_base_height(vals: npt.ArrayLike,
+                     lookback_perc: int,
+                     height_perc: int,
+                     ) -> float:
+    """Calculate the layer base height.
 
     Args:
         vals (npt.ArrayLike): Ceilometer hits of a given layer. Must be a flat
             array/ Series of scalars and ordered in time, most recent entries last.
         lookback_perc (int): Percentage of points to take into account. 100% would
             correspond to all points, 50% to the recent half, etc.
-        alt_perc (int): Percentage of points that should be neglected when calculating
+        height_perc (int): Percentage of points that should be neglected when calculating
             the base height. Base height will be the minimum of the remaining points.
 
     Returns:
-        float: The layer base altitude.
+        float: The layer base height.
 
     Raises:
         AmpycloudError: Raised if the array passed to the n_largest percentile calculation
@@ -268,6 +267,6 @@ def calc_base_alt(
     if len(n_latest_elements) == 0:
         raise AmpycloudError(
             'Cloud base calculation got an empty array.'
-            'Maybe check lookback percentage (is set to %i)' %lookback_perc
+            f'Maybe check lookback percentage (is set to {lookback_perc})'
         )
-    return np.percentile(n_latest_elements, alt_perc)
+    return np.percentile(n_latest_elements, height_perc)
