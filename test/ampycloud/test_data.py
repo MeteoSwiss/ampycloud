@@ -80,6 +80,31 @@ def test_ceilochunk_init():
     reset_prms()
 
 
+@mark.parametrize('alt,expected_flag', [
+    param(1000, False, id='low clouds'),
+    param(15000, True, id='high clouds'),
+])
+def test_high_clouds_flag(alt: int, expected_flag: bool):
+    """ Test the high clouds flagging routine. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate,
+        [{'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+    )
+    chunk = CeiloChunk(mock_data)
+    assert chunk.high_clouds_detected == expected_flag
+
+    reset_prms()
+
+
 def test_ceilochunk_basic():
     """ Test the basic methods of the CeiloChunk class. """
 
@@ -226,6 +251,36 @@ def test_ceilochunk_nocld():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'NCD'
+
+
+def test_ceilochunk_highcld():
+    """ Test the methods of CeiloChunks when high clouds are seen in the interval. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate,
+        [{'alt': 15000, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+    )
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Assert the final METAR code is correct
+    assert chunk.metar_msg() == 'NSC'
+
+    reset_prms()
 
 
 def test_ceilochunk_2lay():

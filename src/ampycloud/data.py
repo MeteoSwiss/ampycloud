@@ -13,6 +13,7 @@ from typing import Optional, Union
 import logging
 import copy
 from abc import ABC, abstractmethod
+import warnings
 import numpy as np
 import numpy.typing as npt
 import pandas as pd
@@ -93,16 +94,31 @@ class AbstractChunk(ABC):
         # Begin with a thorough inspection of the dataset
         data = utils.check_data_consistency(data, req_cols=self.DATA_COLS)
 
+        # By default we set NSC to false, NOTE: attrs is still experimental in pandas!
+        try:
+            data.attrs['high_clouds_detected'] = False
+        except AttributeError:
+            # NOTE: Untestable as we cannot monkeypatch attrs as it would result in side-effects for __repr__
+            # which break other tests
+            with warnings.catch_warnings():
+                warnings.simplefilter("ignore") # pandas assumes we are trying to assign a column, which is not the case
+                data.attrs = {'high_clouds_detected': False}
+
         # Then also drop any hits that is too high
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
             # Type 1 or less hits above the cut threshold get turned to NaNs, to signal a
             # non-detection below the MSA. Also change the hit type to 0 accordingly !
-            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'type'] = 0
-            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'alt'] = np.nan
+            above_msa_t1_or_less = data[(data.alt > hit_alt_lim) & (data.type <= 1)].index
+            data.loc[above_msa_t1_or_less, 'type'] = 0
+            data.loc[above_msa_t1_or_less, 'alt'] = np.nan
             # Type 2 or more hits get cropped (there should be only 1 non-detection per time-stamp).
-            data = data.drop(data[(data.alt > hit_alt_lim) & (data.type > 1)].index)
+            above_msa_t2_or_more = data[(data.alt > hit_alt_lim) & (data.type > 1)].index
+            data = data.drop(above_msa_t2_or_more)
+            if len(above_msa_t1_or_less) + len(above_msa_t2_or_more) > self._prms['MAX_HITS_OKTA0']:
+                logger.info("Hits above MSA exceeded threshold for okta 0, will add NSC flag")
+                data.attrs['high_clouds_detected'] = True
 
         return data
 
@@ -992,6 +1008,28 @@ class CeiloChunk(AbstractChunk):
         identified by the layering algorithm. """
         return self._layers
 
+    @property
+    def high_clouds_detected(self) -> bool:
+        """ Returns whether high clouds were detected in the data.
+
+        Returns:
+            bool: whether high clouds were detected.
+
+        """
+        return self.data.attrs['high_clouds_detected']
+
+    def _ncd_or_nsc(self) -> str:
+        """ Return the METAR code for No Cloud Detected / No Significant Cloud based on the attribute set in data.attrs.
+
+        Returns:
+            str: 'NCD' or 'NSC'
+
+        """
+        if self.high_clouds_detected:
+            return 'NSC'
+        else:
+            return 'NCD'
+
     def metar_msg(self, which: str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
@@ -1025,7 +1063,7 @@ class CeiloChunk(AbstractChunk):
 
         # Deal with the 0 layer situation
         if getattr(self, f'n_{which}') == 0:
-            return 'NCD'
+            return self._ncd_or_nsc()
 
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
@@ -1036,6 +1074,6 @@ class CeiloChunk(AbstractChunk):
 
         # Here, deal with the situations when all clouds are above the MSA
         if len(msg) == 0:
-            return 'NCD'
+            return self._ncd_or_nsc()
 
         return msg
