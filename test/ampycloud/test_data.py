@@ -254,11 +254,16 @@ def test_ceilochunk_nocld():
     assert chunk.metar_msg() == 'NCD'
 
 
-def test_ceilochunk_highcld():
+@mark.parametrize('alt', [
+    param(10500, id='in buffer'),
+    param(15000, id='above buffer'),
+])
+def test_ceilochunk_highcld(alt):
     """ Test the methods of CeiloChunks when high clouds are seen in the interval. """
 
     dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
     dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
 
     n_ceilos = 4
     lookback_time = 1200
@@ -267,7 +272,7 @@ def test_ceilochunk_highcld():
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(
         n_ceilos, lookback_time, rate,
-        [{'alt': 15000, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+        [{'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
     )
 
     # Instantiate a CeiloChunk entity ...

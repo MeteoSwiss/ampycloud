@@ -1076,6 +1076,9 @@ class CeiloChunk(AbstractChunk):
 
         # Here, deal with the situations when all clouds are above the MSA
         if len(msg) == 0:
+            sligrolay_in_buffer = sligrolay['significant'] * (sligrolay['alt_base'] >= msa_val)
+            if sligrolay_in_buffer.any():  # clouds within the MSA buffer zone
+                return 'NSC'
             return self._ncd_or_nsc()
 
         return msg
