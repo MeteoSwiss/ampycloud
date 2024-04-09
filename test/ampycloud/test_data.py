@@ -80,11 +80,11 @@ def test_ceilochunk_init():
     reset_prms()
 
 
-@mark.parametrize('alt,expected_flag', [
+@mark.parametrize('height,expected_flag', [
     param(1000, False, id='low clouds'),
     param(15000, True, id='high clouds'),
 ])
-def test_clouds_above_msa_buffer_flag(alt: int, expected_flag: bool):
+def test_clouds_above_msa_buffer_flag(height: int, expected_flag: bool):
     """ Test the high clouds flagging routine. """
 
     dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
@@ -97,9 +97,9 @@ def test_clouds_above_msa_buffer_flag(alt: int, expected_flag: bool):
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(
-        n_ceilos, lookback_time, rate, [
-            {'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}
-        ]
+        n_ceilos, lookback_time, rate, [{
+            'height': height, 'height_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0
+        }]
     )
     chunk = CeiloChunk(mock_data)
     assert chunk.clouds_above_msa_buffer == expected_flag
@@ -255,11 +255,11 @@ def test_ceilochunk_nocld():
     assert chunk.metar_msg() == 'NCD'
 
 
-@mark.parametrize('alt', [
+@mark.parametrize('height', [
     param(10500, id='in buffer'),
     param(15000, id='above buffer'),
 ])
-def test_ceilochunk_highcld(alt):
+def test_ceilochunk_highcld(height):
     """ Test the methods of CeiloChunks when high clouds are seen in the interval. """
 
     dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
@@ -273,7 +273,7 @@ def test_ceilochunk_highcld(alt):
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(
         n_ceilos, lookback_time, rate,
-        [{'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+        [{'height': height, 'height_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
     )
 
     # Instantiate a CeiloChunk entity ...
