@@ -319,8 +319,8 @@ class CeiloChunk(AbstractChunk):
         if len(self.prms['MIN_SEP_LIMS']) != len(self.prms['MIN_SEP_VALS']) - 1:
             raise AmpycloudError(
                 '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
-                f'Got MIN_SEP_LIMS {self.prms['MIN_SEP_LIMS']} '
-                f'and MIN_SEP_VALS {self.prms['MIN_SEP_VALS']}.',
+                f'Got MIN_SEP_LIMS {self.prms["MIN_SEP_LIMS"]} '
+                f'and MIN_SEP_VALS {self.prms["MIN_SEP_VALS"]}.',
             )
 
         min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
