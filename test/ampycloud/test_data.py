@@ -96,8 +96,9 @@ def test_high_clouds_flag(alt: int, expected_flag: bool):
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(
-        n_ceilos, lookback_time, rate,
-        [{'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+        n_ceilos, lookback_time, rate, [
+            {'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}
+        ]
     )
     chunk = CeiloChunk(mock_data)
     assert chunk.high_clouds_detected == expected_flag

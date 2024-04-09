@@ -98,10 +98,12 @@ class AbstractChunk(ABC):
         try:
             data.attrs['high_clouds_detected'] = False
         except AttributeError:
-            # NOTE: Untestable as we cannot monkeypatch attrs as it would result in side-effects for __repr__
-            # which break other tests
+            # Catch for older versions of pandas that do not support DataFrame.attrs
+            # NOTE: Untestable as we cannot monkeypatch attrs as it would result
+            # in side-effects for __repr__ which break other tests
             with warnings.catch_warnings():
-                warnings.simplefilter("ignore") # pandas assumes we are trying to assign a column, which is not the case
+                # pandas assumes we are trying to assign a column, which is not the case
+                warnings.simplefilter("ignore")
                 data.attrs = {'high_clouds_detected': False}
 
         # Then also drop any hits that is too high
@@ -202,8 +204,10 @@ class CeiloChunk(AbstractChunk):
         self._layers = None
 
     @log_func_call(logger)
-    def data_rescaled(self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
-                      dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None) -> pd.DataFrame:
+    def data_rescaled(
+        self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
+        dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None
+    ) -> pd.DataFrame:
         """ Returns a copy of the data, rescaled according to the provided parameters.
 
         Args:
@@ -312,13 +316,12 @@ class CeiloChunk(AbstractChunk):
                 MIN_SEP_VALS
 
         """
-        if len(self.prms['MIN_SEP_LIMS']) != \
-            len(self.prms['MIN_SEP_VALS']) - 1:
-                raise AmpycloudError(
-                    '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
-                    'Got MIN_SEP_LIMS %i and MIN_SEP_VALS %i',
-                    (self.prms['MIN_SEP_LIMS'], self.prms['MIN_SEP_VALS'])
-                )
+        if len(self.prms['MIN_SEP_LIMS']) != len(self.prms['MIN_SEP_VALS']) - 1:
+            raise AmpycloudError(
+                '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
+                f'Got MIN_SEP_LIMS {self.prms['MIN_SEP_LIMS']} '
+                f'and MIN_SEP_VALS {self.prms['MIN_SEP_VALS']}.',
+            )
 
         min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
                                          altitude)
@@ -377,12 +380,11 @@ class CeiloChunk(AbstractChunk):
                 ]
 
         # We want to raise early if 'which' is unknown.
-        if not which in ['slices', 'groups', 'layers']:
+        if which not in ['slices', 'groups', 'layers']:
             raise AmpycloudError(
-                'Trying to initialize a data frame for %s '
+                f'Trying to initialize a data frame for {which}, '
                 'which is unknown. Keyword arg "which" must be one of'
                 '"slices", "groups" or "layers"'
-                %which
             )
 
         # If I am looking at the slices, also keep track of whether they are isolated, or not.
@@ -535,9 +537,9 @@ class CeiloChunk(AbstractChunk):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the base altitude
-            pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = self._calculate_base_height_for_selection(
-                in_sligrolay,
-            )
+            pdf.iloc[
+                ind, pdf.columns.get_loc('alt_base')
+            ] = self._calculate_base_height_for_selection(in_sligrolay,)
         return pdf
 
     @log_func_call(logger)
@@ -1019,7 +1021,8 @@ class CeiloChunk(AbstractChunk):
         return self.data.attrs['high_clouds_detected']
 
     def _ncd_or_nsc(self) -> str:
-        """ Return the METAR code for No Cloud Detected / No Significant Cloud based on the attribute set in data.attrs.
+        """ Return the METAR code for No Cloud Detected / No Significant Cloud.
+        Decision based on the attribute set in data.attrs.
 
         Returns:
             str: 'NCD' or 'NSC'
@@ -1027,8 +1030,7 @@ class CeiloChunk(AbstractChunk):
         """
         if self.high_clouds_detected:
             return 'NSC'
-        else:
-            return 'NCD'
+        return 'NCD'
 
     def metar_msg(self, which: str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.

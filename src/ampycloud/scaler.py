@@ -221,10 +221,10 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
 
     if fct == 'shift-and-scale':
         # In this case, the only data I may need to derive from the data is the shift.
-        if 'shift' in kwargs.keys():
+        if 'shift' in kwargs:
             # Already set - do nothing
             return kwargs
-        if 'mode' in kwargs.keys():
+        if 'mode' in kwargs:
             if kwargs['mode'] == 'do':
                 kwargs['shift'] = np.nanmax(vals)
             elif kwargs['mode'] == 'undo':
@@ -240,12 +240,12 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
     if fct == 'minmax-scale':
         # In this case, the challenge lies with identifying min_val and max_val, knowing that the
         # user may specify a min_range value.
-        if 'min_val' in kwargs.keys() and 'max_val' in kwargs.keys():
+        if 'min_val' in kwargs and 'max_val' in kwargs:
             # Already specified ... do  nothing
             return kwargs
-        if 'mode' in kwargs.keys():
+        if 'mode' in kwargs:
             if kwargs['mode'] == 'do':
-                if 'min_range' in kwargs.keys():
+                if 'min_range' in kwargs:
                     min_range = kwargs['min_range']
                     kwargs.pop('min_range', None)
                 else:
@@ -260,7 +260,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
             raise AmpycloudError(f"Mode unknown: {kwargs['mode']}")
 
         # 'mode' not set -> will default to 'do'
-        if 'min_range' in kwargs.keys():
+        if 'min_range' in kwargs:
             min_range = kwargs['min_range']
             kwargs.pop('min_range', None)
         else:
