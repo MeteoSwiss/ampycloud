@@ -53,12 +53,13 @@ class AbstractChunk(ABC):
 
     @property
     def msa(self) -> float:
-        """ The Minimum Sector Altitude set when initializing this specific instance. """
+        """ The Minimum Sector Altitude set when initializing this specific instance, in ft aal. """
         return self.prms['MSA']
 
     @property
     def msa_hit_buffer(self) -> float:
-        """ The Minimum Sector Altitude hit buffer set when initializing this specific instance. """
+        """ The Minimum Sector Altitude hit buffer set when initializing this specific instance,
+        in ft. """
         return self.prms['MSA_HIT_BUFFER']
 
     @property
@@ -99,16 +100,16 @@ class AbstractChunk(ABC):
         # Drop any hits that are too high and check if they exceed the threshold for 1 OKTA
         # if yes, set the flag clouds_above_msa_buffer to True
         if self.msa is not None:
-            hit_alt_lim = self.msa + self.msa_hit_buffer
-            logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
+            hit_height_lim = self.msa + self.msa_hit_buffer
+            logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_height_lim))
             # First layer and vervis hits above the cut threshold get turned to NaNs, to signal a
             # non-detection below the MSA. Also change the hit type to 0 accordingly in order
             # to create a "no hit detected" in the range of interest (i.e. below MSA).
-            above_msa_t1_or_less = data[(data.alt > hit_alt_lim) & (data.type <= 1)].index
+            above_msa_t1_or_less = data[(data.height > hit_height_lim) & (data.type <= 1)].index
             data.loc[above_msa_t1_or_less, 'type'] = 0
-            data.loc[above_msa_t1_or_less, 'alt'] = np.nan
+            data.loc[above_msa_t1_or_less, 'height'] = np.nan
             # Type 2 or more hits get cropped (there should be only 1 non-detection per time-stamp).
-            above_msa_t2_or_more = data[(data.alt > hit_alt_lim) & (data.type > 1)].index
+            above_msa_t2_or_more = data[(data.height > hit_height_lim) & (data.type > 1)].index
             data = data.drop(above_msa_t2_or_more)
             if len(above_msa_t1_or_less) + len(above_msa_t2_or_more) > self._prms['MAX_HITS_OKTA0']:
                 logger.info(
@@ -163,7 +164,7 @@ class CeiloChunk(AbstractChunk):
         CeiloChunk.DATA_COLS, i.e. :
         ::
 
-            ['ceilo', 'dt', 'alt', 'type']
+            ['ceilo', 'dt', 'height', 'type']
 
         Specifically:
 
@@ -176,8 +177,8 @@ class CeiloChunk(AbstractChunk):
               hit time in s, **as float**. This should typically be a negative number (because
               METARs are assembled using *existing=past* ceilometer observations).
 
-            - ``alt``: cloud base hit altitude in ft, **as float**. The cloud base altitude computed
-              by the ceilometer.
+            - ``height``: cloud base hit height in ft above aerodrome level (aal), **as float**.
+              The cloud base height computed by the ceilometer.
 
             - ``type``: cloud hit type, **as int**. A value n>0 indicates that the hit is the n-th
               (from the ground) that was reported by this specific ceilometer for this specific
@@ -199,18 +200,17 @@ class CeiloChunk(AbstractChunk):
         self._layers = None
 
     @log_func_call(logger)
-    def data_rescaled(
-        self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
-        dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None
-    ) -> pd.DataFrame:
+    def data_rescaled(self, dt_mode: Optional[str] = None, height_mode: Optional[str] = None,
+                      dt_kwargs: Optional[dict] = None,
+                      height_kwargs: Optional[dict] = None) -> pd.DataFrame:
         """ Returns a copy of the data, rescaled according to the provided parameters.
 
         Args:
             dt_mode (str, optional): scaling rule for the time deltas. Defaults to None.
-            alt_mode (str, optional): scaling rule for the altitudes. Defaults to None.
+            height_mode (str, optional): scaling rule for the heights. Defaults to None.
             dt_kwargs (dict, optional): dict of arguments to be fed to the chosen dt scaling
                 routine. Defaults to None.
-            alt_kwargs (dict, optinal): dict of arguments to be fed to the chosen alt scaling
+            height_kwargs (dict, optinal): dict of arguments to be fed to the chosen height scaling
                 routine. Defaults to None.
 
         Returns:
@@ -225,8 +225,8 @@ class CeiloChunk(AbstractChunk):
         # Deal with the default NoneType
         if dt_kwargs is None:
             dt_kwargs = {}
-        if alt_kwargs is None:
-            alt_kwargs = {}
+        if height_kwargs is None:
+            height_kwargs = {}
 
         # Make a deep copy of the data, to avoid messing it up
         out = copy.deepcopy(self.data)
@@ -234,8 +234,8 @@ class CeiloChunk(AbstractChunk):
         # Deal with the dt first
         out['dt'] = scaler.apply_scaling(out['dt'], dt_mode, **dt_kwargs)
 
-        # Then the altitudes
-        out['alt'] = scaler.apply_scaling(out['alt'], alt_mode, **alt_kwargs)
+        # Then the heights
+        out['height'] = scaler.apply_scaling(out['height'], height_mode, **height_kwargs)
 
         return out
 
@@ -287,24 +287,23 @@ class CeiloChunk(AbstractChunk):
             float: The base height of the given data selection.
 
         """
-        # Start computing the base altitude
+        # Start computing the base height
         # First, compute which points should be considered in terms of lookback time
-        return utils.calc_base_alt(
-            self.data.sort_values('dt').loc[data_indexer]['alt'].values,
+        return utils.calc_base_height(
+            self.data.sort_values('dt').loc[data_indexer]['height'].values,
             self.prms['BASE_LVL_LOOKBACK_PERC'],
-            self.prms['BASE_LVL_ALT_PERC'],
+            self.prms['BASE_LVL_HEIGHT_PERC'],
         )
 
-
-    def _get_min_sep_for_altitude(self, altitude: float) -> float:
-        """Get the minimum separation for a given altitude.
+    def _get_min_sep_for_height(self, height: float) -> float:
+        """Get the minimum separation for a given height.
 
         Args:
-            altitude (float): The altitude for which we want to know the minimum
-                separation
+            height (float): The height for which we want to know the minimum
+                separation.
 
         Returns:
-            float: The minimum separation for the given altitude.
+            float: The minimum separation for the given height.
 
         Raises:
             AmpycloudError: If the length of MIN_SEP_LIMS is not one less than
@@ -319,9 +318,9 @@ class CeiloChunk(AbstractChunk):
             )
 
         min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
-                                         altitude)
+                                         height)
         min_sep = self.prms['MIN_SEP_VALS'][min_sep_val_id]
-        logger.info('Alt: %.1f', altitude)
+        logger.info('Height: %.1f', height)
         logger.info('min_sep value: %.1f', min_sep)
         return min_sep
 
@@ -362,11 +361,11 @@ class CeiloChunk(AbstractChunk):
         cols = ['n_hits',  # Duplicate-corrected number of hits
                 'perc',  # Duplicate-corrected hit percentage (in %)
                 'okta',  # Corresponding okta value
-                'alt_base',  # Slice/Group/Layer base altitude
-                'alt_mean',  # Slice/Group/Layer mean altitude
-                'alt_std',  # Slice/Group/Layer altitude std
-                'alt_min',  # Slice/Group/Layer min altitude
-                'alt_max',  # Slice/Group/Layer max altitude
+                'height_base',  # Slice/Group/Layer base height
+                'height_mean',  # Slice/Group/Layer mean height
+                'height_std',  # Slice/Group/Layer height std
+                'height_min',  # Slice/Group/Layer min height
+                'height_max',  # Slice/Group/Layer max height
                 'thickness',  # Slice/Group/Layer thickness
                 'fluffiness',  # Slice/Group/Layer fluffiness
                 'code',  # METAR code
@@ -486,29 +485,29 @@ class CeiloChunk(AbstractChunk):
                 groups/ layers.
 
         Returns:
-            pd.DataFrame: with additional results in the columns alt_min,
-                alt_mean, alt_max, alt_std, thickness, fluffiness.
+            pd.DataFrame: with additional results in the columns height_min,
+                height_mean, height_max, height_std, thickness, fluffiness.
 
         """
         for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
-            # Measure the mean altitude and associated std of the layer
-            pdf.iloc[ind, pdf.columns.get_loc('alt_mean')] = \
-                self.data.loc[in_sligrolay, 'alt'].mean(skipna=True)
-            pdf.iloc[ind, pdf.columns.get_loc('alt_std')] = \
-                self.data.loc[in_sligrolay, 'alt'].std(skipna=True)
+            # Measure the mean height and associated std of the layer
+            pdf.iloc[ind, pdf.columns.get_loc('height_mean')] = \
+                self.data.loc[in_sligrolay, 'height'].mean(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('height_std')] = \
+                self.data.loc[in_sligrolay, 'height'].std(skipna=True)
             # Let's also keep track of the min, max, thickness, and fluffiness values
-            pdf.iloc[ind, pdf.columns.get_loc('alt_min')] = \
-                self.data.loc[in_sligrolay, 'alt'].min(skipna=True)
-            pdf.iloc[ind, pdf.columns.get_loc('alt_max')] = \
-                self.data.loc[in_sligrolay, 'alt'].max(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('height_min')] = \
+                self.data.loc[in_sligrolay, 'height'].min(skipna=True)
+            pdf.iloc[ind, pdf.columns.get_loc('height_max')] = \
+                self.data.loc[in_sligrolay, 'height'].max(skipna=True)
             pdf.iloc[ind, pdf.columns.get_loc('thickness')] = \
-                pdf.iloc[ind, pdf.columns.get_loc('alt_max')] - \
-                pdf.iloc[ind, pdf.columns.get_loc('alt_min')]
+                pdf.iloc[ind, pdf.columns.get_loc('height_max')] - \
+                pdf.iloc[ind, pdf.columns.get_loc('height_min')]
             pdf.iloc[ind, pdf.columns.get_loc('fluffiness')], _ = \
                 fluffer.get_fluffiness(
-                self.data.loc[in_sligrolay, ['dt', 'alt']].values,
+                self.data.loc[in_sligrolay, ['dt', 'height']].values,
                 boost=self.prms['GROUPING_PRMS']['fluffiness_boost'],
                 **self.prms['LOWESS'])
 
@@ -525,21 +524,19 @@ class CeiloChunk(AbstractChunk):
             cluster_ids (npt.ArrayLike): Original IDs of slices/ groups/ layers.
 
         Returns:
-            pd.DataFrame: with calculatio results in columnm alt_base
+            pd.DataFrame: with calculatio results in column height_base
 
         """
         for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
-            # Compute the base altitude
-            pdf.iloc[
-                ind, pdf.columns.get_loc('alt_base')
-            ] = self._calculate_base_height_for_selection(in_sligrolay,)
+            # Compute the base height
+            pdf.iloc[ind, pdf.columns.get_loc('height_base')] = \
+                self._calculate_base_height_for_selection(in_sligrolay)
         return pdf
 
     @log_func_call(logger)
-    def metarize(
-        self, which: str = 'slices') -> None:
+    def metarize(self, which: str = 'slices') -> None:
         """ Assembles a :py:class:`pandas.DataFrame` of slice/group/layer METAR properties of
         interest.
 
@@ -556,13 +553,13 @@ class CeiloChunk(AbstractChunk):
             * ``n_hits (int)``: duplicate-corrected number of hits
             * ``perc (float)``: sky coverage percentage (between 0-100)
             * ``okta (int)``: okta count
-            * ``alt_base (float)``: base altitude
-            * ``alt_mean (float)``: mean altitude
-            * ``alt_std (float)``: altitude standard deviation
-            * ``alt_min (float)``: minimum altitude
-            * ``alt_max (float)``: maximum altitude
+            * ``height_base (float)``: base height
+            * ``height_mean (float)``: mean height
+            * ``height_std (float)``: height standard deviation
+            * ``height_min (float)``: minimum height
+            * ``height_max (float)``: maximum height
             * ``thickness (float)``: thickness
-            * ``fluffiness (float)``: fluffiness (expressed in altitude units, i.e. ft)
+            * ``fluffiness (float)``: fluffiness (expressed in height units, i.e. ft)
             * ``code (str)``: METAR-like code
             * ``significant (bool)``: whether the layer is significant according to the ICAO rules.
               See :py:func:`.icao.significant_cloud` for details.
@@ -576,7 +573,7 @@ class CeiloChunk(AbstractChunk):
             same ceilometer* are counted as one only. In other words, if a Type ``1`` and ``2`` hits
             **from the same ceilometer, at the same observation time** are included in a given
             slice/group/layer, they are counted as one hit only. This is a direct consequence of the
-            fact that clouds have a single base altitude at any given time [*citation needed*].
+            fact that clouds have a single base height at any given time [*citation needed*].
 
         Note:
             The metarize function is modularized in private submethods defined above.
@@ -589,7 +586,7 @@ class CeiloChunk(AbstractChunk):
         # calculate cloud amount in okta
         pdf = self._calculate_cloud_amount(which, pdf, cids)
 
-        # calculate slice/ group/ layer base altitude
+        # calculate slice/ group/ layer base height
         pdf = self._calculate_sligrolay_base_height(which, pdf, cids)
 
         # collect some more information, including fluffiness
@@ -600,12 +597,13 @@ class CeiloChunk(AbstractChunk):
 
             pdf.iloc[ind, pdf.columns.get_loc('code')] = \
                 wmo.okta2code(pdf.iloc[ind, pdf.columns.get_loc('okta')]) + \
-                wmo.alt2code(pdf.iloc[ind, pdf.columns.get_loc('alt_base')])
+                wmo.height2code(pdf.iloc[ind, pdf.columns.get_loc('height_base')])
 
         # Set the proper column types
         for cname in ['n_hits', 'okta', 'cluster_id']:
             pdf[cname] = pdf[cname].astype(int)
-        for cname in ['perc', 'alt_base', 'alt_mean', 'alt_std', 'alt_min', 'alt_max', 'thickness',
+        for cname in ['perc', 'height_base', 'height_mean', 'height_std', 'height_min',
+                      'height_max', 'thickness',
                       'fluffiness']:
             pdf[cname] = pdf[cname].astype(float)
         for cname in ['code']:
@@ -618,9 +616,9 @@ class CeiloChunk(AbstractChunk):
         if which == 'groups':
             pdf['ncomp'] = pdf['ncomp'].astype(int)
 
-        # Sort the table as a function of the base altitude of the sli/gro/lay.
+        # Sort the table as a function of the base height of the sli/gro/lay.
         # This is why having the 'cluster_id' info is useful (so I remember which they are).
-        pdf.sort_values('alt_base', inplace=True)
+        pdf.sort_values('height_base', inplace=True)
 
         # Reset the index, 'cause I only need the one.
         pdf.reset_index(drop=True, inplace=True)
@@ -633,7 +631,7 @@ class CeiloChunk(AbstractChunk):
 
     @log_func_call(logger)
     def find_slices(self) -> None:
-        """ Identify general altitude slices in the chunk data. Intended as the first stage towards
+        """ Identify general height slices in the chunk data. Intended as the first stage towards
         the identification of cloud layers.
 
         Important:
@@ -644,12 +642,12 @@ class CeiloChunk(AbstractChunk):
         # Get a scaled **copy** of the data to feed the clustering algorithm
         tmp = self.data_rescaled(dt_mode='shift-and-scale',
                                  dt_kwargs={'scale': self.prms['SLICING_PRMS']['dt_scale']},
-                                 alt_mode=self.prms['SLICING_PRMS']['alt_scale_mode'],
-                                 alt_kwargs=self.prms['SLICING_PRMS']['alt_scale_kwargs'],
+                                 height_mode=self.prms['SLICING_PRMS']['height_scale_mode'],
+                                 height_kwargs=self.prms['SLICING_PRMS']['height_scale_kwargs'],
                                  )
 
         # What are the valid points ?
-        valids = tmp['alt'].notna()
+        valids = tmp['height'].notna()
 
         # Add a column to the original data to keep track of the slice id.
         # First, set them all to -1 and force the correct dtype. I hate pandas for this ...
@@ -662,12 +660,12 @@ class CeiloChunk(AbstractChunk):
         elif len(valids[valids]) > 1:
             # ... run the clustering on them ...
             _, labels = cluster.clusterize(
-                tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
+                tmp[['dt', 'height']][valids].to_numpy(), algo='agglomerative',
                 **{'linkage': 'average', 'metric': 'manhattan',
                    'distance_threshold': self.prms['SLICING_PRMS']['distance_threshold']})
 
             # ... and set the labels in the original data
-            self.data.loc[self.data['alt'].notna(), ['slice_id']] = labels
+            self.data.loc[self.data['height'].notna(), ['slice_id']] = labels
         else:
             # If I get no valid points, do nothing at all
             pass
@@ -679,18 +677,18 @@ class CeiloChunk(AbstractChunk):
 
     def _merge_close_groups(self) -> None:
         """Merge groups that are closer than the minimum separation at their
-        respective altitudes.
+        respective heights.
 
         Algorithm steps:
-            1. Calculate preliminary group base altitude
+            1. Calculate preliminary group base height
             2. Start from bottom and search for the first two groups that are
             too close.
-            3. Merge these groups and recalculate all base altitudes.
+            3. Merge these groups and recalculate all base heights.
             4. Repeat 2. and 3. until all groups are enough separated.
 
         The reason this is done iteratively is that there can be multiple overlaps.
         In these cases merging two groups often separates their new (combined)
-        base altitude far enough from the base altitude of the next layer above.
+        base height far enough from the base height of the next layer above.
         Doing the merging all at once would thus lead to unwanted overgrouping.
 
         Attention: This method only recalculates height, not amount! If you want
@@ -698,24 +696,24 @@ class CeiloChunk(AbstractChunk):
         _calculate_cloud_amount or the public metarize() method.
 
         """
-        # Let's setup a groups df and get the groups base altitude.
+        # Let's setup a groups df and get the groups base height.
         # setup pd.DataFrame to store slices/ groups/ layers
         prelim_groups, cids = self._setup_sligrolay_pdf('groups')
-        # calculate bae altitude
+        # calculate bae height
         prelim_groups = self._calculate_sligrolay_base_height(
             'groups', prelim_groups, cids
         )
-        # Ordering by altitude
-        prelim_groups.sort_values('alt_base', inplace=True)
+        # Ordering by height
+        prelim_groups.sort_values('height_base', inplace=True)
         prelim_groups.reset_index(drop=True, inplace=True)
         #self.metarize('groups')
         #prelim_groups = self.groups
 
-        min_seps_grp = prelim_groups['alt_base'].apply(self._get_min_sep_for_altitude)
-        base_alt_diffs = prelim_groups['alt_base'].diff()
+        min_seps_grp = prelim_groups['height_base'].apply(self._get_min_sep_for_height)
+        base_height_diffs = prelim_groups['height_base'].diff()
         # create a boolean series to select values, fillna is necessary as
         # first entry of diff will be nan
-        lt_min_sep_indexer = (base_alt_diffs < min_seps_grp).fillna(False)
+        lt_min_sep_indexer = (base_height_diffs < min_seps_grp).fillna(False)
         while len(prelim_groups[lt_min_sep_indexer]) > 0:
             # start with the two lowest layers that are too close
             idx = prelim_groups[lt_min_sep_indexer].index[0]
@@ -729,16 +727,16 @@ class CeiloChunk(AbstractChunk):
             prelim_groups.drop(index=idx, inplace=True)
             # resetting because we must not have index gaps in the next iteration
             prelim_groups.reset_index(drop=True, inplace=True)
-            # now we recalculate the base alt for the merged supergroup
+            # now we recalculate the base height for the merged supergroup
             data_idxer = self.data['group_id'] == prelim_groups['cluster_id'].iloc[idx - 1]
             prelim_groups.iloc[
-                idx - 1, prelim_groups.columns.get_loc('alt_base')
+                idx - 1, prelim_groups.columns.get_loc('height_base')
             ] = self._calculate_base_height_for_selection(data_idxer)
-            # as this changes base alt, it is possible that we now are closer
+            # as this changes base height, it is possible that we now are closer
             # to another group, so we have to continue iteratively.
-            min_seps_grp = prelim_groups['alt_base'].apply(self._get_min_sep_for_altitude)
-            base_alt_diffs = prelim_groups['alt_base'].diff()
-            lt_min_sep_indexer = (base_alt_diffs < min_seps_grp).fillna(False)
+            min_seps_grp = prelim_groups['height_base'].apply(self._get_min_sep_for_height)
+            base_height_diffs = prelim_groups['height_base'].diff()
+            lt_min_sep_indexer = (base_height_diffs < min_seps_grp).fillna(False)
 
     @log_func_call(logger)
     def find_groups(self) -> None:
@@ -774,15 +772,15 @@ class CeiloChunk(AbstractChunk):
 
             # Let's get ready to measure the slice separation above and below with respect to the
             # other ones.
-            alt_pad = self.prms['GROUPING_PRMS']['alt_pad_perc']/100
-            m_lim = row['alt_min'] - alt_pad * row['thickness']
-            p_lim = row['alt_max'] + alt_pad * row['thickness']
+            height_pad = self.prms['GROUPING_PRMS']['height_pad_perc']/100
+            m_lim = row['height_min'] - height_pad * row['thickness']
+            p_lim = row['height_max'] + height_pad * row['thickness']
 
             # For each other slice below and above, figure out if it is overlapping or not
-            seps_m = [m_lim < self.slices.iloc[item]['alt_max'] +
-                      alt_pad * self.slices.iloc[item]['thickness'] for item in range(ind)]
-            seps_p = [p_lim > self.slices.iloc[item]['alt_min'] -
-                      alt_pad * self.slices.iloc[item]['thickness']
+            seps_m = [m_lim < self.slices.iloc[item]['height_max'] +
+                      height_pad * self.slices.iloc[item]['thickness'] for item in range(ind)]
+            seps_p = [p_lim > self.slices.iloc[item]['height_min'] -
+                      height_pad * self.slices.iloc[item]['thickness']
                       for item in range(ind+1, len(self.slices), 1)]
 
             # If the slice is isolated, I can stop here and move on ...
@@ -819,29 +817,29 @@ class CeiloChunk(AbstractChunk):
             valids = self.data['slice_id'].isin([self.slices.iloc[ind]['cluster_id']
                                                  for ind in grp])
 
-            # Rescale these points in dt and alt prior to running the single-linkage clustering.
+            # Rescale these points in dt and height prior to running the single-linkage clustering.
             # dt scaling is provided by the user.
-            # alt scaling is derived from the smallest fluffiness of the slice bundle.
-            grp_alt_scale = self.slices.loc[grp, 'fluffiness'].min(skipna=True)
-            logger.debug('Bundle min. fluffiness: %.1f ft', grp_alt_scale)
+            # height scaling is derived from the smallest fluffiness of the slice bundle.
+            grp_height_scale = self.slices.loc[grp, 'fluffiness'].min(skipna=True)
+            logger.debug('Bundle min. fluffiness: %.1f ft', grp_height_scale)
             # ... and check against the allowed scaling range
-            grp_alt_scale = np.max([np.min(self.prms['GROUPING_PRMS']['alt_scale_range']),
-                                    grp_alt_scale])
-            grp_alt_scale = np.min([np.max(self.prms['GROUPING_PRMS']['alt_scale_range']),
-                                    grp_alt_scale])
-            logger.debug('Bundle alt. scale: %.1f ft', grp_alt_scale)
+            grp_height_scale = np.max([np.min(self.prms['GROUPING_PRMS']['height_scale_range']),
+                                      grp_height_scale])
+            grp_height_scale = np.min([np.max(self.prms['GROUPING_PRMS']['height_scale_range']),
+                                      grp_height_scale])
+            logger.debug('Bundle height scale: %.1f ft', grp_height_scale)
             # Ready to trigger the data rescaling
             tmp = self.data_rescaled(dt_mode='shift-and-scale',
                                      dt_kwargs={'scale': self.prms['GROUPING_PRMS']['dt_scale']},
-                                     alt_mode='shift-and-scale',
-                                     alt_kwargs={'shift': 0, 'scale': grp_alt_scale})
+                                     height_mode='shift-and-scale',
+                                     height_kwargs={'shift': 0, 'scale': grp_height_scale})
 
             # What are the valid points ?
-            valids = tmp['alt'].notna() * valids
+            valids = tmp['height'].notna() * valids
 
             # Run the clustering
             nlabels, labels = cluster.clusterize(
-                tmp[['dt', 'alt']][valids].to_numpy(), algo='agglomerative',
+                tmp[['dt', 'height']][valids].to_numpy(), algo='agglomerative',
                 **{'linkage': 'single', 'metric': 'euclidean', 'distance_threshold': 1})
 
             # Based on the clustering, assign each element to a group. The group id is the slice_id
@@ -857,7 +855,7 @@ class CeiloChunk(AbstractChunk):
         # Now we need to separate layers if they are closer than the set
         # minimum separation
         self._merge_close_groups()
-        #Let's metarize the merged groups
+        # Let's metarize the merged groups
         self.metarize(which='groups')
 
     @log_func_call(logger)
@@ -884,18 +882,17 @@ class CeiloChunk(AbstractChunk):
         # Loop through every group, and look for sub-layers in it ...
         for ind in range(len(self.groups)):
 
-            # Let's extract the altitudes of all the hits in this group ...
-            gro_alts = self.data.loc[self.data.loc[:, 'group_id'] ==
-                                     self._groups.at[ind, 'cluster_id'],
-                                     'alt'].to_numpy()
+            # Let's extract the heights of all the hits in this group ...
+            gro_heights = self.data.loc[self.data.loc[:, 'group_id'] ==
+                          self._groups.at[ind, 'cluster_id'], 'height'].to_numpy()
 
             # Only look for multiple layers if it is worth it ...
             # 1) Layer density is large enough
             cond1 = self.groups.at[ind, 'okta'] < self.prms['LAYERING_PRMS']['min_okta_to_split']
             # 2) I have more than 30 valid points (GMM is unstable below this amount).
-            cond2 = len(gro_alts[~np.isnan(gro_alts)]) < 30
-            # 3) Not all the altitudes are the same
-            cond3 = len(np.unique(gro_alts[~np.isnan(gro_alts)])) == 1
+            cond2 = len(gro_heights[~np.isnan(gro_heights)]) < 30
+            # 3) Not all the heights are the same
+            cond3 = len(np.unique(gro_heights[~np.isnan(gro_heights)])) == 1
             if cond1 or cond2 or cond3:
                 # Add some useful info to the log
                 logger.info(
@@ -906,22 +903,22 @@ class CeiloChunk(AbstractChunk):
                 continue
 
             # Reshape the array in anticipation of the GMM routine ...
-            gro_alts = gro_alts.reshape(-1, 1)
+            gro_heights = gro_heights.reshape(-1, 1)
 
-            # Identify the minimum layer separation given the overall group base altitude
-            min_sep = self._get_min_sep_for_altitude(self.groups.at[ind, 'alt_base'])
+            # Identify the minimum layer separation given the overall group base height
+            min_sep = self._get_min_sep_for_height(self.groups.at[ind, 'height_base'])
 
-            # Handle #78: if the data is comprised of only two distinct altitudes, only look for
+            # Handle #78: if the data is comprised of only two distinct heights, only look for
             # up to 2 Gaussian components. Else, up to 3.
-            ncomp_max = np.min([len(np.unique(gro_alts[~np.isnan(gro_alts)])), 3])
+            ncomp_max = np.min([len(np.unique(gro_heights[~np.isnan(gro_heights)])), 3])
             logger.debug('Setting ncomp_max to: %i', ncomp_max)
 
             # And feed them to a Gaussian Mixture Model to figure out how many components it has ...
             ncomp, sub_layers_id, _ = layer.ncomp_from_gmm(
-                gro_alts, ncomp_max=ncomp_max, min_sep=min_sep,
+                gro_heights, ncomp_max=ncomp_max, min_sep=min_sep,
                 layer_base_params={
                     'lookback_perc': self.prms['BASE_LVL_LOOKBACK_PERC'],
-                    'alt_perc': self.prms['BASE_LVL_ALT_PERC']
+                    'height_perc': self.prms['BASE_LVL_HEIGHT_PERC']
                 },
                 **self.prms['LAYERING_PRMS']['gmm_kwargs'])
 
@@ -1043,9 +1040,10 @@ class CeiloChunk(AbstractChunk):
             the resulting ``str`` ! See :py:func:`.icao.significant_cloud` for details.
 
         .. Caution::
-            The Minimum Sector Altitude value set when the :py:class:`.CeiloChunk` instance **was
-            initialized** will be applied ! If in doubt, the value used by this method is that set
-            in the (parent) class attribute :py:attr:`.AbstractChunk.msa`.
+            The Minimum Sector Altitude values set when
+            the :py:class:`.CeiloChunk` instance **was initialized** will be applied ! If in doubt,
+            the values used by this method are those set in the (parent) class
+            attribute :py:attr:`.AbstractChunk.msa`
 
         """
 
@@ -1066,14 +1064,14 @@ class CeiloChunk(AbstractChunk):
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
         # What layers are significant *AND* below the MSA ?
-        report = sligrolay['significant']*(sligrolay['alt_base'] < msa_val)
+        report = sligrolay['significant']*(sligrolay['height_base'] < msa_val)
         msg = sligrolay['code'][report]
         msg = ' '.join(msg.to_list())
 
         # Here, deal with the situations when all clouds are above the MSA
         if len(msg) == 0:
             # first check if any significant clouds are in the interval [MSA, MSA+MSA_HIT_BUFFER]
-            sligrolay_in_buffer = sligrolay['significant'] * (sligrolay['alt_base'] >= msa_val)
+            sligrolay_in_buffer = sligrolay['significant'] * (sligrolay['height_base'] >= msa_val)
             if sligrolay_in_buffer.any():
                 return 'NSC'  # and return a NSC as it implies that the cloud is above the MSA
             return self._ncd_or_nsc()  # else, check for CBH above MSA + MSA_HIT_BUFFER

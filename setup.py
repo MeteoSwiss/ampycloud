@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -35,9 +35,10 @@ setup(
         'Changelog': 'https://meteoswiss.github.io/ampycloud/changelog.html',
         'Issues': 'https://github.com/MeteoSwiss/ampycloud/issues'
     },
-    author="Frédéric P.A. Vogt",
+    author="Frédéric P.A. Vogt, Daniel Regenass",
     author_email="frederic.vogt@meteoswiss.ch",
-    description="Characterization of cloud layers from ceilometer measurements",
+    description="Determining the sky coverage fraction and base height of cloud layers using"
+    "ceilometer data",
     long_description=long_description,
     long_description_content_type="text/markdown",
     python_requires='>=3.9.0',
@@ -52,7 +53,7 @@ setup(
         "ruamel.yaml"
     ],
     extras_require={
-        'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest']
+        'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest', 'setuptools']
     },
     # Setup entry points to use ampycloud directly from a terminal
     entry_points={
@@ -63,7 +64,7 @@ setup(
         #   3 - Alpha
         #   4 - Beta
         #   5 - Production/Stable
-        'Development Status :: 3 - Alpha',
+        'Development Status :: 3 - Beta',
         # Indicate who your project is intended for
         'Intended Audience :: Science/Research',
         'Topic :: Scientific/Engineering :: Atmospheric Science',
@@ -71,7 +72,10 @@ setup(
         'License :: OSI Approved :: BSD License',
         # Specify the Python versions you support here. In particular, ensure
         # that you indicate whether you support Python 2, Python 3 or both.
-        'Programming Language :: Python :: 3.8',
+        'Programming Language :: Python',
+        'Programming Language :: Python :: 3.9',
+        'Programming Language :: Python :: 3.10',
+        'Programming Language :: Python :: 3.11',
     ],
     # Let's make sure the parameter non-py files get included in the wheels on pypi.
     include_package_data=True
