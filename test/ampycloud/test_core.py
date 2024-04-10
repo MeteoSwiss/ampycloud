@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -82,7 +82,7 @@ def test_run():
 
     # Test the ability to specific parameters locally only
     out = run(mock_data, prms={'MSA': 0})
-    assert out.metar_msg() == 'NCD'
+    assert out.metar_msg() == 'NSC'
     assert dynamic.AMPYCLOUD_PRMS['MSA'] is None
 
     # Test that warnings are being raised if a bad parameter is being given

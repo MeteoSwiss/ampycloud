@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -93,16 +93,29 @@ class AbstractChunk(ABC):
         # Begin with a thorough inspection of the dataset
         data = utils.check_data_consistency(data, req_cols=self.DATA_COLS)
 
-        # Then also drop any hits that is too high
+        # By default we set this flag to false and overwrite if enough hits are present
+        self._clouds_above_msa_buffer = False
+
+        # Drop any hits that are too high and check if they exceed the threshold for 1 OKTA
+        # if yes, set the flag clouds_above_msa_buffer to True
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
-            # Type 1 or less hits above the cut threshold get turned to NaNs, to signal a
-            # non-detection below the MSA. Also change the hit type to 0 accordingly !
-            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'type'] = 0
-            data.loc[data[(data.alt > hit_alt_lim) & (data.type <= 1)].index, 'alt'] = np.nan
+            # First layer and vervis hits above the cut threshold get turned to NaNs, to signal a
+            # non-detection below the MSA. Also change the hit type to 0 accordingly in order
+            # to create a "no hit detected" in the range of interest (i.e. below MSA).
+            above_msa_t1_or_less = data[(data.alt > hit_alt_lim) & (data.type <= 1)].index
+            data.loc[above_msa_t1_or_less, 'type'] = 0
+            data.loc[above_msa_t1_or_less, 'alt'] = np.nan
             # Type 2 or more hits get cropped (there should be only 1 non-detection per time-stamp).
-            data = data.drop(data[(data.alt > hit_alt_lim) & (data.type > 1)].index)
+            above_msa_t2_or_more = data[(data.alt > hit_alt_lim) & (data.type > 1)].index
+            data = data.drop(above_msa_t2_or_more)
+            if len(above_msa_t1_or_less) + len(above_msa_t2_or_more) > self._prms['MAX_HITS_OKTA0']:
+                logger.info(
+                    "Hits above MSA + MSA_HIT_BUFFER exceeded threshold MAX_HITS_OKTA0. Will add "
+                    "flag 'high_clouds_detected' to indicate the presence of high clouds."
+                )
+                self._clouds_above_msa_buffer = True
 
         return data
 
@@ -186,8 +199,10 @@ class CeiloChunk(AbstractChunk):
         self._layers = None
 
     @log_func_call(logger)
-    def data_rescaled(self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
-                      dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None) -> pd.DataFrame:
+    def data_rescaled(
+        self, dt_mode: Optional[str] = None, alt_mode: Optional[str] = None,
+        dt_kwargs: Optional[dict] = None, alt_kwargs: Optional[dict] = None
+    ) -> pd.DataFrame:
         """ Returns a copy of the data, rescaled according to the provided parameters.
 
         Args:
@@ -296,13 +311,12 @@ class CeiloChunk(AbstractChunk):
                 MIN_SEP_VALS
 
         """
-        if len(self.prms['MIN_SEP_LIMS']) != \
-            len(self.prms['MIN_SEP_VALS']) - 1:
-                raise AmpycloudError(
-                    '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
-                    'Got MIN_SEP_LIMS %i and MIN_SEP_VALS %i',
-                    (self.prms['MIN_SEP_LIMS'], self.prms['MIN_SEP_VALS'])
-                )
+        if len(self.prms['MIN_SEP_LIMS']) != len(self.prms['MIN_SEP_VALS']) - 1:
+            raise AmpycloudError(
+                '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
+                f'Got MIN_SEP_LIMS {self.prms["MIN_SEP_LIMS"]} '
+                f'and MIN_SEP_VALS {self.prms["MIN_SEP_VALS"]}.',
+            )
 
         min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
                                          altitude)
@@ -361,12 +375,11 @@ class CeiloChunk(AbstractChunk):
                 ]
 
         # We want to raise early if 'which' is unknown.
-        if not which in ['slices', 'groups', 'layers']:
+        if which not in ['slices', 'groups', 'layers']:
             raise AmpycloudError(
-                'Trying to initialize a data frame for %s '
+                f'Trying to initialize a data frame for {which}, '
                 'which is unknown. Keyword arg "which" must be one of'
                 '"slices", "groups" or "layers"'
-                %which
             )
 
         # If I am looking at the slices, also keep track of whether they are isolated, or not.
@@ -519,9 +532,9 @@ class CeiloChunk(AbstractChunk):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the base altitude
-            pdf.iloc[ind, pdf.columns.get_loc('alt_base')] = self._calculate_base_height_for_selection(
-                in_sligrolay,
-            )
+            pdf.iloc[
+                ind, pdf.columns.get_loc('alt_base')
+            ] = self._calculate_base_height_for_selection(in_sligrolay,)
         return pdf
 
     @log_func_call(logger)
@@ -992,6 +1005,29 @@ class CeiloChunk(AbstractChunk):
         identified by the layering algorithm. """
         return self._layers
 
+    @property
+    def clouds_above_msa_buffer(self) -> bool:
+        """ Returns whether a number of hits exceeding the threshold for 1 okta is detected above
+        MSA + MSA_HIT_BUFFER.
+
+        Returns:
+            bool: whether high clouds were detected.
+
+        """
+        return self._clouds_above_msa_buffer
+
+    def _ncd_or_nsc(self) -> str:
+        """ Return the METAR code for No Cloud Detected / No Significant Cloud.
+        Decision based on the attribute self._clouds_above_msa_buffer.
+
+        Returns:
+            str: 'NCD' or 'NSC'
+
+        """
+        if self._clouds_above_msa_buffer:
+            return 'NSC'
+        return 'NCD'
+
     def metar_msg(self, which: str = 'layers') -> str:
         """ Construct a METAR-like message for the identified cloud slices, groups, or layers.
 
@@ -1025,7 +1061,7 @@ class CeiloChunk(AbstractChunk):
 
         # Deal with the 0 layer situation
         if getattr(self, f'n_{which}') == 0:
-            return 'NCD'
+            return self._ncd_or_nsc()
 
         # Deal with the situation where layers have been found ...
         msg = sligrolay['code']
@@ -1036,6 +1072,10 @@ class CeiloChunk(AbstractChunk):
 
         # Here, deal with the situations when all clouds are above the MSA
         if len(msg) == 0:
-            return 'NCD'
+            # first check if any significant clouds are in the interval [MSA, MSA+MSA_HIT_BUFFER]
+            sligrolay_in_buffer = sligrolay['significant'] * (sligrolay['alt_base'] >= msa_val)
+            if sligrolay_in_buffer.any():
+                return 'NSC'  # and return a NSC as it implies that the cloud is above the MSA
+            return self._ncd_or_nsc()  # else, check for CBH above MSA + MSA_HIT_BUFFER
 
         return msg

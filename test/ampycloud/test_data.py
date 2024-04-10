@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -77,6 +77,33 @@ def test_ceilochunk_init():
         assert chunk.prms == dynamic.AMPYCLOUD_PRMS
 
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
+    reset_prms()
+
+
+@mark.parametrize('alt,expected_flag', [
+    param(1000, False, id='low clouds'),
+    param(15000, True, id='high clouds'),
+])
+def test_clouds_above_msa_buffer_flag(alt: int, expected_flag: bool):
+    """ Test the high clouds flagging routine. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate, [
+            {'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}
+        ]
+    )
+    chunk = CeiloChunk(mock_data)
+    assert chunk.clouds_above_msa_buffer == expected_flag
+
     reset_prms()
 
 
@@ -226,6 +253,41 @@ def test_ceilochunk_nocld():
 
     # Assert the final METAR code is correct
     assert chunk.metar_msg() == 'NCD'
+
+
+@mark.parametrize('alt', [
+    param(10500, id='in buffer'),
+    param(15000, id='above buffer'),
+])
+def test_ceilochunk_highcld(alt):
+    """ Test the methods of CeiloChunks when high clouds are seen in the interval. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate,
+        [{'alt': alt, 'alt_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+    )
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Assert the final METAR code is correct
+    assert chunk.metar_msg() == 'NSC'
+
+    reset_prms()
 
 
 def test_ceilochunk_2lay():
