@@ -94,20 +94,11 @@ class AbstractChunk(ABC):
         # Begin with a thorough inspection of the dataset
         data = utils.check_data_consistency(data, req_cols=self.DATA_COLS)
 
-        # By default we set NSC to false, NOTE: attrs is still experimental in pandas!
-        try:
-            data.attrs['high_clouds_detected'] = False
-        except AttributeError:
-            # Catch for older versions of pandas that do not support DataFrame.attrs
-            # NOTE: Untestable as we cannot monkeypatch attrs as it would result
-            # in side-effects for __repr__ which break other tests
-            with warnings.catch_warnings():
-                # pandas assumes we are trying to assign a column, but as this is not the case
-                # we catch its warning and ignore it.
-                warnings.simplefilter("ignore")
-                data.attrs = {'high_clouds_detected': False}
+        # By default we set this flag to false and overwrite if enough hits are present
+        self._clouds_above_msa_buffer = False
 
-        # Then also drop any hits that is too high
+        # Drop any hits that are too high and check if they exceed the threshold for 1 OKTA
+        # if yes, set the flag clouds_above_msa_buffer to True
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
@@ -125,7 +116,7 @@ class AbstractChunk(ABC):
                     "Hits above MSA + MSA_HIT_BUFFER exceeded threshold MAX_HITS_OKTA0. Will add "
                     "flag 'high_clouds_detected' to indicate the presence of high clouds."
                 )
-                data.attrs['high_clouds_detected'] = True
+                self._clouds_above_msa_buffer = True
 
         return data
 
@@ -1016,24 +1007,25 @@ class CeiloChunk(AbstractChunk):
         return self._layers
 
     @property
-    def high_clouds_detected(self) -> bool:
-        """ Returns whether high clouds were detected in the data.
+    def clouds_above_msa_buffer(self) -> bool:
+        """ Returns whether a number of hits exceeding the threshold for 1 okta is detected above
+        MSA + MSA_HIT_BUFFER.
 
         Returns:
             bool: whether high clouds were detected.
 
         """
-        return self.data.attrs['high_clouds_detected']
+        return self._clouds_above_msa_buffer
 
     def _ncd_or_nsc(self) -> str:
         """ Return the METAR code for No Cloud Detected / No Significant Cloud.
-        Decision based on the attribute set in data.attrs.
+        Decision based on the attribute self._clouds_above_msa_buffer.
 
         Returns:
             str: 'NCD' or 'NSC'
 
         """
-        if self.high_clouds_detected:
+        if self._clouds_above_msa_buffer:
             return 'NSC'
         return 'NCD'
 

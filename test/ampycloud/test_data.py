@@ -84,11 +84,12 @@ def test_ceilochunk_init():
     param(1000, False, id='low clouds'),
     param(15000, True, id='high clouds'),
 ])
-def test_high_clouds_flag(alt: int, expected_flag: bool):
+def test_clouds_above_msa_buffer_flag(alt: int, expected_flag: bool):
     """ Test the high clouds flagging routine. """
 
     dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
     dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
 
     n_ceilos = 4
     lookback_time = 1200
@@ -101,7 +102,7 @@ def test_high_clouds_flag(alt: int, expected_flag: bool):
         ]
     )
     chunk = CeiloChunk(mock_data)
-    assert chunk.high_clouds_detected == expected_flag
+    assert chunk.clouds_above_msa_buffer == expected_flag
 
     reset_prms()
 
