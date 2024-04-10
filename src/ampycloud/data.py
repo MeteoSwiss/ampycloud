@@ -102,7 +102,8 @@ class AbstractChunk(ABC):
             # NOTE: Untestable as we cannot monkeypatch attrs as it would result
             # in side-effects for __repr__ which break other tests
             with warnings.catch_warnings():
-                # pandas assumes we are trying to assign a column, which is not the case
+                # pandas assumes we are trying to assign a column, but as this is not the case
+                # we catch its warning and ignore it.
                 warnings.simplefilter("ignore")
                 data.attrs = {'high_clouds_detected': False}
 
@@ -110,8 +111,9 @@ class AbstractChunk(ABC):
         if self.msa is not None:
             hit_alt_lim = self.msa + self.msa_hit_buffer
             logger.info('Cropping hits above MSA+buffer: %s ft', str(hit_alt_lim))
-            # Type 1 or less hits above the cut threshold get turned to NaNs, to signal a
-            # non-detection below the MSA. Also change the hit type to 0 accordingly !
+            # First layer and vervis hits above the cut threshold get turned to NaNs, to signal a
+            # non-detection below the MSA. Also change the hit type to 0 accordingly in order
+            # to create a "no hit detected" in the range of interest (i.e. below MSA).
             above_msa_t1_or_less = data[(data.alt > hit_alt_lim) & (data.type <= 1)].index
             data.loc[above_msa_t1_or_less, 'type'] = 0
             data.loc[above_msa_t1_or_less, 'alt'] = np.nan
@@ -119,7 +121,10 @@ class AbstractChunk(ABC):
             above_msa_t2_or_more = data[(data.alt > hit_alt_lim) & (data.type > 1)].index
             data = data.drop(above_msa_t2_or_more)
             if len(above_msa_t1_or_less) + len(above_msa_t2_or_more) > self._prms['MAX_HITS_OKTA0']:
-                logger.info("Hits above MSA exceeded threshold for okta 0, will add NSC flag")
+                logger.info(
+                    "Hits above MSA + MSA_HIT_BUFFER exceeded threshold MAX_HITS_OKTA0. Will add "
+                    "flag 'high_clouds_detected' to indicate the presence of high clouds."
+                )
                 data.attrs['high_clouds_detected'] = True
 
         return data
@@ -1076,9 +1081,10 @@ class CeiloChunk(AbstractChunk):
 
         # Here, deal with the situations when all clouds are above the MSA
         if len(msg) == 0:
+            # first check if any significant clouds are in the interval [MSA, MSA+MSA_HIT_BUFFER]
             sligrolay_in_buffer = sligrolay['significant'] * (sligrolay['alt_base'] >= msa_val)
-            if sligrolay_in_buffer.any():  # clouds within the MSA buffer zone
-                return 'NSC'
-            return self._ncd_or_nsc()
+            if sligrolay_in_buffer.any():
+                return 'NSC'  # and return a NSC as it implies that the cloud is above the MSA
+            return self._ncd_or_nsc()  # else, check for CBH above MSA + MSA_HIT_BUFFER
 
         return msg
