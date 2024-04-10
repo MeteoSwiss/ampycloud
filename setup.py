@@ -52,7 +52,7 @@ setup(
         "ruamel.yaml"
     ],
     extras_require={
-        'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest']
+        'dev': ['sphinx', 'sphinx-rtd-theme', 'pylint', 'pytest', 'mypy']
     },
     # Setup entry points to use ampycloud directly from a terminal
     entry_points={
