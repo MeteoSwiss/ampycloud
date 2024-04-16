@@ -96,6 +96,15 @@ def check_data_consistency(pdf: pd.DataFrame,
         * ``pdf`` is not a :py:class:`pandas.DataFrame`.
         * ``pdf`` is missing a required column.
         * ``pdf`` has a length of 0.
+        * ``pdf`` has duplicated rows.
+        * any time step for any ceilometer corresponds to both a type 0 (no hit) and not 0 (some
+          hit)
+        * any time step for any ceilometer corresponds to both a type -1 (VV hit) and not -1 (some
+          hit/no hit)
+
+    The latter check implies that ampycloud cannot be fed a VV hit in parallel to a cloud base hit.
+    Should a specific ceilometer return VV hits in parallel to cloud base hits, it is up to the user
+    to decide whether to feed one or the other.
 
     In addition, this will raise an :py:class:`ampycloud.errors.AmpycloudWarning` if:
 
