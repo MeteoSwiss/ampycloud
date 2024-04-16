@@ -200,6 +200,7 @@ def test_group_separation(
 
     reset_prms()
 
+
 def test_bad_layer_sep_lims():
     """ Test that giving problematic layer separation limits does raise an error. """
 
@@ -321,8 +322,7 @@ def test_layering_singlepts():
 
     mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
                                        ['dummy', -1, 4000, 2],
-                                       ['dummy', -1, 4500, 3],
-                                       ['dummy', -1, np.nan, 0]]),
+                                       ['dummy', -1, 4500, 3]]),
                              columns=['ceilo', 'dt', 'height', 'type'])
 
     # Set the proper column types

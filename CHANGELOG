@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v2.0.0]
 ### Added:
+ - [fpavogt, 2024-04-16] Improve input data consistency check (fix #116).
  - [regDaniel, 2024-04-09] Add flag for clouds above (MSA + MSA_HIT_BUFFER) and allow for NSC in METAR message.
  - [fpavogt, 2024-03-26] Add option to reset only a single parameter.
 ### Fixed:
