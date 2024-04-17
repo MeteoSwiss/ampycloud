@@ -292,7 +292,7 @@ def calc_base_height(vals: npt.ArrayLike,
     n_latest_elements = vals[- int(len(vals) * lookback_perc / 100):]
     if len(n_latest_elements) == 0:
         raise AmpycloudError(
-            'Cloud base calculation got an empty array.'
-            f'Maybe check lookback percentage (is set to {lookback_perc})'
+            'Cloud base calculation got an empty array. '
+            f'Maybe check lookback percentage ? (currently set to {lookback_perc})'
         )
     return np.percentile(n_latest_elements, height_perc)

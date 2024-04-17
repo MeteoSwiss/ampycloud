@@ -9,6 +9,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
  - [regDaniel, 2024-04-09] Add flag for clouds above (MSA + MSA_HIT_BUFFER) and allow for NSC in METAR message.
  - [fpavogt, 2024-03-26] Add option to reset only a single parameter.
 ### Fixed:
+ - [fpavogt, 2024-04-17] Fix #119
  - [regDaniel, 2024-04-09] Minor adaptions to better comply with PEP standards.
  - [fpavogt, 2024-03-26] Use "height" in "ft aal" throughout.
 ### Changed:
