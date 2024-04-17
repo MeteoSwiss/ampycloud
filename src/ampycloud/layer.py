@@ -221,7 +221,6 @@ def ncomp_from_gmm(vals: np.ndarray,
     models = {}
 
     # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
-    #with utils.tmp_seed(random_seed):
     for n_val in ncomp:
         models[n_val] = GaussianMixture(n_val, covariance_type='spherical',
                                         random_state=random_seed).fit(vals)
