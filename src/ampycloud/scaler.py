@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
+def shift_and_scale(vals: np.ndarray, shift: Union[int, float, None] = None,
                     scale: Union[int, float] = 1, mode: str = 'do') -> np.ndarray:
     """ Shift (by a constant) and scale (by a constant) the data.
 
@@ -58,8 +58,8 @@ def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
 
 @log_func_call(logger)
 def minmax_scale(vals: np.ndarray,
-                 min_val: Union[float, int] = None,
-                 max_val: Union[float, int] = None,
+                 min_val: Union[float, int, None] = None,
+                 max_val: Union[float, int, None] = None,
                  mode: str = 'do') -> np.ndarray:
     """ Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum
         interval range.
@@ -276,7 +276,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
 
 
 @log_func_call(logger)
-def apply_scaling(vals: np.ndarray, fct: str = None, **kwargs: dict) -> np.ndarray:
+def apply_scaling(vals: np.ndarray, fct: Union[str, None] = None, **kwargs: dict) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:

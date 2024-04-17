@@ -56,11 +56,11 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     """
 
     # Let's take a look at the path I was given
-    save_loc = Path(save_loc)
+    given_path = Path(save_loc)
     # I won't create stuff for the users. ampycloud is not that nice.
-    if not save_loc.exists():
+    if not given_path.exists():
         raise AmpycloudError('save_loc does not appear to exist !')
-    if not save_loc.is_dir():
+    if not given_path.is_dir():
         raise AmpycloudError('save_loc does not appear to be a directory !')
 
     # Next, let's look at all the parameter files available ...
@@ -73,11 +73,11 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
         raise AmpycloudError(f'Parameter file {fname} not found.')
 
-    if (save_loc / fname).exists():
-        raise AmpycloudError(f'File {fname} already exists at save_loc={save_loc}')
+    if (given_path / fname).exists():
+        raise AmpycloudError(f'File {fname} already exists at save_loc={given_path}')
 
     # All looks good, let's copy the file
-    copy(ref_loc / fname, save_loc / fname)
+    copy(ref_loc / fname, given_path / fname)
 
 
 @log_func_call(logger)
@@ -152,8 +152,8 @@ def reset_prms() -> None:
 
 
 @log_func_call(logger)
-def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
-        ref_dt: Union[str, datetime] = None) -> CeiloChunk:
+def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, None] = None,
+        ref_dt: Union[str, datetime, None] = None) -> CeiloChunk:
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:

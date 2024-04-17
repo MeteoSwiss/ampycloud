@@ -260,7 +260,7 @@ class CeiloChunk(AbstractChunk):
 
     def _calculate_base_height_for_selection(
             self,
-            data_indexer: pd.Series(dtype=bool),
+            data_indexer # type: pd.Series[bool]
     ) -> float:
         """Calculate the cloud base height for a selection of data.
 
@@ -297,12 +297,12 @@ class CeiloChunk(AbstractChunk):
 
         """
         if len(self.prms['MIN_SEP_LIMS']) != \
-            len(self.prms['MIN_SEP_VALS']) - 1:
-                raise AmpycloudError(
-                    '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
-                    'Got MIN_SEP_LIMS %i and MIN_SEP_VALS %i',
-                    (self.prms['MIN_SEP_LIMS'], self.prms['MIN_SEP_VALS'])
-                )
+                len(self.prms['MIN_SEP_VALS']) - 1:
+            raise AmpycloudError(
+                '"MIN_SEP_LIMS" must have one less item than "MIN_SEP_VALS".'
+                'Got MIN_SEP_LIMS %i and MIN_SEP_VALS %i',
+                (self.prms['MIN_SEP_LIMS'], self.prms['MIN_SEP_VALS'])
+            )
 
         min_sep_val_id = np.searchsorted(self.prms['MIN_SEP_LIMS'],
                                          altitude)
@@ -361,7 +361,7 @@ class CeiloChunk(AbstractChunk):
                 ]
 
         # We want to raise early if 'which' is unknown.
-        if not which in ['slices', 'groups', 'layers']:
+        if which not in ['slices', 'groups', 'layers']:
             raise AmpycloudError(
                 'Trying to initialize a data frame for %s '
                 'which is unknown. Keyword arg "which" must be one of'
@@ -390,7 +390,6 @@ class CeiloChunk(AbstractChunk):
         pdf = pd.DataFrame(index=range(n_ind), columns=cols)
 
         cluster_ids = self._get_cluster_ids(which)
-
         for ind, cid in enumerate(cluster_ids):
             if which == 'groups':
                 # Here, check if the layering was already done ... in which case one should NOT
@@ -427,7 +426,7 @@ class CeiloChunk(AbstractChunk):
         Results are written to the "okta" column of the DF.
 
         """
-        for ind, cid in enumerate(cluster_ids):
+        for ind, cid in  enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the number of hits of this slice/group/layer for each ceilometer,
@@ -515,7 +514,7 @@ class CeiloChunk(AbstractChunk):
             pd.DataFrame: with calculatio results in columnm alt_base
 
         """
-        for ind, cid in enumerate(cluster_ids):
+        for ind, cid in  enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the base altitude
@@ -583,7 +582,7 @@ class CeiloChunk(AbstractChunk):
         pdf = self._add_sligrolay_information(which, pdf, cids)
 
         # Then loop through all of the layers/ groups/ slices and add METAR codes
-        for ind, _ in enumerate(cids):
+        for ind, _ in  enumerate(cids):
 
             pdf.iloc[ind, pdf.columns.get_loc('code')] = \
                 wmo.okta2code(pdf.iloc[ind, pdf.columns.get_loc('okta')]) + \

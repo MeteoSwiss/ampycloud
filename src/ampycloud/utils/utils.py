@@ -10,6 +10,7 @@ Module contains: generic utilities
 
 # Import from Python
 import logging
+from typing import Union
 import warnings
 import contextlib
 import copy
@@ -28,7 +29,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def check_data_consistency(pdf: pd.DataFrame,
-                           req_cols: dict = None) -> pd.DataFrame:
+                           req_cols: Union[dict, None] = None) -> pd.DataFrame:
     """ Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
     of ampycloud.
 
@@ -206,7 +207,7 @@ def tmp_seed(seed: int):
 
 
 @log_func_call(logger)
-def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dict:
+def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] = None) -> dict:
     """ Update a given (nested) dictionnary given a second (possibly incomplete) one.
 
     Args:
@@ -270,4 +271,5 @@ def calc_base_alt(
             'Cloud base calculation got an empty array.'
             'Maybe check lookback percentage (is set to %i)' %lookback_perc
         )
-    return np.percentile(n_latest_elements, alt_perc)
+    layer_base_altitude = np.percentile(n_latest_elements, alt_perc)
+    return layer_base_altitude
