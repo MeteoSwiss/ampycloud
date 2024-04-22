@@ -13,6 +13,7 @@ import logging
 from typing import Union
 import numpy as np
 import pandas as pd
+from pandas import DataFrame
 
 # import from ampycloud
 from ..logger import log_func_call
@@ -25,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -> pd.DataFrame:
+def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -> DataFrame:
     """ Generates a mock, flat, Gaussian cloud layer around a given altitude.
 
     Args:
@@ -43,7 +44,7 @@ def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -
     n_pts = len(dts)
 
     # Create the storage structure
-    out = pd.DataFrame(columns=['dt', 'alt'], dtype=float)
+    out = DataFrame(columns=['dt', 'alt'], dtype=float)
 
     # Generate the random altitude data
     out['alt'] = np.random.normal(loc=alt, scale=alt_std, size=n_pts)
@@ -64,7 +65,7 @@ def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -
 
 @log_func_call(logger)
 def sin_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float,
-              period: Union[int, float], amplitude: Union[int, float]) -> pd.DataFrame:
+              period: Union[int, float], amplitude: Union[int, float]) -> DataFrame:
     """ Generates a sinusoidal cloud layer.
 
     Args:
@@ -81,7 +82,7 @@ def sin_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float,
     """
 
     # First, get a flat layer
-    out = flat_layer(dts, alt, alt_std, sky_cov_frac)
+    out: DataFrame = flat_layer(dts, alt, alt_std, sky_cov_frac)
 
     # And add to it a sinusoidal fluctuations. Note that nan should stay nan.
     out.loc[:, 'alt'] = out.loc[:, 'alt'] + np.sin(-np.pi/2 + out['dt']/period*2*np.pi) * amplitude
@@ -89,8 +90,7 @@ def sin_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float,
     return out
 
 
-def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
-                layer_prms: list) -> pd.DataFrame:
+def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms: list) -> DataFrame:
     """ Generate a mock set of cloud layers for a specified number of ceilometers.
 
     Args:
@@ -139,40 +139,40 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
         dts = np.random.random(n_pts) * -lookback_time
 
         # Let's now loop through each cloud layer and generate them
-        layers = [sin_layer(dts=dts, **prms) for prms in layer_prms]
+        layers: list[DataFrame] = [sin_layer(dts=dts, **prms) for prms in layer_prms]
 
         # Merge them all into one DataFrame ...
-        layers = pd.concat(layers).reset_index(drop=True)
+        merged_layers: DataFrame = pd.concat(layers).reset_index(drop=True)
         # Add the type column while I'm at it. Set it to None for now.
-        layers['type'] = None
+        merged_layers['type'] = None
 
         # Here, adjust the types so that it ranks lowest to highest for every dt step.
         # This needs to be done on a point by point basis, given that layers can cross each other.
-        for dt in np.unique(layers['dt']):
+        for dt in np.unique(merged_layers['dt']):
             # Get the hit altitudes, and sort them from lowest to highest
-            alts = layers[layers['dt'] == dt]['alt'].sort_values(axis=0)
+            alts = merged_layers[merged_layers['dt'] == dt]['alt'].sort_values(axis=0)
 
             # Then deal with the other ones
             for (a, alt) in enumerate(alts):
 
                 # Except for the first one, any NaN hit gets dropped
                 if a > 0 and np.isnan(alt):
-                    layers.drop(index=alts.index[a],
-                                inplace=True)
+                    merged_layers.drop(index=alts.index[a],
+                                       inplace=True)
                 elif np.isnan(alt):
                     # A non-detection should be type 0
-                    layers.loc[alts.index[a], 'type'] = 0
+                    merged_layers.loc[alts.index[a], 'type'] = 0
                 else:
-                    layers.loc[alts.index[a], 'type'] = a+1
+                    merged_layers.loc[alts.index[a], 'type'] = a+1
 
         # Add the ceilo info as an int
-        layers['ceilo'] = str(ceilo)
+        merged_layers['ceilo'] = str(ceilo)
 
         # And store this for later
-        ceilos += [layers]
+        ceilos += [merged_layers]
 
     # Merge it all
-    out = pd.concat(ceilos)
+    out: DataFrame = pd.concat(ceilos)
     # Sort the timesteps in order, and reset the index
     out = out.sort_values(['dt', 'alt']).reset_index(drop=True)
 
@@ -183,7 +183,7 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float,
     return out
 
 
-def canonical_demo_data() -> pd.DataFrame:
+def canonical_demo_data() -> DataFrame:
     """ This function creates the canonical ampycloud demonstration dataset, that can be used to
     illustrate the full behavior of the algorithm.
 
@@ -205,6 +205,6 @@ def canonical_demo_data() -> pd.DataFrame:
     # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.
     with utils.tmp_seed(42):
         # Actually generate the mock data
-        out = mock_layers(n_ceilos, lookback_time, hit_gap, lyrs)
+        out: DataFrame = mock_layers(n_ceilos, lookback_time, hit_gap, lyrs)
 
     return out

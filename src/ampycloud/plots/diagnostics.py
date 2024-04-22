@@ -109,8 +109,8 @@ class DiagnosticPlot:
             # Get a list of ceilo colors from the cycler.
             ceilo_clrs = plt.rcParams['axes.prop_cycle'].by_key()['color']
             # Assign them to each hit
-            symb_clrs = [ceilo_clrs[self._chunk.ceilos.index(item) % len(ceilo_clrs)]
-                         for item in self._chunk.data['ceilo']]
+            symb_clrs = np.array([ceilo_clrs[self._chunk.ceilos.index(item) % len(ceilo_clrs)]
+                         for item in self._chunk.data['ceilo']])
 
         # What are the VV hits ?
         is_vv = np.array(self._chunk.data['type'] == -1)
