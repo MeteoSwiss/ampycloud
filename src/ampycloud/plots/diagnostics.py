@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -15,7 +15,7 @@ from copy import deepcopy
 from typing import Union
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import (gridspec, rcParams)
+from matplotlib import gridspec, rcParams
 from matplotlib.lines import Line2D
 
 # Import from this package
@@ -123,7 +123,7 @@ class DiagnosticPlot:
         self._axs[0].clear()
 
         # Add the points
-        self._axs[0].scatter(self._chunk.data['dt'], self._chunk.data['alt'],
+        self._axs[0].scatter(self._chunk.data['dt'], self._chunk.data['height'],
                              marker='o', s=10, edgecolor=symb_clrs,
                              facecolor=list(fcs))
 
@@ -161,7 +161,7 @@ class DiagnosticPlot:
 
         # First plot anything that is not assigned to a slice
         self._axs[0].scatter(self._chunk.data[self._chunk.data['slice_id'] == -1]['dt'],
-                             self._chunk.data[self._chunk.data['slice_id'] == -1]['alt'],
+                             self._chunk.data[self._chunk.data['slice_id'] == -1]['height'],
                              marker='s', s=15, facecolor=fcs[self._chunk.data['slice_id'] == -1],
                              edgecolor='k')
 
@@ -188,27 +188,27 @@ class DiagnosticPlot:
 
                 # I can finally show the points ...
                 self._axs[0].scatter(self._chunk.data.loc[in_slice, 'dt'],
-                                     self._chunk.data.loc[in_slice, 'alt'],
+                                     self._chunk.data.loc[in_slice, 'height'],
                                      marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
 
                 # ... and the corresponding LOWESS-fit used to derive their fluffiness
                 _, lowess_pts = fluffer.get_fluffiness(
-                    self._chunk.data.loc[in_slice, ['dt', 'alt']].values, **self._chunk.prms['LOWESS'])
+                    self._chunk.data.loc[in_slice, ['dt', 'height']].values, **self._chunk.prms['LOWESS'])
                 self._axs[0].plot(lowess_pts[:, 0], lowess_pts[:, 1],
                                   ls='-', lw=1.5, c=base_clr, drawstyle='steps-mid', zorder=0)
 
                 # Let's also plot the overlap area of the slice
-                slice_min = self._chunk.slices.loc[ind, 'alt_min']
-                slice_max = self._chunk.slices.loc[ind, 'alt_max']
+                slice_min = self._chunk.slices.loc[ind, 'height_min']
+                slice_max = self._chunk.slices.loc[ind, 'height_max']
                 thickness = self._chunk.slices.loc[ind, 'thickness']
-                alt_pad = self._chunk.prms['GROUPING_PRMS']['alt_pad_perc']/100
+                height_pad = self._chunk.prms['GROUPING_PRMS']['height_pad_perc']/100
 
                 # Get some fake data spanning the entire data range
                 misc = np.linspace(self._chunk.data['dt'].min(skipna=True),
                                    self._chunk.data['dt'].max(skipna=True), 3)
                 self._axs[0].fill_between(misc,
-                                          np.ones_like(misc) * (slice_min - alt_pad * thickness),
-                                          np.ones_like(misc) * (slice_max + alt_pad * thickness),
+                                          np.ones_like(misc) * (slice_min - height_pad * thickness),
+                                          np.ones_like(misc) * (slice_max + height_pad * thickness),
                                           edgecolor='none', alpha=0.1, zorder=0,
                                           facecolor=base_clr)
 
@@ -231,11 +231,11 @@ class DiagnosticPlot:
                 msg = r'\smaller '
                 msg += wmo.okta2symb(
                     self._chunk.slices.iloc[ind]['okta'],
-                    use_metsymb = dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
+                    use_metsymb=dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
                 msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
                        rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
                 msg += warn
-                self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'alt_base'],
+                self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'height_base'],
                                   texify(msg),
                                   va='center', ha='center', color=base_clr,
                                   bbox={'facecolor': 'none', 'edgecolor': base_clr,
@@ -267,7 +267,7 @@ class DiagnosticPlot:
 
                     # I can finally show the points ...
                     self._axs[0].scatter(self._chunk.data[in_group]['dt'],
-                                         self._chunk.data[in_group]['alt'],
+                                         self._chunk.data[in_group]['height'],
                                          marker=MRKS[ind % len(MRKS)],
                                          s=40, c='none', edgecolor='gray', lw=1, zorder=10, alpha=0.5)
 
@@ -291,7 +291,7 @@ class DiagnosticPlot:
                     self._chunk.groups.iloc[ind]['okta'],
                     use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
                 ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
-                self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['alt_base'],
+                self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['height_base'],
                                   texify(msg),
                                   va='center', ha='center', color='gray',
                                   bbox={'facecolor': 'none', 'edgecolor': 'gray',
@@ -315,7 +315,7 @@ class DiagnosticPlot:
 
                 # I can finally show the points ...
                 self._axs[0].scatter(self._chunk.data[in_layer]['dt'],
-                                     self._chunk.data[in_layer]['alt'],
+                                     self._chunk.data[in_layer]['height'],
                                      marker=MRKS[ind % len(MRKS)],
                                      s=40, c='none', edgecolor='k', lw=1, zorder=10, alpha=0.5)
 
@@ -325,7 +325,7 @@ class DiagnosticPlot:
                 else:
                     lls = '--'
 
-                self._axs[0].axhline(self._chunk.layers.iloc[ind]['alt_base'], xmax=1, c='k',
+                self._axs[0].axhline(self._chunk.layers.iloc[ind]['height_base'], xmax=1, c='k',
                                      lw=1, zorder=0, ls=lls, clip_on=False)
 
                 # Stop here for empty layers
@@ -344,7 +344,7 @@ class DiagnosticPlot:
                     self._chunk.layers.iloc[ind]['okta'],
                     use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
                 ) + ' ' + self._chunk.layers.iloc[ind]['code']
-                self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['alt_base'],
+                self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['height_base'],
                                   texify(msg),
                                   va='center', ha='center', color='k',
                                   bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': alpha})
@@ -413,7 +413,7 @@ class DiagnosticPlot:
         msg = r'\smaller \bf ampycloud: ' + self._chunk.metar_msg()
 
         if self._chunk.msa is not None:
-            msg += '\n' + rf'\smaller\smaller MSA: {self._chunk.msa} ft'
+            msg += '\n' + rf'\smaller\smaller MSA: {self._chunk.msa} ft aal'
 
         # Show the msg ...
         self._axs[2].text(0.5, 1.25, texify(msg),
@@ -427,7 +427,7 @@ class DiagnosticPlot:
 
         # Add the axes labels
         self._axs[0].set_xlabel(r'$\Delta t$ [s]', labelpad=10)
-        self._axs[0].set_ylabel(r'Alt. [ft]', labelpad=10)
+        self._axs[0].set_ylabel(r'Height [ft aal]', labelpad=10)
 
     def format_slice_axes(self) -> None:
         """ Format the duplicate axes related to the slicing part.
@@ -445,10 +445,10 @@ class DiagnosticPlot:
                                    'shift-and-scale',
                                    {'scale': self._chunk.prms['SLICING_PRMS']['dt_scale']})
 
-            (alt_scale_kwargs, alt_descale_kwargs) = \
-                get_scaling_kwargs(self._chunk.data['alt'].values,
-                                   self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
-                                   self._chunk.prms['SLICING_PRMS']['alt_scale_kwargs'])
+            (height_scale_kwargs, height_descale_kwargs) = \
+                get_scaling_kwargs(self._chunk.data['height'].values,
+                                   self._chunk.prms['SLICING_PRMS']['height_scale_mode'],
+                                   self._chunk.prms['SLICING_PRMS']['height_scale_kwargs'])
 
             # Then add the secondary axis, using partial function to define the back-and-forth
             # conversion functions.
@@ -461,15 +461,15 @@ class DiagnosticPlot:
             secax_y = self._axs[0].secondary_yaxis(
                 1.03,
                 functions=(partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
-                                   **alt_scale_kwargs),
+                                   fct=self._chunk.prms['SLICING_PRMS']['height_scale_mode'],
+                                   **height_scale_kwargs),
                            partial(scaler.apply_scaling,
-                                   fct=self._chunk.prms['SLICING_PRMS']['alt_scale_mode'],
-                                   **alt_descale_kwargs)))
+                                   fct=self._chunk.prms['SLICING_PRMS']['height_scale_mode'],
+                                   **height_descale_kwargs)))
 
             # Add the axis labels
             secax_x.set_xlabel(texify(r'\smaller Slicing $\Delta t$'))
-            secax_y.set_ylabel(texify(r'\smaller Slicing Alt.'))
+            secax_y.set_ylabel(texify(r'\smaller Slicing height'))
 
             # And reduce the fontsize while we're at it ...
             secax_x.tick_params(axis='x', which='both', labelsize=rcParams['font.size']-2)
@@ -478,7 +478,7 @@ class DiagnosticPlot:
     def format_group_axes(self) -> None:
         """ Format the duplicate axes related to the grouping part.
 
-        TODO: add secondary axis for the altitude rescaling as well. See #91.
+        TODO: add secondary axis for the height rescaling as well. See #91.
 
         """
 

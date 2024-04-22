@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -165,12 +165,12 @@ def okta2symb(val: int, use_metsymb: bool = False) -> str:
 
 
 @log_func_call(logger)
-def alt2code(val: Union[int, float]) -> str:
-    """ Function that converts a given altitude in hundreds of ft (3 digit number),
+def height2code(val: Union[int, float]) -> str:
+    """ Function that converts a given height in hundreds of ft (3 digit number),
     e.g. 5000 ft -> 050, 500 ft -> 005.
 
     Args:
-        val (int, float): the altitude to convert, in feet.
+        val (int, float): the height to convert, in feet.
 
     Returns:
         str: the corresponding METAR code chunk

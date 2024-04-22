@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -26,37 +26,38 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -> DataFrame:
-    """ Generates a mock, flat, Gaussian cloud layer around a given altitude.
+def flat_layer(dts: np.array, height: float, height_std: float,
+               sky_cov_frac: float) -> DataFrame:
+    """ Generates a mock, flat, Gaussian cloud layer around a given height.
 
     Args:
         dts (np.array of float): time deltas, in s, for the simulated ceilometer hits.
-        alt (float): layer mean altitude, in ft.
-        alt_std (float): layer altitude standard deviation, in ft.
+        height (float): layer mean height, in ft above aerodrome level (aal).
+        height_std (float): layer height standard deviation, in ft.
         sky_cov_frac (float): Sky coverage fraction. Random hits will be set to NaN to
             reach this value. Must be 0 <= x <= 1.
 
     Returns:
-        :py:class:`pandas.DataFrame`: the simulated layer with columns ['dt', 'alt'].
+        :py:class:`pandas.DataFrame`: the simulated layer with columns ['dt', 'height'].
     """
 
     # How many points do I need to generate ?
     n_pts = len(dts)
 
     # Create the storage structure
-    out = DataFrame(columns=['dt', 'alt'], dtype=float)
+    out = DataFrame(columns=['dt', 'height'], dtype=float)
 
-    # Generate the random altitude data
-    out['alt'] = np.random.normal(loc=alt, scale=alt_std, size=n_pts)
-    # Cleanup any negative altitudes, if warranted.
-    out.loc[out['alt'] <= 0, 'alt'] = np.nan
+    # Generate the random height data
+    out['height'] = np.random.normal(loc=height, scale=height_std, size=n_pts)
+    # Cleanup any negative heights, if warranted.
+    out.loc[out['height'] <= 0, 'height'] = np.nan
     out['dt'] = dts
 
     # Empty hits to get the requested sky coverage fraction
     # First extract the hits I want to keep ...
     to_keep = out.sample(frac=sky_cov_frac)
-    # ... then get rid of the alt values everywhere ...
-    out.loc[:, 'alt'] = np.nan
+    # ... then get rid of the height values everywhere ...
+    out.loc[:, 'height'] = np.nan
     # ... and re-set the values I choose to keep.
     out.loc[to_keep.index] = to_keep
 
@@ -64,28 +65,29 @@ def flat_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float) -
 
 
 @log_func_call(logger)
-def sin_layer(dts: np.array, alt: float, alt_std: float, sky_cov_frac: float,
+def sin_layer(dts: np.array, height: float, height_std: float, sky_cov_frac: float,
               period: Union[int, float], amplitude: Union[int, float]) -> DataFrame:
     """ Generates a sinusoidal cloud layer.
 
     Args:
         dts (np.array of float): time deltas, in s, for the simulated ceilometer hits.
-        alt (float): layer mean altitude, in ft.
-        alt_std (float): layer altitude standard deviation, in ft.
+        height (float): layer mean heaight, in ft above aerodrome level (aal).
+        height_std (float): layer height standard deviation, in ft.
         sky_cov_frac (float, optional): Sky coverage fraction. Random hits will be set to NaN to
             reach this value. Must be 0 <= x <= 1.
         period (int|float): period of the sine-wave, in s.
         amplitude (int|float): amplitude of the sine-wave, in ft.
 
     Returns:
-        :py:class:`pandas.DataFrame`: the simulated layer with columns ['alt', 'dt'].
+        :py:class:`pandas.DataFrame`: the simulated layer with columns ['height', 'dt'].
     """
 
     # First, get a flat layer
-    out: DataFrame = flat_layer(dts, alt, alt_std, sky_cov_frac)
+    out: DataFrame = flat_layer(dts, height, height_std, sky_cov_frac)
 
     # And add to it a sinusoidal fluctuations. Note that nan should stay nan.
-    out.loc[:, 'alt'] = out.loc[:, 'alt'] + np.sin(-np.pi/2 + out['dt']/period*2*np.pi) * amplitude
+    out.loc[:, 'height'] = out.loc[:, 'height'] + \
+        np.sin(-np.pi/2 + out['dt']/period*2*np.pi) * amplitude
 
     return out
 
@@ -103,13 +105,13 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms:
             from ``lookback_time`` and ``hit_gap``):
             ::
 
-                {'alt':1000, 'alt_std': 100, 'sky_cov_frac': 1,
+                {'height':1000, 'height_std': 100, 'sky_cov_frac': 1,
                 'period': 100, 'amplitude': 0}
 
     Returns:
         :py:class:`pandas.DataFrame`: a pandas DataFrame with the mock data, ready to be fed to
-        ampycloud. Columns ['ceilo', 'dt', 'alt', 'type'] correspond to 1) ceilo names, 2) time
-        deltas in s, 3) hit altitudes in ft, and 4) hit type.
+        ampycloud. Columns ['ceilo', 'dt', 'height', 'type'] correspond to 1) ceilo names, 2) time
+        deltas in s, 3) hit heights in ft aal, and 4) hit type.
 
     TODO:
         - add the possibility to set some VV hits in the mix
@@ -124,10 +126,10 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms:
         if not isinstance(item, dict):
             raise AmpycloudError(f'Element {ind} from layer_prms should be a dict,' +
                                  f' not: {type(item)}')
-        if not all(key in item.keys() for key in ['alt', 'alt_std', 'sky_cov_frac',
+        if not all(key in item.keys() for key in ['height', 'height_std', 'sky_cov_frac',
                                                   'period', 'amplitude']):
             raise AmpycloudError('One or more of the following dict keys are missing in ' +
-                                 f"layer_prms[{ind}]: 'alt', 'alt_std', 'sky_cov_frac'," +
+                                 f"layer_prms[{ind}]: 'height', 'height_std', 'sky_cov_frac'," +
                                  "'period', 'amplitude'.")
 
     # Let's create the layers individually for each ceilometer
@@ -149,21 +151,21 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms:
         # Here, adjust the types so that it ranks lowest to highest for every dt step.
         # This needs to be done on a point by point basis, given that layers can cross each other.
         for dt in np.unique(merged_layers['dt']):
-            # Get the hit altitudes, and sort them from lowest to highest
-            alts = merged_layers[merged_layers['dt'] == dt]['alt'].sort_values(axis=0)
+            # Get the hit heights, and sort them from lowest to highest
+            heights = merged_layers[merged_layers['dt'] == dt]['height'].sort_values(axis=0)
 
             # Then deal with the other ones
-            for (a, alt) in enumerate(alts):
+            for (a, height) in enumerate(heights):
 
                 # Except for the first one, any NaN hit gets dropped
-                if a > 0 and np.isnan(alt):
-                    merged_layers.drop(index=alts.index[a],
-                                       inplace=True)
-                elif np.isnan(alt):
+                if a > 0 and np.isnan(height):
+                    merged_layers.drop(index=heights.index[a],
+                                inplace=True)
+                elif np.isnan(height):
                     # A non-detection should be type 0
-                    merged_layers.loc[alts.index[a], 'type'] = 0
+                    merged_layers.loc[heights.index[a], 'type'] = 0
                 else:
-                    merged_layers.loc[alts.index[a], 'type'] = a+1
+                    merged_layers.loc[heights.index[a], 'type'] = a+1
 
         # Add the ceilo info as an int
         merged_layers['ceilo'] = str(ceilo)
@@ -174,7 +176,7 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms:
     # Merge it all
     out: DataFrame = pd.concat(ceilos)
     # Sort the timesteps in order, and reset the index
-    out = out.sort_values(['dt', 'alt']).reset_index(drop=True)
+    out = out.sort_values(['dt', 'height']).reset_index(drop=True)
 
     # Fix the dtypes
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
@@ -194,12 +196,13 @@ def canonical_demo_data() -> DataFrame:
 
     # Create the "famous" mock dataset
     n_ceilos = 4
-    lookback_time = 1200
-    hit_gap = 30
+    lookback_time = 900
+    hit_gap = 15
 
-    lyrs = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 0.1, 'period': 10, 'amplitude': 0},
-            {'alt': 2000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
-            {'alt': 5000, 'alt_std': 200, 'sky_cov_frac': 1, 'period': 2400, 'amplitude': 1000},
+    lyrs = [{'height': 1000, 'height_std': 100, 'sky_cov_frac': 0.1, 'period': 10, 'amplitude': 0},
+            {'height': 2000, 'height_std': 100, 'sky_cov_frac': 0.5, 'period': 10, 'amplitude': 0},
+            {'height': 5000, 'height_std': 200, 'sky_cov_frac': 1, 'period': 1800,
+             'amplitude': 1000},
             ]
 
     # Reset the random seed, but only do this temporarily, so as to not mess things up for the user.

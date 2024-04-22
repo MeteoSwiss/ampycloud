@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -16,7 +16,7 @@ import pandas as pd
 
 # Import from ampycloud
 from ampycloud.utils.utils import (check_data_consistency, tmp_seed,
-    adjust_nested_dict, calc_base_alt)
+                                   adjust_nested_dict, calc_base_height)
 from ampycloud.utils.mocker import canonical_demo_data
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
 from ampycloud import hardcoded
@@ -37,57 +37,57 @@ def test_check_data_consistency():
     # Now, let's check specific elements that should raise errors or warnings
     with raises(AmpycloudError):
         # Empty DataFrame
-        data = pd.DataFrame(columns=['ceilo', 'dt', 'alt', 'type'])
+        data = pd.DataFrame(columns=['ceilo', 'dt', 'height', 'type'])
         check_data_consistency(data)
     with raises(AmpycloudError):
         # Missing column
-        data = pd.DataFrame(np.array([['a', 1, 1]]), columns=['ceilo', 'alt', 'type'])
-        for col in ['ceilo', 'alt', 'type']:
+        data = pd.DataFrame(np.array([['a', 1, 1]]), columns=['ceilo', 'height', 'type'])
+        for col in ['ceilo', 'height', 'type']:
             data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Bad data type
-        data = pd.DataFrame(np.array([['a', 0, 1, 1]]), columns=['ceilo', 'dt', 'alt', 'type'])
+        data = pd.DataFrame(np.array([['a', 0, 1, 1]]), columns=['ceilo', 'dt', 'height', 'type'])
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Extra key
         data = pd.DataFrame(np.array([['a', 0, 1, 1, 99]]),
-                            columns=['ceilo', 'dt', 'alt', 'type', 'extra'])
+                            columns=['ceilo', 'dt', 'height', 'type', 'extra'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
     with warns(AmpycloudWarning):
-        # Negative alts
+        # Negative heights
         data = pd.DataFrame(np.array([['a', 0, -1, 1]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                            columns=['ceilo', 'dt', 'height', 'type'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Type 0 should be NaN
         data = pd.DataFrame(np.array([['a', 0, 1, 0]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                            columns=['ceilo', 'dt', 'height', 'type'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Type 1 should not be NaN
         data = pd.DataFrame(np.array([['a', 0, np.nan, 1]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                            columns=['ceilo', 'dt', 'height', 'type'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Missing type 1 pts
         data = pd.DataFrame(np.array([['a', 0, 1, 2]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                            columns=['ceilo', 'dt', 'height', 'type'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
     with warns(AmpycloudWarning):
         # Missing type 2 pts
         data = pd.DataFrame(np.array([['a', 0, 1, 3]]),
-                            columns=['ceilo', 'dt', 'alt', 'type'])
+                            columns=['ceilo', 'dt', 'height', 'type'])
         for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
             data[col] = data.loc[:, col].astype(tpe)
         check_data_consistency(data)
@@ -142,17 +142,17 @@ def test_adjust_nested_dict():
     assert out == new_dict
 
 
-@mark.parametrize('lookback_perc,alt_perc,q_expected', [
+@mark.parametrize('lookback_perc,height_perc,q_expected', [
     param(50, 90, 95, id='both params'),
-    param(100, 98, 98, id='alt_perc only'),
+    param(100, 98, 98, id='height_perc only'),
     param(42, 100, 100., id='lookback_only'),
 ])
-def test_calc_base_alt(
+def test_calc_base_height(
         lookback_perc: int,
-        alt_perc: int,
+        height_perc: int,
         q_expected: np.float64,
     ):
-        """Test the calculation of the slice/ group/ layer base altitude."""
+        """Test the calculation of the slice/ group/ layer base height."""
         vals = np.arange(1., 101.)
-        q = calc_base_alt(vals, lookback_perc, alt_perc)
+        q = calc_base_height(vals, lookback_perc, height_perc)
         np.testing.assert_almost_equal(q, q_expected, decimal=1)

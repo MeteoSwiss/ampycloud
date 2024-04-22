@@ -32,7 +32,7 @@ jobs:
           python-version: ${{ matrix.python-version }}
 
       # Install any dependency we require
-      - name: Install dependancies
+      - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
         shell: bash

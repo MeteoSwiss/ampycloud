@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -23,7 +23,8 @@ def test_mock_layers():
     n_ceilos = 1
     lookback_time = 1200
     hit_gap = 60
-    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1, 'period': 100, 'amplitude': 0}]
+    layer_prms = [{'height': 1000, 'height_std': 100, 'sky_cov_frac': 1, 'period': 100,
+                   'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Correct type ?
@@ -32,7 +33,7 @@ def test_mock_layers():
     # Correct number of points ?
     assert len(out) == 1200/60
     # No holes ?
-    assert not np.any(out['alt'].isna())
+    assert not np.any(out['height'].isna())
     assert not np.any(out['dt'].isna())
     # Ordered chronologically ?
     assert out['dt'].is_monotonic_increasing
@@ -41,24 +42,25 @@ def test_mock_layers():
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 0.5, 'period': 100, 'amplitude': 0}]
+    layer_prms = [{'height': 1000, 'height_std': 100, 'sky_cov_frac': 0.5, 'period': 100,
+                   'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Correct number of points ?
     assert len(out) == 1200/60 * n_ceilos
     # Holes present ?
-    assert np.any(out['alt'].isna())
+    assert np.any(out['height'].isna())
     assert not np.any(out['dt'].isna())
     # In good numbers ?
-    assert len(out[out['alt'].isna()]) == len(out)/2
+    assert len(out[out['height'].isna()]) == len(out)/2
 
     # Now with more than 1 layer
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1,
+    layer_prms = [{'height': 1000, 'height_std': 100, 'sky_cov_frac': 1,
                    'period': 100, 'amplitude': 0},
-                  {'alt': 10000, 'alt_std': 200, 'sky_cov_frac': 1,
+                  {'height': 10000, 'height_std': 200, 'sky_cov_frac': 1,
                    'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
@@ -69,14 +71,14 @@ def test_mock_layers():
     n_ceilos = 2
     lookback_time = 1200
     hit_gap = 60
-    layer_prms = [{'alt': 1000, 'alt_std': 100, 'sky_cov_frac': 1,
+    layer_prms = [{'height': 1000, 'height_std': 100, 'sky_cov_frac': 1,
                    'period': 100, 'amplitude': 0},
-                  {'alt': 15000, 'alt_std': 200, 'sky_cov_frac': 1,
+                  {'height': 15000, 'height_std': 200, 'sky_cov_frac': 1,
                    'period': 100, 'amplitude': 0}]
     out = mock_layers(n_ceilos, lookback_time, hit_gap, layer_prms)
 
     # Holes present ? There should be None, since we have a second layer complete
-    assert np.any(~out['alt'].isna())
+    assert np.any(~out['height'].isna())
     assert not np.any(out['dt'].isna())
 
     # Make sur I have the correct number of timesteps

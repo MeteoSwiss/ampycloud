@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-CLause BSD License.
 
@@ -142,7 +142,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
-                   layer_base_params: dict[str, int] = {'lookback_perc': 100, 'alt_perc': 5},
+                   layer_base_params: dict[str, int] = None,
                    scores: str = 'BIC',
                    rescale_0_to_x: Union[float, None] = None,
                    random_seed: int = 42,
@@ -180,6 +180,9 @@ def ncomp_from_gmm(vals: np.ndarray,
         This function was inspired from the "1-D Gaussian Mixture Model" example from astroML:
         `<https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html>`_
     """
+
+    if layer_base_params is None:
+        layer_base_params = {'lookback_perc': 100, 'height_perc': 5}
 
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
@@ -245,12 +248,12 @@ def ncomp_from_gmm(vals: np.ndarray,
         return best_ncomp, best_ids, abics
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
-    # First, let's compute the component base altitude
+    # First, let's compute the component base height
     base_comp_heights = [
-        utils.calc_base_alt(
+        utils.calc_base_height(
             vals_orig[best_ids == i].flatten(),
             layer_base_params['lookback_perc'],
-            layer_base_params['alt_perc']
+            layer_base_params['height_perc']
         ) for i in range(ncomp[best_model_ind])
     ]
 

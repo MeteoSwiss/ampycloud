@@ -9,6 +9,16 @@ This has the following implications for ampycloud:
       passing them to ampycloud, e.g. by removing them or by converting them to cloud base
       heights.
 
+    * Note that regulation says that "if there are no clouds of operational significance
+      and no restriction on vertical visibility and the abbreviation 'CAVOK' is not
+      appropriate, the abbreviation 'NSC' should be used" (AMC1 MET.TR.205(e)(1)).
+      ampycloud cannot decide whether a 'CAVOK' is appropriate, and will therefore
+      always return 'NSC' if no clouds of operational significance are found. If no clouds
+      are detected at all by the ceilometers, ampycloud will return 'NCD'. Importantly,
+      users should bear in mind that ampycloud cannot handle CB and TCU cases,
+      such that any 'NCD'/'NSC' codes issued may need to be overwritten by the user in
+      certain situations.
+
     * ampycloud can evidently be used for R&D work, but the code itself should not be
       seen as an R&D platform.
 
