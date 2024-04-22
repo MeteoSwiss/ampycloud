@@ -26,7 +26,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def flat_layer(dts: np.array, height: float, height_std: float,
+def flat_layer(dts: np.ndarray, height: float, height_std: float,
                sky_cov_frac: float) -> DataFrame:
     """ Generates a mock, flat, Gaussian cloud layer around a given height.
 
@@ -65,13 +65,13 @@ def flat_layer(dts: np.array, height: float, height_std: float,
 
 
 @log_func_call(logger)
-def sin_layer(dts: np.array, height: float, height_std: float, sky_cov_frac: float,
+def sin_layer(dts: np.ndarray, height: float, height_std: float, sky_cov_frac: float,
               period: Union[int, float], amplitude: Union[int, float]) -> DataFrame:
     """ Generates a sinusoidal cloud layer.
 
     Args:
         dts (np.array of float): time deltas, in s, for the simulated ceilometer hits.
-        height (float): layer mean heaight, in ft above aerodrome level (aal).
+        height (float): layer mean height, in ft above aerodrome level (aal).
         height_std (float): layer height standard deviation, in ft.
         sky_cov_frac (float, optional): Sky coverage fraction. Random hits will be set to NaN to
             reach this value. Must be 0 <= x <= 1.
