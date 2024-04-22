@@ -14,7 +14,6 @@ import logging
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 
 # Import from this package
@@ -311,7 +310,7 @@ class CeiloChunk(AbstractChunk):
         logger.info('min_sep value: %.1f', min_sep)
         return min_sep
 
-    def _get_cluster_ids(self, which: str) -> npt.ArrayLike:
+    def _get_cluster_ids(self, which: str) -> np.ndarray:
         """Get the original IDs of slices, groups or layers.
 
         Args:
@@ -329,7 +328,7 @@ class CeiloChunk(AbstractChunk):
         # of hits that do not get assigned to a sli/gro/lay.
         return np.delete(cids, np.where(cids == -1))
 
-    def _setup_sligrolay_pdf(self, which: str = 'slices') -> tuple[pd.DataFrame, npt.ArrayLike]:
+    def _setup_sligrolay_pdf(self, which: str = 'slices') -> tuple[pd.DataFrame, np.ndarray]:
         """Setup a data frame for slices, groups or layers and keep track of IDs.
 
         Args:
@@ -410,7 +409,7 @@ class CeiloChunk(AbstractChunk):
         return pdf, cluster_ids
 
     def _calculate_cloud_amount(
-            self, which: str, pdf: pd.DataFrame, cluster_ids: npt.ArrayLike
+            self, which: str, pdf: pd.DataFrame, cluster_ids: np.ndarray
         ) -> pd.DataFrame:
         """Calculate cloud amount for a given slice, group or layer.
 
@@ -461,7 +460,7 @@ class CeiloChunk(AbstractChunk):
             self,
             which: str,
             pdf: pd.DataFrame,
-            cluster_ids: npt.ArrayLike
+            cluster_ids: np.ndarray
         ) -> pd.DataFrame:
         """Add statistical properties to slices/ groups/ layers .
 
@@ -501,7 +500,7 @@ class CeiloChunk(AbstractChunk):
         return pdf
 
     def _calculate_sligrolay_base_height(
-            self, which: str, pdf: pd.DataFrame, cluster_ids: npt.ArrayLike
+            self, which: str, pdf: pd.DataFrame, cluster_ids: np.ndarray
         ) -> pd.DataFrame:
         """Calculate base height for all slices/ groups/ layers.
 

@@ -15,7 +15,6 @@ import warnings
 import contextlib
 import copy
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 
 # Import from this package
@@ -149,7 +148,7 @@ def check_data_consistency(pdf: pd.DataFrame,
             warnings.warn(f'Column {key} is not required by ampycloud.',
                           AmpycloudWarning)
             logger.warning('Dropping the superfluous %s column from the input data.', key)
-            data.drop((key), axis=1, inplace=True)
+            data.drop(key, axis=1, inplace=True)
 
     # A brief sanity check of the altitudes. We do not issue Errors, since the code can cope
     # with those elements: we simply raise Warnings.
@@ -243,10 +242,10 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] =
 
 
 def calc_base_alt(
-        vals: npt.ArrayLike,
+        vals: np.ndarray,
         lookback_perc: int,
         alt_perc: int,
-    ) -> float:
+) -> float:
     """Calculate the layer base altitude.
 
     Args:
