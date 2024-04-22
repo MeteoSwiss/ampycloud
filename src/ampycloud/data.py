@@ -14,7 +14,6 @@ import logging
 import copy
 from abc import ABC, abstractmethod
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 
 # Import from this package
@@ -275,7 +274,7 @@ class CeiloChunk(AbstractChunk):
 
     def _calculate_base_height_for_selection(
             self,
-            data_indexer: pd.Series(dtype=bool),
+            data_indexer # type: pd.Series[bool]
     ) -> float:
         """Calculate the cloud base height for a selection of data.
 
@@ -474,7 +473,7 @@ class CeiloChunk(AbstractChunk):
             self,
             which: str,
             pdf: pd.DataFrame,
-            cluster_ids: npt.ArrayLike
+            cluster_ids: np.ndarray
         ) -> pd.DataFrame:
         """Add statistical properties to slices/ groups/ layers .
 

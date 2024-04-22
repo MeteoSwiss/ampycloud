@@ -131,7 +131,7 @@ def set_prms(pth: Union[str, Path]) -> None:
 
 
 @log_func_call(logger)
-def reset_prms(which: Union[str, list] = None) -> None:
+def reset_prms(which: Union[str, list, None] = None) -> None:
     """ Reset the ampycloud dynamic=scientific parameters to their default values.
 
     Args:
