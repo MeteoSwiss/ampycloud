@@ -45,7 +45,6 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         Get-Command python | Select-Object -ExpandProperty Definition
-        echo $CONDA
 
     - name: Check the setup (II)
       if: matrix.os != 'windows-latest'
