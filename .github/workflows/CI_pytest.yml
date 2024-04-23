@@ -30,11 +30,11 @@ jobs:
     steps:
     # Checkout the repository
     - name: Checkout current repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     # Setup python
     - name: Set up Python ${{ matrix.python-version }}
-      uses: actions/setup-python@v4
+      uses: actions/setup-python@v5
       with:
         python-version: ${{ matrix.python-version }}
 
@@ -46,13 +46,11 @@ jobs:
       if: matrix.os == 'windows-latest'
       run: |
         Get-Command python | Select-Object -ExpandProperty Definition
-        echo $CONDA
 
     - name: Check the setup (II)
       if: matrix.os != 'windows-latest'
       run: |
         which python
-        which conda
 
     # Install all the dependencies we require
     - name: Install dependencies
