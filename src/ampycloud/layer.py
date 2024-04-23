@@ -221,9 +221,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     models = {}
 
     # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
-    with utils.tmp_seed(random_seed):
-        for n_val in ncomp:
-            models[n_val] = GaussianMixture(n_val, covariance_type='spherical').fit(vals)
+    for n_val in ncomp:
+        models[n_val] = GaussianMixture(n_val, covariance_type='spherical',
+                                        random_state=random_seed).fit(vals)
 
     # Extract the AICS and BICS scores
     if scores == 'AIC':
@@ -233,14 +233,24 @@ def ncomp_from_gmm(vals: np.ndarray,
     else:
         raise AmpycloudError(f'Unknown scores: {scores}')
 
+    # Fix #119: at times, not all sub-layers may be populated by GaussianMixture.
+    # To avoid problems down the line, we shall boost the abics score of such cases to make sure
+    # they are NOT taken as the best model
+    for (n_id, n_val) in enumerate(ncomp):
+        if (n_eff := len(np.unique(models[n_val].predict(vals)))) < n_val:
+            logger.warning(' %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. '
+                           'Ruling out %i components as a possibility.',
+                           n_eff, n_val, n_val, n_val)
+            abics[n_id] = max(abics) + 1  # The larger the abics score, the worst the fit.
+
     # Get the interesting information out
     best_model_ind = best_gmm(abics, **kwargs)
     best_ncomp = ncomp[best_model_ind]
     best_ids = models[ncomp[best_model_ind]].predict(vals)
 
-    logger.debug('%s scores: %s', scores, abics)
-    logger.debug('best_model_ind (raw): %i', best_model_ind)
-    logger.debug('best_ncomp (raw): %i', best_ncomp)
+    logger.debug(' %s scores: %s', scores, abics)
+    logger.debug(' best_model_ind (raw): %i', best_model_ind)
+    logger.debug(' best_ncomp (raw): %i', best_ncomp)
 
     # If I found only one component, I can stop here
     if best_ncomp == 1:

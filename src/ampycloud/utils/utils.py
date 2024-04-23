@@ -96,6 +96,15 @@ def check_data_consistency(pdf: pd.DataFrame,
         * ``pdf`` is not a :py:class:`pandas.DataFrame`.
         * ``pdf`` is missing a required column.
         * ``pdf`` has a length of 0.
+        * ``pdf`` has duplicated rows.
+        * any time step for any ceilometer corresponds to both a type 0 (no hit) and not 0 (some
+          hit)
+        * any time step for any ceilometer corresponds to both a type -1 (VV hit) and not -1 (some
+          hit/no hit)
+
+    The latter check implies that ampycloud cannot be fed a VV hit in parallel to a cloud base hit.
+    Should a specific ceilometer return VV hits in parallel to cloud base hits, it is up to the user
+    to decide whether to feed one or the other.
 
     In addition, this will raise an :py:class:`ampycloud.errors.AmpycloudWarning` if:
 
@@ -149,6 +158,23 @@ def check_data_consistency(pdf: pd.DataFrame,
                           AmpycloudWarning)
             logger.warning('Dropping the superfluous %s column from the input data.', key)
             data.drop((key), axis=1, inplace=True)
+
+    # Check for any duplicated entry, which would make no sense.
+    if (duplic := data.duplicated()).any():
+        raise AmpycloudError('Duplicated hits in the input data:\n'
+                             f'{data[duplic].to_string(index=False)}')
+
+    # Check for inconsistencies
+    # 1 - A non-detection should not be coincident with a detection
+    # 2 - A VV hit should not be coincident with a hit or a non-detection
+    for hit_type in [0, -1]:
+        nodets = data[data['type'] == hit_type][['dt', 'ceilo']]
+        dets = data[data['type'] != hit_type][['dt', 'ceilo']]
+        merged = dets.merge(nodets, how='inner', on=['dt', 'ceilo'])
+        if len(merged) > 0:
+            raise AmpycloudError('Inconsistent input data '
+                                 f'(simultaneous type {hit_type} and !{hit_type}):\n'
+                                 f'{merged.to_string(index=False)}')
 
     # A brief sanity check of the heights. We do not issue Errors, since the code can cope
     # with those elements: we simply raise Warnings.
@@ -266,7 +292,7 @@ def calc_base_height(vals: npt.ArrayLike,
     n_latest_elements = vals[- int(len(vals) * lookback_perc / 100):]
     if len(n_latest_elements) == 0:
         raise AmpycloudError(
-            'Cloud base calculation got an empty array.'
-            f'Maybe check lookback percentage (is set to {lookback_perc})'
+            'Cloud base calculation got an empty array. '
+            f'Maybe check lookback percentage ? (currently set to {lookback_perc})'
         )
     return np.percentile(n_latest_elements, height_perc)
