@@ -35,6 +35,7 @@ def test_check_data_consistency():
         assert np.all(out == canonical_demo_data())
 
     # Now, let's check specific elements that should raise errors or warnings
+    ### ERRORS ###
     with raises(AmpycloudError):
         # Empty DataFrame
         data = pd.DataFrame(columns=['ceilo', 'dt', 'height', 'type'])
@@ -45,6 +46,36 @@ def test_check_data_consistency():
         for col in ['ceilo', 'height', 'type']:
             data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
         check_data_consistency(data)
+    with raises(AmpycloudError):
+        # Duplicated hit
+        data = pd.DataFrame(np.array([['a', 0., 1, 1], ['a', 0., 1, 1]]),
+                            columns=['ceilo', 'dt', 'height', 'type'])
+        for col in ['ceilo', 'dt', 'height', 'type']:
+            data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
+        check_data_consistency(data)
+    with raises(AmpycloudError):
+        # Inconsistent hits - type 0 vs type !0
+        data = pd.DataFrame(np.array([['a', 0, 1, 1], ['a', 0, np.nan, 0]]),
+                            columns=['ceilo', 'dt', 'height', 'type'])
+        for col in ['ceilo', 'dt', 'height', 'type']:
+            data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
+        check_data_consistency(data)
+    with raises(AmpycloudError):
+        # Inconsistent vv hits - it must be either a VV hit, or a hit, but not both.
+        data = pd.DataFrame(np.array([['a', 0, 1, -1], ['a', 0, 2, 1]]),
+                            columns=['ceilo', 'dt', 'height', 'type'])
+        for col in ['ceilo', 'dt', 'height', 'type']:
+            data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
+        check_data_consistency(data)
+
+    # The following should NOT raise an error, i.e. two simultaneous hits from *distinct* parameters
+    data = pd.DataFrame(np.array([['a', 0, 1, -1], ['b', 0, np.nan, 0]]),
+                        columns=['ceilo', 'dt', 'height', 'type'])
+    for col in ['ceilo', 'dt', 'height', 'type']:
+        data[col] = data.loc[:, col].astype(hardcoded.REQ_DATA_COLS[col])
+    check_data_consistency(data)
+
+    ### WARNINGS ###
     with warns(AmpycloudWarning):
         # Bad data type
         data = pd.DataFrame(np.array([['a', 0, 1, 1]]), columns=['ceilo', 'dt', 'height', 'type'])
