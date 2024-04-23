@@ -526,7 +526,7 @@ class CeiloChunk(AbstractChunk):
             pd.DataFrame: with calculatio results in column height_base
 
         """
-        for ind, cid in  enumerate(cluster_ids):
+        for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
             # Compute the base height

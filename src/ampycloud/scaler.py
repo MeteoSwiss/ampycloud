@@ -276,7 +276,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs) -> dict:
 
 
 @log_func_call(logger)
-def apply_scaling(vals: np.ndarray, fct: Union[str, None] = None, **kwargs: dict) -> np.ndarray:
+def apply_scaling(vals: np.ndarray, fct: Union[str, None] = None, **kwargs) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:

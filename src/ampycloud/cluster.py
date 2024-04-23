@@ -10,7 +10,7 @@ Module contains: clustering tools
 
 # Import from Python
 import logging
-from typing import (Optional, Union)
+from typing import Optional, Union
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 
