@@ -48,7 +48,6 @@ jobs:
       if: matrix.os != 'windows-latest' || (matrix.os != 'macos-latest' && matrix.python-version != '3.9')
       run: |
         which python
-        which conda
 
     # Install all the dependencies we require
     - name: Install dependencies
