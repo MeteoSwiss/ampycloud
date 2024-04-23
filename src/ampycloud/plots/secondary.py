@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 @set_mplstyle
 @log_func_call(logger)
 def scaling_fcts(show: bool = True,
-                 save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
+                 save_stem: Union[str, None] = None, save_fmts: Union[list, str, None] = None) -> None:
     """ Plots the different scaling functions.
 
     Args:

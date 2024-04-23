@@ -13,7 +13,7 @@ import matplotlib as mpl
 
 # Import from ampycloud
 from ampycloud import dynamic
-from ampycloud.plots.tools import valid_styles, set_mplstyle
+from ampycloud.plots.tools import valid_styles, set_mplstyle, texify
 
 
 def test_valid_styles():
@@ -47,3 +47,12 @@ def test_issue18():
     # Finally, let's check that I can also alter the preamble in context
     dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'latex'
     assert 'metsymb' not in check_plot_context()[1]
+
+
+def test_texify():
+    """ Test the texify function in case of a given string used with Latex context. """
+
+    mpl.rcParams['text.usetex'] = True
+    result = texify("some $fancy$ label with % and _")
+    assert result == "some $fancy$ label with \\% and \\_"
+    mpl.rcParams['text.usetex'] = False

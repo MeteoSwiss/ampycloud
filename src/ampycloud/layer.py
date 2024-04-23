@@ -142,9 +142,9 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
-                   layer_base_params: dict[str, int] = None,
+                   layer_base_params: Union[dict[str, int], None] = None,
                    scores: str = 'BIC',
-                   rescale_0_to_x: float = None,
+                   rescale_0_to_x: Union[float, None] = None,
                    random_seed: int = 42,
                    **kwargs: dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
@@ -160,6 +160,7 @@ def ncomp_from_gmm(vals: np.ndarray,
             first decide how many components looks "best", at which point these may get merged
             depending on min_sep. I.e. min_sep does not lead to re-running the GMM, it only merges
             the identified layers if required.
+        layer_base_params: Defined ampycloud parameters.
         scores (str, optional): either 'BIC' or 'AIC', to use Baysian Information Criterion or
             Akaike Information criterion scores.
         rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value

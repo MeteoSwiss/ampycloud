@@ -12,11 +12,11 @@ Module contains: class for the diagnostic plots
 import logging
 from functools import partial
 from copy import deepcopy
+from typing import Union
 import numpy as np
 import matplotlib.pyplot as plt
-from matplotlib import gridspec
+from matplotlib import gridspec, rcParams
 from matplotlib.lines import Line2D
-from matplotlib import rcParams
 
 # Import from this package
 from .. import dynamic, scaler, fluffer
@@ -109,8 +109,8 @@ class DiagnosticPlot:
             # Get a list of ceilo colors from the cycler.
             ceilo_clrs = plt.rcParams['axes.prop_cycle'].by_key()['color']
             # Assign them to each hit
-            symb_clrs = [ceilo_clrs[self._chunk.ceilos.index(item) % len(ceilo_clrs)]
-                         for item in self._chunk.data['ceilo']]
+            symb_clrs = np.array([ceilo_clrs[self._chunk.ceilos.index(item) % len(ceilo_clrs)]
+                         for item in self._chunk.data['ceilo']])
 
         # What are the VV hits ?
         is_vv = np.array(self._chunk.data['type'] == -1)
@@ -174,71 +174,72 @@ class DiagnosticPlot:
         all_clrs = plt.rcParams['axes.prop_cycle'].by_key()['color']
 
         # Then loop through each slice
-        for ind in range(self._chunk.n_slices):
+        if self._chunk.n_slices is not None:
+            for ind in range(self._chunk.n_slices):
 
-            # Which hits are in the slice ?
-            in_slice = np.array(self._chunk.data['slice_id'] ==
-                                self._chunk.slices.at[ind, 'cluster_id'])
+                # Which hits are in the slice ?
+                in_slice = np.array(self._chunk.data['slice_id'] ==
+                                    self._chunk.slices.at[ind, 'cluster_id'])
 
-            # Create an array of facecolors ... choose them from my set of colors
-            base_clr = all_clrs[ind % len(all_clrs)]
-            fcs = np.array([base_clr] * len(self._chunk.data))
-            fcs[is_vv] = 'none'
+                # Create an array of facecolors ... choose them from my set of colors
+                base_clr = all_clrs[ind % len(all_clrs)]
+                fcs = np.array([base_clr] * len(self._chunk.data))
+                fcs[is_vv] = 'none'
 
-            # I can finally show the points ...
-            self._axs[0].scatter(self._chunk.data.loc[in_slice, 'dt'],
-                                 self._chunk.data.loc[in_slice, 'height'],
-                                 marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
+                # I can finally show the points ...
+                self._axs[0].scatter(self._chunk.data.loc[in_slice, 'dt'],
+                                     self._chunk.data.loc[in_slice, 'height'],
+                                     marker='o', s=10, c=fcs[in_slice], edgecolor=base_clr)
 
-            # ... and the corresponding LOWESS-fit used to derive their fluffiness
-            _, lowess_pts = fluffer.get_fluffiness(
-                self._chunk.data.loc[in_slice, ['dt', 'height']].values, **self._chunk.prms['LOWESS'])
-            self._axs[0].plot(lowess_pts[:, 0], lowess_pts[:, 1],
-                              ls='-', lw=1.5, c=base_clr, drawstyle='steps-mid', zorder=0)
+                # ... and the corresponding LOWESS-fit used to derive their fluffiness
+                _, lowess_pts = fluffer.get_fluffiness(
+                    self._chunk.data.loc[in_slice, ['dt', 'height']].values, **self._chunk.prms['LOWESS'])
+                self._axs[0].plot(lowess_pts[:, 0], lowess_pts[:, 1],
+                                  ls='-', lw=1.5, c=base_clr, drawstyle='steps-mid', zorder=0)
 
-            # Let's also plot the overlap area of the slice
-            slice_min = self._chunk.slices.loc[ind, 'height_min']
-            slice_max = self._chunk.slices.loc[ind, 'height_max']
-            thickness = self._chunk.slices.loc[ind, 'thickness']
-            height_pad = self._chunk.prms['GROUPING_PRMS']['height_pad_perc']/100
+                # Let's also plot the overlap area of the slice
+                slice_min = self._chunk.slices.loc[ind, 'height_min']
+                slice_max = self._chunk.slices.loc[ind, 'height_max']
+                thickness = self._chunk.slices.loc[ind, 'thickness']
+                height_pad = self._chunk.prms['GROUPING_PRMS']['height_pad_perc']/100
 
-            # Get some fake data spanning the entire data range
-            misc = np.linspace(self._chunk.data['dt'].min(skipna=True),
-                               self._chunk.data['dt'].max(skipna=True), 3)
-            self._axs[0].fill_between(misc,
-                                      np.ones_like(misc) * (slice_min - height_pad * thickness),
-                                      np.ones_like(misc) * (slice_max + height_pad * thickness),
-                                      edgecolor='none', alpha=0.1, zorder=0,
-                                      facecolor=base_clr)
+                # Get some fake data spanning the entire data range
+                misc = np.linspace(self._chunk.data['dt'].min(skipna=True),
+                                   self._chunk.data['dt'].max(skipna=True), 3)
+                self._axs[0].fill_between(misc,
+                                          np.ones_like(misc) * (slice_min - height_pad * thickness),
+                                          np.ones_like(misc) * (slice_max + height_pad * thickness),
+                                          edgecolor='none', alpha=0.1, zorder=0,
+                                          facecolor=base_clr)
 
-            # Stop here if that slice has 0 okta.
-            if self._chunk.slices.iloc[ind]['okta'] == 0:
-                continue
+                # Stop here if that slice has 0 okta.
+                if self._chunk.slices.iloc[ind]['okta'] == 0:
+                    continue
 
-            # Prepare to display the METAR codes for the slices.
-            # First, check if it is isolated or not, and significant or not.
-            if self._chunk.slices.iloc[ind]['significant']:
-                alpha = 1
-            else:
-                alpha = 0
-            if self._chunk.slices.iloc[ind]['isolated'] is False:
-                warn = r' $\Bumpeq$'
-            else:
-                warn = ''
+                # Prepare to display the METAR codes for the slices.
+                # First, check if it is isolated or not, and significant or not.
+                if self._chunk.slices.iloc[ind]['significant']:
+                    alpha = 1
+                else:
+                    alpha = 0
+                if self._chunk.slices.iloc[ind]['isolated'] is False:
+                    warn = r' $\Bumpeq$'
+                else:
+                    warn = ''
 
-            # Show the slice METAR text, plus the fluffiness, plus the isolation status
-            msg = r'\smaller '
-            msg += wmo.okta2symb(
-                self._chunk.slices.iloc[ind]['okta'],
-                use_metsymb=dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
-            msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
-                   rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
-            msg += warn
-            self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'height_base'],
-                              texify(msg),
-                              va='center', ha='center', color=base_clr,
-                              bbox={'facecolor': 'none', 'edgecolor': base_clr,
-                                    'alpha': alpha, 'ls': '--'})
+                # Show the slice METAR text, plus the fluffiness, plus the isolation status
+                msg = r'\smaller '
+                msg += wmo.okta2symb(
+                    self._chunk.slices.iloc[ind]['okta'],
+                    use_metsymb=dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
+                msg += ' ' + self._chunk.slices.iloc[ind]['code'] + \
+                       rf' $f$:{self._chunk.slices.loc[ind, "fluffiness"]:.0f} ft'
+                msg += warn
+                self._axs[1].text(0.5, self._chunk.slices.loc[ind, 'height_base'],
+                                  texify(msg),
+                                  va='center', ha='center', color=base_clr,
+                                  bbox={'facecolor': 'none', 'edgecolor': base_clr,
+                                        'alpha': alpha, 'ls': '--'})
 
     def show_groups(self, show_points: bool = False) -> None:
         """ Show the group data.
@@ -256,44 +257,45 @@ class DiagnosticPlot:
                           transform=self._axs[2].transAxes)
 
         # Loop through each identified group
-        for ind in range(self._chunk.n_groups):
+        if self._chunk.n_groups is not None:
+            for ind in range(self._chunk.n_groups):
 
-            if show_points:
-                # Which hits are in the group ?
-                in_group = np.array(self._chunk.data['group_id'] ==
-                                    self._chunk.groups.at[ind, 'cluster_id'])
+                if show_points:
+                    # Which hits are in the group ?
+                    in_group = np.array(self._chunk.data['group_id'] ==
+                                        self._chunk.groups.at[ind, 'cluster_id'])
 
-                # I can finally show the points ...
-                self._axs[0].scatter(self._chunk.data[in_group]['dt'],
-                                     self._chunk.data[in_group]['height'],
-                                     marker=MRKS[ind % len(MRKS)],
-                                     s=40, c='none', edgecolor='gray', lw=1, zorder=10, alpha=0.5)
+                    # I can finally show the points ...
+                    self._axs[0].scatter(self._chunk.data[in_group]['dt'],
+                                         self._chunk.data[in_group]['height'],
+                                         marker=MRKS[ind % len(MRKS)],
+                                         s=40, c='none', edgecolor='gray', lw=1, zorder=10, alpha=0.5)
 
-            # Stop here if that group has 0 okta.
-            if self._chunk.groups.iloc[ind]['okta'] == 0:
-                continue
+                # Stop here if that group has 0 okta.
+                if self._chunk.groups.iloc[ind]['okta'] == 0:
+                    continue
 
-            # Prepare to display the METAR codes for the groups.
-            # First, check if it is significant or not.
-            if self._chunk.groups.iloc[ind]['significant']:
-                alpha = 1
-            else:
-                alpha = 0
+                # Prepare to display the METAR codes for the groups.
+                # First, check if it is significant or not.
+                if self._chunk.groups.iloc[ind]['significant']:
+                    alpha = 1
+                else:
+                    alpha = 0
 
-            # Then also check if these groups contain multiple sub-layers ...
-            symbs = {-1: r'', 1: r'$-$', 2: r'$=$', 3: r'$\equiv$'}
-            warn = ' ' + symbs[self._chunk.groups.iloc[ind]['ncomp']]
+                # Then also check if these groups contain multiple sub-layers ...
+                symbs = {-1: r'', 1: r'$-$', 2: r'$=$', 3: r'$\equiv$'}
+                warn = ' ' + symbs[self._chunk.groups.iloc[ind]['ncomp']]
 
-            # Show the group METAR text
-            msg = r'\smaller ' + wmo.okta2symb(
-                self._chunk.groups.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
-            ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
-            self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['height_base'],
-                              texify(msg),
-                              va='center', ha='center', color='gray',
-                              bbox={'facecolor': 'none', 'edgecolor': 'gray',
-                                    'alpha': alpha, 'ls': '--'})
+                # Show the group METAR text
+                msg = r'\smaller ' + wmo.okta2symb(
+                    self._chunk.groups.iloc[ind]['okta'],
+                    use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
+                ) + ' ' + self._chunk.groups.iloc[ind]['code'] + warn
+                self._axs[2].text(0.5, self._chunk.groups.iloc[ind]['height_base'],
+                                  texify(msg),
+                                  va='center', ha='center', color='gray',
+                                  bbox={'facecolor': 'none', 'edgecolor': 'gray',
+                                        'alpha': alpha, 'ls': '--'})
 
     def show_layers(self) -> None:
         """ Show the layer data. """
@@ -304,47 +306,48 @@ class DiagnosticPlot:
                           transform=self._axs[3].transAxes)
 
         # Start looping through every layer ...
-        for ind in range(self._chunk.n_layers):
+        if self._chunk.n_layers is not None:
+            for ind in range(self._chunk.n_layers):
 
-            # Which hits are in the layer?
-            in_layer = np.array(self._chunk.data['layer_id'] ==
-                                self._chunk.layers.at[ind, 'cluster_id'])
+                # Which hits are in the layer?
+                in_layer = np.array(self._chunk.data['layer_id'] ==
+                                    self._chunk.layers.at[ind, 'cluster_id'])
 
-            # I can finally show the points ...
-            self._axs[0].scatter(self._chunk.data[in_layer]['dt'],
-                                 self._chunk.data[in_layer]['height'],
-                                 marker=MRKS[ind % len(MRKS)],
-                                 s=40, c='none', edgecolor='k', lw=1, zorder=10, alpha=0.5)
+                # I can finally show the points ...
+                self._axs[0].scatter(self._chunk.data[in_layer]['dt'],
+                                     self._chunk.data[in_layer]['height'],
+                                     marker=MRKS[ind % len(MRKS)],
+                                     s=40, c='none', edgecolor='k', lw=1, zorder=10, alpha=0.5)
 
-            # Draw the line of the layer base
-            if self._chunk.layers.iloc[ind]['okta'] == 0:
-                lls = ':'
-            else:
-                lls = '--'
+                # Draw the line of the layer base
+                if self._chunk.layers.iloc[ind]['okta'] == 0:
+                    lls = ':'
+                else:
+                    lls = '--'
 
-            self._axs[0].axhline(self._chunk.layers.iloc[ind]['height_base'], xmax=1, c='k',
-                                 lw=1, zorder=0, ls=lls, clip_on=False)
+                self._axs[0].axhline(self._chunk.layers.iloc[ind]['height_base'], xmax=1, c='k',
+                                     lw=1, zorder=0, ls=lls, clip_on=False)
 
-            # Stop here for empty layers
-            if self._chunk.layers.iloc[ind]['okta'] == 0:
-                continue
+                # Stop here for empty layers
+                if self._chunk.layers.iloc[ind]['okta'] == 0:
+                    continue
 
-            # Prepare to display the METAR codes for the layer.
-            # First, check if it is significant, or not.
-            if self._chunk.layers.iloc[ind]['significant']:
-                alpha = 1
-            else:
-                alpha = 0
+                # Prepare to display the METAR codes for the layer.
+                # First, check if it is significant, or not.
+                if self._chunk.layers.iloc[ind]['significant']:
+                    alpha = 1
+                else:
+                    alpha = 0
 
-            # Display the actual METAR text
-            msg = r'\smaller ' + wmo.okta2symb(
-                self._chunk.layers.iloc[ind]['okta'],
-                use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
-            ) + ' ' + self._chunk.layers.iloc[ind]['code']
-            self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['height_base'],
-                              texify(msg),
-                              va='center', ha='center', color='k',
-                              bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': alpha})
+                # Display the actual METAR text
+                msg = r'\smaller ' + wmo.okta2symb(
+                    self._chunk.layers.iloc[ind]['okta'],
+                    use_metsymb=(dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] == 'metsymb')
+                ) + ' ' + self._chunk.layers.iloc[ind]['code']
+                self._axs[3].text(0.5, self._chunk.layers.iloc[ind]['height_base'],
+                                  texify(msg),
+                                  va='center', ha='center', color='k',
+                                  bbox={'facecolor': 'none', 'edgecolor': 'k', 'alpha': alpha})
 
     def add_vv_legend(self) -> None:
         """ Adds a legend about the VV hits."""
@@ -385,7 +388,7 @@ class DiagnosticPlot:
             self._axs[2].text(0.5, -0.02, texify(r'\smaller ' + '\n '.join(msg)),
                               transform=self._axs[2].transAxes, ha='center', va='top')
 
-    def add_ref_metar(self, name: str, metar: str) -> None:
+    def add_ref_metar(self, name: Union[str, None], metar: Union[str, None]) -> None:
         """ Display a reference METAR, for example from human observers, different code, etc ...
 
         Args:
@@ -432,7 +435,7 @@ class DiagnosticPlot:
         """
 
         # Here, only proceed if I have actually found some slices !
-        if self._chunk.n_slices > 0:
+        if self._chunk.n_slices is not None and self._chunk.n_slices > 0:
 
             # In order to show secondary_axis, we need to feed the forward/reverse scaling function
             # with the actual ones used in the code. Since these are dependant upon the data,
@@ -480,7 +483,7 @@ class DiagnosticPlot:
         """
 
         # Only proceed if I have found some clusters ...
-        if self._chunk.n_groups > 0:
+        if self._chunk.n_groups is not None and self._chunk.n_groups > 0:
 
             # In order to show secondary_axis, we need to feed the forward/reverse scaling function
             # with the actual ones used in the code. Since these are dependant upon the data,
@@ -504,7 +507,7 @@ class DiagnosticPlot:
             # And reduce the fontsize while we're at it ...
             secax_x.tick_params(axis='x', which='both', labelsize=rcParams['font.size']-2)
 
-    def save(self, fn_out: str, fmts: list = None) -> None:
+    def save(self, fn_out: str, fmts: Union[list, None] = None) -> None:
         """ Saves the plot to file.
 
         Args:

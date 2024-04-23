@@ -44,8 +44,6 @@ def get_speed_benchmark(niter: int = 10) -> tuple:
         _, _ = demo()
         dts += [(datetime.now()-start).total_seconds()]
 
-    dts = np.array(dts)
-
     logger.info('ampycloud demo() exec-time from %i runs:', niter)
     logger.info('    mean [std]: %.2fs [%.2fs]', np.mean(dts), np.std(dts))
     logger.info('    median [min; max]: %.2f [%.2fs; %.2fs]',

@@ -24,10 +24,13 @@ logger = logging.getLogger(__name__)
 
 @set_mplstyle
 @log_func_call(logger)
-def diagnostic(chunk: CeiloChunk, upto: str = 'layers', show_ceilos: bool = False,
-               ref_metar: str = None, ref_metar_origin: str = None,
+def diagnostic(chunk: CeiloChunk, upto: str = 'layers',
+               show_ceilos: bool = False,
+               ref_metar: Union[str, None] = None,
+               ref_metar_origin: Union[str, None] = None,
                show: bool = True,
-               save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
+               save_stem: Union[str, None] = None,
+               save_fmts: Union[list, str, None] = None) -> None:
     """ A function to create the ampycloud diagnostic plot all the way to the layering step
     (included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).
 

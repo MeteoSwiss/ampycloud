@@ -10,7 +10,7 @@ Module contains: WMO-related utilities
 
 # Import from Python
 import logging
-from typing import Union
+from typing import Optional, Union
 import numpy as np
 
 # Import from ampycloud
@@ -79,7 +79,7 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
 
 
 @log_func_call(logger)
-def okta2code(val: int) -> str:
+def okta2code(val: int) -> Optional[str]:
     """ Convert an okta value to a METAR code.
 
     Args:

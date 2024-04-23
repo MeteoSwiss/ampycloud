@@ -135,9 +135,9 @@ def texify(msg: str) -> str:
         msg = msg.replace('%', r'\%')
 
         # Here, I want to clean the underscore, but ONLY outside of math mode.
-        msg = [item.replace('_', r'\_') if ind % 2 == 0 else item
+        msg_splitted = [item.replace('_', r'\_') if ind % 2 == 0 else item
                for (ind, item) in enumerate(msg.split('$'))]
-        msg = '$'.join(msg)
+        msg = '$'.join(msg_splitted)
     # Next cleanup any LaTeX-specific stuff ...
     else:
         msg = msg.replace(r'\smaller', '')

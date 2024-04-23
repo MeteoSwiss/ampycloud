@@ -10,11 +10,11 @@ Module contains: generic utilities
 
 # Import from Python
 import logging
+from typing import Union
 import warnings
 import contextlib
 import copy
 import numpy as np
-import numpy.typing as npt
 import pandas as pd
 
 # Import from this package
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def check_data_consistency(pdf: pd.DataFrame,
-                           req_cols: dict = None) -> pd.DataFrame:
+                           req_cols: Union[dict, None] = None) -> pd.DataFrame:
     """ Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
     of ampycloud.
 
@@ -157,7 +157,7 @@ def check_data_consistency(pdf: pd.DataFrame,
             warnings.warn(f'Column {key} is not required by ampycloud.',
                           AmpycloudWarning)
             logger.warning('Dropping the superfluous %s column from the input data.', key)
-            data.drop((key), axis=1, inplace=True)
+            data.drop(key, axis=1, inplace=True)
 
     # Check for any duplicated entry, which would make no sense.
     if (duplic := data.duplicated()).any():
@@ -232,7 +232,7 @@ def tmp_seed(seed: int):
 
 
 @log_func_call(logger)
-def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dict:
+def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] = None) -> dict:
     """ Update a given (nested) dictionnary given a second (possibly incomplete) one.
 
     Args:
@@ -267,7 +267,7 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: list = None) -> dic
     return ref_dict
 
 
-def calc_base_height(vals: npt.ArrayLike,
+def calc_base_height(vals: np.ndarray,
                      lookback_perc: int,
                      height_perc: int,
                      ) -> float:
