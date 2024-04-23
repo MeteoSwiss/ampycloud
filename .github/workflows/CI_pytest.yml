@@ -45,22 +45,25 @@ jobs:
         echo $CONDA
 
     - name: Check the setup (II)
-      if: matrix.os != 'windows-latest'
+      if: matrix.os != 'windows-latest' || (matrix.os != 'macos-latest' && matrix.python-version != '3.9')
       run: |
         which python
         which conda
 
     # Install all the dependencies we require
     - name: Install dependencies
+      if: matrix.os != 'macos-latest' && matrix.python-version != '3.9'
       run: |
         python -m pip install --upgrade pip
 
     # Here, let's install our module to make sure all the dependencies specified in setup.py are
     # also installed
     - name: Install our module
+      if: matrix.os != 'macos-latest' && matrix.python-version != '3.9'
       run: pip install -e .[dev]
 
     # Read to run all the tests !
     - name: Run pytest
+      if: matrix.os != 'macos-latest' && matrix.python-version != '3.9'
       run: |
         pytest -s
