@@ -26,7 +26,7 @@ jobs:
     # The idea for this Action is to spot issues with new dependency versions as soon as they
     # are released (and not when we decide to update ampycloud).
     - name: Checkout current repository
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
       with:
         repository: MeteoSwiss/ampycloud
         ref: master
