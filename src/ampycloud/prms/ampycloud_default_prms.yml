@@ -78,9 +78,7 @@ GROUPING_PRMS:
     height_pad_perc: +10
     # Time scaling factor (in s)
     dt_scale: 180
-    # Boost factor, applied to the slice fluffiness to derive the height scaling factor
-    fluffiness_boost: 2
-    # Range of allowed height scaling factor (in ft). The fluffiness_boost will never be allowed
+    # Range of allowed height scaling factor (in ft). The fluffiness will never be allowed
     # to push the height_scaling beyond this range.
     height_scale_range: [100, 500]
 

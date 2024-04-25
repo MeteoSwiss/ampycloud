@@ -507,7 +507,6 @@ class CeiloChunk(AbstractChunk):
             pdf.iloc[ind, pdf.columns.get_loc('fluffiness')], _ = \
                 fluffer.get_fluffiness(
                 self.data.loc[in_sligrolay, ['dt', 'height']].values,
-                boost=self.prms['GROUPING_PRMS']['fluffiness_boost'],
                 **self.prms['LOWESS'])
 
         return pdf

@@ -30,7 +30,7 @@ def test_get_fluffiness():
     assert out[0] == 0
     assert np.array_equal(out[1][:, 1], pts[:, 1])
 
-    # Test the LOWESS warning issued with duplicat points
+    # Test the LOWESS warning issued with duplicate points
     pts = np.array([[0, 0], [0, 1], [1, 0]])
     # For some reason, pytest refuses to convert the LOWESS warning into an error ...
     # ... so I need to catch it a bit differently ... sigh !
