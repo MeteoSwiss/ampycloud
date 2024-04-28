@@ -214,4 +214,8 @@ def canonical_demo_data() -> DataFrame:
     # reported in the diagnostic diagram, but remain "counted".
     out.loc[len(out)] = [-800, 3100, 1, 1]
 
+    # Fix the dtypes
+    for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
+        out[col] = out[col].astype(tpe)
+
     return out
