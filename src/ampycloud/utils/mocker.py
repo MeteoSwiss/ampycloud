@@ -210,4 +210,8 @@ def canonical_demo_data() -> DataFrame:
         # Actually generate the mock data
         out: DataFrame = mock_layers(n_ceilos, lookback_time, hit_gap, lyrs)
 
+    # Add a rogue hit, to illustrate the fact that layers that fall below Theta_0 are not
+    # reported in the diagnostic diagram, but remain "counted".
+    out.loc[len(out)] = [-800, 3100, 1, 1]
+
     return out
