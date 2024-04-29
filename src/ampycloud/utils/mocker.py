@@ -210,4 +210,10 @@ def canonical_demo_data() -> DataFrame:
         # Actually generate the mock data
         out: DataFrame = mock_layers(n_ceilos, lookback_time, hit_gap, lyrs)
 
+    # Add a rogue hit, to illustrate the fact that layers that fall below Theta_0 are not
+    # reported in the diagnostic diagram, but remain "counted".
+    # To avoid confusing users, we will replace an existing hit: pick one closest to -800s.
+    swap_id = (abs(out[(out['ceilo'] == '1')*(out['type'] == 2)]['dt']-800)).argmin()
+    out.at[swap_id, 'height'] = 3100.0
+
     return out
