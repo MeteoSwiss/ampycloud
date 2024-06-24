@@ -44,11 +44,11 @@ setup(
     python_requires='>=3.9.0',
     install_requires=[
         "matplotlib >= 3.7.2",
-        "numpy >= 1.20.3",
+        "numpy >= 1.20.3, < 2.0",
         "scikit-learn >= 1.2.0",
         "scipy >= 1.7.3",
         "statsmodels",
-        "pandas >= 1.5",
+        "pandas >= 1.5, < 2.0",
         "pyyaml",
         "ruamel.yaml"
     ],
