@@ -48,7 +48,7 @@ setup(
         "scikit-learn >= 1.2.0",
         "scipy >= 1.7.3",
         "statsmodels",
-        "pandas >= 1.5, < 2.0",
+        "pandas >= 1.5",
         "pyyaml",
         "ruamel.yaml"
     ],
