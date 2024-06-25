@@ -18,9 +18,12 @@ Welcome to the ampycloud documentation
 --------------------------------------
 
 * **What:** ampycloud refers to both a **Python package** and the **algorithm** at its core, designed
-  to characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
-  (i.e. automatic cloud base *hits*), and derive a corresponding METAR-like message.
+  to characterize cloud layers (i.e. sky coverage fraction and base height) using ceilometer measurements
+  (i.e. cloud base *hits*), and derive a corresponding METAR-like message.
   A visual illustration of the algorithm is visible in :numref:`fig-demo`.
+
+  .. note::
+    At the moment, ampycloud cannot use backscatter profiles to derive cloud base hits independantly.
 
 * **Where:** ampycloud lives in `a dedicated repository <https://github.com/MeteoSwiss/ampycloud>`_
   under the `MeteoSwiss organization <https://github.com/MeteoSwiss>`_ on Github, where you can
