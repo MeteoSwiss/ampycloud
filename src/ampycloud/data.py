@@ -1047,7 +1047,7 @@ class CeiloChunk(AbstractChunk):
 
         # Deal with the MSA: set it to infinity if None was specified
         if self.msa is None:
-            msa_val = np.infty
+            msa_val = np.inf
         else:
             msa_val = self.msa
 
