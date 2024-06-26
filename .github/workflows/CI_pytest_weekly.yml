@@ -23,15 +23,22 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    # Checkout the repo
+    # Checkout the master branch if this is a scheduled test
     # The idea for this Action is to spot issues with new dependency versions as soon as they
     # are released (and not when we decide to update ampycloud).
-    - name: Checkout current repository
+    - name: Checkout current repository (master branch)
+      if: ${{ github.event_name != 'workflow_dispatch' }}
       uses: actions/checkout@v4
       with:
         repository: MeteoSwiss/ampycloud
-        if: ${{ github.event_name != 'workflow_dispatch' }}
-            ref: master  # If run on schedule, use the master branch.
+        ref: master
+
+    # Alternatively, checkout whichever branch was selected by the user upon the manual trigger.
+    - name: Checkout current repository (custom branch)
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      uses: actions/checkout@v4
+      with:
+        repository: MeteoSwiss/ampycloud
 
     # Setup python
     - name: Set up Python
