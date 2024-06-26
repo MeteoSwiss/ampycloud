@@ -27,7 +27,7 @@ jobs:
     # The idea for this Action is to spot issues with new dependency versions as soon as they
     # are released (and not when we decide to update ampycloud).
     - name: Checkout current repository (master branch)
-      if: ${{ github.event_name != 'workflow_dispatch' }}
+      if: ${{ github.event_name == 'schedule' }}
       uses: actions/checkout@v4
       with:
         repository: MeteoSwiss/ampycloud
