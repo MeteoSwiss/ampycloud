@@ -154,11 +154,11 @@ def step_scale(vals: np.ndarray,
     offsets = [0] + steps
 
     # Get the bin edges for the scale mode
-    edges_in = [-np.infty] + steps + [np.infty]
+    edges_in = [-np.inf] + steps + [np.inf]
     # Idem for the descale mode ... this is more complex because of the continuity requirement
     edges_out = [steps[0]/scales[0] + np.sum((np.diff(steps)/scales[1:-1])[:ind])
                  for ind in range(len(steps))]
-    edges_out = [-np.infty] + edges_out + [np.infty]
+    edges_out = [-np.inf] + edges_out + [np.inf]
 
     # Prepare the output
     out = np.full_like(vals, np.nan, dtype=float)

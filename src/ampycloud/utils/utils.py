@@ -185,10 +185,10 @@ def check_data_consistency(pdf: pd.DataFrame,
         msgs += ['Some type=0 hits have non-NaNs height values ?!']
     if np.any(np.isnan(data.loc[data.type == 1, 'height'])):
         msgs += ['Some type=1 hits have NaNs height values ?!']
-    if not np.all(np.in1d(data.loc[data.type == 2, 'dt'].values,
+    if not np.all(np.isin(data.loc[data.type == 2, 'dt'].values,
                           data.loc[data.type == 1, 'dt'].values)):
         msgs += ['Some type=2 hits have no coincident type=1 hits ?!']
-    if not np.all(np.in1d(data.loc[data.type == 3, 'dt'].values,
+    if not np.all(np.isin(data.loc[data.type == 3, 'dt'].values,
                           data.loc[data.type == 2, 'dt'].values)):
         msgs += ['Some type=3 hits have no coincident type=2 hits ?!']
 

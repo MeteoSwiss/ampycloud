@@ -3,11 +3,11 @@ which requires all its dependencies to be robust and stable.
 
 This has the following implications for ampycloud:
 
-    * The scope of ampycloud will remain limited to the **automatic processing of ceilometer
-      hits**.  In particular, ampycloud does not process Vertical Visibility (VV) measurements.
-      Depending on the ceilometer type, the user will need to decide how to treat VV hits *before*
-      passing them to ampycloud, e.g. by removing them or by converting them to cloud base
-      heights.
+    * The scope of ampycloud will remain limited to the **automatic processing of cloud base
+      hits derived using ceilometers**. Furthermore, ampycloud does not process
+      Vertical Visibility (VV) measurements. Depending on the ceilometer type, the user will need
+      to decide how to treat VV hits *before* passing them to ampycloud, e.g. by removing them or
+      by converting them to cloud base heights.
 
     * Note that regulation says that "if there are no clouds of operational significance
       and no restriction on vertical visibility and the abbreviation 'CAVOK' is not
