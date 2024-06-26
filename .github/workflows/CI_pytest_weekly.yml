@@ -10,6 +10,7 @@
 name: CI_pytest_weekly
 
 on:
+  workflow_dispatch:  # Allow to trigger the weekly tests manually
   schedule:
     - cron: '43 21 * * 1,4'  # Run at 21:43 UTC every Monday and Thursday
 
