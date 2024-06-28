@@ -2,15 +2,15 @@
 
 If you:
 
-*  :boom: want to **report a bug** with ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/issues)
-*  :question: have a **question** about ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/discussions)
-* :construction_worker: want to **contribute** to ampycloud (:heart_eyes: :tada:): read on !
+* :boom: want to **report a bug** with ampycloud: [jump here.](https://github.com/MeteoSwiss/ampycloud/issues)
+* :question: have a **question** about ampycloud: [jump here instead.](https://github.com/MeteoSwiss/ampycloud/discussions)
+* :construction_worker: want to **contribute** to ampycloud, read on !
 
 
 ## Table of contents
 
 - [Code of conduct](#code-of-conduct)
-- [Scope of ampycloud](#scope-of-ampycloud)
+- [Scope](#scope)
 - [Essential things to know about ampycloud for dev work](#essential-things-to-know-about-ampycloud-for-dev-work)
     - [Branching model](#branching-model)
     - [Installing from source](#installing-from-source)
@@ -31,10 +31,9 @@ If you:
 ## Code of conduct
 
 This project and everyone participating in it is governed by the [ampycloud Code of Conduct](CODE_OF_CONDUCT.md). By participating, you are expected to uphold this code.
-Please report unacceptable behavior to [loris.foresti@meteoswiss.ch](mailto:loris.foresti@meteoswiss.ch) and/or [frederic.vogt@meteoswiss.ch](mailto:frederic.vogt@meteoswiss.ch).
+Please report unacceptable behavior to [loris.foresti@meteoswiss.ch](mailto:loris.foresti@meteoswiss.ch).
 
-
-## Scope of ampycloud
+## Scope
 
 Please be sure to read (and understand the implications) of the
 [scope of ampycloud](https://meteoswiss.github.io/ampycloud/index.html#scope-of-ampycloud).
@@ -86,8 +85,10 @@ Automated CI/CD checks are triggered upon Pull Requests being issued towards the
 * automatic publication of the Sphinx docs (for a PR to `master` only)
 * check that the code version was incremented (for PR to `master` only)
 
-To test the code with the latest Python developments, a `pytest-weeklz` workflow runs the
+To test the latest release of the code with the latest Python developments, a `pytest-weekly` workflow runs the
 ampycloud tests twice a week using the latest version of Python and of the ampycloud dependencies.
+
+:warning: This test is being run from the `master` branch. Pushing a bug fix to `develop` will not be sufficient to make it turn green - a new code release is necessary !
 
 There is another Github action responsible for publishing the code onto pypi, that gets triggered
 upon a new release or pre-release being published. See the ampycloud
@@ -331,7 +332,7 @@ create a new release of ampycloud:
 ## Less-Essential things to know about ampycloud for dev work
 
 ### Updating the copyright years
-The ampycloud copyright years may need to be updated if the development goes on beyond 2022. If so,
+The ampycloud copyright years may need to be updated if the development goes on beyond 2022 (which it already has 😉). If so,
 the copyright years will need to be manually updated in the following locations:
 
 * `docs/source/substitutions.rst` (the copyright tag)
