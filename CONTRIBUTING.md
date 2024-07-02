@@ -23,7 +23,7 @@ If you:
     - [Documentation](#documentation)
     - [Testing](#testing)
     - [Plotting](#plotting)
-    - [Release mechanisms](#release-mechanisms)
+    - [Release mechanism](#release-mechanism)
 - [Less-Essential things to know about ampycloud for dev work](#less-essential-things-to-know-about-ampycloud-for-dev-work)
     - [Updating the copyright years](#updating-the-copyright-years)
 
@@ -294,7 +294,7 @@ def some_plot_function(...):
 With this decorator, all functions will automatically deploy the effects associated to the value of `dynamic.AMPYCLOUD_PRMS['MPL_STYLE']` which can take one of the following values:
 `['base', 'latex', 'metsymb']`.
 
-### Release mechanisms
+### Release mechanism
 
 When changes merged in the `develop` branch are stable and deemed *worthy*, follow these steps to
 create a new release of ampycloud:
@@ -326,8 +326,9 @@ create a new release of ampycloud:
    - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases),
    - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
    - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/ampycloud/),
-   - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages), and
-   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud).
+   - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages),
+   - in the [live documentation](https://MeteoSwiss.github.io/ampycloud), and
+   - on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.8399683) (for which the connection to this repo is enbaled from Zenodo itself, by the admins of the MeteoSwiss organization on Github).
 
 ## Less-Essential things to know about ampycloud for dev work
 
