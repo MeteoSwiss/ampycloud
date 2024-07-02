@@ -328,7 +328,7 @@ create a new release of ampycloud:
    - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/ampycloud/),
    - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages),
    - in the [live documentation](https://MeteoSwiss.github.io/ampycloud), and
-   - on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.8399683) (for which the connection to this repo is enbaled from Zenodo itself, by the admins of the MeteoSwiss organization on Github).
+   - on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.8399683) (for which the connection to this repo is enabled from Zenodo itself, by the admins of the MeteoSwiss organization on Github).
 
 ## Less-Essential things to know about ampycloud for dev work
 
