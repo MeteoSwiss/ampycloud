@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>ampycloud 1.0.0 &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <title>ampycloud 2.0.0 &mdash; ampycloud  documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,8 +16,9 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -34,7 +37,7 @@
             ampycloud
           </a>
               <div class="version">
-                1.0.0
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -72,7 +75,7 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="#" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">ampycloud 1.0.0   </li>
+      <li class="breadcrumb-item active">ampycloud 2.0.0   </li>
       <li class="wy-breadcrumbs-aside">
             <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
       </li>
@@ -83,7 +86,7 @@
            <div itemprop="articleBody">
              
   <section id="ampycloud-version-stars-watch-doi">
-<h1>ampycloud 1.0.0 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="stars" src="https://img.shields.io/github/stars/MeteoSwiss/ampycloud.svg?style=social&amp;label=Stars" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="watch" src="https://img.shields.io/github/watchers/MeteoSwiss/ampycloud.svg?style=social&amp;label=Watch" /></a> <a class="reference external" href="https://zenodo.org/doi/10.5281/zenodo.8399683"><img alt="doi" src="https://zenodo.org/badge/435391098.svg" /></a><a class="headerlink" href="#ampycloud-version-stars-watch-doi" title="Link to this heading"></a></h1>
+<h1>ampycloud 2.0.0 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="stars" src="https://img.shields.io/github/stars/MeteoSwiss/ampycloud.svg?style=social&amp;label=Stars" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="watch" src="https://img.shields.io/github/watchers/MeteoSwiss/ampycloud.svg?style=social&amp;label=Watch" /></a> <a class="reference external" href="https://zenodo.org/doi/10.5281/zenodo.8399683"><img alt="doi" src="https://zenodo.org/badge/435391098.svg" /></a><a class="headerlink" href="#ampycloud-version-stars-watch-doi" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://www.meteoswiss.admin.ch"><img alt="copyright" src="https://img.shields.io/badge/MeteoSwiss-%C2%A9_2021--2023-black?logo=data%3Aimage%2Fsvg%2Bxml%3Bbase64%2CPHN2ZyAgIHhtbG5zOmRjPSJodHRwOi8vcHVybC5vcmcvZGMvZWxlbWVudHMvMS4xLyIgICB4bWxuczpjYz0iaHR0cDovL2NyZWF0aXZlY29tbW9ucy5vcmcvbnMjIiAgIHhtbG5zOnJkZj0iaHR0cDovL3d3dy53My5vcmcvMTk5OS8wMi8yMi1yZGYtc3ludGF4LW5zIyIgICB4bWxuczpzdmc9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIgICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiICAgeG1sbnM6aW5rc2NhcGU9Imh0dHA6Ly93d3cuaW5rc2NhcGUub3JnL25hbWVzcGFjZXMvaW5rc2NhcGUiICAgd2lkdGg9Ijc3LjI2Njk5OHB0IiAgIGhlaWdodD0iODUuNTQ1NDcxcHQiICAgdmlld0JveD0iMCAwIDc3LjI2Njk5NCA4NS41NDU0NzMiICAgdmVyc2lvbj0iMS4yIiAgIGlkPSJzdmcyODciICAgc29kaXBvZGk6ZG9jbmFtZT0iU2hpZWxkX3JnYl9wb3NfRU4uc3ZnIiAgIGlua3NjYXBlOnZlcnNpb249IjAuOTIuMiA1YzNlODBkLCAyMDE3LTA4LTA2IiAgIGlua3NjYXBlOmV4cG9ydC1maWxlbmFtZT0iL1VzZXJzL2Z2b2d0L1Byb2plY3RzL2N1cnJlbnQvTUNIL1NFVC9TaGllbGRfcmdiX3Bvc19FTi5wbmciICAgaW5rc2NhcGU6ZXhwb3J0LXhkcGk9IjI5OTkuNjY3NyIgICBpbmtzY2FwZTpleHBvcnQteWRwaT0iMjk5OS42Njc3Ij4gIDxtZXRhZGF0YSAgICAgaWQ9Im1ldGFkYXRhMjkxIj4gICAgPHJkZjpSREY+ICAgICAgPGNjOldvcmsgICAgICAgICByZGY6YWJvdXQ9IiI+ICAgICAgICA8ZGM6Zm9ybWF0PmltYWdlL3N2Zyt4bWw8L2RjOmZvcm1hdD4gICAgICAgIDxkYzp0eXBlICAgICAgICAgICByZGY6cmVzb3VyY2U9Imh0dHA6Ly9wdXJsLm9yZy9kYy9kY21pdHlwZS9TdGlsbEltYWdlIiAvPiAgICAgICAgPGRjOnRpdGxlPjwvZGM6dGl0bGU+ICAgICAgPC9jYzpXb3JrPiAgICA8L3JkZjpSREY+ICA8L21ldGFkYXRhPiAgPHNvZGlwb2RpOm5hbWVkdmlldyAgICAgcGFnZWNvbG9yPSIjZmZmZmZmIiAgICAgYm9yZGVyY29sb3I9IiM2NjY2NjYiICAgICBib3JkZXJvcGFjaXR5PSIxIiAgICAgb2JqZWN0dG9sZXJhbmNlPSIxMCIgICAgIGdyaWR0b2xlcmFuY2U9IjEwIiAgICAgZ3VpZGV0b2xlcmFuY2U9IjEwIiAgICAgaW5rc2NhcGU6cGFnZW9wYWNpdHk9IjAiICAgICBpbmtzY2FwZTpwYWdlc2hhZG93PSIyIiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxMzMyIiAgICAgaW5rc2NhcGU6d2luZG93LWhlaWdodD0iNzkwIiAgICAgaWQ9Im5hbWVkdmlldzI4OSIgICAgIHNob3dncmlkPSJmYWxzZSIgICAgIGZpdC1tYXJnaW4tdG9wPSIwIiAgICAgZml0LW1hcmdpbi1sZWZ0PSIwIiAgICAgZml0LW1hcmdpbi1yaWdodD0iMCIgICAgIGZpdC1tYXJnaW4tYm90dG9tPSIwIiAgICAgaW5rc2NhcGU6em9vbT0iMi4yMDMwNTA3IiAgICAgaW5rc2NhcGU6Y3g9IjEzNS42OTUzMyIgICAgIGlua3NjYXBlOmN5PSIyNi4yMjE0NDQiICAgICBpbmtzY2FwZTp3aW5kb3cteD0iNDkiICAgICBpbmtzY2FwZTp3aW5kb3cteT0iMTIiICAgICBpbmtzY2FwZTp3aW5kb3ctbWF4aW1pemVkPSIwIiAgICAgaW5rc2NhcGU6Y3VycmVudC1sYXllcj0ic3ZnMjg3IiAgICAgaW5rc2NhcGU6bWVhc3VyZS1zdGFydD0iMCwwIiAgICAgaW5rc2NhcGU6bWVhc3VyZS1lbmQ9IjAsMCIgLz4gIDxkZWZzICAgICBpZD0iZGVmczM4Ij4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwMSI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDE1MywyIGggMi45ODgyOCBWIDggSCAxNTMgWiBtIDAsMCIgICAgICAgICBpZD0icGF0aDIiICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwMiI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDI5LDUzIGggNCB2IDYuMDUwNzgxIGggLTQgeiBtIDAsMCIgICAgICAgICBpZD0icGF0aDUiICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwMyI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDQyLDU1IGggNCB2IDQuMDUwNzgxIGggLTQgeiBtIDAsMCIgICAgICAgICBpZD0icGF0aDgiICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwNCI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDQ2LDU1IGggMyB2IDQuMDUwNzgxIGggLTMgeiBtIDAsMCIgICAgICAgICBpZD0icGF0aDExIiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+ICAgIDwvY2xpcFBhdGg+ICAgIDxjbGlwUGF0aCAgICAgICBpZD0iY2xpcDUiPiAgICAgIDxwYXRoICAgICAgICAgZD0ibSA1Miw1MyBoIDUgdiA2LjA1MDc4MSBoIC01IHogbSAwLDAiICAgICAgICAgaWQ9InBhdGgxNCIgICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAvPiAgICA8L2NsaXBQYXRoPiAgICA8Y2xpcFBhdGggICAgICAgaWQ9ImNsaXA2Ij4gICAgICA8cGF0aCAgICAgICAgIGQ9Im0gNTcsNTUgaCA1IHYgNC4wNTA3ODEgaCAtNSB6IG0gMCwwIiAgICAgICAgIGlkPSJwYXRoMTciICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwNyI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDcwLDU1IGggNCB2IDQuMDUwNzgxIGggLTQgeiBtIDAsMCIgICAgICAgICBpZD0icGF0aDIwIiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+ICAgIDwvY2xpcFBhdGg+ICAgIDxjbGlwUGF0aCAgICAgICBpZD0iY2xpcDgiPiAgICAgIDxwYXRoICAgICAgICAgZD0ibSA3NCw1MyBoIDUgdiA2LjA1MDc4MSBoIC01IHogbSAwLDAiICAgICAgICAgaWQ9InBhdGgyMyIgICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAvPiAgICA8L2NsaXBQYXRoPiAgICA8Y2xpcFBhdGggICAgICAgaWQ9ImNsaXA5Ij4gICAgICA8cGF0aCAgICAgICAgIGQ9Im0gNzksNTUgaCA0IHYgNC4wNTA3ODEgaCAtNCB6IG0gMCwwIiAgICAgICAgIGlkPSJwYXRoMjYiICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gICAgPGNsaXBQYXRoICAgICAgIGlkPSJjbGlwMTAiPiAgICAgIDxwYXRoICAgICAgICAgZD0ibSA4Nyw1NSBoIDQgdiA0LjA1MDc4MSBoIC00IHogbSAwLDAiICAgICAgICAgaWQ9InBhdGgyOSIgICAgICAgICBpbmtzY2FwZTpjb25uZWN0b3ItY3VydmF0dXJlPSIwIiAvPiAgICA8L2NsaXBQYXRoPiAgICA8Y2xpcFBhdGggICAgICAgaWQ9ImNsaXAxMSI+ICAgICAgPHBhdGggICAgICAgICBkPSJtIDkxLDU0IGggMyB2IDUuMDUwNzgxIGggLTMgeiBtIDAsMCIgICAgICAgICBpZD0icGF0aDMyIiAgICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+ICAgIDwvY2xpcFBhdGg+ICAgIDxjbGlwUGF0aCAgICAgICBpZD0iY2xpcDEyIj4gICAgICA8cGF0aCAgICAgICAgIGQ9Im0gOTYsNTUgaCA1IHYgNC4wNTA3ODEgaCAtNSB6IG0gMCwwIiAgICAgICAgIGlkPSJwYXRoMzUiICAgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPC9jbGlwUGF0aD4gIDwvZGVmcz4gIDxnICAgICBpZD0iZzQzNyIgICAgIHRyYW5zZm9ybT0ic2NhbGUoMy42MjY5NjkzKSI+ICAgIDxwYXRoICAgICAgIHN0eWxlPSJmaWxsOiNlYjIxMmI7ZmlsbC1vcGFjaXR5OjE7ZmlsbC1ydWxlOm5vbnplcm87c3Ryb2tlOm5vbmUiICAgICAgIGQ9Ik0gMjEuMjY2OTY1LDEuNzM4MjgxOCBDIDIxLjI2Njk2NSwxLjczODI4MTggMTcuMjk4MjE1LDAgMTAuNjUzNjg0LDAgNC4wMDkxNTE5LDAgMC4wMzY0OTYwNywxLjczODI4MTggMC4wMzY0OTYwNywxLjczODI4MTggYyAwLDAgLTAuMzU1NDY4Miw3LjY5NTMxMiAxLjE1MjM0MzgzLDEyLjA0Njg3NDIgMi42NjAxNTYsNy42NTIzNDQgOS40NjA5MzgxLDkuODAwNzgyIDkuNDYwOTM4MSw5LjgwMDc4MiBoIDAuMDAzOSBjIDAsMCA2LjgwMDc4MSwtMi4xNDg0MzggOS40NjA5MzcsLTkuODAwNzgyIDEuNTA3ODE5LC00LjM1MTU2MjIgMS4xNTIzNSwtMTIuMDQ2ODc0MyAxLjE1MjM1LC0xMi4wNDY4NzQzIiAgICAgICBpZD0icGF0aDI4MiIgICAgICAgaW5rc2NhcGU6Y29ubmVjdG9yLWN1cnZhdHVyZT0iMCIgLz4gICAgPHBhdGggICAgICAgc3R5bGU9ImZpbGw6I2ZmZmZmZjtmaWxsLW9wYWNpdHk6MTtmaWxsLXJ1bGU6bm9uemVybztzdHJva2U6bm9uZSIgICAgICAgZD0iTSAxNy43MDgzNzEsOC4zNzQ5OTk4IFYgMTIuNjEzMjgyIEggMTIuNzU5MTUyIFYgMTcuNTYyNSBIIDguNTIwODcwOSBWIDEyLjYxMzI4MiBIIDMuNTcxNjUxOSBWIDguMzc0OTk5OCBoIDQuOTQ5MjE5IHYgLTQuOTQ5MjE4IGggNC4yMzgyODExIHYgNC45NDkyMTggaCA0Ljk0OTIxOSIgICAgICAgaWQ9InBhdGgyODQiICAgICAgIGlua3NjYXBlOmNvbm5lY3Rvci1jdXJ2YXR1cmU9IjAiIC8+ICA8L2c+PC9zdmc+" /></a> <a class="reference external" href="https://opensource.org/licenses/BSD-3-Clause"><img alt="license" src="https://img.shields.io/badge/License-BSD--3--Clause-black" /></a>
 <a class="reference external" href="https://pypi.org/project/ampycloud/"><img alt="pypi" src="https://img.shields.io/pypi/v/ampycloud.svg?colorB=&lt;brightgreen&gt;" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="last-commit" src="https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues"><img alt="issues" src="https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/actions/workflows/CI_pytest_weekly.yml"><img alt="pytest-weekly" src="https://github.com/MeteoSwiss/ampycloud/actions/workflows/CI_pytest_weekly.yml/badge.svg" /></a></p>
 <figure class="align-center" id="id1">
@@ -94,11 +97,23 @@
 </figure>
 <section id="welcome-to-the-ampycloud-documentation">
 <h2>Welcome to the ampycloud documentation<a class="headerlink" href="#welcome-to-the-ampycloud-documentation" title="Link to this heading"></a></h2>
-<ul class="simple">
+<ul>
 <li><p><strong>What:</strong> ampycloud refers to both a <strong>Python package</strong> and the <strong>algorithm</strong> at its core, designed
-to characterize cloud layers (i.e. height and sky coverage fraction) using ceilometer measurements
-(i.e. automatic cloud base <em>hits</em>), and derive a corresponding METAR-like message.
-A visual illustration of the algorithm is visible in <a class="reference internal" href="#fig-demo"><span class="std std-numref">Fig. 1</span></a>.</p></li>
+to characterize cloud layers (i.e. sky coverage fraction and base height) using ceilometer measurements
+(i.e. cloud base <em>hits</em>), and derive a corresponding METAR-like message.
+A visual illustration of the algorithm is visible in <a class="reference internal" href="#fig-demo"><span class="std std-numref">Fig. 1</span></a>.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>At the moment, ampycloud <strong>cannot</strong> use backscatter profiles to derive cloud base hits independantly.</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>ampycloud does not challenge the quality/nature of the cloud base hits that it is being provided.
+It trusts them all fully and equally. The capacity of the algorithm to provide an accurate
+assessment of cloud layers above an aerodrome is thus directly limited by the ability of
+ceilometers to report clouds up to the aerodrome’s Minimum Sector Altitude in the first place.</p>
+</div>
+</li>
 <li><p><strong>Where:</strong> ampycloud lives in <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">a dedicated repository</a>
 under the <a class="reference external" href="https://github.com/MeteoSwiss">MeteoSwiss organization</a> on Github, where you can
 submit all your <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/discussions">questions</a> and
@@ -120,11 +135,20 @@ which requires all its dependencies to be robust and stable.</p>
 <p>This has the following implications for ampycloud:</p>
 <blockquote>
 <div><ul>
-<li><p>The scope of ampycloud will remain limited to the <strong>automatic processing of ceilometer
-hits</strong>.  In particular, ampycloud does not process Vertical Visibility (VV) measurements.
-Depending on the ceilometer type, the user will need to decide how to treat VV hits <em>before</em>
-passing them to ampycloud, e.g. by removing them or by converting them to cloud base
-heights.</p></li>
+<li><p>The scope of ampycloud will remain limited to the <strong>automatic processing of cloud base
+hits derived using ceilometers</strong>. Furthermore, ampycloud does not process
+Vertical Visibility (VV) measurements. Depending on the ceilometer type, the user will need
+to decide how to treat VV hits <em>before</em> passing them to ampycloud, e.g. by removing them or
+by converting them to cloud base heights.</p></li>
+<li><p>Note that regulation says that “if there are no clouds of operational significance
+and no restriction on vertical visibility and the abbreviation ‘CAVOK’ is not
+appropriate, the abbreviation ‘NSC’ should be used” (AMC1 MET.TR.205(e)(1)).
+ampycloud cannot decide whether a ‘CAVOK’ is appropriate, and will therefore
+always return ‘NSC’ if no clouds of operational significance are found. If no clouds
+are detected at all by the ceilometers, ampycloud will return ‘NCD’. Importantly,
+users should bear in mind that ampycloud cannot handle CB and TCU cases,
+such that any ‘NCD’/’NSC’ codes issued may need to be overwritten by the user in
+certain situations.</p></li>
 <li><p>ampycloud can evidently be used for R&amp;D work, but the code itself should not be
 seen as an R&amp;D platform.</p></li>
 <li><p>Contributions via Pull Requests are always welcome (and appreciated !), but will only be
@@ -194,7 +218,7 @@ JSON format) is not foreseen.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2024, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

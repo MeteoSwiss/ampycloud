@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="../">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ampycloud.utils package &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" href="../_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="../_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="../_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,7 @@
         <script src="../_static/jquery.js?v=5d32c60e"></script>
         <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="../_static/doctools.js?v=888ff710"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
         <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
@@ -34,7 +36,7 @@
             ampycloud
           </a>
               <div class="version">
-                1.0.0
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
@@ -119,40 +121,40 @@
 </section>
 <section id="module-ampycloud.utils.mocker">
 <span id="ampycloud-utils-mocker-module"></span><h2>ampycloud.utils.mocker module<a class="headerlink" href="#module-ampycloud.utils.mocker" title="Link to this heading"></a></h2>
-<p>Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.</p>
 <p>Distributed under the terms of the 3-Clause BSD License.</p>
 <p>SPDX-License-Identifier: BSD-3-Clause</p>
 <p>Module contains: tools to create mock datasets</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.utils.mocker.flat_layer">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">flat_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.flat_layer" title="Link to this definition"></a></dt>
-<dd><p>Generates a mock, flat, Gaussian cloud layer around a given altitude.</p>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">flat_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.flat_layer" title="Link to this definition"></a></dt>
+<dd><p>Generates a mock, flat, Gaussian cloud layer around a given height.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dts</strong> (<em>np.array of float</em>) – time deltas, in s, for the simulated ceilometer hits.</p></li>
-<li><p><strong>alt</strong> (<em>float</em>) – layer mean altitude, in ft.</p></li>
-<li><p><strong>alt_std</strong> (<em>float</em>) – layer altitude standard deviation, in ft.</p></li>
+<li><p><strong>height</strong> (<em>float</em>) – layer mean height, in ft above aerodrome level (aal).</p></li>
+<li><p><strong>height_std</strong> (<em>float</em>) – layer height standard deviation, in ft.</p></li>
 <li><p><strong>sky_cov_frac</strong> (<em>float</em>) – Sky coverage fraction. Random hits will be set to NaN to
 reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> – the simulated layer with columns [‘dt’, ‘alt’].</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> – the simulated layer with columns [‘dt’, ‘height’].</p>
 </dd>
 </dl>
 </dd></dl>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.utils.mocker.sin_layer">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">sin_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.sin_layer" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.mocker.</span></span><span class="sig-name descname"><span class="pre">sin_layer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_std</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">sky_cov_frac</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">period</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">amplitude</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.mocker.sin_layer" title="Link to this definition"></a></dt>
 <dd><p>Generates a sinusoidal cloud layer.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>dts</strong> (<em>np.array of float</em>) – time deltas, in s, for the simulated ceilometer hits.</p></li>
-<li><p><strong>alt</strong> (<em>float</em>) – layer mean altitude, in ft.</p></li>
-<li><p><strong>alt_std</strong> (<em>float</em>) – layer altitude standard deviation, in ft.</p></li>
+<li><p><strong>height</strong> (<em>float</em>) – layer mean height, in ft above aerodrome level (aal).</p></li>
+<li><p><strong>height_std</strong> (<em>float</em>) – layer height standard deviation, in ft.</p></li>
 <li><p><strong>sky_cov_frac</strong> (<em>float, optional</em>) – Sky coverage fraction. Random hits will be set to NaN to
 reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
 <li><p><strong>period</strong> (<em>int|float</em>) – period of the sine-wave, in s.</p></li>
@@ -160,7 +162,7 @@ reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> – the simulated layer with columns [‘alt’, ‘dt’].</p>
+<dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> – the simulated layer with columns [‘height’, ‘dt’].</p>
 </dd>
 </dl>
 </dd></dl>
@@ -179,7 +181,7 @@ reach this value. Must be 0 &lt;= x &lt;= 1.</p></li>
 Each dict should specify all the parameters required to generate a
 <a class="reference internal" href="#ampycloud.utils.mocker.sin_layer" title="ampycloud.utils.mocker.sin_layer"><code class="xref py py-func docutils literal notranslate"><span class="pre">sin_layer()</span></code></a> (with the exception of <code class="docutils literal notranslate"><span class="pre">dts</span></code> that will be computed directly
 from <code class="docutils literal notranslate"><span class="pre">lookback_time</span></code> and <code class="docutils literal notranslate"><span class="pre">hit_gap</span></code>):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;alt&#39;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;alt_std&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;sky_cov_frac&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="p">{</span><span class="s1">&#39;height&#39;</span><span class="p">:</span><span class="mi">1000</span><span class="p">,</span> <span class="s1">&#39;height_std&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;sky_cov_frac&#39;</span><span class="p">:</span> <span class="mi">1</span><span class="p">,</span>
 <span class="s1">&#39;period&#39;</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s1">&#39;amplitude&#39;</span><span class="p">:</span> <span class="mi">0</span><span class="p">}</span>
 </pre></div>
 </div>
@@ -188,8 +190,8 @@ from <code class="docutils literal notranslate"><span class="pre">lookback_time<
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
 <dd class="field-even"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> – a pandas DataFrame with the mock data, ready to be fed to
-ampycloud. Columns [‘ceilo’, ‘dt’, ‘alt’, ‘type’] correspond to 1) ceilo names, 2) time
-deltas in s, 3) hit altitudes in ft, and 4) hit type.</p>
+ampycloud. Columns [‘ceilo’, ‘dt’, ‘height’, ‘type’] correspond to 1) ceilo names, 2) time
+deltas in s, 3) hit heights in ft aal, and 4) hit type.</p>
 </dd>
 </dl>
 <div class="admonition-todo admonition" id="id1">
@@ -239,13 +241,13 @@ the mock dataset from its processing.</p>
 </section>
 <section id="module-ampycloud.utils.utils">
 <span id="ampycloud-utils-utils-module"></span><h2>ampycloud.utils.utils module<a class="headerlink" href="#module-ampycloud.utils.utils" title="Link to this heading"></a></h2>
-<p>Copyright (c) 2022 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Copyright (c) 2022-2024 MeteoSwiss, contributors listed in AUTHORS.</p>
 <p>Distributed under the terms of the 3-Clause BSD License.</p>
 <p>SPDX-License-Identifier: BSD-3-Clause</p>
 <p>Module contains: generic utilities</p>
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.utils.utils.check_data_consistency">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_data_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">req_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.check_data_consistency" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">check_data_consistency</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pdf</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">req_cols</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">DataFrame</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.check_data_consistency" title="Link to this definition"></a></dt>
 <dd><p>Assesses whether a given <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> is compatible with the requirements
 of ampycloud.</p>
 <dl class="field-list simple">
@@ -266,7 +268,7 @@ an <a class="reference internal" href="ampycloud.html#ampycloud.errors.Ampycloud
 things in <code class="docutils literal notranslate"><span class="pre">pdf</span></code>.</p>
 <p>Specifically, the input <code class="docutils literal notranslate"><span class="pre">pdf</span></code> must be a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with the following
 column names/types (formally defined in <a class="reference internal" href="ampycloud.html#ampycloud.hardcoded.REQ_DATA_COLS" title="ampycloud.hardcoded.REQ_DATA_COLS"><code class="xref py py-data docutils literal notranslate"><span class="pre">ampycloud.hardcoded.REQ_DATA_COLS</span></code></a>):</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">StringDtype</span><span class="p">(),</span> <span class="s1">&#39;dt&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;alt&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="o">/</span><span class="nb">int</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="s1">&#39;ceilo&#39;</span><span class="o">/</span><span class="n">pd</span><span class="o">.</span><span class="n">StringDtype</span><span class="p">(),</span> <span class="s1">&#39;dt&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;height&#39;</span><span class="o">/</span><span class="nb">float</span><span class="p">,</span> <span class="s1">&#39;type&#39;</span><span class="o">/</span><span class="nb">int</span>
 </pre></div>
 </div>
 <p>The <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> column contains the names/ids of the ceilometers as <code class="docutils literal notranslate"><span class="pre">pd.StringDtype()</span></code>.
@@ -277,19 +279,19 @@ for more info about this type.</p>
 observation and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> (i.e. <code class="docutils literal notranslate"><span class="pre">obs_time-ref_dt</span></code>). Ideally, <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> would be the issuing
 time of the METAR message, such that <code class="docutils literal notranslate"><span class="pre">dt</span></code> values are negative, with the smallest one
 corresponding to the oldest measurement.</p>
-<p>The <code class="docutils literal notranslate"><span class="pre">alt</span></code> column contains the cloud base hit altitudes reported by the ceilometers, in ft
-above ground.</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">height</span></code> column contains the cloud base hit heights reported by the ceilometers, in ft
+above aerodrome level.</p>
 <p>The <code class="docutils literal notranslate"><span class="pre">type</span></code> column contains integers that correspond to the hit <em>sequence id</em>. If a given
 ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
 cloud level 2, cloud level 3, etc …), the <code class="docutils literal notranslate"><span class="pre">type</span></code> of these measurements would be <code class="docutils literal notranslate"><span class="pre">1</span></code>,
 <code class="docutils literal notranslate"><span class="pre">2</span></code>, <code class="docutils literal notranslate"><span class="pre">3</span></code>, etc … Any data point with a <code class="docutils literal notranslate"><span class="pre">type</span></code> of <code class="docutils literal notranslate"><span class="pre">-1</span></code> will be flagged in the ampycloud
 plots as a vertical Visibility (VV) hit, <strong>but it will not be treated any differently than any
 other regular hit</strong>. Type <code class="docutils literal notranslate"><span class="pre">0</span></code> corresponds to no (cloud) detection, in which case the
-corresponding hit altitude should be a NaN.</p>
+corresponding hit height should be a NaN.</p>
 <div class="admonition important">
 <p class="admonition-title">Important</p>
 <p>A <strong>non-detection</strong> corresponds to a valid measurement with a <code class="docutils literal notranslate"><span class="pre">dt</span></code> value, a <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code>,
-and <code class="docutils literal notranslate"><span class="pre">NaN</span></code> as the altitude. It should not be confused with a <strong>non-observation</strong>,
+and <code class="docutils literal notranslate"><span class="pre">NaN</span></code> as the height. It should not be confused with a <strong>non-observation</strong>,
 when no data was acquired at all !</p>
 </div>
 <p>If it all sounds confusing, it is possible to obtain an example of the required data format
@@ -311,17 +313,25 @@ meeting the ampycloud requirements ahead of time via
 <li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> is not a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> is missing a required column.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> has a length of 0.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> has duplicated rows.</p></li>
+<li><p>any time step for any ceilometer corresponds to both a type 0 (no hit) and not 0 (some
+hit)</p></li>
+<li><p>any time step for any ceilometer corresponds to both a type -1 (VV hit) and not -1 (some
+hit/no hit)</p></li>
 </ul>
 </div></blockquote>
+<p>The latter check implies that ampycloud cannot be fed a VV hit in parallel to a cloud base hit.
+Should a specific ceilometer return VV hits in parallel to cloud base hits, it is up to the user
+to decide whether to feed one or the other.</p>
 <p>In addition, this will raise an <a class="reference internal" href="ampycloud.html#ampycloud.errors.AmpycloudWarning" title="ampycloud.errors.AmpycloudWarning"><code class="xref py py-class docutils literal notranslate"><span class="pre">ampycloud.errors.AmpycloudWarning</span></code></a> if:</p>
 <blockquote>
 <div><ul class="simple">
 <li><p>any of <code class="docutils literal notranslate"><span class="pre">pdf</span></code> column type is not as expected. Note that in this case, the code will try
 to correct the type on the fly.</p></li>
 <li><p><code class="docutils literal notranslate"><span class="pre">pdf</span></code> has any superfluous columns. In this case, the code will drop them automatically.</p></li>
-<li><p>Any hit altitude is negative.</p></li>
-<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code> hit has a non-NaN altitude.</p></li>
-<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">1</span></code> hit has a NaN altitude.</p></li>
+<li><p>Any hit height is negative.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">0</span></code> hit has a non-NaN height.</p></li>
+<li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">1</span></code> hit has a NaN height.</p></li>
 <li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">2</span></code> hit does not have a coincident <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">1</span></code> hit.</p></li>
 <li><p>Any <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">3</span></code> hit does not have a coincident <code class="docutils literal notranslate"><span class="pre">type</span> <span class="pre">2</span></code> hit.</p></li>
 </ul>
@@ -342,7 +352,7 @@ to correct the type on the fly.</p></li>
 
 <dl class="py function">
 <dt class="sig sig-object py" id="ampycloud.utils.utils.adjust_nested_dict">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">adjust_nested_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.adjust_nested_dict" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">adjust_nested_dict</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">ref_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">new_dict</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lvls</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">dict</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.adjust_nested_dict" title="Link to this definition"></a></dt>
 <dd><p>Update a given (nested) dictionnary given a second (possibly incomplete) one.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
@@ -366,9 +376,9 @@ There is no need for the user to set this to anything at first. Defaults to None
 </dd></dl>
 
 <dl class="py function">
-<dt class="sig sig-object py" id="ampycloud.utils.utils.calc_base_alt">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">calc_base_alt</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">_SupportsArray</span><span class="p"><span class="pre">[</span></span><span class="pre">dtype</span><span class="p"><span class="pre">[</span></span><span class="pre">Any</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">_NestedSequence</span><span class="p"><span class="pre">[</span></span><span class="pre">bool</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">float</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">complex</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">bytes</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">alt_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.calc_base_alt" title="Link to this definition"></a></dt>
-<dd><p>Calculate the layer base altitude.</p>
+<dt class="sig sig-object py" id="ampycloud.utils.utils.calc_base_height">
+<span class="sig-prename descclassname"><span class="pre">ampycloud.utils.utils.</span></span><span class="sig-name descname"><span class="pre">calc_base_height</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">vals</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">ndarray</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">lookback_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_perc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">float</span></span></span><a class="headerlink" href="#ampycloud.utils.utils.calc_base_height" title="Link to this definition"></a></dt>
+<dd><p>Calculate the layer base height.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters<span class="colon">:</span></dt>
 <dd class="field-odd"><ul class="simple">
@@ -376,12 +386,12 @@ There is no need for the user to set this to anything at first. Defaults to None
 array/ Series of scalars and ordered in time, most recent entries last.</p></li>
 <li><p><strong>lookback_perc</strong> (<em>int</em>) – Percentage of points to take into account. 100% would
 correspond to all points, 50% to the recent half, etc.</p></li>
-<li><p><strong>alt_perc</strong> (<em>int</em>) – Percentage of points that should be neglected when calculating
+<li><p><strong>height_perc</strong> (<em>int</em>) – Percentage of points that should be neglected when calculating
 the base height. Base height will be the minimum of the remaining points.</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns<span class="colon">:</span></dt>
-<dd class="field-even"><p><em>float</em> – The layer base altitude.</p>
+<dd class="field-even"><p><em>float</em> – The layer base height.</p>
 </dd>
 <dt class="field-odd">Raises<span class="colon">:</span></dt>
 <dd class="field-odd"><p><a class="reference internal" href="ampycloud.html#ampycloud.errors.AmpycloudError" title="ampycloud.errors.AmpycloudError"><strong>AmpycloudError</strong></a> – Raised if the array passed to the n_largest percentile calculation
@@ -403,7 +413,7 @@ the base height. Base height will be the minimum of the remaining points.</p></l
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2024, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Modules &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,8 +16,9 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -35,7 +38,7 @@
             ampycloud
           </a>
               <div class="version">
-                1.0.0
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -152,6 +155,7 @@
 <li class="toctree-l4"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk.groups"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.groups</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk.n_layers"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.n_layers</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk.layers"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.layers</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk.clouds_above_msa_buffer"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.clouds_above_msa_buffer</span></code></a></li>
 <li class="toctree-l4"><a class="reference internal" href="modules/ampycloud.html#ampycloud.data.CeiloChunk.metar_msg"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.metar_msg()</span></code></a></li>
 </ul>
 </li>
@@ -206,7 +210,7 @@
 <li class="toctree-l3"><a class="reference internal" href="modules/ampycloud.html#ampycloud.wmo.perc2okta"><code class="docutils literal notranslate"><span class="pre">perc2okta()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/ampycloud.html#ampycloud.wmo.okta2code"><code class="docutils literal notranslate"><span class="pre">okta2code()</span></code></a></li>
 <li class="toctree-l3"><a class="reference internal" href="modules/ampycloud.html#ampycloud.wmo.okta2symb"><code class="docutils literal notranslate"><span class="pre">okta2symb()</span></code></a></li>
-<li class="toctree-l3"><a class="reference internal" href="modules/ampycloud.html#ampycloud.wmo.alt2code"><code class="docutils literal notranslate"><span class="pre">alt2code()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="modules/ampycloud.html#ampycloud.wmo.height2code"><code class="docutils literal notranslate"><span class="pre">height2code()</span></code></a></li>
 </ul>
 </li>
 </ul>
@@ -226,7 +230,7 @@
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2024, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

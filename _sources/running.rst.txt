@@ -19,7 +19,7 @@ A no-words example for those that want to get started quickly
     # Your data should have *exactly* this structure
     mock_data = mocker.canonical_demo_data()
 
-    # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
+    # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal
     chunk = ampycloud.run(mock_data, prms={'MSA': 10000},
                           geoloc='Mock data', ref_dt=datetime.now())
 
@@ -36,8 +36,8 @@ A no-words example for those that want to get started quickly
 The input data
 --------------
 
-The ampycloud algorithm is meant to process cloud base *hits* from ceilometer observations. A given
-set of hits to be processed by the ampycloud package must be stored inside a
+The ampycloud algorithm is meant to process cloud base *hits* derived from ceilometer observations.
+A given set of hits to be processed by the ampycloud package must be stored inside a
 :py:class:`pandas.DataFrame` with a specific set of characteristics outlined below. Users can use
 the following utility function to check whether a given :py:class:`pandas.DataFrame` meets all the
 requirements of ampycloud.

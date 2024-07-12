@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The ampycloud scientific parameters &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -35,7 +37,7 @@
             ampycloud
           </a>
               <div class="version">
-                1.0.0
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -117,8 +119,8 @@ for details.</p>
 <span class="c1"># Plotting style. Can be one of &#39;base&#39;, &#39;latex&#39;, &#39;metsymb&#39;</span>
 <span class="nt">MPL_STYLE</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;base&#39;</span>
 
-<span class="c1"># Minimum Sector Altitude, in ft. No cloud layers with a base above this value will be reported</span>
-<span class="c1"># in the ampycloud METAR messages. Set it to null for no limit.</span>
+<span class="c1"># Minimum Sector Altitude, in ft above aerodrome level. No cloud layers with a base above this value</span>
+<span class="c1"># will be reported in the ampycloud METAR messages. Set it to null for no limit.</span>
 <span class="nt">MSA</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">null</span>
 
 <span class="c1"># Additional distance above the MSA value (in ft) beyond which hits will be ignored (=cropped) by</span>
@@ -133,32 +135,32 @@ for details.</p>
 <span class="nt">MAX_HOLES_OKTA8</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1</span>
 
 <span class="c1"># Number (in %) of the cloud hit heights (sorted from smallest to highest) to ignore when</span>
-<span class="c1"># computing the cloud altitude base, taken to be the min altitude of the</span>
+<span class="c1"># computing the cloud base height, taken to be the min height of the</span>
 <span class="c1"># 100-LAYER_BASE_LVL_PERC % remaining points.</span>
-<span class="nt">BASE_LVL_ALT_PERC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
+<span class="nt">BASE_LVL_HEIGHT_PERC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">5</span>
 
 <span class="c1"># Number of Slice/Group/Layer points (in %) - starting from the most recent ones -</span>
-<span class="c1"># to use to compute the cloud base altitude. 30 would use only the 30% youngest hits.</span>
+<span class="c1"># to use to compute the cloud base height. 30 would use only the 30% youngest hits.</span>
 <span class="c1"># Set to 100 to use all the points.</span>
 <span class="nt">BASE_LVL_LOOKBACK_PERC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
 
-<span class="c1"># LOWESS parameters used to fit Slice/Groups/Layers altitude trends</span>
+<span class="c1"># LOWESS parameters used to fit Slice/Groups/Layers height trends</span>
 <span class="nt">LOWESS</span><span class="p">:</span>
 <span class="w">    </span><span class="c1"># Fraction of the slice/group/layer points to consider when deriving the LOWESS smooth fit.</span>
 <span class="w">    </span><span class="c1"># Values too small will result in overfitting. Values too large will miss rapid</span>
-<span class="w">    </span><span class="c1"># altitude fluctuations.</span>
+<span class="w">    </span><span class="c1"># height fluctuations.</span>
 <span class="w">    </span><span class="nt">frac</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.35</span>
 <span class="w">    </span><span class="c1"># Number of LOWESS fitting iterations</span>
 <span class="w">    </span><span class="nt">it</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">3</span>
 
-<span class="c1"># Minimum separation (in ft) between the base altitudes of identified layers inside groups</span>
-<span class="c1"># with a base altitude in the bins set by min_sep_lims. Any layers separated by less than this</span>
+<span class="c1"># Minimum separation (in ft) between the base heights of identified layers inside groups</span>
+<span class="c1"># with a base height in the bins set by min_sep_lims. Any layers separated by less than this</span>
 <span class="c1"># value will be remerged into one layer. Any value &lt; than 5 times the vertical resolution of the data will</span>
 <span class="c1"># raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR</span>
 <span class="c1"># messages to be consistent with the ICAO rules of layer selection, this should be &gt;=100 ft</span>
 <span class="c1"># below 10&#39;000 ft.</span>
 <span class="nt">MIN_SEP_VALS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span>
-<span class="c1"># Altitude threshold (in ft) separating the min_sep_val elements.</span>
+<span class="c1"># Height threshold (in ft) separating the min_sep_val elements.</span>
 <span class="c1"># The 0 and + infty extrema will be automatically added to the list by ampycloud.</span>
 <span class="c1"># Just list here the intermediate steps.</span>
 <span class="nt">MIN_SEP_LIMS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">10000</span><span class="p p-Indicator">]</span>
@@ -169,24 +171,22 @@ for details.</p>
 <span class="w">    </span><span class="nt">distance_threshold</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.2</span>
 <span class="w">    </span><span class="c1"># Time scaling factor</span>
 <span class="w">    </span><span class="nt">dt_scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100000</span>
-<span class="w">    </span><span class="c1"># Altitude scaling mode</span>
-<span class="w">    </span><span class="nt">alt_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minmax-scale</span>
-<span class="w">    </span><span class="c1"># Altitude scaling parameters (in ft)</span>
-<span class="w">    </span><span class="nt">alt_scale_kwargs</span><span class="p">:</span>
+<span class="w">    </span><span class="c1"># Height scaling mode</span>
+<span class="w">    </span><span class="nt">height_scale_mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">minmax-scale</span>
+<span class="w">    </span><span class="c1"># Height scaling parameters (in ft)</span>
+<span class="w">    </span><span class="nt">height_scale_kwargs</span><span class="p">:</span>
 <span class="w">        </span><span class="nt">min_range</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1000</span>
 
 <span class="c1"># Clustering parameters</span>
 <span class="nt">GROUPING_PRMS</span><span class="p">:</span>
-<span class="w">    </span><span class="c1"># Padding (in % of the slice altitude range) to add above and below slices</span>
+<span class="w">    </span><span class="c1"># Padding (in % of the slice height range) to add above and below slices</span>
 <span class="w">    </span><span class="c1"># before looking for overlaps</span>
-<span class="w">    </span><span class="nt">alt_pad_perc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">+10</span>
+<span class="w">    </span><span class="nt">height_pad_perc</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">+10</span>
 <span class="w">    </span><span class="c1"># Time scaling factor (in s)</span>
 <span class="w">    </span><span class="nt">dt_scale</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">180</span>
-<span class="w">    </span><span class="c1"># Boost factor, applied to the slice fluffiness to derive the altitude scaling factor</span>
-<span class="w">    </span><span class="nt">fluffiness_boost</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
-<span class="w">    </span><span class="c1"># Range of allowed altitude scaling factor (in ft). The fluffiness_boost will never be allowed</span>
-<span class="w">    </span><span class="c1"># to push the alt_scaling beyond this range.</span>
-<span class="w">    </span><span class="nt">alt_scale_range</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">]</span>
+<span class="w">    </span><span class="c1"># Range of allowed height scaling factor (in ft). The fluffiness will never be allowed</span>
+<span class="w">    </span><span class="c1"># to push the height_scaling beyond this range.</span>
+<span class="w">    </span><span class="nt">height_scale_range</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">100</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">500</span><span class="p p-Indicator">]</span>
 
 <span class="c1"># Layering parameters</span>
 <span class="nt">LAYERING_PRMS</span><span class="p">:</span>
@@ -223,7 +223,7 @@ for details.</p>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2024, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a

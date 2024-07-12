@@ -1,12 +1,14 @@
 <!DOCTYPE html>
-<html class="writer-html5" lang="en" >
+<html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.18.1: http://docutils.sourceforge.net/" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>&lt;no title&gt; &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
-      <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -14,7 +16,7 @@
         <script src="_static/jquery.js?v=5d32c60e"></script>
         <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
         <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=888ff710"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
@@ -33,7 +35,7 @@
             ampycloud
           </a>
               <div class="version">
-                1.0.0
+                2.0.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -86,11 +88,20 @@ which requires all its dependencies to be robust and stable.</p>
 <p>This has the following implications for ampycloud:</p>
 <blockquote>
 <div><ul>
-<li><p>The scope of ampycloud will remain limited to the <strong>automatic processing of ceilometer
-hits</strong>.  In particular, ampycloud does not process Vertical Visibility (VV) measurements.
-Depending on the ceilometer type, the user will need to decide how to treat VV hits <em>before</em>
-passing them to ampycloud, e.g. by removing them or by converting them to cloud base
-heights.</p></li>
+<li><p>The scope of ampycloud will remain limited to the <strong>automatic processing of cloud base
+hits derived using ceilometers</strong>. Furthermore, ampycloud does not process
+Vertical Visibility (VV) measurements. Depending on the ceilometer type, the user will need
+to decide how to treat VV hits <em>before</em> passing them to ampycloud, e.g. by removing them or
+by converting them to cloud base heights.</p></li>
+<li><p>Note that regulation says that “if there are no clouds of operational significance
+and no restriction on vertical visibility and the abbreviation ‘CAVOK’ is not
+appropriate, the abbreviation ‘NSC’ should be used” (AMC1 MET.TR.205(e)(1)).
+ampycloud cannot decide whether a ‘CAVOK’ is appropriate, and will therefore
+always return ‘NSC’ if no clouds of operational significance are found. If no clouds
+are detected at all by the ceilometers, ampycloud will return ‘NCD’. Importantly,
+users should bear in mind that ampycloud cannot handle CB and TCU cases,
+such that any ‘NCD’/’NSC’ codes issued may need to be overwritten by the user in
+certain situations.</p></li>
 <li><p>ampycloud can evidently be used for R&amp;D work, but the code itself should not be
 seen as an R&amp;D platform.</p></li>
 <li><p>Contributions via Pull Requests are always welcome (and appreciated !), but will only be
@@ -123,7 +134,7 @@ JSON format) is not foreseen.</p></li>
   <hr/>
 
   <div role="contentinfo">
-    <p>&#169; Copyright 2021-2023, MeteoSwiss.</p>
+    <p>&#169; Copyright 2021-2024, MeteoSwiss.</p>
   </div>
 
   Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
