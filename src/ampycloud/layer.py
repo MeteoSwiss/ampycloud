@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-CLause BSD License.
 
@@ -142,9 +142,9 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 def ncomp_from_gmm(vals: np.ndarray,
                    ncomp_max: int = 3,
                    min_sep: Union[int, float] = 0,
-                   layer_base_params: dict[str, int] = {'lookback_perc': 100, 'alt_perc': 5},
+                   layer_base_params: Union[dict[str, int], None] = None,
                    scores: str = 'BIC',
-                   rescale_0_to_x: float = None,
+                   rescale_0_to_x: Union[float, None] = None,
                    random_seed: int = 42,
                    **kwargs: dict) -> tuple:
     """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
@@ -160,6 +160,7 @@ def ncomp_from_gmm(vals: np.ndarray,
             first decide how many components looks "best", at which point these may get merged
             depending on min_sep. I.e. min_sep does not lead to re-running the GMM, it only merges
             the identified layers if required.
+        layer_base_params: Defined ampycloud parameters.
         scores (str, optional): either 'BIC' or 'AIC', to use Baysian Information Criterion or
             Akaike Information criterion scores.
         rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value
@@ -179,6 +180,9 @@ def ncomp_from_gmm(vals: np.ndarray,
         This function was inspired from the "1-D Gaussian Mixture Model" example from astroML:
         `<https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html>`_
     """
+
+    if layer_base_params is None:
+        layer_base_params = {'lookback_perc': 100, 'height_perc': 5}
 
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
@@ -218,9 +222,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     models = {}
 
     # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
-    with utils.tmp_seed(random_seed):
-        for n_val in ncomp:
-            models[n_val] = GaussianMixture(n_val, covariance_type='spherical').fit(vals)
+    for n_val in ncomp:
+        models[n_val] = GaussianMixture(n_val, covariance_type='spherical',
+                                        random_state=random_seed).fit(vals)
 
     # Extract the AICS and BICS scores
     if scores == 'AIC':
@@ -230,26 +234,36 @@ def ncomp_from_gmm(vals: np.ndarray,
     else:
         raise AmpycloudError(f'Unknown scores: {scores}')
 
+    # Fix #119: at times, not all sub-layers may be populated by GaussianMixture.
+    # To avoid problems down the line, we shall boost the abics score of such cases to make sure
+    # they are NOT taken as the best model
+    for (n_id, n_val) in enumerate(ncomp):
+        if (n_eff := len(np.unique(models[n_val].predict(vals)))) < n_val:
+            logger.warning(' %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. '
+                           'Ruling out %i components as a possibility.',
+                           n_eff, n_val, n_val, n_val)
+            abics[n_id] = max(abics) + 1  # The larger the abics score, the worst the fit.
+
     # Get the interesting information out
     best_model_ind = best_gmm(abics, **kwargs)
     best_ncomp = ncomp[best_model_ind]
     best_ids = models[ncomp[best_model_ind]].predict(vals)
 
-    logger.debug('%s scores: %s', scores, abics)
-    logger.debug('best_model_ind (raw): %i', best_model_ind)
-    logger.debug('best_ncomp (raw): %i', best_ncomp)
+    logger.debug(' %s scores: %s', scores, abics)
+    logger.debug(' best_model_ind (raw): %i', best_model_ind)
+    logger.debug(' best_ncomp (raw): %i', best_ncomp)
 
     # If I found only one component, I can stop here
     if best_ncomp == 1:
         return best_ncomp, best_ids, abics
 
     # If I found more than one component, let's make sure that they are sufficiently far apart.
-    # First, let's compute the component base altitude
+    # First, let's compute the component base height
     base_comp_heights = [
-        utils.calc_base_alt(
+        utils.calc_base_height(
             vals_orig[best_ids == i].flatten(),
             layer_base_params['lookback_perc'],
-            layer_base_params['alt_perc']
+            layer_base_params['height_perc']
         ) for i in range(ncomp[best_model_ind])
     ]
 

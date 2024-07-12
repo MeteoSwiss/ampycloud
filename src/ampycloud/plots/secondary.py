@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 @set_mplstyle
 @log_func_call(logger)
 def scaling_fcts(show: bool = True,
-                 save_stem: str = None, save_fmts: Union[list, str] = None) -> None:
+                 save_stem: Union[str, None] = None, save_fmts: Union[list, str, None] = None) -> None:
     """ Plots the different scaling functions.
 
     Args:
@@ -38,7 +38,7 @@ def scaling_fcts(show: bool = True,
        save_fmts (list|str, optional): a list of file formats to export the plot to. Defaults to
            None = ['png'].
 
-    This is a small utility routine to rapidly see the different altitude scaling options used by
+    This is a small utility routine to rapidly see the different height scaling options used by
     ampycloud.
 
     For the "step" scaling plot, the parameters are taken straight from dynamic.GROUPING_PRMS.
@@ -65,17 +65,17 @@ def scaling_fcts(show: bool = True,
     ax3 = fig.add_subplot(fig_gs[0, 2])
 
     # Plot the different scaling laws
-    alts = np.arange(0, 25000, 10)
+    heights = np.arange(0, 25000, 10)
 
     # Plot the slicing scale
-    ax1.plot(alts, apply_scaling(alts, fct='shift-and-scale', **{'scale': 1000}), c='k', lw=2)
+    ax1.plot(heights, apply_scaling(heights, fct='shift-and-scale', **{'scale': 1000}), c='k', lw=2)
     ax1.set_title(texify(r'\smaller shift-and-scale'))
 
-    ax2.plot(alts, apply_scaling(alts, fct='minmax-scale'), c='k', lw=2)
+    ax2.plot(heights, apply_scaling(heights, fct='minmax-scale'), c='k', lw=2)
     ax2.set_title(texify(r'\smaller minmax-scale'))
 
-    ax3.plot(alts, apply_scaling(
-        alts, fct='step-scale',
+    ax3.plot(heights, apply_scaling(
+        heights, fct='step-scale',
         **{'steps': [3000, 8000], 'scales': [100, 500, 1000]}), c='k', lw=2)
     ax3.set_title(texify(r'\smaller step-scale'))
 

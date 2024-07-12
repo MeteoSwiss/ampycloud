@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the BSD-3-Clause license.
 
@@ -56,11 +56,11 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     """
 
     # Let's take a look at the path I was given
-    save_loc = Path(save_loc)
+    given_path = Path(save_loc)
     # I won't create stuff for the users. ampycloud is not that nice.
-    if not save_loc.exists():
+    if not given_path.exists():
         raise AmpycloudError('save_loc does not appear to exist !')
-    if not save_loc.is_dir():
+    if not given_path.is_dir():
         raise AmpycloudError('save_loc does not appear to be a directory !')
 
     # Next, let's look at all the parameter files available ...
@@ -73,11 +73,11 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
         raise AmpycloudError(f'Parameter file {fname} not found.')
 
-    if (save_loc / fname).exists():
-        raise AmpycloudError(f'File {fname} already exists at save_loc={save_loc}')
+    if (given_path / fname).exists():
+        raise AmpycloudError(f'File {fname} already exists at save_loc={given_path}')
 
     # All looks good, let's copy the file
-    copy(ref_loc / fname, save_loc / fname)
+    copy(ref_loc / fname, given_path / fname)
 
 
 @log_func_call(logger)
@@ -131,8 +131,12 @@ def set_prms(pth: Union[str, Path]) -> None:
 
 
 @log_func_call(logger)
-def reset_prms() -> None:
+def reset_prms(which: Union[str, list, None] = None) -> None:
     """ Reset the ampycloud dynamic=scientific parameters to their default values.
+
+    Args:
+        which (str|list, optional): (list of) names of parameters to reset specifically.
+            If not set (by default), all parameters will be reset.
 
     Example:
         ::
@@ -148,12 +152,26 @@ def reset_prms() -> None:
 
     """
 
-    dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
+    if which is None:
+        dynamic.AMPYCLOUD_PRMS = dynamic.get_default_prms()
+        return
+
+    # Ok, reset the parameters one at a time
+    default_prms = dynamic.get_default_prms()
+
+    # Clean up which
+    which = [which] if isinstance(which, str) else which
+
+    for prm in which:
+        if prm not in default_prms.keys():
+            raise AmpycloudError(f'Unknown parameter name: {prm}')
+
+        dynamic.AMPYCLOUD_PRMS[prm] = default_prms[prm]
 
 
 @log_func_call(logger)
-def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
-        ref_dt: Union[str, datetime] = None) -> CeiloChunk:
+def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, None] = None,
+        ref_dt: Union[str, datetime, None] = None) -> CeiloChunk:
     """ Runs the ampycloud algorithm on a given dataset.
 
     Args:
@@ -179,7 +197,7 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
 
     .. important ::
         ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
-        to the user to adjust the Vertical Visibility hit altitude (and/or ignore some of them, for
+        to the user to adjust the Vertical Visibility hit height (and/or ignore some of them, for
         example) prior to feeding them to ampycloud, so that it can be used as a cloud hit.
 
     .. important::
@@ -193,7 +211,7 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
 
     All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`
     module. From within a Python session all these parameters can be changed directly. For example,
-    to change the Minimum Sector Altitude, one would do:
+    to change the Minimum Sector Altitude (to be specified in ft aal), one would do:
     ::
 
         from ampycloud import dynamic
@@ -223,7 +241,7 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
     The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
     info. Its method :py:meth:`.data.CeiloChunk.metar_msg` provides direct access to the resulting
-    METAR-like message. Users that require the altitude, okta amount, and/or exact sky coverage
+    METAR-like message. Users that require the height, okta amount, and/or exact sky coverage
     fraction of layers can get them via the :py:attr:`.data.CeiloChunk.layers` class property.
 
     Example:
@@ -239,7 +257,7 @@ def run(data: pd.DataFrame, prms: dict = None, geoloc: str = None,
             # Generate the canonical demo dataset for ampycloud
             mock_data = mocker.canonical_demo_data()
 
-            # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft
+            # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal.
             chunk = ampycloud.run(mock_data, prms={'MSA':10000},
                                   geoloc='Mock data', ref_dt=datetime.now())
 

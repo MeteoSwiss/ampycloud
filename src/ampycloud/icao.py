@@ -44,7 +44,7 @@ def significant_cloud(oktas: list) -> list:
     """
 
     sig_level = 0
-    sig = []
+    sig: list[bool] = []
     for okta in oktas:
         # There can be no more than 3 significant cloud layers.
         # See that footnote 14 in the ICAO doc !

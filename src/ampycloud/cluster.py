@@ -10,7 +10,7 @@ Module contains: clustering tools
 
 # Import from Python
 import logging
-from typing import Union
+from typing import Optional, Union
 import numpy as np
 from sklearn.cluster import AgglomerativeClustering
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
+def agglomerative_cluster(data: np.ndarray, n_clusters: Union[int, None] = None,
                           metric: str = 'euclidean', linkage: str = 'single',
                           distance_threshold: Union[int, float] = 1) -> tuple:
     """ Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
@@ -54,7 +54,7 @@ def agglomerative_cluster(data: np.ndarray, n_clusters: int = None,
 
 
 @log_func_call(logger)
-def clusterize(data: np.ndarray, algo: str = None, **kwargs: dict) -> tuple:
+def clusterize(data: np.ndarray, algo: Union[str, None] = None, **kwargs: dict) -> Optional[tuple]:
     """ Umbrella clustering routine, that provides a single access point to the different clustering
     algorithms.
 

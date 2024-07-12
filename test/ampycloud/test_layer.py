@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -93,10 +93,10 @@ def test_unstable_layers():
         data = pd.read_csv(f)
 
     # Drop anything below 6500 ft
-    data = data.drop(data[data['alt'] < 6500].index)
+    data = data.drop(data[data['height'] < 6500].index)
 
     # Let's run the the Gaussian Mixture Modelling 100 times ...
-    out = [ncomp_from_gmm(data['alt'].to_numpy(),
+    out = [ncomp_from_gmm(data['height'].to_numpy(),
                           scores='BIC', rescale_0_to_x=100,
                           min_sep=200,
                           random_seed=45,
@@ -108,7 +108,7 @@ def test_unstable_layers():
     # Now do it once, but checking that overly-thin layers do not get split-up
     # Do I issue a warning if the min_sep is dangerously small ?
     with pytest.warns(AmpycloudWarning):
-        best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
+        best_ncomp, _, _ = ncomp_from_gmm(data['height'].to_numpy(),
                                           scores='BIC', rescale_0_to_x=100,
                                           min_sep=0,
                                           random_seed=39,
@@ -116,7 +116,7 @@ def test_unstable_layers():
         # With this specific seed, I should be finding 3 layers
         assert best_ncomp == 3
         # With this other seed, I should get 2 components
-        best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
+        best_ncomp, _, _ = ncomp_from_gmm(data['height'].to_numpy(),
                                           scores='BIC', rescale_0_to_x=100,
                                           min_sep=0,
                                           random_seed=45,
@@ -124,7 +124,7 @@ def test_unstable_layers():
         assert best_ncomp == 2
 
     # Once I take into account a suitable min_sep, do the layers not get split anymore ?
-    best_ncomp, _, _ = ncomp_from_gmm(data['alt'].to_numpy(),
+    best_ncomp, _, _ = ncomp_from_gmm(data['height'].to_numpy(),
                                       scores='BIC', rescale_0_to_x=100,
                                       min_sep=200,
                                       random_seed=45,

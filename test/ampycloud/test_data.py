@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -31,7 +31,7 @@ def test_ceilochunk_init():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                   [{'height': 1000, 'height_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
     # The following line is required as long as the mocker module issues mock data with type 99.
     mock_data.iloc[-1, mock_data.columns.get_loc('type')] = 1
@@ -53,7 +53,7 @@ def test_ceilochunk_init():
 
     # And now again, but this time with a large hit buffer that coverts all the data
     dynamic.AMPYCLOUD_PRMS['MSA'] = 0
-    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = mock_data['alt'].max() + 10
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = mock_data['height'].max() + 10
     chunk = CeiloChunk(mock_data)
     assert len(chunk.data) == len(mock_data)
 
@@ -67,9 +67,9 @@ def test_ceilochunk_init():
     assert dynamic.AMPYCLOUD_PRMS['MSA'] == 0
 
     # Check the ability to set nested parameters in one go
-    chunk = CeiloChunk(mock_data, prms={'GROUPING_PRMS': {'alt_pad_perc': 'test'}})
-    assert chunk.prms['GROUPING_PRMS']['alt_pad_perc'] == 'test'
-    assert dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['alt_pad_perc'] == +10
+    chunk = CeiloChunk(mock_data, prms={'GROUPING_PRMS': {'height_pad_perc': 'test'}})
+    assert chunk.prms['GROUPING_PRMS']['height_pad_perc'] == 'test'
+    assert dynamic.AMPYCLOUD_PRMS['GROUPING_PRMS']['height_pad_perc'] == +10
 
     # Check that warnings are raised in case bad parameters are given
     with warns(AmpycloudWarning):
@@ -77,6 +77,33 @@ def test_ceilochunk_init():
         assert chunk.prms == dynamic.AMPYCLOUD_PRMS
 
     # Let's not forget to reset the dynamic parameters to not mess up the other tests
+    reset_prms()
+
+
+@mark.parametrize('height,expected_flag', [
+    param(1000, False, id='low clouds'),
+    param(15000, True, id='high clouds'),
+])
+def test_clouds_above_msa_buffer_flag(height: int, expected_flag: bool):
+    """ Test the high clouds flagging routine. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate, [{
+            'height': height, 'height_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0
+        }]
+    )
+    chunk = CeiloChunk(mock_data)
+    assert chunk.clouds_above_msa_buffer == expected_flag
+
     reset_prms()
 
 
@@ -90,7 +117,7 @@ def test_ceilochunk_basic():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                   [{'height': 1000, 'height_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -139,7 +166,7 @@ def test_ceilochunk_basic():
     assert chunk.metar_msg(which='groups') == 'OVC009'
 
 
-@mark.parametrize('altitude1,altitude2,altitude3,ngroups_expected', [
+@mark.parametrize('height1,height2,height3,ngroups_expected', [
     param(250., 800., 1200., 3, id='gt min sep'),
     param(250., 500., 1200., 3, id='eq min sep'),
     param(250., 350., 1200., 2, id='gt min sep'),
@@ -147,16 +174,16 @@ def test_ceilochunk_basic():
     param(250., 350., 400., 1, id='multiple overlaps with second merge'),
 ])
 def test_group_separation(
-    altitude1: float, altitude2: float, altitude3: float, ngroups_expected: int
+    height1: float, height2: float, height3: float, ngroups_expected: int
 ):
     """Test if the separation of close groups works as intended."""
 
-    #create some fake data:
-    fake_hits = [altitude1] * 50 + [altitude2] * 50 + [altitude3] * 50
+    # create some fake data:
+    fake_hits = [height1] * 50 + [height2] * 50 + [height3] * 50
     fake_data = pd.DataFrame({
         'ceilo': ['Ceilometer.PO'] * 150,
         'dt': [t for t in range(-1500, 0, 10)],
-        'alt': fake_hits,
+        'height': fake_hits,
         'type': [1] * 150,
     })
     fake_grp_ids = [1] * 50 + [2] * 50 + [3] * 50
@@ -173,6 +200,7 @@ def test_group_separation(
 
     reset_prms()
 
+
 def test_bad_layer_sep_lims():
     """ Test that giving problematic layer separation limits does raise an error. """
 
@@ -187,7 +215,7 @@ def test_bad_layer_sep_lims():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 1,
+                                   [{'height': 1000, 'height_std': 10, 'sky_cov_frac': 1,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -213,7 +241,7 @@ def test_ceilochunk_nocld():
     # Create some fake data to get started
     # 1 very flat layer with no gaps
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 0,
+                                   [{'height': 1000, 'height_std': 10, 'sky_cov_frac': 0,
                                      'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -228,6 +256,41 @@ def test_ceilochunk_nocld():
     assert chunk.metar_msg() == 'NCD'
 
 
+@mark.parametrize('height', [
+    param(10500, id='in buffer'),
+    param(15000, id='above buffer'),
+])
+def test_ceilochunk_highcld(height):
+    """ Test the methods of CeiloChunks when high clouds are seen in the interval. """
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MSA_HIT_BUFFER'] = 1000
+
+    n_ceilos = 4
+    lookback_time = 1200
+    rate = 30
+    # Create some fake data to get started
+    # 1 very flat layer with no gaps
+    mock_data = mocker.mock_layers(
+        n_ceilos, lookback_time, rate,
+        [{'height': height, 'height_std': 10, 'sky_cov_frac': 0.1, 'period': 100, 'amplitude': 0}]
+    )
+
+    # Instantiate a CeiloChunk entity ...
+    chunk = CeiloChunk(mock_data)
+
+    # Do the dance ...
+    chunk.find_slices()
+    chunk.find_groups()
+    chunk.find_layers()
+
+    # Assert the final METAR code is correct
+    assert chunk.metar_msg() == 'NSC'
+
+    reset_prms()
+
+
 def test_ceilochunk_2lay():
     """ Test the methods of CeiloChunks when 2 layers are seen in the interval. """
 
@@ -237,9 +300,9 @@ def test_ceilochunk_2lay():
 
     # Create some fake data to get started
     mock_data = mocker.mock_layers(n_ceilos, lookback_time, rate,
-                                   [{'alt': 1000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                   [{'height': 1000, 'height_std': 10, 'sky_cov_frac': 0.5,
                                      'period': 100, 'amplitude': 0},
-                                    {'alt': 2000, 'alt_std': 10, 'sky_cov_frac': 0.5,
+                                    {'height': 2000, 'height_std': 10, 'sky_cov_frac': 0.5,
                                        'period': 100, 'amplitude': 0}])
 
     # Instantiate a CeiloChunk entity ...
@@ -259,9 +322,8 @@ def test_layering_singlepts():
 
     mock_data = pd.DataFrame(np.array([['dummy', -1, 2300, 1],
                                        ['dummy', -1, 4000, 2],
-                                       ['dummy', -1, 4500, 3],
-                                       ['dummy', -1, np.nan, 0]]),
-                             columns=['ceilo', 'dt', 'alt', 'type'])
+                                       ['dummy', -1, 4500, 3]]),
+                             columns=['ceilo', 'dt', 'height', 'type'])
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
@@ -282,12 +344,12 @@ def test_layering_singlepts():
 
 
 def test_layering_singleval():
-    """ Test the layering step when there is a single altitude value. See #76 for details. """
+    """ Test the layering step when there is a single height value. See #76 for details. """
 
     data = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*170000, np.ones(30)])
 
     mock_data = pd.DataFrame(data.T,
-                             columns=['ceilo', 'dt', 'alt', 'type'])
+                             columns=['ceilo', 'dt', 'height', 'type'])
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
@@ -311,7 +373,7 @@ def test_coplanar_hull():
     data = np.array([np.ones(10), np.arange(0, 10, 1), np.arange(0, 10, 1), np.ones(10)])
 
     mock_data = pd.DataFrame(data.T,
-                             columns=['ceilo', 'dt', 'alt', 'type'])
+                             columns=['ceilo', 'dt', 'height', 'type'])
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():
@@ -328,13 +390,13 @@ def test_coplanar_hull():
 
 
 def test_layering_dualeval():
-    """ Test the layering step when there are two single altitude values. See #78 for details. """
+    """ Test the layering step when there are two single height values. See #78 for details. """
 
     data1 = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*120, np.ones(30)*1])
     data2 = np.array([np.ones(30), np.arange(0, 30, 1), np.ones(30)*150, np.ones(30)*2])
 
     mock_data = pd.DataFrame(np.concatenate([data1, data2], axis=1).T,
-                             columns=['ceilo', 'dt', 'alt', 'type'])
+                             columns=['ceilo', 'dt', 'height', 'type'])
 
     # Set the proper column types
     for (col, tpe) in hardcoded.REQ_DATA_COLS.items():

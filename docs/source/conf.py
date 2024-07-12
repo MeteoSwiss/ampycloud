@@ -13,6 +13,7 @@
 #
 
 from pathlib import Path
+from typing import Any
 
 # Define
 file_absolute_path = Path(__file__).absolute()
@@ -28,7 +29,7 @@ with version_file.open() as fid:
 # -- Project information -----------------------------------------------------
 
 project = 'ampycloud'
-copyright = '2021-2023, MeteoSwiss'
+copyright = '2021-2024, MeteoSwiss'
 author = 'Frédéric P.A. Vogt'
 version = vers
 
@@ -63,7 +64,7 @@ templates_path = ['_templates']
 # List of patterns, relative to source directory, that match files and
 # directories to ignore when looking for source files.
 # This pattern also affects html_static_path and html_extra_path.
-exclude_patterns = []
+exclude_patterns: list[Any] = []
 
 # The name of the Pygments (syntax highlighting) style to use.
 pygments_style = 'sphinx'

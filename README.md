@@ -17,7 +17,7 @@ For the full documentation, installation instructions, etc ..., go to: https://m
 
 ### License & Copyright
 
-ampycloud is released under the terms of **the 3-Clause BSD license**. The copyright (2021-2023) belongs to MeteoSwiss.
+ampycloud is released under the terms of **the 3-Clause BSD license**. The copyright (2021-2024) belongs to MeteoSwiss.
 
 ### Contributing to ampycloud
 

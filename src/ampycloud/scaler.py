@@ -22,7 +22,7 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
+def shift_and_scale(vals: np.ndarray, shift: Union[int, float, None] = None,
                     scale: Union[int, float] = 1, mode: str = 'do') -> np.ndarray:
     """ Shift (by a constant) and scale (by a constant) the data.
 
@@ -58,8 +58,8 @@ def shift_and_scale(vals: np.ndarray, shift: Union[int, float] = None,
 
 @log_func_call(logger)
 def minmax_scale(vals: np.ndarray,
-                 min_val: Union[float, int] = None,
-                 max_val: Union[float, int] = None,
+                 min_val: Union[float, int, None] = None,
+                 max_val: Union[float, int, None] = None,
                  mode: str = 'do') -> np.ndarray:
     """ Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum
         interval range.
@@ -154,11 +154,11 @@ def step_scale(vals: np.ndarray,
     offsets = [0] + steps
 
     # Get the bin edges for the scale mode
-    edges_in = [-np.infty] + steps + [np.infty]
+    edges_in = [-np.inf] + steps + [np.inf]
     # Idem for the descale mode ... this is more complex because of the continuity requirement
     edges_out = [steps[0]/scales[0] + np.sum((np.diff(steps)/scales[1:-1])[:ind])
                  for ind in range(len(steps))]
-    edges_out = [-np.infty] + edges_out + [np.infty]
+    edges_out = [-np.inf] + edges_out + [np.inf]
 
     # Prepare the output
     out = np.full_like(vals, np.nan, dtype=float)
@@ -195,7 +195,7 @@ def step_scale(vals: np.ndarray,
 
 
 @log_func_call(logger)
-def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
+def convert_kwargs(vals: np.ndarray, fct: str, **kwargs) -> dict:
     """ Converts the user-input keywords such that they can be fed to the underlying scaling
     functions.
 
@@ -221,10 +221,10 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
 
     if fct == 'shift-and-scale':
         # In this case, the only data I may need to derive from the data is the shift.
-        if 'shift' in kwargs.keys():
+        if 'shift' in kwargs:
             # Already set - do nothing
             return kwargs
-        if 'mode' in kwargs.keys():
+        if 'mode' in kwargs:
             if kwargs['mode'] == 'do':
                 kwargs['shift'] = np.nanmax(vals)
             elif kwargs['mode'] == 'undo':
@@ -240,12 +240,12 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
     if fct == 'minmax-scale':
         # In this case, the challenge lies with identifying min_val and max_val, knowing that the
         # user may specify a min_range value.
-        if 'min_val' in kwargs.keys() and 'max_val' in kwargs.keys():
+        if 'min_val' in kwargs and 'max_val' in kwargs:
             # Already specified ... do  nothing
             return kwargs
-        if 'mode' in kwargs.keys():
+        if 'mode' in kwargs:
             if kwargs['mode'] == 'do':
-                if 'min_range' in kwargs.keys():
+                if 'min_range' in kwargs:
                     min_range = kwargs['min_range']
                     kwargs.pop('min_range', None)
                 else:
@@ -260,7 +260,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
             raise AmpycloudError(f"Mode unknown: {kwargs['mode']}")
 
         # 'mode' not set -> will default to 'do'
-        if 'min_range' in kwargs.keys():
+        if 'min_range' in kwargs:
             min_range = kwargs['min_range']
             kwargs.pop('min_range', None)
         else:
@@ -276,7 +276,7 @@ def convert_kwargs(vals: np.ndarray, fct: str, **kwargs: dict) -> dict:
 
 
 @log_func_call(logger)
-def apply_scaling(vals: np.ndarray, fct: str = None, **kwargs: dict) -> np.ndarray:
+def apply_scaling(vals: np.ndarray, fct: Union[str, None] = None, **kwargs) -> np.ndarray:
     """ Umbrella scaling routine, that gathers all the individual ones under a single entry point.
 
     Args:
