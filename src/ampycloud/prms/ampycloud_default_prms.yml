@@ -38,6 +38,11 @@ BASE_LVL_HEIGHT_PERC: 5
 # Set to 100 to use all the points.
 BASE_LVL_LOOKBACK_PERC: 100
 
+# If ceilo Ids are set, for any given layer/ group/ slice, only ceilos with the corresponding ID
+# will be used for base height calculation. If the selection results in an empty layer/ group/
+# slice, we go back to using all ceilo hits and ignore the selection.
+CEILOS_FOR_BASE_HEIGHT_CALC: []
+
 # LOWESS parameters used to fit Slice/Groups/Layers height trends
 LOWESS:
     # Fraction of the slice/group/layer points to consider when deriving the LOWESS smooth fit.

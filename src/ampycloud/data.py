@@ -528,6 +528,8 @@ class CeiloChunk(AbstractChunk):
         for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
+            if self.prms()['CEILOS_FOR_BASE_HEIGHT_CALC'] != []:
+                in_sligrolay *= self.data['ceilo'].apply(lambda x: x in self.prms()['CEILOS_FOR_BASE_HEIGHT_CALC'])
             # Compute the base height
             pdf.iloc[ind, pdf.columns.get_loc('height_base')] = \
                 self._calculate_base_height_for_selection(in_sligrolay)
