@@ -9,7 +9,7 @@ Acknowledging ampycloud
 
    ampycloud |version| |doi|
 
-2. If ampycloud was useful for your research, please cite the `dedicated article <https://doi.org/10.5194/amt-17-4891-2024>`_`:
+2. If ampycloud was useful for your research, please cite the `dedicated article <https://doi.org/10.5194/amt-17-4891-2024>`_:
 
    .. code-block:: latex
 
