@@ -532,7 +532,9 @@ class CeiloChunk(AbstractChunk):
                 in_sligrolay_filtered = in_sligrolay * self.data['ceilo'].apply(
                     lambda x: x in self.prms['CEILOS_FOR_BASE_HEIGHT_CALC']
                 )
-                if in_sligrolay_filtered.sum() > 3: # require a minimum of 3 hits to calculate layer height
+                # We require a minimum of hits by the filtered ceilos that belong to the layer
+                # of interest. Otherwise fall back to using all ceilos for the calculation.
+                if in_sligrolay_filtered.sum() > self.prms['MAX_HITS_OKTA0']:
                     in_sligrolay = in_sligrolay_filtered
             # Compute the base height
             pdf.iloc[ind, pdf.columns.get_loc('height_base')] = \
