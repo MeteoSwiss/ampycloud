@@ -1,0 +1,60 @@
+
+cff-version: 1.2.0
+message: If ampycloud was useful for your research, please cite both the dedicated article (from preferred-citation) and the software itself.
+type: software
+authors:
+  - family-names: Vogt
+    given-names: Frédéric P.A.
+  - family-names: Foresti
+    given-names: Loris
+  - family-names: Regenass
+    given-names: Daniel
+  - family-names: Réthoré
+    given-names: Sophie
+  - family-names: Tarin Burriel
+    given-names: Néstor
+title: ampycloud
+identifiers:
+  - type: doi
+    value: 10.5281/zenodo.8399683
+    description: Zenodo entry
+repository-code: 'https://github.com/MeteoSwiss/ampycloud/'
+url: 'https://meteoswiss.github.io/ampycloud/'
+license: BSD-3-Clause
+preferred-citation:
+  - title: "ampycloud: an open-source algorithm to determine cloud base heights and sky coverage fractions from ceilometer data"
+    abstract: |
+      Ceilometers are used routinely at aerodromes worldwide to derive the height and sky coverage fraction of cloud layers. This information, possibly combined with direct observations by human observers, contributes to the production of meteorological aerodrome reports (METARs). Here, we present ampycloud, a new algorithm, and its associated Python package for automatic processing of ceilometer data with the aim of determining the sky coverage fraction and base height of cloud layers above aerodromes. The ampycloud algorithm was developed at the Swiss Federal Office of Meteorology and Climatology (MeteoSwiss) as part of the AMAROC (AutoMETAR/AutoReport rOund the Clock) program to help in the fully automatic production of METARs at Swiss civil aerodromes. ampycloud is designed to work with no direct human supervision. The algorithm consists of three distinct, sequential steps that rely on agglomerative clustering methods and Gaussian mixture models to identify distinct cloud layers from individual cloud base hits reported by ceilometers. The robustness of the ampycloud algorithm stems from the first processing step, which is simple and reliable. It constrains the two subsequent processing steps that are more sensitive but also better suited to handling complex cloud distributions. The software implementation of the ampycloud algorithm takes the form of an eponymous, pip-installable Python package developed on GitHub and made publicly accessible.
+    type: article
+    journal: Atmospheric Measurement Techniques
+    issue: 16
+    languages:
+      - English
+    pages: 4891-4914
+    volume: 17
+    url: https://amt.copernicus.org/articles/17/4891/2024/
+    authors:
+      - family-names: Vogt
+        given-names: Frédéric P. A.
+      - family-names: Foresti
+        given-names: Loris
+      - family-names: Regenass
+        given-names: Daniel
+      - family-names: Réthoré
+        given-names: Sophie
+      - family-names: Tarin Burriel
+        given-names: Néstor
+      - family-names: Bibby
+        given-names: Mervyn
+      - family-names: Juda
+        given-names: Przemysław
+      - family-names: Balmelli
+        given-names: Simone
+      - family-names: Hanselmann
+        given-names: Tobias
+      - family-names: du Preez
+        given-names: Pieter
+      - family-names: Furrer
+        given-names: Dirk
+    date-published: 2024-08-27
+    doi: 10.5194/amt-17-4891-2024
