@@ -1,6 +1,6 @@
 .. include:: ./substitutions.rst
 
-.. _install:
+.. _changes:
 
 Scientific changes since v2.0.0
 ===============================
