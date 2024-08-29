@@ -13,11 +13,12 @@ from typing import Optional, Union
 import logging
 import copy
 from abc import ABC, abstractmethod
+import warnings
 import numpy as np
 import pandas as pd
 
 # Import from this package
-from .errors import AmpycloudError
+from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from . import scaler, cluster, layer, fluffer
 from . import wmo, icao
@@ -536,6 +537,12 @@ class CeiloChunk(AbstractChunk):
                 # of interest. Otherwise fall back to using all ceilos for the calculation.
                 if in_sligrolay_filtered.sum() > self.prms['MAX_HITS_OKTA0']:
                     in_sligrolay = in_sligrolay_filtered
+                else:
+                    warnings.warn(
+                        'Not enough data after filtering to calculate cloud base height, '
+                        f'will fall back to use all data in group/ slice/ layer {cid}',
+                        AmpycloudWarning
+                    )
             # Compute the base height
             pdf.iloc[ind, pdf.columns.get_loc('height_base')] = \
                 self._calculate_base_height_for_selection(in_sligrolay)

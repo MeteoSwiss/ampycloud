@@ -13,6 +13,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from pytest import raises, warns, mark, param
+import pytest
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
@@ -454,7 +455,7 @@ def test_localized_base_hgt_calc_fallback():
     few hits after filtering by ceilo."""
 
     dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
-    dynamic.AMPYCLOUD_PRMS['BASE_LVL_HEIGHT_PERC'] = 50
+    dynamic.AMPYCLOUD_PRMS['BASE_LVL_HEIGHT_PERC'] = 1
     dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
     dynamic.AMPYCLOUD_PRMS['MIN_SEP_VALS'] = [250, 1000]  # make sure there is only 1 layer.
 
@@ -464,9 +465,5 @@ def test_localized_base_hgt_calc_fallback():
     )
     chunk_filtered.find_slices()
     chunk_filtered.find_groups()
-    chunk_filtered.find_layers()
-
-    # Since the SD of the two layers is 2ft, it's highly unlikely that the following condition
-    # 1) is met if the filtering works (310+/-2 ft)
-    # 2) is not met if we don't go to the fallback behaviour 460 +/-2 ft)
-    assert chunk_filtered.layers.loc[0, 'height_base'] > 440.
+    with pytest.warns(AmpycloudWarning, match="will fall back to use all data"):
+        chunk_filtered.find_layers()
