@@ -3,6 +3,12 @@ All notable changes to ampycloud will be documented in this file.
 The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.1.1]
+### Added:
+ - [regDaniel, 2024-10-28] Feature to calculate cloud base height with a subset of instruments only
+### Fixed:
+ - [regDaniel, 2024-10-28] Incompatibility of scipy and statsmodels
+
 ## [v2.0.0]
 ### Added:
  - [fpavogt, 2024-06-26] Add ability to trigger weekly tests manually.
