@@ -438,7 +438,7 @@ def test_localized_base_height_calculation():
 
     mock_layer = _mock_layer_from_two_ceilos_with_narrow_stds_and_close_hits(100, 200)
     chunk_filtered = CeiloChunk(
-        mock_layer, prms={'CEILOS_FOR_BASE_HEIGHT_CALC': 'ceilo1'}
+        mock_layer, prms={'EXCLUDE_FOR_BASE_HEIGHT_CALC': 'ceilo2'}
     )
     chunk_filtered.find_slices()
     chunk_filtered.find_groups()
@@ -461,7 +461,7 @@ def test_localized_base_hgt_calc_fallback():
 
     mock_layer = _mock_layer_from_two_ceilos_with_narrow_stds_and_close_hits(2, 200)
     chunk_filtered = CeiloChunk(
-        mock_layer, prms={'CEILOS_FOR_BASE_HEIGHT_CALC': 'ceilo1'}
+        mock_layer, prms={'EXCLUDE_FOR_BASE_HEIGHT_CALC': 'ceilo2'}
     )
     chunk_filtered.find_slices()
     chunk_filtered.find_groups()
