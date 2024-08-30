@@ -529,9 +529,9 @@ class CeiloChunk(AbstractChunk):
         for ind, cid in enumerate(cluster_ids):
             # Which hits are in this sli/gro/lay ?
             in_sligrolay = self.data[which[:-1]+'_id'] == cid
-            if self.prms['CEILOS_FOR_BASE_HEIGHT_CALC'] != []:
+            if self.prms['EXCLUDE_FOR_BASE_HEIGHT_CALC'] != []:
                 in_sligrolay_filtered = in_sligrolay * self.data['ceilo'].apply(
-                    lambda x: x in self.prms['CEILOS_FOR_BASE_HEIGHT_CALC']
+                    lambda x: x not in self.prms['EXCLUDE_FOR_BASE_HEIGHT_CALC']
                 )
                 # We require a minimum of hits by the filtered ceilos that belong to the layer
                 # of interest. Otherwise fall back to using all ceilos for the calculation.
