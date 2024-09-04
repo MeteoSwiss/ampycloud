@@ -18,11 +18,10 @@ v2.1.0: Enable ceilometer filtering for calculation of cloud base height
 There might be situations, where it is beneficial to calculate the cloud base
 height from a subset of ceilometer hits reported by specific ceilometers. For
 example:
-- If the cloud height is supposed to be representative for a given location, but
-you still want to use as many ceilometers as possible to infer the amount.
-- If you use different ceilometer models and know that you want to calculate the
-height only from hits of a specific ceilometer model to avoid implementing
-complicated correction factors.
+
+- If the cloud height is supposed to be representative for a given location, but you still want to use as many ceilometers as possible to infer the amount.
+- If you use different ceilometer models and know that you want to calculate the height only from hits of a specific ceilometer model to avoid implementing complicated correction factors.
+
 To this end, the parameter ``EXCLUDE_FOR_BASE_HEIGHT_CALC`` was implemented in
 this version. The default value is an empty list. In order to activate the
 filtering, it is sufficient to enter the ceilometer IDs of the ceilos to exclude
