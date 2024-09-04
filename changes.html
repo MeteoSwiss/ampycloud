@@ -1,14 +1,14 @@
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Search &mdash; ampycloud  documentation</title>
+  <title>Scientific changes since v2.0.0 &mdash; ampycloud  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
       <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
 
   
-    
   <!--[if lt IE 9]>
     <script src="_static/js/html5shiv.min.js"></script>
   <![endif]-->
@@ -19,10 +19,10 @@
         <script src="_static/doctools.js?v=9a2dae69"></script>
         <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
-    <script src="_static/searchtools.js"></script>
-    <script src="_static/language_data.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
-    <link rel="search" title="Search" href="#" /> 
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Changelog" href="changelog.html" />
+    <link rel="prev" title="License &amp; Copyright" href="license.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -40,14 +40,14 @@
                 2.1.0
               </div>
 <div role="search">
-  <form id="rtd-search-form" class="wy-form" action="#" method="get">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
     <input type="hidden" name="check_keywords" value="yes" />
     <input type="hidden" name="area" value="default" />
   </form>
 </div>
         </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="index.html">Home</a></li>
 <li class="toctree-l1"><a class="reference internal" href="installation.html">Installation</a></li>
 <li class="toctree-l1"><a class="reference internal" href="running.html">Using ampycloud</a></li>
@@ -55,7 +55,10 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledge.html">Acknowledging ampycloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Copyright</a></li>
-<li class="toctree-l1"><a class="reference internal" href="changes.html">Scientific changes since v2.0.0</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Scientific changes since v2.0.0</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#v2-1-0-enable-ceilometer-filtering-for-calculation-of-cloud-base-height">v2.1.0: Enable ceilometer filtering for calculation of cloud base height</a></li>
+</ul>
+</li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
@@ -76,8 +79,9 @@
           <div role="navigation" aria-label="Page navigation">
   <ul class="wy-breadcrumbs">
       <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
-      <li class="breadcrumb-item active">Search</li>
+      <li class="breadcrumb-item active">Scientific changes since v2.0.0</li>
       <li class="wy-breadcrumbs-aside">
+            <a href="_sources/changes.rst.txt" rel="nofollow"> View page source</a>
       </li>
   </ul>
   <hr/>
@@ -85,22 +89,37 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
              
-  <noscript>
-  <div id="fallback" class="admonition warning">
-    <p class="last">
-      Please activate JavaScript to enable the search functionality.
-    </p>
-  </div>
-  </noscript>
+  <section id="scientific-changes-since-v2-0-0">
+<span id="changes"></span><h1>Scientific changes since v2.0.0<a class="headerlink" href="#scientific-changes-since-v2-0-0" title="Link to this heading"></a></h1>
+<p>The scientific documentation of Ampycloud v2.0.0 can be found
+<a class="reference external" href="https://amt.copernicus.org/articles/17/4891/2024/">here</a>. In this page, we
+list all changes since v.2.0.0 that go beyond bugfixing, refactoring, patching,
+etc. and have an impact on the science of the algorithm. More detailed
+information on changes can be found in the <cite>changelog &lt;changelog&gt;</cite>.</p>
+<section id="v2-1-0-enable-ceilometer-filtering-for-calculation-of-cloud-base-height">
+<h2>v2.1.0: Enable ceilometer filtering for calculation of cloud base height<a class="headerlink" href="#v2-1-0-enable-ceilometer-filtering-for-calculation-of-cloud-base-height" title="Link to this heading"></a></h2>
+<p>There might be situations, where it is beneficial to calculate the cloud base
+height from a subset of ceilometer hits reported by specific ceilometers. For
+example:
+- If the cloud height is supposed to be representative for a given location, but
+you still want to use as many ceilometers as possible to infer the amount.
+- If you use different ceilometer models and know that you want to calculate the
+height only from hits of a specific ceilometer model to avoid implementing
+complicated correction factors.
+To this end, the parameter <code class="docutils literal notranslate"><span class="pre">EXCLUDE_FOR_BASE_HEIGHT_CALC</span></code> was implemented in
+this version. The default value is an empty list. In order to activate the
+filtering, it is sufficient to enter the ceilometer IDs of the ceilos to exclude
+from the base height calculation.</p>
+</section>
+</section>
 
-  
-  <div id="search-results">
-  
-  </div>
 
            </div>
           </div>
-          <footer>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="license.html" class="btn btn-neutral float-left" title="License &amp; Copyright" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="changelog.html" class="btn btn-neutral float-right" title="Changelog" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
 
   <hr/>
 
@@ -122,14 +141,7 @@
       jQuery(function () {
           SphinxRtdTheme.Navigation.enable(true);
       });
-  </script>
-  <script>
-    jQuery(function() { Search.loadIndex("searchindex.js"); });
-  </script>
-  
-  <script id="searchindexloader"></script>
-   
-
+  </script> 
 
 </body>
 </html>

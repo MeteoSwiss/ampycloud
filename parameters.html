@@ -37,7 +37,7 @@
             ampycloud
           </a>
               <div class="version">
-                2.0.0
+                2.1.0
               </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
@@ -55,6 +55,7 @@
 <li class="toctree-l1"><a class="reference internal" href="troubleshooting.html">Troubleshooting</a></li>
 <li class="toctree-l1"><a class="reference internal" href="acknowledge.html">Acknowledging ampycloud</a></li>
 <li class="toctree-l1"><a class="reference internal" href="license.html">License &amp; Copyright</a></li>
+<li class="toctree-l1"><a class="reference internal" href="changes.html">Scientific changes since v2.0.0</a></li>
 <li class="toctree-l1"><a class="reference internal" href="changelog.html">Changelog</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">Contributing</a></li>
 <li class="toctree-l1"><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">Github repository</a></li>
@@ -143,6 +144,13 @@ for details.</p>
 <span class="c1"># to use to compute the cloud base height. 30 would use only the 30% youngest hits.</span>
 <span class="c1"># Set to 100 to use all the points.</span>
 <span class="nt">BASE_LVL_LOOKBACK_PERC</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>
+
+<span class="c1"># If ceilo Ids are set, for any given layer/ group/ slice, ceilos with the corresponding ID</span>
+<span class="c1"># will be excluded from the base height calculation. If the selection results in an empty layer/ group/</span>
+<span class="c1"># slice, we go back to using all ceilo hits and ignore the selection. Use this switch if you want</span>
+<span class="c1"># to localize the height caclulation or if you want to exclude ceilometers of a specific type in the</span>
+<span class="c1"># height calculation.</span>
+<span class="nt">EXCLUDE_FOR_BASE_HEIGHT_CALC</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[]</span>
 
 <span class="c1"># LOWESS parameters used to fit Slice/Groups/Layers height trends</span>
 <span class="nt">LOWESS</span><span class="p">:</span>

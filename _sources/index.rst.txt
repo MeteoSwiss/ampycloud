@@ -40,7 +40,8 @@ Welcome to the ampycloud documentation
 * **Who:** ampycloud is being developed at `MeteoSwiss <https://www.meteoswiss.admin.ch>`__.
   See also the code's :ref:`license & copyright <license:License & Copyright>` information.
 
-* **How:** a scientific article describing the ampycloud **algorithm** is currently in preparation.
+* **How:** a scientific article describing the ampycloud **algorithm** is published
+  `here <https://amt.copernicus.org/articles/17/4891/2024/>`_.
   This article will be complemented by these webpages, that contain the official documentation of
   the ampycloud **Python package**.
 
@@ -64,6 +65,7 @@ Table of contents
     troubleshooting
     acknowledge
     license
+    changes
     changelog
     Contributing <https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md>
     Github repository <https://github.com/MeteoSwiss/ampycloud>
