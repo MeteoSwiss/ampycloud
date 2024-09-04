@@ -9,11 +9,25 @@ Acknowledging ampycloud
 
    ampycloud |version| |doi|
 
-2. If ampycloud was useful for your research, please cite the dedicated article:
+2. If ampycloud was useful for your research, please cite the `dedicated article <https://doi.org/10.5194/amt-17-4891-2024>`_:
 
-   .. todo::
+   .. code-block:: latex
 
-      When the time comes, include here the link to the dedicated ampycloud article.
+        @Article{Vogt2024,
+        AUTHOR = {Vogt, F. P. A. and Foresti, L. and Regenass, D. and R\'ethor\'e, S. and
+                  Tarin Burriel, N. and Bibby, M. and Juda, P. and Balmelli, S. and
+                  Hanselmann, T. and du Preez, P. and Furrer, D.},
+        TITLE = {ampycloud: an open-source algorithm to determine cloud base heights and
+                 sky coverage fractions from ceilometer data},
+        JOURNAL = {Atmospheric Measurement Techniques},
+        VOLUME = {17},
+        YEAR = {2024},
+        NUMBER = {16},
+        PAGES = {4891--4914},
+        URL = {https://amt.copernicus.org/articles/17/4891/2024/},
+        DOI = {10.5194/amt-17-4891-2024}
+        }
+
 
 3. ampycloud relies on external Python libraries that require & deserve to be acknowledged in their
    own right. The following LaTeX blurb is one way to do so:

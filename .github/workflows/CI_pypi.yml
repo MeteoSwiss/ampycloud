@@ -3,12 +3,14 @@
 # at the repo or organization levels to upload the package via API authentification.
 #
 # It will trigger the moment a new release or pre-release is being published.
+# Edit 12.07.2024: added the option for a manual trigger
 #
-# Copyright (c) 2022-2023 fpavogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2022-2024 fpavogt; frederic.vogt@meteoswiss.ch
 
 name: CI_pypi
 
 on:
+  workflow_dispatch:  # Allows to trigger the release to pypi manually
   release:
     types: [published]
 
@@ -18,8 +20,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Checkout current repository
+    - name: Checkout current repository (auto release)
+      if: ${{ github.event_name == 'release' }}
       uses: actions/checkout@v4
+
+    - name: Checkout current repository (manual release from master)
+      if: ${{ github.event_name == 'workflow_dispatch' }}
+      uses: actions/checkout@v4
+      with:
+        repository: MeteoSwiss/ampycloud
+        ref: master
 
     - name: Set up Python
       uses: actions/setup-python@v5

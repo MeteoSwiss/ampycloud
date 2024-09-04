@@ -13,6 +13,7 @@ import warnings
 import numpy as np
 import pandas as pd
 from pytest import raises, warns, mark, param
+import pytest
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
@@ -413,3 +414,56 @@ def test_layering_dualeval():
         warnings.simplefilter("error")
         warnings.simplefilter("default", category=FutureWarning)  # Fixes #87
         chunk.find_layers()
+
+
+def _mock_layer_from_two_ceilos_with_narrow_stds_and_close_hits(n1: int, n2: int):
+    dts1 = np.linspace(-900., 0., n1)
+    layer_ceilo1 = mocker.flat_layer(dts1, 310., 2., 1.0)
+    layer_ceilo1['ceilo'] = np.array(['ceilo1'] * len(layer_ceilo1), dtype=str)
+    dts2 = np.linspace(-908., -8., n2)
+    layer_ceilo2 = mocker.flat_layer(dts2, 460., 2., 1.0)
+    layer_ceilo2['ceilo'] = np.array(['ceilo2'] * len(layer_ceilo2), dtype=str)
+    combined_layer = pd.concat([layer_ceilo1, layer_ceilo2])
+    combined_layer['type'] = np.ones_like(combined_layer['height'], dtype=int)
+
+    return combined_layer.sort_values('dt')
+
+
+def test_localized_base_height_calculation():
+    """Test the localized base height calculation. """
+
+    dynamic.AMPYCLOUD_PRMS['BASE_LVL_HEIGHT_PERC'] = 50
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_VALS'] = [250, 1000]  # make sure there is only 1 layer.
+
+    mock_layer = _mock_layer_from_two_ceilos_with_narrow_stds_and_close_hits(100, 200)
+    chunk_filtered = CeiloChunk(
+        mock_layer, prms={'EXCLUDE_FOR_BASE_HEIGHT_CALC': 'ceilo2'}
+    )
+    chunk_filtered.find_slices()
+    chunk_filtered.find_groups()
+    chunk_filtered.find_layers()
+
+    # Since the SD of the two layers is 2ft, it's highly unlikely that the following condition
+    # 1) is not met if the filtering works (310+/-2 ft)
+    # 2) is met if the filtering doesn't (in total twice as many point at 460 +/-2 ft)
+    assert chunk_filtered.layers.loc[0, 'height_base'] < 330.
+
+
+def test_localized_base_hgt_calc_fallback():
+    """Test if the localized base height calculation falls back if there are too
+    few hits after filtering by ceilo."""
+
+    dynamic.AMPYCLOUD_PRMS['MAX_HITS_OKTA0'] = 3
+    dynamic.AMPYCLOUD_PRMS['BASE_LVL_HEIGHT_PERC'] = 1
+    dynamic.AMPYCLOUD_PRMS['MSA'] = 10000
+    dynamic.AMPYCLOUD_PRMS['MIN_SEP_VALS'] = [250, 1000]  # make sure there is only 1 layer.
+
+    mock_layer = _mock_layer_from_two_ceilos_with_narrow_stds_and_close_hits(2, 200)
+    chunk_filtered = CeiloChunk(
+        mock_layer, prms={'EXCLUDE_FOR_BASE_HEIGHT_CALC': 'ceilo2'}
+    )
+    chunk_filtered.find_slices()
+    chunk_filtered.find_groups()
+    with pytest.warns(AmpycloudWarning, match="will fall back to use all data"):
+        chunk_filtered.find_layers()
