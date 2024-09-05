@@ -13,5 +13,6 @@ Please tag them using `#`, e.g. `Fixed #42`.
 - [ ] New code follows the project's style.
 - [ ] New code is compatible with the 3-Clause BSD license.
 - [ ] CHANGELOG has been updated.
-- [ ] AUTHORS has been updated.
+- [ ] docs have been updated
+- [ ] code authors have been updated in CITATION.cff.
 - [ ] Copyright years in module docstrings have been updated.

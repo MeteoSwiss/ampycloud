@@ -42,6 +42,11 @@ Please be sure to read (and understand the implications) of the
 
 ampycloud is being developed in a **public** repository under the [MeteoSwiss organization](https://github.com/MeteoSwiss/ampycloud) on Github. The documentation, generated using Sphinx, is hosted as Github Pages on the `gh-pages` branch of the repo, and is visible at https://MeteoSwiss.github.io/ampycloud.
 
+### New developer
+
+Please make sure to read the instructions below carefully. In addition, please add your name to the software part of the [citation](#CITATION.cff) file at the latest before triggering
+a [release](#release-mechanisms)(the top part defines the citation for the software, the bottom part defines the citation of the scientific article) and make sure to properly
+update the CHANGELOG and the [documentation](#documentation) if necessary.
 
 ### Branching model
 
@@ -226,8 +231,9 @@ You should of course feel free to use more of the tools offered by
 
 ### Documentation
 
-There is a scientific article about the ampycloud **algorithm** in preparation. It will complement
-the [Sphinx documentation](https://MeteoSwiss.github.io/ampycloud) that contains all the important elements required to use the ampycloud **Python package**.
+There is a [scientific article](https://amt.copernicus.org/articles/17/4891/2024/) about the ampycloud **algorithm** v2.0.0. It complements
+the [Sphinx documentation](https://MeteoSwiss.github.io/ampycloud) that contains all the important elements required to use the ampycloud **Python package**. Scientific changes
+on top of version v2.0.0 must be added to [the corresponding section in the docs](https://meteoswiss.github.io/ampycloud/changes.html).
 
 The Sphinx documentation can be generated manually as follows:
 ```

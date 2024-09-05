@@ -1,6 +1,6 @@
 
 cff-version: 1.2.0
-message: If ampycloud was useful for your research, please cite both the dedicated article (from preferred-citation) and the software itself.
+message: If ampycloud was useful for your research, please cite both the dedicated article (https://doi.org/10.5194/amt-17-4891-2024) and the software itself.
 type: software
 authors:
   - family-names: Vogt
