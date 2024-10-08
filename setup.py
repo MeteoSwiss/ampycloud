@@ -46,8 +46,8 @@ setup(
         "matplotlib >= 3.7.2",
         "numpy >= 1.20.3",
         "scikit-learn >= 1.2.0",
-        "scipy >= 1.7.3, < 1.14.1", # avoid conflict with statsmodels 0.14.1
-        "statsmodels",
+        "scipy >= 1.7.3",
+        "statsmodels >= 0.14.3",
         "pandas >= 1.5",
         "pyyaml",
         "ruamel.yaml"
