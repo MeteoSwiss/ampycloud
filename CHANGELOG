@@ -5,6 +5,7 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 
 ## [v2.1.1]
 ### Fixed:
+ - [regDaniel, 2024-09-19] Require statsmodels >= v0.14.3, where incompatibility with scipy is fixed
  - [regDaniel, 2024-09-04] Inconsitencies in contribution guidelines, authorship declaration and citation file.
 
 ## [v2.1.0]
