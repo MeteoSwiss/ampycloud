@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html class="writer-html5" lang="en" data-content_root="./">
 <head>
@@ -6,18 +8,14 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Changelog &mdash; ampycloud  documentation</title>
       <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
 
   
-  <!--[if lt IE 9]>
-    <script src="_static/js/html5shiv.min.js"></script>
-  <![endif]-->
-  
-        <script src="_static/jquery.js?v=5d32c60e"></script>
-        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
-        <script src="_static/documentation_options.js?v=5929fcd5"></script>
-        <script src="_static/doctools.js?v=9a2dae69"></script>
-        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=5929fcd5"></script>
+      <script src="_static/doctools.js?v=9bcbadda"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -36,9 +34,6 @@
           <a href="index.html" class="icon icon-home">
             ampycloud
           </a>
-              <div class="version">
-                2.1.0
-              </div>
 <div role="search">
   <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
     <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
@@ -87,7 +82,7 @@
            <div itemprop="articleBody">
              
   <section id="changelog">
-<h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
+<span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading"></a></h1>
 <p><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="last-commit" src="https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues"><img alt="issues" src="https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e" /></a></p>
 <p>The ampycloud changelog (reproduced below) is stored in the
 <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">code repository</a> on Github.</p>
@@ -97,10 +92,15 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v2.1.1]
-### Added:
- - [regDaniel, 2024-10-28] Feature to calculate cloud base height with a subset of instruments only
 ### Fixed:
- - [regDaniel, 2024-10-28] Incompatibility of scipy and statsmodels
+ - [regDaniel, 2024-09-19] Require statsmodels &gt;= v0.14.3, where incompatibility with scipy is fixed
+ - [regDaniel, 2024-09-04] Inconsitencies in contribution guidelines, authorship declaration and citation file.
+
+## [v2.1.0]
+### Added:
+ - [regDaniel, 2024-08-28] Feature to calculate cloud base height with a subset of instruments only
+### Fixed:
+ - [regDaniel, 2024-08-28] Incompatibility of scipy and statsmodels
 
 ## [v2.0.0]
 ### Added:
