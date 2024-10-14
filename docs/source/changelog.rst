@@ -1,5 +1,7 @@
 .. include:: ./substitutions.rst
 
+.. _changelog:
+
 Changelog
 =========
 

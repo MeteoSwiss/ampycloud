@@ -4,10 +4,15 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v2.1.1]
-### Added:
- - [regDaniel, 2024-10-28] Feature to calculate cloud base height with a subset of instruments only
 ### Fixed:
- - [regDaniel, 2024-10-28] Incompatibility of scipy and statsmodels
+ - [regDaniel, 2024-09-19] Require statsmodels >= v0.14.3, where incompatibility with scipy is fixed
+ - [regDaniel, 2024-09-04] Inconsitencies in contribution guidelines, authorship declaration and citation file.
+
+## [v2.1.0]
+### Added:
+ - [regDaniel, 2024-08-28] Feature to calculate cloud base height with a subset of instruments only
+### Fixed:
+ - [regDaniel, 2024-08-28] Incompatibility of scipy and statsmodels
 
 ## [v2.0.0]
 ### Added:
