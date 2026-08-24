@@ -7,6 +7,5 @@ SPDX-License-Identifier: BSD-3-Clause
 
 """
 
-
 # Bring out the core routine for easier access
 from .core import *

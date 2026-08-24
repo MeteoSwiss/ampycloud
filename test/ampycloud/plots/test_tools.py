@@ -17,42 +17,42 @@ from ampycloud.plots.tools import valid_styles, set_mplstyle, texify
 
 
 def test_valid_styles():
-    """ Test the valid_styles routine. """
+    """Test the valid_styles routine."""
 
-    assert all(item in valid_styles() for item in ['base', 'latex', 'metsymb'])
+    assert all(item in valid_styles() for item in ["base", "latex", "metsymb"])
 
 
 def test_issue18():
-    """ Verify that custom styles can be set within a specific context ... and stay there ..."""
+    """Verify that custom styles can be set within a specific context ... and stay there ..."""
 
     @set_mplstyle
     def check_plot_context():
-        """ Extract the value of some key rcParams """
+        """Extract the value of some key rcParams"""
 
-        return (mpl.rcParams['text.usetex'], mpl.rcParams['text.latex.preamble'])
+        return (mpl.rcParams["text.usetex"], mpl.rcParams["text.latex.preamble"])
 
     # By default, we are not using the system-wide LaTeX engine.
-    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'base'
+    dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] = "base"
     assert not check_plot_context()[0]
 
     # Now, change the style and check again
-    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'metsymb'
+    dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] = "metsymb"
     assert check_plot_context()[0]
-    assert 'metsymb' in check_plot_context()[1]
+    assert "metsymb" in check_plot_context()[1]
 
     # Check that the out-of-context parameters were untouched
-    assert not mpl.rcParams['text.usetex']
-    assert mpl.rcParams['text.latex.preamble'] == ''
+    assert not mpl.rcParams["text.usetex"]
+    assert mpl.rcParams["text.latex.preamble"] == ""
 
     # Finally, let's check that I can also alter the preamble in context
-    dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = 'latex'
-    assert 'metsymb' not in check_plot_context()[1]
+    dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] = "latex"
+    assert "metsymb" not in check_plot_context()[1]
 
 
 def test_texify():
-    """ Test the texify function in case of a given string used with Latex context. """
+    """Test the texify function in case of a given string used with Latex context."""
 
-    mpl.rcParams['text.usetex'] = True
+    mpl.rcParams["text.usetex"] = True
     result = texify("some $fancy$ label with % and _")
     assert result == "some $fancy$ label with \\% and \\_"
-    mpl.rcParams['text.usetex'] = False
+    mpl.rcParams["text.usetex"] = False

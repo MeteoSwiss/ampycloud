@@ -24,14 +24,17 @@ logger = logging.getLogger(__name__)
 
 @set_mplstyle
 @log_func_call(logger)
-def diagnostic(chunk: CeiloChunk, upto: str = 'layers',
-               show_ceilos: bool = False,
-               ref_metar: Union[str, None] = None,
-               ref_metar_origin: Union[str, None] = None,
-               show: bool = True,
-               save_stem: Union[str, None] = None,
-               save_fmts: Union[list, str, None] = None) -> None:
-    """ A function to create the ampycloud diagnostic plot all the way to the layering step
+def diagnostic(
+    chunk: CeiloChunk,
+    upto: str = "layers",
+    show_ceilos: bool = False,
+    ref_metar: Union[str, None] = None,
+    ref_metar_origin: Union[str, None] = None,
+    show: bool = True,
+    save_stem: Union[str, None] = None,
+    save_fmts: Union[list, str, None] = None,
+) -> None:
+    """A function to create the ampycloud diagnostic plot all the way to the layering step
     (included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).
 
     Args:
@@ -73,19 +76,19 @@ def diagnostic(chunk: CeiloChunk, upto: str = 'layers',
     if isinstance(save_fmts, str):
         save_fmts = [save_fmts]
     if save_fmts is None:
-        save_fmts = ['pdf']
+        save_fmts = ["pdf"]
 
     # Very well, let's start by instantiating a new DiagnosticPlot.
     adp = DiagnosticPlot(chunk)
-    if upto == 'raw_data':
+    if upto == "raw_data":
         adp.show_hits_only(show_ceilos=show_ceilos)
-    if upto in ['slices', 'groups', 'layers']:
+    if upto in ["slices", "groups", "layers"]:
         adp.show_slices()
         adp.format_slice_axes()
-    if upto in ['groups', 'layers']:
-        adp.show_groups(show_points=(upto == 'groups'))
+    if upto in ["groups", "layers"]:
+        adp.show_groups(show_points=(upto == "groups"))
         adp.format_group_axes()
-    if upto == 'layers':
+    if upto == "layers":
         adp.show_layers()
         adp.add_metar()
 

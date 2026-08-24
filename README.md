@@ -21,4 +21,4 @@ ampycloud is released under the terms of **the 3-Clause BSD license**. The copyr
 
 ### Contributing to ampycloud
 
-Please see the [contributing guidelines](CONTRIBUTING.md) for details.
+Please see the [contributing guidelines](https://github.com) for details.

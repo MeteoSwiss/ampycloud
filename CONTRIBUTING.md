@@ -50,24 +50,33 @@ update the CHANGELOG and the [documentation](#documentation) if necessary.
 
 ### Branching model
 
-The `develop` branch is the default one, where all contributions get merged. When a new release is
-warranted, a Pull Request to the `master` branch is issued. This implies that the `master` branch
-will always reflect the state of the latest release of the code.
+The `main` branch is the default one, where all contributions get merged.
 
-Contributors are required to work in their own branches, and issue Pull Requests into the `develop`
+Contributors are required to work in their own branches, and issue Pull Requests into the `main`
 branch when appropriate.
 
-The `master`, `develop`, and `gh-pages` branches are all protected.
+The `main`, and `gh-pages` branches are all protected.
+
+The naming convention for branches is as follows:
+- bugfix/<JIRA_TASK>_Description
+- feature/<JIRA_TASK>_Description
+
+The daily workflow is as follows:
+```
+git checkout main
+git pull origin main
+git checkout -b feature/JIRA_my-new-feature  # or bugfix/JIRA_my-new-feature
+```
 
 
 ### Installing from source
 
-If you intend to actively contribute to ampycloud, you ought to clone the `develop` branch of the
+If you intend to actively contribute to ampycloud, you ought to clone the `main` branch of the
 repository, and install it from source. In a terminal:
 ```
-git clone -b develop git@github.com:MeteoSwiss/ampycloud.git some_folder
+git clone -b main git@github.com:MeteoSwiss/ampycloud.git some_folder
 cd some_folder
-pip install -e .[dev]
+pip install -e .[dev] OR poetry install
 ```
 Note the use of `[dev]` to also install the dependencies required for dev work (i.e. `sphinx`, `pylint`, etc ...).
 
@@ -79,30 +88,34 @@ pip install -e '.[dev]'
 
 ### CI/CD
 
-Automated CI/CD checks are triggered upon Pull Requests being issued towards the `develop` and
-`master` branches. At the time being, they are implemented using dedicated Github Actions specified under `.github/workflows`. These checks include:
+Automated CI/CD checks are triggered upon Pull Requests being issued towards any branch, and upon
+pushes to `main`. At the time being, they are implemented using dedicated Github Actions specified
+under `.github/workflows`. These checks include:
 
+* code formatting using `ruff`
 * code linting using `pylint`
-* code testing using `pytest`
-* check that the base computational speed is ok
-* check that the CHANGELOG was updated
+* static type checking using `mypy`
+* code testing using `pytest` (with a minimum coverage threshold)
 * check that the Sphinx docs compile
-* automatic publication of the Sphinx docs (for a PR to `master` only)
-* check that the code version was incremented (for PR to `master` only)
+* check that the base computational speed is ok (for PRs towards `main`)
+
+Sphinx docs are published automatically: the `dev` documentation is rebuilt and published every
+time `CI_test` succeeds on `main`, while versioned documentation is published together with the
+PyPI package whenever a new tag is pushed (see below).
 
 To test the latest release of the code with the latest Python developments, a `pytest-weekly` workflow runs the
 ampycloud tests twice a week using the latest version of Python and of the ampycloud dependencies.
 
-:warning: This test is being run from the `master` branch. Pushing a bug fix to `develop` will not be sufficient to make it turn green - a new code release is necessary !
+:warning: This test is being run from the `main` branch. Pushing a bug fix to a feature/bugfix branch will not be sufficient to make it turn green - it must first be merged into `main` !
 
-There is another Github action responsible for publishing the code onto pypi, that gets triggered
-upon a new release or pre-release being published. See the ampycloud
-[release mechanisms](#release-mechanisms) for details.
+There is another Github action responsible for publishing the code (and its documentation) onto pypi,
+that gets triggered upon a new git tag being pushed, using PyPI's trusted publisher mechanism (no
+API token required). See the ampycloud [release mechanisms](#release-mechanisms) for details.
 
 ### Linting:
 
 * The following [pylint](https://www.pylint.org/) error codes are forbidden in ampycloud:
-  ``E, C0303, C0304, C0112, C0114, C0115, C0116, C0411, W0611, W0612.`` Every Pull Request to `develop` and `master` is automatically linted, and these codes will be flagged accordingly.
+  ``E, C0303, C0304, C0112, C0114, C0115, C0116, C0411, W0611, W0612.`` Every Pull Request to `main` is automatically linted, and these codes will be flagged accordingly.
 * There is no "automated black formatting" implemented in the repo **by choice**. We believe that it
   is up to the contributors to ensure that the quality of their code meets the required standards enforced by the Github Action in this repo.
 * We encourage contributors to follow PEP8 as closely as possible/reasonable. You should check
@@ -302,36 +315,35 @@ With this decorator, all functions will automatically deploy the effects associa
 
 ### Release mechanism
 
-When changes merged in the `develop` branch are stable and deemed *worthy*, follow these steps to
-create a new release of ampycloud:
+When changes merged into `main` are stable and deemed *worthy*, follow these steps to create a
+new release of ampycloud:
 
-1) Create a PR from `develop` to `master`.
+1) Open a PR into `main` that bumps `src/ampycloud/version.py` to the new version number, and
+   merge it once all `CI_test` checks pass.
 
-   :warning: Merge only if all checks pass, **including the version check !**
+   :white_check_mark: Merging to `main` triggers `CI_publish_dev_documentation.yaml`, which
+   rebuilds and publishes the `dev` version of the
+   [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud).
 
-   :white_check_mark: The [live ampycloud documentation](https://MeteoSwiss.github.io/ampycloud)
-   will be automatically updated (via the `CI_docs_build_and_publish.yml` Action) when the PR to
-   `master` is merged.
+2) Push a git tag (e.g. `vX.Y.Z`) from `main`, at the commit that bumped the version.
 
-2) Manually create a new release from Github.
+   :warning: **The tag (minus its leading `v`) must exactly match `VERSION` in
+   `src/ampycloud/version.py`** — `CI_publish.yaml` checks this explicitly and will fail the
+   workflow if they differ.
 
-   :warning: **Make sure to issue it from the `master` branch !**
-
-   :warning: **Make sure to set the same version number as set in the code !**
-
-   :white_check_mark: The code will be automatically pushed onto pypi (via the `CI_pypi.yml` Action)
-   when the release is *published*. This will work the same for pre-releases.
-
-   :smirk: *Side note for (test)pypi: ampycloud will be published under the
-   [MeteoSwiss](https://pypi.org/user/MeteoSwiss/) account using an
-   [API token](https://pypi.org/help/#apitoken). The token is stored as an organization-level
-   Github secret.*
+   :white_check_mark: Pushing the tag triggers `CI_publish.yaml`, which re-runs the full test
+   suite, then builds and publishes the package to pypi using
+   [PyPI's trusted publisher mechanism](https://docs.pypi.org/trusted-publishers/) (an OIDC-based
+   exchange — no long-lived API token involved), and builds and publishes the versioned
+   documentation for that release to the `gh-pages` branch. This works the same for pre-release
+   tags.
 
 3) That's it ! Wait a few seconds/minutes, and you'll see the updates:
 
-   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases),
-   - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/develop/README.md) tags,
-   - on [testpypi](https://test.pypi.org/project/ampycloud/) and [pypi](https://pypi.org/project/ampycloud/),
+   - on the [release page](https://github.com/MeteoSwiss/ampycloud/releases) (create one manually
+     from the pushed tag if you want release notes),
+   - in the [README](https://github.com/MeteoSwiss/ampycloud/blob/main/README.md) tags,
+   - on [pypi](https://pypi.org/project/ampycloud/),
    - on the [`gh-pages` branch](https://github.com/MeteoSwiss/ampycloud/tree/gh-pages),
    - in the [live documentation](https://MeteoSwiss.github.io/ampycloud), and
    - on [Zenodo](https://zenodo.org/doi/10.5281/zenodo.8399683) (for which the connection to this repo is enabled from Zenodo itself, by the admins of the MeteoSwiss organization on Github).

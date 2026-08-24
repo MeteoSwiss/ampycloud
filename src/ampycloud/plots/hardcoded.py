@@ -15,4 +15,4 @@ WIDTH_ONECOL: float = 6.92
 WIDTH_TWOCOL: float = 14.16
 
 #: list: list of markers, for the different cloud layers
-MRKS = ['s', '^', 'o', 'v', 'D', '>', 'h', '<']
+MRKS = ["s", "^", "o", "v", "D", ">", "h", "<"]

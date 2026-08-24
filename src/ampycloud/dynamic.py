@@ -14,10 +14,10 @@ from ruamel.yaml import YAML
 
 
 def get_default_prms() -> dict:
-    """ Extract the default ampycloud parameters from the YAML configuration file. """
+    """Extract the default ampycloud parameters from the YAML configuration file."""
 
-    yaml = YAML(typ='safe')
-    out = yaml.load(Path(__file__).parent / 'prms' / 'ampycloud_default_prms.yml')
+    yaml = YAML(typ="safe")
+    out = yaml.load(Path(__file__).parent / "prms" / "ampycloud_default_prms.yml")
 
     return out
 

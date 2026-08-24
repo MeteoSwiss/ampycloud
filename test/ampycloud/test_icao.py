@@ -13,7 +13,7 @@ from ampycloud.icao import significant_cloud
 
 
 def test_significant_cloud():
-    """ Test the significant_cloud function. """
+    """Test the significant_cloud function."""
 
     assert isinstance(significant_cloud([0]), list)
     assert significant_cloud([6, 6, 6]) == [True, True, True]

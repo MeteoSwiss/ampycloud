@@ -16,7 +16,7 @@ from ampycloud.cluster import clusterize
 
 
 def test_clusterize():
-    """ Test clusterize(). """
+    """Test clusterize()."""
 
     # Test that None is returned if no algo is specified.
     assert clusterize(np.zeros((10, 2)), algo=None) is None

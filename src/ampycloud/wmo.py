@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
-    """ Converts a sky coverage percentage into oktas.
+    """Converts a sky coverage percentage into oktas.
 
     Args:
         val (int|float|ndarray): the sky coverage percentage to convert, in percent.
@@ -53,21 +53,21 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
 
     # A basic sanity check
     if not np.all((val >= 0) * (val <= 100)):
-        raise AmpycloudError(f'I need 0<=val<=100, but I got: {val}')
+        raise AmpycloudError(f"I need 0<=val<=100, but I got: {val}")
 
     # If I did not receive a numpy array, build one to be efficient afterwards ...
     if isinstance(val, (float, int)):
         val = np.array([val])
 
     # Prepare the out array with floats for now. We will round things later on.
-    out = np.full_like(val, -1., dtype=float)
+    out = np.full_like(val, -1.0, dtype=float)
 
     # Deal with the edge cases first
     out[(val == 0)] = 0
     out[(val == 100)] = 8
 
     # Now deal with the other cases
-    out[out == -1] = val[out == -1]/(100/8)
+    out[out == -1] = val[out == -1] / (100 / 8)
     # Now we round/floor/ceil as required, remembering that the 1 and 7 okta bins are special.
     out[out < 1] = np.ceil(out[out < 1])
     out[out > 7] = np.floor(out[out > 7])
@@ -80,7 +80,7 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
 
 @log_func_call(logger)
 def okta2code(val: int) -> Optional[str]:
-    """ Convert an okta value to a METAR code.
+    """Convert an okta value to a METAR code.
 
     Args:
         int: okta value between 0 and 9 (included).
@@ -101,27 +101,27 @@ def okta2code(val: int) -> Optional[str]:
 
     # Some sanity checks
     if not isinstance(val, int):
-        raise AmpycloudError(f'val should be of type int, not: {type(val)}')
+        raise AmpycloudError(f"val should be of type int, not: {type(val)}")
 
     if val == 0:
-        return 'NCD'
+        return "NCD"
     if val in [1, 2]:
-        return 'FEW'
+        return "FEW"
     if val in [3, 4]:
-        return 'SCT'
+        return "SCT"
     if val in [5, 6, 7]:
-        return 'BKN'
+        return "BKN"
     if val == 8:
-        return 'OVC'
+        return "OVC"
     if val == 9:
         return None
 
-    raise AmpycloudError(f'okta value not understood: {val}')
+    raise AmpycloudError(f"okta value not understood: {val}")
 
 
 @log_func_call(logger)
 def okta2symb(val: int, use_metsymb: bool = False) -> str:
-    """ Convert an okta value to a LaTeX string, possibly using the metsymb LaTeX package.
+    """Convert an okta value to a LaTeX string, possibly using the metsymb LaTeX package.
 
     Args:
         int: okta value between 0 and 9 (included).
@@ -141,32 +141,32 @@ def okta2symb(val: int, use_metsymb: bool = False) -> str:
 
     # If metsymb is available, assign the proper commands !
     if val == 0:
-        return r'\zerookta\ '
+        return r"\zerookta\ "
     if val == 1:
-        return r'\oneokta\ '
+        return r"\oneokta\ "
     if val == 2:
-        return r'\twooktas\ '
+        return r"\twooktas\ "
     if val == 3:
-        return r'\threeoktas\ '
+        return r"\threeoktas\ "
     if val == 4:
-        return r'\fouroktas\ '
+        return r"\fouroktas\ "
     if val == 5:
-        return r'\fiveoktas\ '
+        return r"\fiveoktas\ "
     if val == 6:
-        return r'\sixoktas\ '
+        return r"\sixoktas\ "
     if val == 7:
-        return r'\sevenoktas\ '
+        return r"\sevenoktas\ "
     if val == 8:
-        return r'\eightoktas\ '
+        return r"\eightoktas\ "
     if val == 9:
-        return r'\nineoktas\ '
+        return r"\nineoktas\ "
 
-    raise AmpycloudError(f'okta value not understood: {val}')
+    raise AmpycloudError(f"okta value not understood: {val}")
 
 
 @log_func_call(logger)
 def height2code(val: Union[int, float]) -> str:
-    """ Function that converts a given height in hundreds of ft (3 digit number),
+    """Function that converts a given height in hundreds of ft (3 digit number),
     e.g. 5000 ft -> 050, 500 ft -> 005.
 
     Args:
@@ -191,13 +191,13 @@ def height2code(val: Union[int, float]) -> str:
     """
 
     if np.isnan(val):
-        return ''
+        return ""
 
     # Flooring to 100ft below 10'000ft, and 1000ft above.
     # See WMO's "Aerodrome Reports and Forecasts" documents.
     if val <= 10000:
-        out = np.floor(val/100)
+        out = np.floor(val / 100)
     else:
-        out = np.floor(val/1000)*10
+        out = np.floor(val / 1000) * 10
 
-    return f'{int(out):03}'
+    return f"{int(out):03}"

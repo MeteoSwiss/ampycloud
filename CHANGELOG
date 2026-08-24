@@ -3,9 +3,12 @@ All notable changes to ampycloud will be documented in this file.
 The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [v2.2.0]
+### Fixed:
+ - [srethore, 2026-08-24] Refactor pypi action using trusted publishing and MCH template.
+
 ## [v2.1.1]
 ### Fixed:
- - [diFurrer, 2026-02-19] Refactor pypi action using trusted publishing.
  - [regDaniel, 2024-09-19] Require statsmodels >= v0.14.3, where incompatibility with scipy is fixed
  - [regDaniel, 2024-09-04] Inconsitencies in contribution guidelines, authorship declaration and citation file.
 

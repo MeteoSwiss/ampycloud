@@ -17,7 +17,7 @@ from ampycloud.fluffer import get_fluffiness
 
 
 def test_get_fluffiness():
-    """ Test the fluffiness routine """
+    """Test the fluffiness routine"""
 
     # Fluffiness for a single point should be 0
     pts = np.array([[1, 2]])

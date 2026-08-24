@@ -28,7 +28,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def scores2nrl(abics: np.ndarray) -> np.ndarray:
-    """ Converts AIC or BIC scores into probabilities = normalized relative likelihood.
+    """Converts AIC or BIC scores into probabilities = normalized relative likelihood.
 
     Args:
         abics (ndarray): scores.
@@ -48,16 +48,15 @@ def scores2nrl(abics: np.ndarray) -> np.ndarray:
 
     """
 
-    out = np.exp(-0.5*(abics-np.min(abics)))
+    out = np.exp(-0.5 * (abics - np.min(abics)))
     out /= np.sum(out)
 
     return out
 
 
 @log_func_call(logger)
-def best_gmm(abics: np.ndarray, mode: str = 'delta',
-             min_prob: float = 1., delta_mul_gain: float = 1.) -> int:
-    """ Identify which Gaussian Mixture Model is most appropriate given AIC or BIC scores.
+def best_gmm(abics: np.ndarray, mode: str = "delta", min_prob: float = 1.0, delta_mul_gain: float = 1.0) -> int:
+    """Identify which Gaussian Mixture Model is most appropriate given AIC or BIC scores.
 
     Args:
         abics (ndarray): the AICs or BICs scores, ordered from simplest to most complex model.
@@ -110,7 +109,7 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
     # Compute the relative probabilities of each model from the scores,
     # i.e. compute the "relative likelihood" of each model, normalized by the sum of all relative
     # likelihoods (if warranted)
-    if mode == 'prob':
+    if mode == "prob":
         nrl = scores2nrl(abics)
 
     # Now figure out if more than one components hides in the data.
@@ -121,15 +120,14 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
     # This is the whole reason for assessing models sequentially, and for asking users to feed
     # scores from the most simple to the least simple model.
     best_model_ind = 0
-    for m_ind in range(n_models-1):
+    for m_ind in range(n_models - 1):
         # Here, define if the new model is "better" following the user's wishes ...
-        if mode == 'prob':
-            better = (nrl[best_model_ind] < min_prob) and \
-                     (nrl[m_ind+1] > nrl[best_model_ind])
-        elif mode == 'delta':
+        if mode == "prob":
+            better = (nrl[best_model_ind] < min_prob) and (nrl[m_ind + 1] > nrl[best_model_ind])
+        elif mode == "delta":
             better = abics[m_ind + 1] < delta_mul_gain * abics[best_model_ind]
         else:
-            raise AmpycloudError(f'Unknown mode: {mode}')
+            raise AmpycloudError(f"Unknown mode: {mode}")
 
         # If the requested conditions are met, then this next model is better !
         if better:
@@ -139,15 +137,17 @@ def best_gmm(abics: np.ndarray, mode: str = 'delta',
 
 
 @log_func_call(logger)
-def ncomp_from_gmm(vals: np.ndarray,
-                   ncomp_max: int = 3,
-                   min_sep: Union[int, float] = 0,
-                   layer_base_params: Union[dict[str, int], None] = None,
-                   scores: str = 'BIC',
-                   rescale_0_to_x: Union[float, None] = None,
-                   random_seed: int = 42,
-                   **kwargs: dict) -> tuple:
-    """ Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
+def ncomp_from_gmm(
+    vals: np.ndarray,
+    ncomp_max: int = 3,
+    min_sep: Union[int, float] = 0,
+    layer_base_params: Union[dict[str, int], None] = None,
+    scores: str = "BIC",
+    rescale_0_to_x: Union[float, None] = None,
+    random_seed: int = 42,
+    **kwargs: dict,
+) -> tuple:
+    """Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3
     components.
 
     Args:
@@ -182,7 +182,7 @@ def ncomp_from_gmm(vals: np.ndarray,
     """
 
     if layer_base_params is None:
-        layer_base_params = {'lookback_perc': 100, 'height_perc': 5}
+        layer_base_params = {"lookback_perc": 100, "height_perc": 5}
 
     # If I get a 1-D array, deal with it.
     if np.ndim(vals) == 1:
@@ -193,23 +193,25 @@ def ncomp_from_gmm(vals: np.ndarray,
 
     # If all the points are the same, I should not bother doing anything ...
     if len(np.unique(vals_orig)) == 1:
-        logger.debug('Skipping the GMM computation: all the values are the same.')
+        logger.debug("Skipping the GMM computation: all the values are the same.")
         return (1, np.zeros(len(vals_orig)), None)
     elif len(np.unique(vals_orig)) < ncomp_max:
         ncomp_max = len(np.unique(vals_orig))
-        warnings.warn(f'Restricting ncomp_max to the max number of individual values: {ncomp_max}')
+        warnings.warn(f"Restricting ncomp_max to the max number of individual values: {ncomp_max}")
 
     # Estimate the resolution of the data (by measuring the minimum separation between two data
     # points).
     res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
     res_orig = np.min(res_orig[res_orig > 0])
-    logger.debug('res_orig: %.2f', res_orig)
+    logger.debug("res_orig: %.2f", res_orig)
     # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
     # over-layering.
-    if min_sep < 5*res_orig:
-        warnings.warn(f'min_sep={min_sep} is smaller than 5*res_orig={5*res_orig}.' +
-                      'This could lead to an over-layering for thin groups !',
-                      AmpycloudWarning)
+    if min_sep < 5 * res_orig:
+        warnings.warn(
+            f"min_sep={min_sep} is smaller than 5*res_orig={5 * res_orig}."
+            + "This could lead to an over-layering for thin groups !",
+            AmpycloudWarning,
+        )
 
     # Rescale the data if warranted
     if rescale_0_to_x is not None:
@@ -223,25 +225,29 @@ def ncomp_from_gmm(vals: np.ndarray,
 
     # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
     for n_val in ncomp:
-        models[n_val] = GaussianMixture(n_val, covariance_type='spherical',
-                                        random_state=random_seed).fit(vals)
+        models[n_val] = GaussianMixture(n_val, covariance_type="spherical", random_state=random_seed).fit(vals)
 
     # Extract the AICS and BICS scores
-    if scores == 'AIC':
+    if scores == "AIC":
         abics = np.array([models[item].aic(vals) for item in models])
-    elif scores == 'BIC':
+    elif scores == "BIC":
         abics = np.array([models[item].bic(vals) for item in models])
     else:
-        raise AmpycloudError(f'Unknown scores: {scores}')
+        raise AmpycloudError(f"Unknown scores: {scores}")
 
     # Fix #119: at times, not all sub-layers may be populated by GaussianMixture.
     # To avoid problems down the line, we shall boost the abics score of such cases to make sure
     # they are NOT taken as the best model
-    for (n_id, n_val) in enumerate(ncomp):
+    for n_id, n_val in enumerate(ncomp):
         if (n_eff := len(np.unique(models[n_val].predict(vals)))) < n_val:
-            logger.warning(' %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. '
-                           'Ruling out %i components as a possibility.',
-                           n_eff, n_val, n_val, n_val)
+            logger.warning(
+                " %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. "
+                "Ruling out %i components as a possibility.",
+                n_eff,
+                n_val,
+                n_val,
+                n_val,
+            )
             abics[n_id] = max(abics) + 1  # The larger the abics score, the worst the fit.
 
     # Get the interesting information out
@@ -249,9 +255,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     best_ncomp = ncomp[best_model_ind]
     best_ids = models[ncomp[best_model_ind]].predict(vals)
 
-    logger.debug(' %s scores: %s', scores, abics)
-    logger.debug(' best_model_ind (raw): %i', best_model_ind)
-    logger.debug(' best_ncomp (raw): %i', best_ncomp)
+    logger.debug(" %s scores: %s", scores, abics)
+    logger.debug(" best_model_ind (raw): %i", best_model_ind)
+    logger.debug(" best_ncomp (raw): %i", best_ncomp)
 
     # If I found only one component, I can stop here
     if best_ncomp == 1:
@@ -261,10 +267,9 @@ def ncomp_from_gmm(vals: np.ndarray,
     # First, let's compute the component base height
     base_comp_heights = [
         utils.calc_base_height(
-            vals_orig[best_ids == i].flatten(),
-            layer_base_params['lookback_perc'],
-            layer_base_params['height_perc']
-        ) for i in range(ncomp[best_model_ind])
+            vals_orig[best_ids == i].flatten(), layer_base_params["lookback_perc"], layer_base_params["height_perc"]
+        )
+        for i in range(ncomp[best_model_ind])
     ]
 
     # These may not be ordered, so let's keep track of the indices
@@ -273,16 +278,15 @@ def ncomp_from_gmm(vals: np.ndarray,
 
     # Now loop throught the different components, check if they are sufficiently far apart,
     # and merge them otherwise.
-    for (ind, delta) in enumerate(np.diff(np.sort(base_comp_heights))):
-
+    for ind, delta in enumerate(np.diff(np.sort(base_comp_heights))):
         # If the the delta is large enough, move on ...
         if delta >= min_sep:
             continue
 
         # Else, I have two components that are "too close" from each other. Let's merge them by
         # re-assigning the ids accordingly.
-        best_ids[best_ids == comp_ids[ind+1]] = comp_ids[ind]
-        comp_ids[ind+1] = comp_ids[ind]
+        best_ids[best_ids == comp_ids[ind + 1]] = comp_ids[ind]
+        comp_ids[ind + 1] = comp_ids[ind]
 
         # Decrease the number of valid ids
         best_ncomp -= 1
@@ -290,6 +294,6 @@ def ncomp_from_gmm(vals: np.ndarray,
     # Brief sanity check, to make sure I did not mess up
     assert len(np.unique(best_ids)) == best_ncomp, "Something very bad happened here ..."
 
-    logger.debug('best_ncomp (final): %i', best_ncomp)
+    logger.debug("best_ncomp (final): %i", best_ncomp)
 
     return best_ncomp, best_ids, abics

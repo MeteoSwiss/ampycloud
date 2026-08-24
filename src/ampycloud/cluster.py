@@ -23,10 +23,14 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def agglomerative_cluster(data: np.ndarray, n_clusters: Union[int, None] = None,
-                          metric: str = 'euclidean', linkage: str = 'single',
-                          distance_threshold: Union[int, float] = 1) -> tuple:
-    """ Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
+def agglomerative_cluster(
+    data: np.ndarray,
+    n_clusters: Union[int, None] = None,
+    metric: str = "euclidean",
+    linkage: str = "single",
+    distance_threshold: Union[int, float] = 1,
+) -> tuple:
+    """Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
 
     Args:
         data (ndarray): array of [x, y] pairs to run the clustering on.
@@ -46,8 +50,9 @@ def agglomerative_cluster(data: np.ndarray, n_clusters: Union[int, None] = None,
     """
 
     # Set things up
-    agg_clu = AgglomerativeClustering(linkage=linkage, n_clusters=n_clusters, metric=metric,
-                                      distance_threshold=distance_threshold).fit(data)
+    agg_clu = AgglomerativeClustering(
+        linkage=linkage, n_clusters=n_clusters, metric=metric, distance_threshold=distance_threshold
+    ).fit(data)
 
     # Return the stuff of interest
     return agg_clu.n_clusters_, agg_clu.labels_
@@ -55,7 +60,7 @@ def agglomerative_cluster(data: np.ndarray, n_clusters: Union[int, None] = None,
 
 @log_func_call(logger)
 def clusterize(data: np.ndarray, algo: Union[str, None] = None, **kwargs: dict) -> Optional[tuple]:
-    """ Umbrella clustering routine, that provides a single access point to the different clustering
+    """Umbrella clustering routine, that provides a single access point to the different clustering
     algorithms.
 
     Args:
@@ -75,8 +80,8 @@ def clusterize(data: np.ndarray, algo: Union[str, None] = None, **kwargs: dict) 
         return None
 
     # Launch the requested clustering algorithm, feeding it the user-supplied keywords.
-    if algo == 'agglomerative':
+    if algo == "agglomerative":
         return agglomerative_cluster(data, **kwargs)
 
     # Else, complain ...
-    raise AmpycloudError(f'Clustering algorithm unknown: {algo}')
+    raise AmpycloudError(f"Clustering algorithm unknown: {algo}")

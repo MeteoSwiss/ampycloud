@@ -11,4 +11,4 @@ Module contains: hardcoded data
 from pandas import StringDtype
 
 #: dict: the columns & associated types required for the pandas DataFrame fed to ampycloud.
-REQ_DATA_COLS = {'ceilo': StringDtype(), 'dt': float, 'height': float, 'type': int}
+REQ_DATA_COLS = {"ceilo": StringDtype(), "dt": float, "height": float, "type": int}

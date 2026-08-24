@@ -1,0 +1,74 @@
+# This workflow will install Python dependencies and run tests with a variety of Python
+# versions. For more information see:
+# https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+# Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
+#
+# Copyright (c) 2026 MeteoSwiss, created by ampycloud; ampycloud@meteoswiss.ch
+
+name: CI_test
+
+on:
+  pull_request:
+    branches: '**'
+  push:
+    branches: ['main']
+  workflow_call:
+
+env:
+  CHECK_RUFF_FORMAT: true  # disable to deactivate the quality gate
+
+jobs:
+  pipeline:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.10', '3.11']
+
+
+    steps:
+    - name: Checkout current repository
+      uses: actions/checkout@v4
+
+
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v5
+      with:
+        python-version: ${{ matrix.python-version }}
+
+    - name: Install poetry
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+
+    - name: Install dependencies
+      run: poetry install
+
+    - name: Check formatting
+      if: env.CHECK_RUFF_FORMAT == 'true'
+      run: poetry run ruff format --check
+
+    - name: Build documentation
+      run: poetry run sphinx-build doc doc/_build
+
+    - name: Run pytest
+      run: poetry run pytest -s --cov=ampycloud --cov-fail-under=80
+
+    - name: Run linter
+      run: poetry run pylint -rn --output-format=parseable ampycloud
+
+    - name: Run static checker
+      run: |
+        OUTPUT=$(poetry run mypy src/ampycloud 2>&1 || true)
+        echo "$OUTPUT"
+
+        # Extract the error count from lines
+        COUNT=$(echo "$OUTPUT" | grep -Po 'Found \K[0-9]+(?= errors?)' || echo 0)
+        echo "Found $COUNT mypy errors"
+
+        MAX_ERRORS=5
+        if [ "$COUNT" -gt "$MAX_ERRORS" ]; then
+          echo "$COUNT/$MAX_ERRORS mypy errors found."
+          exit 1
+        else
+          exit 0
+        fi

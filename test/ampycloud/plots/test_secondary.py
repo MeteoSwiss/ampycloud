@@ -16,7 +16,7 @@ from ampycloud.plots.secondary import scaling_fcts
 
 
 def test_scaling_fcts(mpls):
-    """ Test the scaling_fcts plot.
+    """Test the scaling_fcts plot.
 
     Args:
         mpls: False, or the value of MPL_STYLE requested by the user. This is set automatically
@@ -26,7 +26,7 @@ def test_scaling_fcts(mpls):
     """
 
     if mpls:
-        dynamic.AMPYCLOUD_PRMS['MPL_STYLE'] = mpls
+        dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] = mpls
 
-    scaling_fcts(show=False, save_stem='pytest_scaling_fcts', save_fmts=['png'])
-    assert Path('pytest_large_dts.png').exists
+    scaling_fcts(show=False, save_stem="pytest_scaling_fcts", save_fmts=["png"])
+    assert Path("pytest_large_dts.png").exists

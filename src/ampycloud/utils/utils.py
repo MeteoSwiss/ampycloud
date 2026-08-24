@@ -27,9 +27,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def check_data_consistency(pdf: pd.DataFrame,
-                           req_cols: Union[dict, None] = None) -> pd.DataFrame:
-    """ Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
+def check_data_consistency(pdf: pd.DataFrame, req_cols: Union[dict, None] = None) -> pd.DataFrame:
+    """Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
     of ampycloud.
 
     Args:
@@ -128,8 +127,7 @@ def check_data_consistency(pdf: pd.DataFrame,
 
     # First things first, make sure I was fed a pandas DataFrame
     if not isinstance(data, pd.DataFrame):
-        raise AmpycloudError('I was expecting data as a pandas DataFrame,' +
-                             f' not: {type(data)}')
+        raise AmpycloudError("I was expecting data as a pandas DataFrame," + f" not: {type(data)}")
 
     # Make sure the dataframe is not empty.
     # Note: an empty dataframe = no measurements. This is NOT the same as "measuring" clear sky
@@ -139,58 +137,54 @@ def check_data_consistency(pdf: pd.DataFrame,
         raise AmpycloudError("len(data) is 0. I can't work with no data !")
 
     # Check that all the required columns are present in the data, with the correct format
-    for (col, type_req) in req_cols.items():
+    for col, type_req in req_cols.items():
         # If the required column is missing, raise an Exception.
         if col not in data.columns:
-            raise AmpycloudError(f'Column {col} is missing from the input data.')
+            raise AmpycloudError(f"Column {col} is missing from the input data.")
         # If the column has the wrong data type, complain as well.
         if (type_in := data[col].dtype) != type_req:
-            warnings.warn(f'Column {col} has type "{type_in}" instead of "{type_req}".',
-                          AmpycloudWarning)
-            logger.warning('Adjusting the dtype of column %s from %s to %s',
-                           col, type_in, type_req)
+            warnings.warn(f'Column {col} has type "{type_in}" instead of "{type_req}".', AmpycloudWarning)
+            logger.warning("Adjusting the dtype of column %s from %s to %s", col, type_in, type_req)
             data[col] = data[col].astype(type_req)
 
     # Drop any columns that I do not need for processing
     for key in data.columns:
         if key not in req_cols.keys():
-            warnings.warn(f'Column {key} is not required by ampycloud.',
-                          AmpycloudWarning)
-            logger.warning('Dropping the superfluous %s column from the input data.', key)
+            warnings.warn(f"Column {key} is not required by ampycloud.", AmpycloudWarning)
+            logger.warning("Dropping the superfluous %s column from the input data.", key)
             data.drop(key, axis=1, inplace=True)
 
     # Check for any duplicated entry, which would make no sense.
     if (duplic := data.duplicated()).any():
-        raise AmpycloudError('Duplicated hits in the input data:\n'
-                             f'{data[duplic].to_string(index=False)}')
+        raise AmpycloudError(f"Duplicated hits in the input data:\n{data[duplic].to_string(index=False)}")
 
     # Check for inconsistencies
     # 1 - A non-detection should not be coincident with a detection
     # 2 - A VV hit should not be coincident with a hit or a non-detection
     for hit_type in [0, -1]:
-        nodets = data[data['type'] == hit_type][['dt', 'ceilo']]
-        dets = data[data['type'] != hit_type][['dt', 'ceilo']]
-        merged = dets.merge(nodets, how='inner', on=['dt', 'ceilo'])
+        nodets = data[data["type"] == hit_type][["dt", "ceilo"]]
+        dets = data[data["type"] != hit_type][["dt", "ceilo"]]
+        merged = dets.merge(nodets, how="inner", on=["dt", "ceilo"])
         if len(merged) > 0:
-            raise AmpycloudError('Inconsistent input data '
-                                 f'(simultaneous type {hit_type} and !{hit_type}):\n'
-                                 f'{merged.to_string(index=False)}')
+            raise AmpycloudError(
+                "Inconsistent input data "
+                f"(simultaneous type {hit_type} and !{hit_type}):\n"
+                f"{merged.to_string(index=False)}"
+            )
 
     # A brief sanity check of the heights. We do not issue Errors, since the code can cope
     # with those elements: we simply raise Warnings.
     msgs = []
-    if np.any(data.loc[:, 'height'].values < 0):
-        msgs += ['Some hit heights are negative ?!']
-    if not np.all(np.isnan(data.loc[data.type == 0, 'height'])):
-        msgs += ['Some type=0 hits have non-NaNs height values ?!']
-    if np.any(np.isnan(data.loc[data.type == 1, 'height'])):
-        msgs += ['Some type=1 hits have NaNs height values ?!']
-    if not np.all(np.isin(data.loc[data.type == 2, 'dt'].values,
-                          data.loc[data.type == 1, 'dt'].values)):
-        msgs += ['Some type=2 hits have no coincident type=1 hits ?!']
-    if not np.all(np.isin(data.loc[data.type == 3, 'dt'].values,
-                          data.loc[data.type == 2, 'dt'].values)):
-        msgs += ['Some type=3 hits have no coincident type=2 hits ?!']
+    if np.any(data.loc[:, "height"].values < 0):
+        msgs += ["Some hit heights are negative ?!"]
+    if not np.all(np.isnan(data.loc[data.type == 0, "height"])):
+        msgs += ["Some type=0 hits have non-NaNs height values ?!"]
+    if np.any(np.isnan(data.loc[data.type == 1, "height"])):
+        msgs += ["Some type=1 hits have NaNs height values ?!"]
+    if not np.all(np.isin(data.loc[data.type == 2, "dt"].values, data.loc[data.type == 1, "dt"].values)):
+        msgs += ["Some type=2 hits have no coincident type=1 hits ?!"]
+    if not np.all(np.isin(data.loc[data.type == 3, "dt"].values, data.loc[data.type == 2, "dt"].values)):
+        msgs += ["Some type=3 hits have no coincident type=2 hits ?!"]
 
     # Now save all those messages to the log, and raise Warnings as well.
     for msg in msgs:
@@ -203,7 +197,7 @@ def check_data_consistency(pdf: pd.DataFrame,
 
 @contextlib.contextmanager
 def tmp_seed(seed: int):
-    """ Temporarily reset the :py:func:`numpy.random.seed` value.
+    """Temporarily reset the :py:func:`numpy.random.seed` value.
 
     Adapted from the reply of Paul Panzer on `SO <https://stackoverflow.com/questions/49555991/>`__.
 
@@ -216,7 +210,7 @@ def tmp_seed(seed: int):
     """
 
     # Add a note in the logs about what is going on
-    logger.debug('Setting a temporary np.random.seed with value %i', seed)
+    logger.debug("Setting a temporary np.random.seed with value %i", seed)
 
     # Get the current seed
     state = np.random.get_state()
@@ -233,7 +227,7 @@ def tmp_seed(seed: int):
 
 @log_func_call(logger)
 def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] = None) -> dict:
-    """ Update a given (nested) dictionnary given a second (possibly incomplete) one.
+    """Update a given (nested) dictionnary given a second (possibly incomplete) one.
 
     Args:
         ref_dict (dict): reference dict of dict (of dict of dict ...).
@@ -257,7 +251,7 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] =
     for key, item in new_dict.items():
         lvls += [key]
         if key not in ref_dict.keys():
-            warnings.warn(f'Key unknown (and thus ignored): {".".join(lvls)}', AmpycloudWarning)
+            warnings.warn(f"Key unknown (and thus ignored): {'.'.join(lvls)}", AmpycloudWarning)
             continue
         if isinstance(item, dict):
             ref_dict[key] = adjust_nested_dict(ref_dict[key], item, lvls=lvls)
@@ -267,10 +261,11 @@ def adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] =
     return ref_dict
 
 
-def calc_base_height(vals: np.ndarray,
-                     lookback_perc: int,
-                     height_perc: int,
-                     ) -> float:
+def calc_base_height(
+    vals: np.ndarray,
+    lookback_perc: int,
+    height_perc: int,
+) -> float:
     """Calculate the layer base height.
 
     Args:
@@ -289,10 +284,10 @@ def calc_base_height(vals: np.ndarray,
             is empty.
 
     """
-    n_latest_elements = vals[- int(len(vals) * lookback_perc / 100):]
+    n_latest_elements = vals[-int(len(vals) * lookback_perc / 100) :]
     if len(n_latest_elements) == 0:
         raise AmpycloudError(
-            'Cloud base calculation got an empty array. '
-            f'Maybe check lookback percentage ? (currently set to {lookback_perc})'
+            "Cloud base calculation got an empty array. "
+            f"Maybe check lookback percentage ? (currently set to {lookback_perc})"
         )
     return np.percentile(n_latest_elements, height_perc)

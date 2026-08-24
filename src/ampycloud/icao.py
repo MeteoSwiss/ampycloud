@@ -20,7 +20,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def significant_cloud(oktas: list) -> list:
-    """ Assesses which cloud layers in a list are significant, according to the ICAO rules.
+    """Assesses which cloud layers in a list are significant, according to the ICAO rules.
 
     Args:
         oktas (list): the okta count of different cloud layers. **These are assumed to be sorted**
