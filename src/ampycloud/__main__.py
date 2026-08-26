@@ -25,7 +25,7 @@ def ampycloud_speed_test() -> None:
 
     # Use argparse to make ampycloud user friendly
     parser = argparse.ArgumentParser(
-        description="ampycloud {}".format(VERSION)
+        description=f"ampycloud {VERSION}"
         + " - Python package to characterize cloud layers"
         + " using ceilometer measurements.\n"
         + "This entry point lets you measure the performance of ampycloud on your machine.",
@@ -49,13 +49,13 @@ def ampycloud_speed_test() -> None:
     # Launch the initialization of a new processing arena
     niter, mean, std, median, mmin, mmax = performance.get_speed_benchmark(niter=args.niter)
 
-    print("\nTest datetime: %s" % (datetime.now()))
-    print("Platform: %s" % (platform.platform()))
-    print("CPU count: %i\n" % (mp.cpu_count()))
+    print(f"\nTest datetime: {datetime.now()}")
+    print(f"Platform: {platform.platform()}")
+    print(f"CPU count: {mp.cpu_count()}\n")
 
-    print("ampycloud.demo() execution time from %i runs:" % niter)
-    print(" * mean [std]: %.2fs [%.2fs]" % (mean, std))
-    print(" * median [min; max]: %.2fs [%.2fs; %.2fs]\n" % (median, mmin, mmax))
+    print(f"ampycloud.demo() execution time from {niter} runs:")
+    print(f" * mean [std]: {mean:.2f}s [{std:.2f}s]")
+    print(f" * median [min; max]: {median:.2f}s [{mmin:.2f}s; {mmax:.2f}s]\n")
 
 
 def ampycloud_copy_prm_file() -> None:
@@ -63,7 +63,7 @@ def ampycloud_copy_prm_file() -> None:
 
     # Use argparse to make ampycloud user friendly
     parser = argparse.ArgumentParser(
-        description="ampycloud {}".format(VERSION)
+        description=f"ampycloud {VERSION}"
         + " - Python package to characterize cloud layers"
         + " using ceilometer measurements.\n"
         + "This entry point lets you get a local copy the ampycloud parameter files.",

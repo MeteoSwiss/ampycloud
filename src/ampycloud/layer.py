@@ -40,7 +40,8 @@ def scores2nrl(abics: np.ndarray) -> np.ndarray:
 
     .. math::
 
-        p_i = \\frac{e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}{\\sum_{i}e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}
+        p_i = \\frac{e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}{\\sum_{i}e^{-0.5(\\textrm{abics}_i-min(
+        \\textrm{abics}))}}
 
     .. note::
         The smaller the BIC/AIC scores, the better, but the higher the probabilities = normalized

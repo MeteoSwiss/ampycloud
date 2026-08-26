@@ -86,7 +86,7 @@ def diagnostic(
         adp.show_slices()
         adp.format_slice_axes()
     if upto in ["groups", "layers"]:
-        adp.show_groups(show_points=(upto == "groups"))
+        adp.show_groups(show_points=upto == "groups")
         adp.format_group_axes()
     if upto == "layers":
         adp.show_layers()

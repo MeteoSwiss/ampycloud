@@ -140,28 +140,23 @@ def okta2symb(val: int, use_metsymb: bool = False) -> str:
         return str(val)
 
     # If metsymb is available, assign the proper commands !
-    if val == 0:
-        return r"\zerookta\ "
-    if val == 1:
-        return r"\oneokta\ "
-    if val == 2:
-        return r"\twooktas\ "
-    if val == 3:
-        return r"\threeoktas\ "
-    if val == 4:
-        return r"\fouroktas\ "
-    if val == 5:
-        return r"\fiveoktas\ "
-    if val == 6:
-        return r"\sixoktas\ "
-    if val == 7:
-        return r"\sevenoktas\ "
-    if val == 8:
-        return r"\eightoktas\ "
-    if val == 9:
-        return r"\nineoktas\ "
+    metsymb_cmds = {
+        0: r"\zerookta\ ",
+        1: r"\oneokta\ ",
+        2: r"\twooktas\ ",
+        3: r"\threeoktas\ ",
+        4: r"\fouroktas\ ",
+        5: r"\fiveoktas\ ",
+        6: r"\sixoktas\ ",
+        7: r"\sevenoktas\ ",
+        8: r"\eightoktas\ ",
+        9: r"\nineoktas\ ",
+    }
 
-    raise AmpycloudError(f"okta value not understood: {val}")
+    if val not in metsymb_cmds:
+        raise AmpycloudError(f"okta value not understood: {val}")
+
+    return metsymb_cmds[val]
 
 
 @log_func_call(logger)
