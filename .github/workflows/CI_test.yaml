@@ -3,7 +3,7 @@
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
 #
-# Copyright (c) 2026 MeteoSwiss, created by ampycloud; ampycloud@meteoswiss.ch
+# Copyright (c) 2026 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_test
 
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ['3.10', '3.11']
+        python-version: ['3.10', '3.11','3.12']
 
 
     steps:

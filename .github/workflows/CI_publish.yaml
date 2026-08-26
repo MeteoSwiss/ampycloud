@@ -3,7 +3,7 @@
 # It uses the `peaceiris/actions-gh-pages` action to handle the GitHub pages publishing and
 # `pypa/gh-action-pypi-publish@release/v1` to publish to pypi using trusted publishers feature.
 #
-# Copyright (c) 2026 MeteoSwiss, created by ampycloud; ampycloud@meteoswiss.ch
+# Copyright (c) 2026 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_publish
 
@@ -40,6 +40,7 @@ jobs:
         python -m pip install poetry
         poetry install
 
+    # The version is maintained in src/ampycloud/version.py, so we check that the tag matches the version in that file.
     - name: Check tag matches package version
       run: |
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
