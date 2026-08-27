@@ -12,7 +12,7 @@ METAR-like sky coverage information.
 # Import from Python
 import logging
 import warnings
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING, Callable, Optional
 import numpy as np
 import pandas as pd
 
@@ -49,6 +49,9 @@ class MetarizeMixin:
 
         _layers: Optional[pd.DataFrame]
         _clouds_above_msa_buffer: bool
+        # Declared as a Callable attribute (rather than a `def`) so pylint doesn't treat this
+        # TYPE_CHECKING-only stub as a real, argument-unused, no-return implementation.
+        _calculate_base_height_for_selection: Callable[["pd.Series[bool]"], float]
 
     def _get_cluster_ids(self, which: str) -> np.ndarray:
         """Get the original IDs of slices, groups or layers.
