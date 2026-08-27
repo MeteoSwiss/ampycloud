@@ -10,7 +10,7 @@ Module contains: generic utilities
 
 # Import from Python
 import logging
-from typing import Union
+from typing import Iterator, Union
 import warnings
 import contextlib
 import copy
@@ -24,6 +24,71 @@ from .. import hardcoded
 
 # Instantiate the module logger
 logger = logging.getLogger(__name__)
+
+
+def _check_required_columns(data: pd.DataFrame, req_cols: dict) -> None:
+    """Makes sure all the required columns are present in data, with the correct dtype, fixing
+    the dtype in place if warranted."""
+
+    for col, type_req in req_cols.items():
+        # If the required column is missing, raise an Exception.
+        if col not in data.columns:
+            raise AmpycloudError(f"Column {col} is missing from the input data.")
+        # If the column has the wrong data type, complain as well.
+        if (type_in := data[col].dtype) != type_req:
+            warnings.warn(f'Column {col} has type "{type_in}" instead of "{type_req}".', AmpycloudWarning)
+            logger.warning("Adjusting the dtype of column %s from %s to %s", col, type_in, type_req)
+            data[col] = data[col].astype(type_req)
+
+
+def _drop_superfluous_columns(data: pd.DataFrame, req_cols: dict) -> None:
+    """Drops, in place, any column of data that is not required by ampycloud."""
+
+    for key in data.columns:
+        if key not in req_cols.keys():
+            warnings.warn(f"Column {key} is not required by ampycloud.", AmpycloudWarning)
+            logger.warning("Dropping the superfluous %s column from the input data.", key)
+            data.drop(key, axis=1, inplace=True)
+
+
+def _check_type_consistency(data: pd.DataFrame) -> None:
+    """Checks that no timestep/ceilo pair has both a hit and a non-detection/VV hit."""
+
+    # Check for inconsistencies
+    # 1 - A non-detection should not be coincident with a detection
+    # 2 - A VV hit should not be coincident with a hit or a non-detection
+    for hit_type in [0, -1]:
+        nodets = data[data["type"] == hit_type][["dt", "ceilo"]]
+        dets = data[data["type"] != hit_type][["dt", "ceilo"]]
+        merged = dets.merge(nodets, how="inner", on=["dt", "ceilo"])
+        if len(merged) > 0:
+            raise AmpycloudError(
+                "Inconsistent input data "
+                f"(simultaneous type {hit_type} and !{hit_type}):\n"
+                f"{merged.to_string(index=False)}"
+            )
+
+
+def _check_heights(data: pd.DataFrame) -> None:
+    """A brief sanity check of the heights. We do not issue Errors, since the code can cope
+    with those elements: we simply raise Warnings."""
+
+    msgs = []
+    if np.any(data.loc[:, "height"].values < 0):
+        msgs += ["Some hit heights are negative ?!"]
+    if not np.all(np.isnan(data.loc[data.type == 0, "height"])):
+        msgs += ["Some type=0 hits have non-NaNs height values ?!"]
+    if np.any(np.isnan(data.loc[data.type == 1, "height"])):
+        msgs += ["Some type=1 hits have NaNs height values ?!"]
+    if not np.all(np.isin(data.loc[data.type == 2, "dt"].values, data.loc[data.type == 1, "dt"].values)):
+        msgs += ["Some type=2 hits have no coincident type=1 hits ?!"]
+    if not np.all(np.isin(data.loc[data.type == 3, "dt"].values, data.loc[data.type == 2, "dt"].values)):
+        msgs += ["Some type=3 hits have no coincident type=2 hits ?!"]
+
+    # Now save all those messages to the log, and raise Warnings as well.
+    for msg in msgs:
+        warnings.warn(msg, AmpycloudWarning)
+        logger.warning(msg)
 
 
 @log_func_call(logger)
@@ -137,66 +202,27 @@ def check_data_consistency(pdf: pd.DataFrame, req_cols: Union[dict, None] = None
         raise AmpycloudError("len(data) is 0. I can't work with no data !")
 
     # Check that all the required columns are present in the data, with the correct format
-    for col, type_req in req_cols.items():
-        # If the required column is missing, raise an Exception.
-        if col not in data.columns:
-            raise AmpycloudError(f"Column {col} is missing from the input data.")
-        # If the column has the wrong data type, complain as well.
-        if (type_in := data[col].dtype) != type_req:
-            warnings.warn(f'Column {col} has type "{type_in}" instead of "{type_req}".', AmpycloudWarning)
-            logger.warning("Adjusting the dtype of column %s from %s to %s", col, type_in, type_req)
-            data[col] = data[col].astype(type_req)
+    _check_required_columns(data, req_cols)
 
     # Drop any columns that I do not need for processing
-    for key in data.columns:
-        if key not in req_cols.keys():
-            warnings.warn(f"Column {key} is not required by ampycloud.", AmpycloudWarning)
-            logger.warning("Dropping the superfluous %s column from the input data.", key)
-            data.drop(key, axis=1, inplace=True)
+    _drop_superfluous_columns(data, req_cols)
 
     # Check for any duplicated entry, which would make no sense.
     if (duplic := data.duplicated()).any():
         raise AmpycloudError(f"Duplicated hits in the input data:\n{data[duplic].to_string(index=False)}")
 
     # Check for inconsistencies
-    # 1 - A non-detection should not be coincident with a detection
-    # 2 - A VV hit should not be coincident with a hit or a non-detection
-    for hit_type in [0, -1]:
-        nodets = data[data["type"] == hit_type][["dt", "ceilo"]]
-        dets = data[data["type"] != hit_type][["dt", "ceilo"]]
-        merged = dets.merge(nodets, how="inner", on=["dt", "ceilo"])
-        if len(merged) > 0:
-            raise AmpycloudError(
-                "Inconsistent input data "
-                f"(simultaneous type {hit_type} and !{hit_type}):\n"
-                f"{merged.to_string(index=False)}"
-            )
+    _check_type_consistency(data)
 
-    # A brief sanity check of the heights. We do not issue Errors, since the code can cope
-    # with those elements: we simply raise Warnings.
-    msgs = []
-    if np.any(data.loc[:, "height"].values < 0):
-        msgs += ["Some hit heights are negative ?!"]
-    if not np.all(np.isnan(data.loc[data.type == 0, "height"])):
-        msgs += ["Some type=0 hits have non-NaNs height values ?!"]
-    if np.any(np.isnan(data.loc[data.type == 1, "height"])):
-        msgs += ["Some type=1 hits have NaNs height values ?!"]
-    if not np.all(np.isin(data.loc[data.type == 2, "dt"].values, data.loc[data.type == 1, "dt"].values)):
-        msgs += ["Some type=2 hits have no coincident type=1 hits ?!"]
-    if not np.all(np.isin(data.loc[data.type == 3, "dt"].values, data.loc[data.type == 2, "dt"].values)):
-        msgs += ["Some type=3 hits have no coincident type=2 hits ?!"]
-
-    # Now save all those messages to the log, and raise Warnings as well.
-    for msg in msgs:
-        warnings.warn(msg, AmpycloudWarning)
-        logger.warning(msg)
+    # A brief sanity check of the heights
+    _check_heights(data)
 
     # All done
     return data
 
 
 @contextlib.contextmanager
-def tmp_seed(seed: int):
+def tmp_seed(seed: int) -> Iterator[None]:
     """Temporarily reset the :py:func:`numpy.random.seed` value.
 
     Adapted from the reply of Paul Panzer on `SO <https://stackoverflow.com/questions/49555991/>`__.

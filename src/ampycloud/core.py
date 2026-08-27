@@ -24,7 +24,7 @@ from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from .utils.mocker import canonical_demo_data
 from .utils import utils
-from .data import CeiloChunk
+from .ceilo_data import CeiloChunk
 from . import dynamic
 
 # Instantiate the module logger
@@ -192,7 +192,7 @@ def run(
             is specified, it will be turned almost immediately to str via ``str(ref_dt)``.
 
     Returns:
-        :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
+        :py:class:`.ceilo_data.CeiloChunk`: the data chunk with all the processing outcome bundled
         cleanly.
 
     All that is required to run the ampycloud algorithm is a properly
@@ -212,7 +212,7 @@ def run(
         between different measurements. Essentially, each *measurement* (which may be comprised of
         several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do
         so may result in incorrect estimations of the cloud layer densities. See
-        :py:attr:`.data.CeiloChunk.max_hits_per_layer` for more details.
+        :py:attr:`.ceilo_data.CeiloChunk.max_hits_per_layer` for more details.
 
 
     All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`
@@ -244,11 +244,11 @@ def run(
             prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}
 
 
-    The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
+    The :py:class:`.ceilo_data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
-    info. Its method :py:meth:`.data.CeiloChunk.metar_msg` provides direct access to the resulting
+    info. Its method :py:meth:`.ceilo_data.CeiloChunk.metar_msg` provides direct access to the resulting
     METAR-like message. Users that require the height, okta amount, and/or exact sky coverage
-    fraction of layers can get them via the :py:attr:`.data.CeiloChunk.layers` class property.
+    fraction of layers can get them via the :py:attr:`.ceilo_data.CeiloChunk.layers` class property.
 
     Example:
 
@@ -335,8 +335,8 @@ def demo() -> tuple:
     """Run the ampycloud algorithm on a demonstration dataset.
 
     Returns:
-        :py:class:`pandas.DataFrame`, :py:class:`.data.CeiloChunk`: the mock dataset used for the
-        demonstration, and the :py:class:`.data.CeiloChunk` instance.
+        :py:class:`pandas.DataFrame`, :py:class:`.ceilo_data.CeiloChunk`: the mock dataset used for the
+        demonstration, and the :py:class:`.ceilo_data.CeiloChunk` instance.
 
     """
 

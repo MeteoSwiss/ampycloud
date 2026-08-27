@@ -20,7 +20,7 @@ import pandas as pd
 from ampycloud import dynamic, hardcoded
 from ampycloud.errors import AmpycloudWarning
 from ampycloud.utils import mocker
-from ampycloud.data import CeiloChunk
+from ampycloud.ceilo_data import CeiloChunk
 from ampycloud.core import copy_prm_file, reset_prms, run, metar, demo
 
 

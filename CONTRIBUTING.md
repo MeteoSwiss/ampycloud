@@ -112,7 +112,7 @@ There is another Github action responsible for publishing the code (and its docu
 that gets triggered upon a new git tag being pushed, using PyPI's trusted publisher mechanism (no
 API token required). See the ampycloud [release mechanisms](#release-mechanisms) for details.
 
-### Linting:
+### Linting
 
 * The following [pylint](https://www.pylint.org/) error codes are forbidden in ampycloud:
   ``E, C0303, C0304, C0112, C0114, C0115, C0116, C0411, W0611, W0612.`` Every Pull Request to `main` is automatically linted, and these codes will be flagged accordingly.
@@ -121,6 +121,15 @@ API token required). See the ampycloud [release mechanisms](#release-mechanisms)
 * We encourage contributors to follow PEP8 as closely as possible/reasonable. You should check
   often how well you are doing using the command `pylint some_modified_file.py`.
 
+### Formatting with Ruff
+
+We use [Ruff](https://docs.astral.sh/ruff/formatter) for code formatting with a 120-character line limit.
+
+Format your code before committing:
+
+```console
+$ poetry run ruff format
+```
 
 ### Logging
 

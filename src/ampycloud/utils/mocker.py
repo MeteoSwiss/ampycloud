@@ -96,6 +96,60 @@ def sin_layer(
     return out
 
 
+def _check_layer_prms(layer_prms: list) -> None:
+    """Sanity-checks the layer_prms argument fed to :py:func:`.mock_layers`."""
+
+    if not isinstance(layer_prms, list):
+        raise AmpycloudError(f"layer_prms should be a list, not: {type(layer_prms)}")
+    for ind, item in enumerate(layer_prms):
+        if not isinstance(item, dict):
+            raise AmpycloudError(f"Element {ind} from layer_prms should be a dict," + f" not: {type(item)}")
+        if not all(key in item.keys() for key in ["height", "height_std", "sky_cov_frac", "period", "amplitude"]):
+            raise AmpycloudError(
+                "One or more of the following dict keys are missing in "
+                + f"layer_prms[{ind}]: 'height', 'height_std', 'sky_cov_frac',"
+                + "'period', 'amplitude'."
+            )
+
+
+def _mock_one_ceilo(ceilo: int, lookback_time: float, hit_gap: float, layer_prms: list) -> DataFrame:
+    """Generates the mock hits for a single ceilometer, across all the requested layers."""
+
+    # Let's compute the time steps
+    n_pts = int(np.ceil(lookback_time / hit_gap))
+    dts = np.random.random(n_pts) * -lookback_time
+
+    # Let's now loop through each cloud layer and generate them
+    layers: list[DataFrame] = [sin_layer(dts=dts, **prms) for prms in layer_prms]
+
+    # Merge them all into one DataFrame ...
+    merged_layers: DataFrame = pd.concat(layers).reset_index(drop=True)
+    # Add the type column while I'm at it. Set it to None for now.
+    merged_layers["type"] = None
+
+    # Here, adjust the types so that it ranks lowest to highest for every dt step.
+    # This needs to be done on a point by point basis, given that layers can cross each other.
+    for dt in np.unique(merged_layers["dt"]):
+        # Get the hit heights, and sort them from lowest to highest
+        heights = merged_layers[merged_layers["dt"] == dt]["height"].sort_values(axis=0)
+
+        # Then deal with the other ones
+        for a, height in enumerate(heights):
+            # Except for the first one, any NaN hit gets dropped
+            if a > 0 and np.isnan(height):
+                merged_layers.drop(index=heights.index[a], inplace=True)
+            elif np.isnan(height):
+                # A non-detection should be type 0
+                merged_layers.loc[heights.index[a], "type"] = 0
+            else:
+                merged_layers.loc[heights.index[a], "type"] = a + 1
+
+    # Add the ceilo info as an int
+    merged_layers["ceilo"] = str(ceilo)
+
+    return merged_layers
+
+
 def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms: list) -> DataFrame:
     """Generate a mock set of cloud layers for a specified number of ceilometers.
 
@@ -124,55 +178,10 @@ def mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms:
     """
 
     # A sanity check of the input type, since it is a bit convoluted.
-    if not isinstance(layer_prms, list):
-        raise AmpycloudError(f"layer_prms should be a list, not: {type(layer_prms)}")
-    for ind, item in enumerate(layer_prms):
-        if not isinstance(item, dict):
-            raise AmpycloudError(f"Element {ind} from layer_prms should be a dict," + f" not: {type(item)}")
-        if not all(key in item.keys() for key in ["height", "height_std", "sky_cov_frac", "period", "amplitude"]):
-            raise AmpycloudError(
-                "One or more of the following dict keys are missing in "
-                + f"layer_prms[{ind}]: 'height', 'height_std', 'sky_cov_frac',"
-                + "'period', 'amplitude'."
-            )
+    _check_layer_prms(layer_prms)
 
     # Let's create the layers individually for each ceilometer
-    ceilos = []
-    for ceilo in range(n_ceilos):
-        # Let's compute the time steps
-        n_pts = int(np.ceil(lookback_time / hit_gap))
-        dts = np.random.random(n_pts) * -lookback_time
-
-        # Let's now loop through each cloud layer and generate them
-        layers: list[DataFrame] = [sin_layer(dts=dts, **prms) for prms in layer_prms]
-
-        # Merge them all into one DataFrame ...
-        merged_layers: DataFrame = pd.concat(layers).reset_index(drop=True)
-        # Add the type column while I'm at it. Set it to None for now.
-        merged_layers["type"] = None
-
-        # Here, adjust the types so that it ranks lowest to highest for every dt step.
-        # This needs to be done on a point by point basis, given that layers can cross each other.
-        for dt in np.unique(merged_layers["dt"]):
-            # Get the hit heights, and sort them from lowest to highest
-            heights = merged_layers[merged_layers["dt"] == dt]["height"].sort_values(axis=0)
-
-            # Then deal with the other ones
-            for a, height in enumerate(heights):
-                # Except for the first one, any NaN hit gets dropped
-                if a > 0 and np.isnan(height):
-                    merged_layers.drop(index=heights.index[a], inplace=True)
-                elif np.isnan(height):
-                    # A non-detection should be type 0
-                    merged_layers.loc[heights.index[a], "type"] = 0
-                else:
-                    merged_layers.loc[heights.index[a], "type"] = a + 1
-
-        # Add the ceilo info as an int
-        merged_layers["ceilo"] = str(ceilo)
-
-        # And store this for later
-        ceilos += [merged_layers]
+    ceilos = [_mock_one_ceilo(ceilo, lookback_time, hit_gap, layer_prms) for ceilo in range(n_ceilos)]
 
     # Merge it all
     out: DataFrame = pd.concat(ceilos)

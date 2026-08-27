@@ -13,7 +13,7 @@ import logging
 from typing import Union
 
 # Import from this module
-from ..data import CeiloChunk
+from ..ceilo_data import CeiloChunk
 from ..logger import log_func_call
 from .diagnostics import DiagnosticPlot
 from .tools import set_mplstyle

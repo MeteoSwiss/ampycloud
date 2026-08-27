@@ -137,6 +137,99 @@ def best_gmm(abics: np.ndarray, mode: str = "delta", min_prob: float = 1.0, delt
     return best_model_ind
 
 
+def _check_min_sep_vs_resolution(vals_orig: np.ndarray, min_sep: Union[int, float]) -> None:
+    """Warns if min_sep is too small compared to the data resolution, to flag a risk of
+    over-layering."""
+
+    res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
+    res_orig = np.min(res_orig[res_orig > 0])
+    logger.debug("res_orig: %.2f", res_orig)
+
+    if min_sep < 5 * res_orig:
+        warnings.warn(
+            f"min_sep={min_sep} is smaller than 5*res_orig={5 * res_orig}."
+            + "This could lead to an over-layering for thin groups !",
+            AmpycloudWarning,
+        )
+
+
+def _fit_gmms(vals: np.ndarray, ncomp: np.ndarray, scores: str, random_seed: int) -> tuple:
+    """Fits a GaussianMixture model for each candidate number of components, and computes the
+    associated AIC/BIC scores."""
+
+    models = {
+        n_val: GaussianMixture(n_val, covariance_type="spherical", random_state=random_seed).fit(vals)
+        for n_val in ncomp
+    }
+
+    if scores == "AIC":
+        abics = np.array([model.aic(vals) for model in models.values()])
+    elif scores == "BIC":
+        abics = np.array([model.bic(vals) for model in models.values()])
+    else:
+        raise AmpycloudError(f"Unknown scores: {scores}")
+
+    # Fix #119: at times, not all sub-layers may be populated by GaussianMixture.
+    # To avoid problems down the line, we shall boost the abics score of such cases to make sure
+    # they are NOT taken as the best model
+    for n_id, n_val in enumerate(ncomp):
+        if (n_eff := len(np.unique(models[n_val].predict(vals)))) < n_val:
+            logger.warning(
+                " %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. "
+                "Ruling out %i components as a possibility.",
+                n_eff,
+                n_val,
+                n_val,
+                n_val,
+            )
+            abics[n_id] = max(abics) + 1  # The larger the abics score, the worst the fit.
+
+    return models, abics
+
+
+def _merge_close_components(
+    best_ids: np.ndarray, best_ncomp: int, base_comp_heights: list, min_sep: Union[int, float]
+) -> tuple:
+    """Merges components whose base heights are closer together than min_sep."""
+
+    comp_ids = np.argsort(base_comp_heights)
+
+    for ind, delta in enumerate(np.diff(np.sort(base_comp_heights))):
+        # If the the delta is large enough, move on ...
+        if delta >= min_sep:
+            continue
+
+        # Else, I have two components that are "too close" from each other. Let's merge them by
+        # re-assigning the ids accordingly.
+        best_ids[best_ids == comp_ids[ind + 1]] = comp_ids[ind]
+        comp_ids[ind + 1] = comp_ids[ind]
+
+        # Decrease the number of valid ids
+        best_ncomp -= 1
+
+    # Brief sanity check, to make sure I did not mess up
+    assert len(np.unique(best_ids)) == best_ncomp, "Something very bad happened here ..."
+
+    return best_ids, best_ncomp
+
+
+def _fit_and_select_best_gmm(vals: np.ndarray, ncomp_max: int, scores: str, random_seed: int, **kwargs: dict) -> tuple:
+    """Fits GMMs for 1 to ncomp_max components, and selects the best one."""
+
+    ncomp = np.linspace(1, ncomp_max, ncomp_max, dtype=int)
+    models, abics = _fit_gmms(vals, ncomp, scores, random_seed)
+
+    best_model_ind = best_gmm(abics, **kwargs)
+    best_ncomp = ncomp[best_model_ind]
+    best_ids = models[ncomp[best_model_ind]].predict(vals)
+
+    logger.debug(" %s scores: %s", scores, abics)
+    logger.debug(" best_model_ind (raw): %i", best_model_ind)
+    logger.debug(" best_ncomp (raw): %i", best_ncomp)
+
+    return best_ncomp, best_ids, abics
+
+
 @log_func_call(logger)
 def ncomp_from_gmm(
     vals: np.ndarray,
@@ -193,72 +286,24 @@ def ncomp_from_gmm(
     vals_orig = copy.deepcopy(vals)
 
     # If all the points are the same, I should not bother doing anything ...
-    if len(np.unique(vals_orig)) == 1:
+    n_unique = len(np.unique(vals_orig))
+    if n_unique == 1:
         logger.debug("Skipping the GMM computation: all the values are the same.")
         return (1, np.zeros(len(vals_orig)), None)
-    elif len(np.unique(vals_orig)) < ncomp_max:
-        ncomp_max = len(np.unique(vals_orig))
+    if n_unique < ncomp_max:
+        ncomp_max = n_unique
         warnings.warn(f"Restricting ncomp_max to the max number of individual values: {ncomp_max}")
 
-    # Estimate the resolution of the data (by measuring the minimum separation between two data
-    # points).
-    res_orig = np.diff(np.sort(vals_orig.reshape(len(vals_orig))))
-    res_orig = np.min(res_orig[res_orig > 0])
-    logger.debug("res_orig: %.2f", res_orig)
     # Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some
     # over-layering.
-    if min_sep < 5 * res_orig:
-        warnings.warn(
-            f"min_sep={min_sep} is smaller than 5*res_orig={5 * res_orig}."
-            + "This could lead to an over-layering for thin groups !",
-            AmpycloudWarning,
-        )
+    _check_min_sep_vs_resolution(vals_orig, min_sep)
 
     # Rescale the data if warranted
     if rescale_0_to_x is not None:
         vals = minmax_scale(vals) * rescale_0_to_x
 
-    # List all the number of components I should try
-    ncomp = np.linspace(1, ncomp_max, ncomp_max, dtype=int)
-
-    # Prepare to store the different model fits
-    models = {}
-
-    # Run the Gaussian Mixture fit for all cases ... should we do anything more fancy here ?
-    for n_val in ncomp:
-        models[n_val] = GaussianMixture(n_val, covariance_type="spherical", random_state=random_seed).fit(vals)
-
-    # Extract the AICS and BICS scores
-    if scores == "AIC":
-        abics = np.array([models[item].aic(vals) for item in models])
-    elif scores == "BIC":
-        abics = np.array([models[item].bic(vals) for item in models])
-    else:
-        raise AmpycloudError(f"Unknown scores: {scores}")
-
-    # Fix #119: at times, not all sub-layers may be populated by GaussianMixture.
-    # To avoid problems down the line, we shall boost the abics score of such cases to make sure
-    # they are NOT taken as the best model
-    for n_id, n_val in enumerate(ncomp):
-        if (n_eff := len(np.unique(models[n_val].predict(vals)))) < n_val:
-            logger.warning(
-                " %i out of %i sub-layers populated by GaussianMixture(%i) - see #119. "
-                "Ruling out %i components as a possibility.",
-                n_eff,
-                n_val,
-                n_val,
-                n_val,
-            )
-            abics[n_id] = max(abics) + 1  # The larger the abics score, the worst the fit.
-
-    # Get the interesting information out
-    best_model_ind = best_gmm(abics, **kwargs)
-    best_ncomp = ncomp[best_model_ind]
-    best_ids = models[ncomp[best_model_ind]].predict(vals)
-
-    logger.debug(" %s scores: %s", scores, abics)
-    logger.debug(" best_model_ind (raw): %i", best_model_ind)
-    logger.debug(" best_ncomp (raw): %i", best_ncomp)
+    # Fit GMMs for 1 to ncomp_max components, and select the best one
+    best_ncomp, best_ids, abics = _fit_and_select_best_gmm(vals, ncomp_max, scores, random_seed, **kwargs)
 
     # If I found only one component, I can stop here
     if best_ncomp == 1:
@@ -270,30 +315,12 @@ def ncomp_from_gmm(
         utils.calc_base_height(
             vals_orig[best_ids == i].flatten(), layer_base_params["lookback_perc"], layer_base_params["height_perc"]
         )
-        for i in range(ncomp[best_model_ind])
+        for i in range(best_ncomp)
     ]
 
-    # These may not be ordered, so let's keep track of the indices
-    # First, let's deal with the fact that they are not ordered.
-    comp_ids = np.argsort(base_comp_heights)
-
-    # Now loop throught the different components, check if they are sufficiently far apart,
-    # and merge them otherwise.
-    for ind, delta in enumerate(np.diff(np.sort(base_comp_heights))):
-        # If the the delta is large enough, move on ...
-        if delta >= min_sep:
-            continue
-
-        # Else, I have two components that are "too close" from each other. Let's merge them by
-        # re-assigning the ids accordingly.
-        best_ids[best_ids == comp_ids[ind + 1]] = comp_ids[ind]
-        comp_ids[ind + 1] = comp_ids[ind]
-
-        # Decrease the number of valid ids
-        best_ncomp -= 1
-
-    # Brief sanity check, to make sure I did not mess up
-    assert len(np.unique(best_ids)) == best_ncomp, "Something very bad happened here ..."
+    # These may not be ordered, so let's keep track of the indices, and merge those that are not
+    # sufficiently far apart.
+    best_ids, best_ncomp = _merge_close_components(best_ids, best_ncomp, base_comp_heights, min_sep)
 
     logger.debug("best_ncomp (final): %i", best_ncomp)
 

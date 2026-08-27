@@ -23,7 +23,7 @@ from .. import dynamic, scaler, fluffer
 from .hardcoded import WIDTH_TWOCOL, MRKS
 from .tools import texify, get_scaling_kwargs
 from .. import wmo
-from ..data import CeiloChunk
+from ..ceilo_data import CeiloChunk
 from ..version import VERSION
 
 # Instantiate the module logger
@@ -37,7 +37,7 @@ class DiagnosticPlot:
         """The init function.
 
         Args:
-            :py:class:`ampycloud.data.CeiloChunk`: a ceilometer Data Chunk.
+            :py:class:`ampycloud.ceilo_data.CeiloChunk`: a ceilometer Data Chunk.
 
         """
 
@@ -161,6 +161,97 @@ class DiagnosticPlot:
             # And add them to the plot
             self._axs[0].legend(handles=elmts, loc="upper left", bbox_to_anchor=(1, 1), title="Ceilo. names")
 
+    def _draw_slice(self, ind: int, is_vv: np.ndarray, all_clrs: list) -> None:
+        """Draws a single slice: its hits, LOWESS fit, overlap area, and METAR annotation.
+
+        Args:
+            ind (int): index of the slice to draw.
+            is_vv (ndarray): boolean array flagging the vv hits.
+            all_clrs (list): list of colors to cycle through for the different slices.
+
+        """
+
+        # Which hits are in the slice ?
+        in_slice = np.array(self._chunk.data["slice_id"] == self._chunk.slices.at[ind, "cluster_id"])
+
+        # Create an array of facecolors ... choose them from my set of colors
+        base_clr = all_clrs[ind % len(all_clrs)]
+        fcs = np.array([base_clr] * len(self._chunk.data))
+        fcs[is_vv] = "none"
+
+        # I can finally show the points ...
+        self._axs[0].scatter(
+            self._chunk.data.loc[in_slice, "dt"],
+            self._chunk.data.loc[in_slice, "height"],
+            marker="o",
+            s=10,
+            c=fcs[in_slice],
+            edgecolor=base_clr,
+        )
+
+        # ... and the corresponding LOWESS-fit used to derive their fluffiness
+        _, lowess_pts = fluffer.get_fluffiness(
+            self._chunk.data.loc[in_slice, ["dt", "height"]].values, **self._chunk.prms["LOWESS"]
+        )
+        self._axs[0].plot(
+            lowess_pts[:, 0], lowess_pts[:, 1], ls="-", lw=1.5, c=base_clr, drawstyle="steps-mid", zorder=0
+        )
+
+        # Let's also plot the overlap area of the slice
+        slice_min = self._chunk.slices.loc[ind, "height_min"]
+        slice_max = self._chunk.slices.loc[ind, "height_max"]
+        thickness = self._chunk.slices.loc[ind, "thickness"]
+        height_pad = self._chunk.prms["GROUPING_PRMS"]["height_pad_perc"] / 100
+
+        # Get some fake data spanning the entire data range
+        misc = np.linspace(self._chunk.data["dt"].min(skipna=True), self._chunk.data["dt"].max(skipna=True), 3)
+        self._axs[0].fill_between(
+            misc,
+            np.ones_like(misc) * (slice_min - height_pad * thickness),
+            np.ones_like(misc) * (slice_max + height_pad * thickness),
+            edgecolor="none",
+            alpha=0.1,
+            zorder=0,
+            facecolor=base_clr,
+        )
+
+        self._annotate_slice_metar(ind, base_clr)
+
+    def _annotate_slice_metar(self, ind: int, base_clr: str) -> None:
+        """Adds the METAR code, fluffiness, and isolation status annotation for a given slice.
+
+        Args:
+            ind (int): index of the slice to annotate.
+            base_clr (str): color used to draw the slice.
+
+        """
+
+        # Stop here if that slice has 0 okta.
+        if self._chunk.slices.iloc[ind]["okta"] == 0:
+            return
+
+        # Prepare to display the METAR codes for the slices.
+        # First, check if it is isolated or not, and significant or not.
+        alpha = 1 if self._chunk.slices.iloc[ind]["significant"] else 0
+        warn = r" $\Bumpeq$" if self._chunk.slices.iloc[ind]["isolated"] is False else ""
+
+        # Show the slice METAR text, plus the fluffiness, plus the isolation status
+        msg = r"\smaller "
+        msg += wmo.okta2symb(
+            self._chunk.slices.iloc[ind]["okta"], use_metsymb=dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] == "metsymb"
+        )
+        msg += " " + self._chunk.slices.iloc[ind]["code"] + rf" $f$:{self._chunk.slices.loc[ind, 'fluffiness']:.0f} ft"
+        msg += warn
+        self._axs[1].text(
+            0.5,
+            self._chunk.slices.loc[ind, "height_base"],
+            texify(msg),
+            va="center",
+            ha="center",
+            color=base_clr,
+            bbox={"facecolor": "none", "edgecolor": base_clr, "alpha": alpha, "ls": "--"},
+        )
+
     def show_slices(self) -> None:
         """Show the slice data."""
 
@@ -204,85 +295,7 @@ class DiagnosticPlot:
         # Then loop through each slice
         if self._chunk.n_slices is not None:
             for ind in range(self._chunk.n_slices):
-                # Which hits are in the slice ?
-                in_slice = np.array(self._chunk.data["slice_id"] == self._chunk.slices.at[ind, "cluster_id"])
-
-                # Create an array of facecolors ... choose them from my set of colors
-                base_clr = all_clrs[ind % len(all_clrs)]
-                fcs = np.array([base_clr] * len(self._chunk.data))
-                fcs[is_vv] = "none"
-
-                # I can finally show the points ...
-                self._axs[0].scatter(
-                    self._chunk.data.loc[in_slice, "dt"],
-                    self._chunk.data.loc[in_slice, "height"],
-                    marker="o",
-                    s=10,
-                    c=fcs[in_slice],
-                    edgecolor=base_clr,
-                )
-
-                # ... and the corresponding LOWESS-fit used to derive their fluffiness
-                _, lowess_pts = fluffer.get_fluffiness(
-                    self._chunk.data.loc[in_slice, ["dt", "height"]].values, **self._chunk.prms["LOWESS"]
-                )
-                self._axs[0].plot(
-                    lowess_pts[:, 0], lowess_pts[:, 1], ls="-", lw=1.5, c=base_clr, drawstyle="steps-mid", zorder=0
-                )
-
-                # Let's also plot the overlap area of the slice
-                slice_min = self._chunk.slices.loc[ind, "height_min"]
-                slice_max = self._chunk.slices.loc[ind, "height_max"]
-                thickness = self._chunk.slices.loc[ind, "thickness"]
-                height_pad = self._chunk.prms["GROUPING_PRMS"]["height_pad_perc"] / 100
-
-                # Get some fake data spanning the entire data range
-                misc = np.linspace(self._chunk.data["dt"].min(skipna=True), self._chunk.data["dt"].max(skipna=True), 3)
-                self._axs[0].fill_between(
-                    misc,
-                    np.ones_like(misc) * (slice_min - height_pad * thickness),
-                    np.ones_like(misc) * (slice_max + height_pad * thickness),
-                    edgecolor="none",
-                    alpha=0.1,
-                    zorder=0,
-                    facecolor=base_clr,
-                )
-
-                # Stop here if that slice has 0 okta.
-                if self._chunk.slices.iloc[ind]["okta"] == 0:
-                    continue
-
-                # Prepare to display the METAR codes for the slices.
-                # First, check if it is isolated or not, and significant or not.
-                if self._chunk.slices.iloc[ind]["significant"]:
-                    alpha = 1
-                else:
-                    alpha = 0
-                if self._chunk.slices.iloc[ind]["isolated"] is False:
-                    warn = r" $\Bumpeq$"
-                else:
-                    warn = ""
-
-                # Show the slice METAR text, plus the fluffiness, plus the isolation status
-                msg = r"\smaller "
-                msg += wmo.okta2symb(
-                    self._chunk.slices.iloc[ind]["okta"], use_metsymb=dynamic.AMPYCLOUD_PRMS["MPL_STYLE"] == "metsymb"
-                )
-                msg += (
-                    " "
-                    + self._chunk.slices.iloc[ind]["code"]
-                    + rf" $f$:{self._chunk.slices.loc[ind, 'fluffiness']:.0f} ft"
-                )
-                msg += warn
-                self._axs[1].text(
-                    0.5,
-                    self._chunk.slices.loc[ind, "height_base"],
-                    texify(msg),
-                    va="center",
-                    ha="center",
-                    color=base_clr,
-                    bbox={"facecolor": "none", "edgecolor": base_clr, "alpha": alpha, "ls": "--"},
-                )
+                self._draw_slice(ind, is_vv, all_clrs)
 
     def show_groups(self, show_points: bool = False) -> None:
         """Show the group data.

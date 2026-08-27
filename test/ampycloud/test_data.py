@@ -17,7 +17,7 @@ import pytest
 
 # Import from the module to test
 from ampycloud.errors import AmpycloudError, AmpycloudWarning
-from ampycloud.data import CeiloChunk
+from ampycloud.ceilo_data import CeiloChunk
 from ampycloud.utils import mocker
 from ampycloud import dynamic, reset_prms, hardcoded
 
