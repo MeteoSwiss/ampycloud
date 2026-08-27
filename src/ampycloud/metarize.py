@@ -50,8 +50,6 @@ class MetarizeMixin:
         _layers: Optional[pd.DataFrame]
         _clouds_above_msa_buffer: bool
 
-        def _calculate_base_height_for_selection(self, data_indexer: "pd.Series[bool]") -> float: ...
-
     def _get_cluster_ids(self, which: str) -> np.ndarray:
         """Get the original IDs of slices, groups or layers.
 
