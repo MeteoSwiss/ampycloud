@@ -33,7 +33,7 @@ jobs:
           python -m pip install --upgrade pip
         shell: bash
 
-      # Here, let's install our module to make sure all the dependencies specified in setup.py are
+      # Here, let's install our module to make sure all the dependencies specified in pyproject.toml are
       # also installed
       - name: Install our module
         run: pip install -e .[dev]
