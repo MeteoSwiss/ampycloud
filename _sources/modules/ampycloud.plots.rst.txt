@@ -3,8 +3,8 @@ ampycloud.plots package
 
 .. automodule:: ampycloud.plots
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Submodules
 ----------
@@ -14,37 +14,37 @@ ampycloud.plots.core module
 
 .. automodule:: ampycloud.plots.core
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.plots.diagnostics module
 ----------------------------------
 
 .. automodule:: ampycloud.plots.diagnostics
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.plots.hardcoded module
 --------------------------------
 
 .. automodule:: ampycloud.plots.hardcoded
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.plots.secondary module
 --------------------------------
 
 .. automodule:: ampycloud.plots.secondary
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.plots.tools module
 ----------------------------
 
 .. automodule:: ampycloud.plots.tools
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

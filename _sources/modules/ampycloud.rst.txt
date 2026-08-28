@@ -3,8 +3,8 @@ ampycloud package
 
 .. automodule:: ampycloud
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 Subpackages
 -----------
@@ -23,101 +23,101 @@ ampycloud.cluster module
 
 .. automodule:: ampycloud.cluster
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.core module
 ---------------------
 
 .. automodule:: ampycloud.core
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.data module
 ---------------------
 
 .. automodule:: ampycloud.data
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.dynamic module
 ------------------------
 
 .. automodule:: ampycloud.dynamic
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.errors module
 -----------------------
 
 .. automodule:: ampycloud.errors
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.fluffer module
 ------------------------
 
 .. automodule:: ampycloud.fluffer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.hardcoded module
 --------------------------
 
 .. automodule:: ampycloud.hardcoded
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.icao module
 ---------------------
 
 .. automodule:: ampycloud.icao
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.layer module
 ----------------------
 
 .. automodule:: ampycloud.layer
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.logger module
 -----------------------
 
 .. automodule:: ampycloud.logger
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.scaler module
 -----------------------
 
 .. automodule:: ampycloud.scaler
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.version module
 ------------------------
 
 .. automodule:: ampycloud.version
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:
 
 ampycloud.wmo module
 --------------------
 
 .. automodule:: ampycloud.wmo
    :members:
-   :undoc-members:
    :show-inheritance:
+   :undoc-members:

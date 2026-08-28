@@ -7,15 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>The ampycloud scientific parameters &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=9edc463e" />
 
   
       <script src="_static/jquery.js?v=5d32c60e"></script>
       <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="_static/doctools.js?v=9bcbadda"></script>
-      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="_static/js/theme.js"></script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
@@ -112,8 +112,8 @@ for details.</p>
 
 <span class="c1"># General parameters</span>
 
-<span class="c1"># Plotting style. Can be one of &#39;base&#39;, &#39;latex&#39;, &#39;metsymb&#39;</span>
-<span class="nt">MPL_STYLE</span><span class="p">:</span><span class="w"> </span><span class="s">&#39;base&#39;</span>
+<span class="c1"># Plotting style. Can be one of 'base', 'latex', 'metsymb'</span>
+<span class="nt">MPL_STYLE</span><span class="p">:</span><span class="w"> </span><span class="s">'base'</span>
 
 <span class="c1"># Minimum Sector Altitude, in ft above aerodrome level. No cloud layers with a base above this value</span>
 <span class="c1"># will be reported in the ampycloud METAR messages. Set it to null for no limit.</span>
@@ -161,7 +161,7 @@ for details.</p>
 <span class="c1"># value will be remerged into one layer. Any value &lt; than 5 times the vertical resolution of the data will</span>
 <span class="c1"># raise a warning, as it may lead to an over-layering of groups. For the ampycloud METAR</span>
 <span class="c1"># messages to be consistent with the ICAO rules of layer selection, this should be &gt;=100 ft</span>
-<span class="c1"># below 10&#39;000 ft.</span>
+<span class="c1"># below 10'000 ft.</span>
 <span class="nt">MIN_SEP_VALS</span><span class="p">:</span><span class="w"> </span><span class="p p-Indicator">[</span><span class="nv">250</span><span class="p p-Indicator">,</span><span class="w"> </span><span class="nv">1000</span><span class="p p-Indicator">]</span>
 <span class="c1"># Height threshold (in ft) separating the min_sep_val elements.</span>
 <span class="c1"># The 0 and + infty extrema will be automatically added to the list by ampycloud.</span>
@@ -196,18 +196,18 @@ for details.</p>
 <span class="w">    </span><span class="c1"># Minimum okta value below which cluster splitting is not attempted</span>
 <span class="w">    </span><span class="nt">min_okta_to_split</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">2</span>
 <span class="w">    </span><span class="nt">gmm_kwargs</span><span class="p">:</span>
-<span class="w">        </span><span class="c1"># Whether to use &#39;BIC&#39; or &#39;AIC&#39; scores to decide which model is &quot;best&quot;.</span>
+<span class="w">        </span><span class="c1"># Whether to use 'BIC' or 'AIC' scores to decide which model is "best".</span>
 <span class="w">        </span><span class="nt">scores</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">BIC</span>
-<span class="w">        </span><span class="c1"># Whether to use &#39;delta&#39;, or &#39;prob&#39; to find the best model.</span>
+<span class="w">        </span><span class="c1"># Whether to use 'delta', or 'prob' to find the best model.</span>
 <span class="w">        </span><span class="c1"># See ampycloud.layer.best_gmm() for details.</span>
 <span class="w">        </span><span class="nt">mode</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">delta</span>
 <span class="w">        </span><span class="c1"># Minimum model probability computed from the relative likelihood,</span>
 <span class="w">        </span><span class="c1"># below which alternative models with more components will be considered.</span>
-<span class="w">        </span><span class="c1"># Only used if mode=&#39;prob&#39;</span>
+<span class="w">        </span><span class="c1"># Only used if mode='prob'</span>
 <span class="w">        </span><span class="nt">min_prob</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">1.0</span>
-<span class="w">        </span><span class="c1"># A model with a smaller score will only be considered &quot;valid&quot;</span>
+<span class="w">        </span><span class="c1"># A model with a smaller score will only be considered "valid"</span>
 <span class="w">        </span><span class="c1"># if its score is smaller than delta_mul_gain*current_best_score.</span>
-<span class="w">        </span><span class="c1"># Only used if mode=&#39;delta&#39;</span>
+<span class="w">        </span><span class="c1"># Only used if mode='delta'</span>
 <span class="w">        </span><span class="nt">delta_mul_gain</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">0.95</span>
 <span class="w">        </span><span class="c1"># If set, rescale each group between 0 and this value before looking for layers using gmm.</span>
 <span class="w">        </span><span class="nt">rescale_0_to_x</span><span class="p">:</span><span class="w"> </span><span class="l l-Scalar l-Scalar-Plain">100</span>

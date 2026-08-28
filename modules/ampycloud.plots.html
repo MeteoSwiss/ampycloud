@@ -7,15 +7,15 @@
 
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>ampycloud.plots package &mdash; ampycloud  documentation</title>
-      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=fa44fd50" />
-      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=03e43079" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=9edc463e" />
 
   
       <script src="../_static/jquery.js?v=5d32c60e"></script>
       <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
       <script src="../_static/documentation_options.js?v=5929fcd5"></script>
-      <script src="../_static/doctools.js?v=9bcbadda"></script>
-      <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../_static/doctools.js?v=fd6eb6e6"></script>
+      <script src="../_static/sphinx_highlight.js?v=6ffebe34"></script>
     <script src="../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../genindex.html" />
     <link rel="search" title="Search" href="../search.html" />
@@ -146,19 +146,19 @@ None = [‘pdf’].</p></li>
 </dd>
 </dl>
 <p>Example:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">datetime</span> <span class="kn">import</span> <span class="n">datetime</span>
-<span class="kn">import</span> <span class="nn">ampycloud</span>
-<span class="kn">from</span> <span class="nn">ampycloud.utils</span> <span class="kn">import</span> <span class="n">mocker</span>
-<span class="kn">from</span> <span class="nn">ampycloud.plots</span> <span class="kn">import</span> <span class="n">diagnostic</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">mocker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.plots</span><span class="w"> </span><span class="kn">import</span> <span class="n">diagnostic</span>
 
 <span class="c1"># First create some mock data for the example</span>
 <span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
 
 <span class="c1"># Then run the ampycloud algorithm on it</span>
-<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">&#39;Mock data&#39;</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">'Mock data'</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
 
 <span class="c1"># Create the full ampycloud diagnostic plot</span>
-<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">&#39;layers&#39;</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">'layers'</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
 </pre></div>
 </div>
 </dd></dl>
@@ -172,7 +172,7 @@ None = [‘pdf’].</p></li>
 <p>Module contains: class for the diagnostic plots</p>
 <dl class="py class">
 <dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot">
-<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">ampycloud.plots.diagnostics.</span></span><span class="sig-name descname"><span class="pre">DiagnosticPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">CeiloChunk</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">class</span></span><span class="w"> </span></span><span class="sig-prename descclassname"><span class="pre">ampycloud.plots.diagnostics.</span></span><span class="sig-name descname"><span class="pre">DiagnosticPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="ampycloud.html#ampycloud.data.CeiloChunk" title="ampycloud.data.CeiloChunk"><span class="pre">CeiloChunk</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot" title="Link to this definition"></a></dt>
 <dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
 <p>Class used to create diagnostic plots.</p>
 <dl class="py method">
@@ -188,7 +188,7 @@ None = [‘pdf’].</p></li>
 
 <dl class="py method">
 <dt class="sig sig-object py" id="ampycloud.plots.diagnostics.DiagnosticPlot.setup_fig">
-<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.setup_fig" title="Link to this definition"></a></dt>
+<span class="property"><span class="k"><span class="pre">static</span></span><span class="w"> </span></span><span class="sig-name descname"><span class="pre">setup_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="headerlink" href="#ampycloud.plots.diagnostics.DiagnosticPlot.setup_fig" title="Link to this definition"></a></dt>
 <dd><p>Setups a diagnsotic plot figure.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns<span class="colon">:</span></dt>
@@ -345,7 +345,7 @@ Defaults to None == ‘pdf’.</p></li>
 <p>Module contains: hardcoded plotting parameters</p>
 <dl class="py data">
 <dt class="sig sig-object py" id="ampycloud.plots.hardcoded.WIDTH_ONECOL">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_ONECOL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.92</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_ONECOL" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_ONECOL</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6.92</span></span><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_ONECOL" title="Link to this definition"></a></dt>
 <dd><p>Width of a 1-column plot [inches], to fit in scientific articles when scaled by 50%</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -356,7 +356,7 @@ Defaults to None == ‘pdf’.</p></li>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="ampycloud.plots.hardcoded.WIDTH_TWOCOL">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_TWOCOL</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14.16</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_TWOCOL" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">WIDTH_TWOCOL</span></span><span class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">float</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">14.16</span></span><a class="headerlink" href="#ampycloud.plots.hardcoded.WIDTH_TWOCOL" title="Link to this definition"></a></dt>
 <dd><p>Width of a 2-column plot [inches], to fit in scientific articles when scaled by 50%</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -367,7 +367,7 @@ Defaults to None == ‘pdf’.</p></li>
 
 <dl class="py data">
 <dt class="sig sig-object py" id="ampycloud.plots.hardcoded.MRKS">
-<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">MRKS</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['s',</span> <span class="pre">'^',</span> <span class="pre">'o',</span> <span class="pre">'v',</span> <span class="pre">'D',</span> <span class="pre">'&gt;',</span> <span class="pre">'h',</span> <span class="pre">'&lt;']</span></em><a class="headerlink" href="#ampycloud.plots.hardcoded.MRKS" title="Link to this definition"></a></dt>
+<span class="sig-prename descclassname"><span class="pre">ampycloud.plots.hardcoded.</span></span><span class="sig-name descname"><span class="pre">MRKS</span></span><span class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">['s',</span> <span class="pre">'^',</span> <span class="pre">'o',</span> <span class="pre">'v',</span> <span class="pre">'D',</span> <span class="pre">'&gt;',</span> <span class="pre">'h',</span> <span class="pre">'&lt;']</span></span><a class="headerlink" href="#ampycloud.plots.hardcoded.MRKS" title="Link to this definition"></a></dt>
 <dd><p>list of markers, for the different cloud layers</p>
 <dl class="field-list simple">
 <dt class="field-odd">Type<span class="colon">:</span></dt>
@@ -402,9 +402,9 @@ None = [‘png’].</p></li>
 ampycloud.</p>
 <p>For the “step” scaling plot, the parameters are taken straight from dynamic.GROUPING_PRMS.</p>
 <p>Example:</p>
-<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">ampycloud.plots.secondary</span> <span class="kn">import</span> <span class="n">scaling_fcts</span>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.plots.secondary</span><span class="w"> </span><span class="kn">import</span> <span class="n">scaling_fcts</span>
 
-<span class="n">scaling_fcts</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_stem</span><span class="o">=</span><span class="s1">&#39;ampycloud_scaling_fcts&#39;</span><span class="p">,</span> <span class="n">save_fmts</span><span class="o">=</span><span class="p">[</span><span class="s1">&#39;pdf&#39;</span><span class="p">])</span>
+<span class="n">scaling_fcts</span><span class="p">(</span><span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">save_stem</span><span class="o">=</span><span class="s1">'ampycloud_scaling_fcts'</span><span class="p">,</span> <span class="n">save_fmts</span><span class="o">=</span><span class="p">[</span><span class="s1">'pdf'</span><span class="p">])</span>
 </pre></div>
 </div>
 </dd></dl>
