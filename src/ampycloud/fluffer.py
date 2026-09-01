@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -10,6 +10,7 @@ Module contains: fluffiness-related tools
 
 # Import from Python
 import logging
+from typing import Any
 import numpy as np
 import statsmodels.api as sm
 
@@ -23,8 +24,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def get_fluffiness(pts, **kwargs):
-    """ Utility functions to compute the fluffiness of a set of ceilometer hits.
+def get_fluffiness(pts: np.ndarray, **kwargs: Any) -> np.ndarray:
+    """Utility functions to compute the fluffiness of a set of ceilometer hits.
 
     Args:
         pts (ndarray): 2D array of [dt, height] ceilometer hits. None must have NaNs heights.
@@ -46,7 +47,7 @@ def get_fluffiness(pts, **kwargs):
     """
 
     if pts.ndim != 2:
-        raise AmpycloudError('pts should be 2-dimensional.')
+        raise AmpycloudError("pts should be 2-dimensional.")
 
     # If I was given a single point, things are easy
     if len(pts) == 1:
@@ -64,13 +65,15 @@ def get_fluffiness(pts, **kwargs):
         # Let's add (ind * 1e-5) to any duplicated point. We use the point index "ind"
         # to make sure tri-/quadru-/multi-ple points all get shifted to distinct
         # positions.
-        unique_xs = [pts[0, 0]] + [item if diffs[ind] > 0 else item + (ind + 1) * 1e-5
-                                   for (ind, item) in enumerate(pts[1:, 0])]
+        unique_xs = [pts[0, 0]] + [
+            item if diffs[ind] > 0 else item + (ind + 1) * 1e-5 for (ind, item) in enumerate(pts[1:, 0])
+        ]
         unique_xs = np.array(unique_xs)
 
     # For more points, actually do some work
-    lowess_pts = sm.nonparametric.lowess(pts[:, 1], unique_xs, return_sorted=True,
-                                         is_sorted=True, missing='none', **kwargs)
+    lowess_pts = sm.nonparametric.lowess(
+        pts[:, 1], unique_xs, return_sorted=True, is_sorted=True, missing="none", **kwargs
+    )
 
     fluffiness = 2 * np.mean(np.abs(pts[:, 1] - lowess_pts[:, 1]))
     return fluffiness, lowess_pts

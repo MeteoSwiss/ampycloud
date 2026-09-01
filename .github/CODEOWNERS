@@ -7,15 +7,15 @@
 #
 
 # All the Github actions and gimmicks
-.github/                @fpavogt
-.pylintrc               @fpavogt
-CODE_OF_CONDUCT.md      @fpavogt
-CONTRIBUTING.md         @fpavogt
-LICENSE                 @fpavogt
-README.md               @fpavogt
+.github/                @smart
+.pylintrc               @smart
+CODE_OF_CONDUCT.md      @smart
+CONTRIBUTING.md         @smart
+LICENSE                 @smart
+README.md               @smart
 
 # All the docs
-docs/                   @fpavogt
+docs/                   @smart
 
 # All the code
-src/                    @fpavogt
+src/                    @smart

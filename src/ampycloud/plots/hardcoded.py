@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -15,4 +15,4 @@ WIDTH_ONECOL: float = 6.92
 WIDTH_TWOCOL: float = 14.16
 
 #: list: list of markers, for the different cloud layers
-MRKS = ['s', '^', 'o', 'v', 'D', '>', 'h', '<']
+MRKS = ["s", "^", "o", "v", "D", ">", "h", "<"]

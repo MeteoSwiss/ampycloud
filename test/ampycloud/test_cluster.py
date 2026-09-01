@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -16,7 +16,7 @@ from ampycloud.cluster import clusterize
 
 
 def test_clusterize():
-    """ Test clusterize(). """
+    """Test clusterize()."""
 
     # Test that None is returned if no algo is specified.
     assert clusterize(np.zeros((10, 2)), algo=None) is None

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -27,9 +27,10 @@ logger = logging.getLogger(__name__)
 
 @set_mplstyle
 @log_func_call(logger)
-def scaling_fcts(show: bool = True,
-                 save_stem: Union[str, None] = None, save_fmts: Union[list, str, None] = None) -> None:
-    """ Plots the different scaling functions.
+def scaling_fcts(
+    show: bool = True, save_stem: Union[str, None] = None, save_fmts: Union[list, str, None] = None
+) -> None:
+    """Plots the different scaling functions.
 
     Args:
        show (bool, optional): show the plot, or not. Defaults to True.
@@ -56,9 +57,18 @@ def scaling_fcts(show: bool = True,
     fig = plt.figure(figsize=(WIDTH_TWOCOL, 4.0))
 
     # Use gridspec for a fine control of the figure area.
-    fig_gs = gridspec.GridSpec(1, 3, height_ratios=[1], width_ratios=[1, 1, 1],
-                               left=0.07, right=0.96, bottom=0.18, top=0.9,
-                               wspace=0.15, hspace=0.05)
+    fig_gs = gridspec.GridSpec(
+        1,
+        3,
+        height_ratios=[1],
+        width_ratios=[1, 1, 1],
+        left=0.07,
+        right=0.96,
+        bottom=0.18,
+        top=0.9,
+        wspace=0.15,
+        hspace=0.05,
+    )
 
     ax1 = fig.add_subplot(fig_gs[0, 0])
     ax2 = fig.add_subplot(fig_gs[0, 1])
@@ -68,30 +78,33 @@ def scaling_fcts(show: bool = True,
     heights = np.arange(0, 25000, 10)
 
     # Plot the slicing scale
-    ax1.plot(heights, apply_scaling(heights, fct='shift-and-scale', **{'scale': 1000}), c='k', lw=2)
-    ax1.set_title(texify(r'\smaller shift-and-scale'))
+    ax1.plot(heights, apply_scaling(heights, fct="shift-and-scale", **{"scale": 1000}), c="k", lw=2)
+    ax1.set_title(texify(r"\smaller shift-and-scale"))
 
-    ax2.plot(heights, apply_scaling(heights, fct='minmax-scale'), c='k', lw=2)
-    ax2.set_title(texify(r'\smaller minmax-scale'))
+    ax2.plot(heights, apply_scaling(heights, fct="minmax-scale"), c="k", lw=2)
+    ax2.set_title(texify(r"\smaller minmax-scale"))
 
-    ax3.plot(heights, apply_scaling(
-        heights, fct='step-scale',
-        **{'steps': [3000, 8000], 'scales': [100, 500, 1000]}), c='k', lw=2)
-    ax3.set_title(texify(r'\smaller step-scale'))
+    ax3.plot(
+        heights,
+        apply_scaling(heights, fct="step-scale", **{"steps": [3000, 8000], "scales": [100, 500, 1000]}),
+        c="k",
+        lw=2,
+    )
+    ax3.set_title(texify(r"\smaller step-scale"))
 
     for ax in [ax1, ax2, ax3]:
-        ax.set_xlabel('x')
+        ax.set_xlabel("x")
 
-    ax1.set_ylabel('Scaled x')
+    ax1.set_ylabel("Scaled x")
 
     if save_fmts is None:
-        save_fmts = ['png']
+        save_fmts = ["png"]
 
     if save_stem is not None:
         for fmt in save_fmts:
-            out = f'{save_stem}.{fmt}'
+            out = f"{save_stem}.{fmt}"
             plt.savefig(out)
-            logger.info('%s saved to disk.', out)
+            logger.info("%s saved to disk.", out)
 
     if show:
         plt.show()

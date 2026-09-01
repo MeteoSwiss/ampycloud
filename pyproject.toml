@@ -1,0 +1,99 @@
+[project]
+dynamic = ["version"]
+name = "ampycloud"
+description = "Determining the sky coverage fraction and base height of cloud layers using ceilometer data"
+license = "BSD-3-Clause"
+readme = "README.md"
+authors = [
+    { name = "Frédéric P.A. Vogt", email = "frederic.vogt@meteoswiss.ch" },
+    { name = "Daniel Regenass" },
+]
+requires-python = ">=3.10,<3.13"
+dependencies = [
+    "matplotlib>=3.7.2",
+    "numpy>=1.20.3",
+    "scikit-learn>=1.2.0",
+    "scipy>=1.7.3",
+    "statsmodels>=0.14.3",
+    "pandas>=1.5",
+    "pyyaml",
+    "ruamel.yaml",
+]
+
+[project.urls]
+Source = "https://github.com/MeteoSwiss/ampycloud/"
+Changelog = "https://meteoswiss.github.io/ampycloud/changelog.html"
+Issues = "https://github.com/MeteoSwiss/ampycloud/issues"
+
+[project.scripts]
+ampycloud_speed_test = "ampycloud.__main__:ampycloud_speed_test"
+ampycloud_copy_prm_file = "ampycloud.__main__:ampycloud_copy_prm_file"
+
+[dependency-groups]
+test = [
+    "pytest (>=8.4.2,<9.0.0)",
+    "pytest-cov (>=7.0.0,<8.0.0)"
+]
+lint = [
+    "mypy (>=1.18.1,<2.0.0)",
+    "pylint (>=3.3.8,<4.0.0)",
+    "ruff (>=0.15.15,<0.16.0)",
+]
+doc = [
+    "pydata-sphinx-theme (>=0.16.1,<0.17.0)",
+    "sphinx (>=8.1.0,<8.2.0)",  # sphinx 8.2 raised the floor to Python 3.11, dropping 3.10 support
+    "sphinx-autoapi (>=3.6.0,<4.0.0)"
+]
+dev = [
+    { include-group = "test" },
+    { include-group = "lint" },
+    { include-group = "doc" }
+]
+
+[tool.poetry]
+requires-poetry = ">=2.0,<3.0"
+version = "0.0.0"  # DO NOT SET. The version of the package is always set by the CI/CD pipeline.
+packages = [{ include = "ampycloud", from = "src" }]
+include = [
+    "CHANGELOG",
+    "src/ampycloud/prms/*.yml",
+    "src/ampycloud/plots/mpl_styles/*.mplstyle",
+]
+
+[tool.pylint.master]
+disable = [
+    'C0114', # missing-module-docstring
+    'C0115', # missing-class-docstring
+    'C0116', # missing-function-docstring
+    'R0801', # duplications are already covered by SonarQube
+    'W0511', # fix me or to-do comments are already covered by SonarQube
+]
+
+[tool.pylint.basic]
+argument-naming-style = 'any'
+attr-naming-style = 'any'
+max-args = 8
+max-positional-arguments = 8
+good-names = ['_', 'a', 'ax', 'b', 'c', 'dt', 'f', 'fn', 'i', 'j', 'k', 'w', 'x', 'y', 'z']
+
+[tool.pylint.format]
+# Maximum number of lines in a module.
+max-line-length = 120
+
+[tool.pylint.design]
+# Minimum number of public methods for a class (see R0903).
+min-public-methods = 0
+
+[tool.mypy]
+ignore_missing_imports = true
+disallow_untyped_defs = true
+
+[tool.coverage.run]
+omit = ["test/**", "doc/**"]
+
+[tool.ruff]
+line-length = 120
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"

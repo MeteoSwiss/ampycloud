@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -9,4 +9,4 @@ Module contains: ampycloud version
 """
 
 #:str: the one-and-only place where the ampycloud version is set.
-VERSION = '2.1.1'
+VERSION = "2.2.0"

@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2023 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -13,7 +13,7 @@ import pytest
 
 
 def pytest_addoption(parser) -> None:
-    """ A nifty little function that allows to feed command line arguments to the pytest command,
+    """A nifty little function that allows to feed command line arguments to the pytest command,
     e.g.:
 
         pytest --MPL_STYLE=latex
@@ -25,18 +25,24 @@ def pytest_addoption(parser) -> None:
 
     """
 
-    parser.addoption("--MPL_STYLE", action="store", default='base',
-                     help="The required dynamic.MPL_STYLE value, e.g. latex or metsymb." +
-                     " Defaults to base.")
+    parser.addoption(
+        "--MPL_STYLE",
+        action="store",
+        default="base",
+        help="The required dynamic.MPL_STYLE value, e.g. latex or metsymb." + " Defaults to base.",
+    )
 
-    parser.addoption("--DO_SCIPLOTS", action="store_true", default=False,
-                     help="If used, will generate the plots when running the scientific stability" +
-                     "tests.")
+    parser.addoption(
+        "--DO_SCIPLOTS",
+        action="store_true",
+        default=False,
+        help="If used, will generate the plots when running the scientific stability" + "tests.",
+    )
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def mpls(request):
-    """ A pytext fixture to identify whether the MPL_STYLE argument was fed to pytest, or not.
+    """A pytext fixture to identify whether the MPL_STYLE argument was fed to pytest, or not.
 
     Adapted from the similar function in dvas, which itself was adapted from the response of ipetrik
     on `StackOverflow <https://stackoverflow.com/questions/40880259>`__
@@ -53,9 +59,9 @@ def mpls(request):
     return request.config.getoption("--MPL_STYLE")
 
 
-@pytest.fixture(scope='session')
+@pytest.fixture(scope="session")
 def do_sciplots(request):
-    """ A pytext fixture to decide whether to create plots (or not) when testing the
+    """A pytext fixture to decide whether to create plots (or not) when testing the
     scientific stability of ampycloud.
 
     Adapted from the similar function in dvas, which itself was adapted from the response of ipetrik
