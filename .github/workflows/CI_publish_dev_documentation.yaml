@@ -2,7 +2,7 @@
 # repository when pushing to the main branch.
 # It uses the `peaceiris/actions-gh-pages` action to handle the GitHub pages publishing.
 #
-# Copyright (c) 2026 MeteoSwiss
+# Copyright (c) 2026 MeteoSwiss, created by autometpy; f_autometpy@meteoswiss.ch
 
 name: CI_publish_dev_documentation
 

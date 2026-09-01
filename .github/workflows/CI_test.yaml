@@ -3,7 +3,7 @@
 # https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
 # Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
 #
-# Copyright (c) 2026 MeteoSwiss
+# Copyright (c) 2026 MeteoSwiss, created by autometpy; f_autometpy@meteoswiss.ch
 
 name: CI_test
 

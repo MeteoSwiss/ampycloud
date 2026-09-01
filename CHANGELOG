@@ -4,8 +4,9 @@ The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0
 This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
 ## [v2.2.0]
-### Fixed:
- - [srethore, 2026-08-24] Refactor pypi action using trusted publishing and MCH template.
+### Added:
+ - [srethore, 2026-09-01] Refactor pypi action using trusted publishing
+ and apply Open Source MCH template to the whole project.
 
 ## [v2.1.1]
 ### Fixed:

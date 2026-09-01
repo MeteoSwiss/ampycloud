@@ -76,13 +76,7 @@ repository, and install it from source. In a terminal:
 ```
 git clone -b main git@github.com:MeteoSwiss/ampycloud.git some_folder
 cd some_folder
-pip install -e .[dev] OR poetry install
-```
-Note the use of `[dev]` to also install the dependencies required for dev work (i.e. `sphinx`, `pylint`, etc ...).
-
-:warning: If you encounter the error `zsh: no matches found: .[dev]`, add some quotes as follows:
-```
-pip install -e '.[dev]'
+poetry install
 ```
 
 
@@ -112,14 +106,13 @@ There is another Github action responsible for publishing the code (and its docu
 that gets triggered upon a new git tag being pushed, using PyPI's trusted publisher mechanism (no
 API token required). See the ampycloud [release mechanisms](#release-mechanisms) for details.
 
-### Linting
+### Linting with Pylint
 
-* The following [pylint](https://www.pylint.org/) error codes are forbidden in ampycloud:
-  ``E, C0303, C0304, C0112, C0114, C0115, C0116, C0411, W0611, W0612.`` Every Pull Request to `main` is automatically linted, and these codes will be flagged accordingly.
-* There is no "automated black formatting" implemented in the repo **by choice**. We believe that it
-  is up to the contributors to ensure that the quality of their code meets the required standards enforced by the Github Action in this repo.
-* We encourage contributors to follow PEP8 as closely as possible/reasonable. You should check
-  often how well you are doing using the command `pylint some_modified_file.py`.
+Run pylint to check for code quality issues:
+
+```console
+$ poetry run pylint ampycloud
+```
 
 ### Formatting with Ruff
 
