@@ -43,6 +43,10 @@ jobs:
     - name: Install dependencies
       run: poetry install
 
+    - name: Display package version
+      run: |
+        python -c "from ampycloud.version import VERSION; print(f'ampycloud version: {VERSION}')"
+
     - name: Check formatting
       if: env.CHECK_RUFF_FORMAT == 'true'
       run: poetry run ruff format --check

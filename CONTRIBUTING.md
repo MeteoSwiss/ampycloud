@@ -363,3 +363,12 @@ the copyright years will need to be manually updated in the following locations:
 
 The copyright years are also present in all the docstring modules. These can be updated individually
 if/when a modification is made to a given module.
+
+It has to be updated as follows for Python files:
+```
+Copyright (c) YYYY-YYYY MeteoSwiss, contributors listed in AUTHORS.
+```
+And as follows for non-Python files (e.g. `.rst`, `.md`, `yaml`, etc ...):
+```
+Copyright (c) YYYY MeteoSwiss, created by Firstname Lastname; Email address
+```
