@@ -45,7 +45,7 @@ jobs:
 
     - name: Display package version
       run: |
-        python -c "from ampycloud.version import VERSION; print(f'ampycloud version: {VERSION}')"
+        poetry run python -c "from ampycloud.version import VERSION; print(f'ampycloud version: {VERSION}')"
 
     - name: Check formatting
       if: env.CHECK_RUFF_FORMAT == 'true'

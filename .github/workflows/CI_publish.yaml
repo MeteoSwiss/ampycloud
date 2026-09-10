@@ -46,7 +46,7 @@ jobs:
     - name: Check tag matches package version
       run: |
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        PKG_VERSION=$(python -c "from src.ampycloud.version import VERSION; print(VERSION)")
+        PKG_VERSION=$(poetry run python -c "from src.ampycloud.version import VERSION; print(VERSION)")
         if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
           echo "::error::Tag version ($TAG_VERSION) does not match src/ampycloud/version.py ($PKG_VERSION)"
           exit 1
@@ -54,7 +54,6 @@ jobs:
 
     - name: Build artifacts
       run: |
-        poetry version $(python -c "from src.ampycloud.version import VERSION; print(VERSION)")
         poetry build
 
     - name: Publish to PyPi
