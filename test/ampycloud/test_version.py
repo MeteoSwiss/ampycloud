@@ -20,10 +20,7 @@ def test_version_is_string():
     assert isinstance(VERSION, str)
 
 
-@pytest.mark.skipif(
-    VERSION == "0.0.0",
-    reason="Skip version > 0 check in dev (placeholder version)"
-)
+@pytest.mark.skipif(VERSION == "0.0.0", reason="Skip version > 0 check in dev (placeholder version)")
 def test_version_greater_than_zero():
     """Test that VERSION > 0 (only in CI with real version)."""
     # Here, let's make sure the version is valid. One way to check this is to make sure that it is
@@ -33,10 +30,7 @@ def test_version_greater_than_zero():
     assert packaging.version.parse(VERSION) > packaging.version.parse("0")
 
 
-@pytest.mark.skipif(
-    VERSION != "0.0.0",
-    reason="Only check placeholder version in dev"
-)
+@pytest.mark.skipif(VERSION != "0.0.0", reason="Only check placeholder version in dev")
 def test_version_is_placeholder_in_dev():
     """Test that VERSION is 0.0.0 in dev environment."""
     assert VERSION == "0.0.0"
