@@ -1,0 +1,53 @@
+# This workflow will build and publish the `dev` documentation to the `gh-pages` branch of the
+# repository when pushing to the main branch.
+# It uses the `peaceiris/actions-gh-pages` action to handle the GitHub pages publishing.
+#
+# Copyright (c) 2026 MeteoSwiss, created by autometpy; f_autometpy@meteoswiss.ch
+
+name: CI_publish_dev_documentation
+
+on:
+  workflow_run:
+    workflows: ["CI_test"]
+    branches: ['main']
+    types:
+      - completed
+
+jobs:
+
+  publish:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write
+      pages: write
+
+    steps:
+    - name: Checkout current repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: 3.11
+
+    - name: Install poetry and python package
+      run: |
+        python -m pip install --upgrade pip
+        python -m pip install poetry
+        poetry install
+
+    - name: Build documentation
+      env:
+        VERSION: dev
+        GITHUB_SHA: ${{ github.sha }}
+      # Set the buildId to the first 7 digits of the commit hash
+      run: BUILD_ID=$(echo ${GITHUB_SHA::7}) poetry run sphinx-build doc doc/_build
+
+    - name: Publish documentation
+      uses: peaceiris/actions-gh-pages@v3
+      with:
+        publish_branch: gh-pages
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        publish_dir: doc/_build/
+        keep_files: true

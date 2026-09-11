@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -8,5 +8,10 @@ SPDX-License-Identifier: BSD-3-Clause
 Module contains: ampycloud version
 """
 
-#:str: the one-and-only place where the ampycloud version is set.
-VERSION = '2.1.1'
+from importlib.metadata import version, PackageNotFoundError
+
+try:
+    VERSION = version("ampycloud")
+except PackageNotFoundError:
+    # Package is not installed (e.g., during development)
+    VERSION = "0.0.0"

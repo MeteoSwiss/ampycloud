@@ -23,5 +23,5 @@ and ease of access, the content of this file is reproduced below.
     copies of this file. See :ref:`Adjusting the default algorithm parameters <running:Adjusting the default algorithm parameters>`
     for details.
 
-.. literalinclude:: ../../src/ampycloud/prms/ampycloud_default_prms.yml
+.. literalinclude:: ../src/ampycloud/prms/ampycloud_default_prms.yml
     :language: yaml

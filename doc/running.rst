@@ -59,27 +59,27 @@ following function, that is also directly accessible as ``ampycloud.run()``.
 .. autofunction:: ampycloud.core.run
     :noindex:
 
-The :py:class:`ampycloud.data.CeiloChunk` class
+The :py:class:`ampycloud.ceilo_data.CeiloChunk` class
 ...............................................
 
-The function :py:func:`ampycloud.core.run` returns a :py:class:`ampycloud.data.CeiloChunk` class
+The function :py:func:`ampycloud.core.run` returns a :py:class:`ampycloud.ceilo_data.CeiloChunk` class
 instance, which is at the core of ampycloud. This class is used to load and format the
 user-supplied data, execute the different ampycloud algorithm steps, and format their outcomes.
 
 The properties of the slices/groups/layers identified by the different steps of the ampycloud
 algorithm are accessible, as :py:class:`pandas.DataFrame` instances, via the class properties
-:py:attr:`ampycloud.data.CeiloChunk.slices`, :py:attr:`ampycloud.data.CeiloChunk.groups`, and
-:py:attr:`ampycloud.data.CeiloChunk.layers`.
+:py:attr:`ampycloud.ceilo_data.CeiloChunk.slices`, :py:attr:`ampycloud.ceilo_data.CeiloChunk.groups`, and
+:py:attr:`ampycloud.ceilo_data.CeiloChunk.layers`.
 
 .. note::
-    :py:meth:`ampycloud.data.CeiloChunk.metar_msg` relies on
-    :py:attr:`ampycloud.data.CeiloChunk.layers` to derive the corresponding METAR-like message.
+    :py:meth:`ampycloud.ceilo_data.CeiloChunk.metar_msg` relies on
+    :py:attr:`ampycloud.ceilo_data.CeiloChunk.layers` to derive the corresponding METAR-like message.
 
 All these slices/groups/layer parameters are being compiled/computed by
-:py:meth:`ampycloud.data.CeiloChunk.metarize`, which contains all the info about the different
+:py:meth:`ampycloud.ceilo_data.CeiloChunk.metarize`, which contains all the info about the different
 parameters.
 
-.. autofunction:: ampycloud.data.CeiloChunk.metarize
+.. autofunction:: ampycloud.ceilo_data.CeiloChunk.metarize
     :noindex:
 
 
@@ -100,9 +100,9 @@ Adjusting the default algorithm parameters
 The ampycloud parameters with a **scientific** impact on the outcome of the algorithm
 (see :ref:`here for the complete list <parameters:The ampycloud scientific parameters>`)
 are accessible via :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` as a nested dictionary. When a new
-:py:class:`ampycloud.data.CeiloChunk` instance is being initiated, a copy of this nested dictionary
+:py:class:`ampycloud.ceilo_data.CeiloChunk` instance is being initiated, a copy of this nested dictionary
 is being stored as an instance variable. It is then possible to adjust specific parameters via the
-``prms`` keyword argument when initializing a :py:class:`ampycloud.data.CeiloChunk` instance.
+``prms`` keyword argument when initializing a :py:class:`ampycloud.ceilo_data.CeiloChunk` instance.
 
 There are thus 2+1 ways to adjust the ampycloud scientific parameters:
 
@@ -128,7 +128,7 @@ There are thus 2+1 ways to adjust the ampycloud scientific parameters:
 
     * **2: Adjust them locally** for a given execution of ampycloud by feeding a suitable
       nested dictionary to :py:func:`ampycloud.core.run` (that will create a new
-      :py:class:`ampycloud.data.CeiloChunk` instance behind the scene). The dictionary, the keys
+      :py:class:`ampycloud.ceilo_data.CeiloChunk` instance behind the scene). The dictionary, the keys
       and levels of which should be consistent with :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS`,
       only needs to contain the specific parameters that one requires to be different from the
       default values.
@@ -149,7 +149,7 @@ There are thus 2+1 ways to adjust the ampycloud scientific parameters:
     Options 1a and 1b are **not** thread-safe. Users planning to launch multiple ampycloud
     processes simultaneously are urged to use option 2, if they need to set distinct parameters
     between each. In case of doubts, the parameters used by a given
-    :py:class:`ampycloud.data.CeiloChunk` instance is accessible via the (parent)
+    :py:class:`ampycloud.ceilo_data.CeiloChunk` instance is accessible via the (parent)
     :py:meth:`ampycloud.data.AbstractChunk.prms` property.
 
 

@@ -5,7 +5,7 @@
 #
 # Adapted from: https://github.com/actions/starter-workflows/blob/master/ci/python-package.yml
 #
-# Copyright (c) 2020-2023 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
+# Copyright (c) 2026 MeteoSwiss, created by F.P.A. Vogt; frederic.vogt@meteoswiss.ch
 
 name: CI_pytest_weekly
 
@@ -23,15 +23,15 @@ jobs:
         os: [ubuntu-latest, macos-latest, windows-latest]
 
     steps:
-    # Checkout the master branch if this is a scheduled test
+    # Checkout the main branch if this is a scheduled test
     # The idea for this Action is to spot issues with new dependency versions as soon as they
     # are released (and not when we decide to update ampycloud).
-    - name: Checkout current repository (master branch)
+    - name: Checkout current repository (main branch)
       if: ${{ github.event_name == 'schedule' }}
       uses: actions/checkout@v4
       with:
         repository: MeteoSwiss/ampycloud
-        ref: master
+        ref: main
 
     # Alternatively, checkout whichever branch was selected by the user upon the manual trigger.
     - name: Checkout current repository (custom branch)
@@ -46,17 +46,15 @@ jobs:
       with:
         python-version: '3.x'
 
-    # Install all the dependencies we require
-    - name: Install dependencies
+    - name: Install poetry
       run: |
         python -m pip install --upgrade pip
+        python -m pip install poetry
 
-    # Here, let's install our module to make sure all the dependencies specified in setup.py are
-    # also installed
-    - name: Install our module
-      run: pip install -e .[dev]
+    - name: Install dependencies
+      run: poetry install
 
     # Ready to run all the tests !
     - name: Run pytest
       run: |
-        pytest -s
+        poetry run pytest -s
