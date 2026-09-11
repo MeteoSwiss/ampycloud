@@ -14,5 +14,4 @@ try:
     VERSION = version("ampycloud")
 except PackageNotFoundError:
     # Package is not installed (e.g., during development)
-    # Use a development version that is greater than "0"
     VERSION = "0.0.0"

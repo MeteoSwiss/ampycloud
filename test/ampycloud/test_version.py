@@ -9,28 +9,35 @@ Module content: tests for the version module
 """
 
 # Import from Python
+import importlib
+from importlib.metadata import PackageNotFoundError
+
 import pytest
-import packaging
 
 # Import from this package
-from ampycloud.version import VERSION
+import ampycloud.version as version_module
 
 
-def test_version_is_string():
-    assert isinstance(VERSION, str)
+@pytest.fixture
+def restore_version_module():
+    """Reload ampycloud.version after the test, undoing any monkeypatched reload."""
+    yield
+    importlib.reload(version_module)
 
 
-@pytest.mark.skipif(VERSION == "0.0.0", reason="Skip version > 0 check in dev (placeholder version)")
-def test_version_greater_than_zero():
-    """Test that VERSION > 0 (only in CI with real version)."""
-    # Here, let's make sure the version is valid. One way to check this is to make sure that it is
-    # not converted into a LegacyVersion. Any valid version should be greater than 0.
-    # Only LegacyVersion wouldn't.
-    # Not the most elegant, but better than nothing.
-    assert packaging.version.parse(VERSION) > packaging.version.parse("0")
+def test_version_reads_installed_metadata(monkeypatch, restore_version_module):
+    """Test that VERSION picks up whatever importlib.metadata reports as installed."""
+    monkeypatch.setattr("importlib.metadata.version", lambda name: "9.9.9")
+    reloaded = importlib.reload(version_module)
+    assert reloaded.VERSION == "9.9.9"
 
 
-@pytest.mark.skipif(VERSION != "0.0.0", reason="Only check placeholder version in dev")
-def test_version_is_placeholder_in_dev():
-    """Test that VERSION is 0.0.0 in dev environment."""
-    assert VERSION == "0.0.0"
+def test_version_falls_back_to_placeholder_when_not_installed(monkeypatch, restore_version_module):
+    """Test that VERSION falls back to the 0.0.0 placeholder when the package isn't installed."""
+
+    def _raise(name):
+        raise PackageNotFoundError(name)
+
+    monkeypatch.setattr("importlib.metadata.version", _raise)
+    reloaded = importlib.reload(version_module)
+    assert reloaded.VERSION == "0.0.0"

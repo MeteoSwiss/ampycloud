@@ -34,27 +34,28 @@ jobs:
       with:
         python-version: 3.11
 
-    - name: Install poetry and python package
+    - name: Install poetry
       run: |
         python -m pip install --upgrade pip
         python -m pip install poetry
-        # Update pyproject.toml with git tag version BEFORE poetry install
-        poetry version ${GITHUB_REF#refs/tags/v}
-        poetry install
 
-    # The version is maintained in src/ampycloud/version.py, so we check that the tag matches the version in that file.
+    - name: Set package version from tag
+      run: poetry version ${GITHUB_REF#refs/tags/}
+
+    - name: Install python package
+      run: poetry install
+
+    - name: Build artifacts
+      run: poetry build
+
     - name: Check tag matches package version
       run: |
         TAG_VERSION=${GITHUB_REF#refs/tags/v}
-        PKG_VERSION=$(poetry run python -c "from src.ampycloud.version import VERSION; print(VERSION)")
+        PKG_VERSION=$(poetry run python -c "from ampycloud.version import VERSION; print(VERSION)")
         if [ "$TAG_VERSION" != "$PKG_VERSION" ]; then
-          echo "::error::Tag version ($TAG_VERSION) does not match src/ampycloud/version.py ($PKG_VERSION)"
+          echo "::error::Tag version ($TAG_VERSION) does not match ampycloud.version.VERSION ($PKG_VERSION)"
           exit 1
         fi
-
-    - name: Build artifacts
-      run: |
-        poetry build
 
     - name: Publish to PyPi
       uses: pypa/gh-action-pypi-publish@release/v1
