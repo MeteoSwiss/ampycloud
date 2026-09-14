@@ -34,15 +34,19 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
     One okta corresponds to 1/8 of the sky covered by clouds. The cases of 0 and 8 oktas are
     special, in that these indicate that the sky is covered at *exactly* 0%, respectively 100%.
     This implies that the 1 okta and 7 okta bins are larger than others.
+    Each bin's lower bound is inclusive (except 1 okta bin), and its upper bound is exclusive.
 
     Specifically:
 
-        - 0 okta  == val=0
-        - 1 okta  == 0 < val <= 1.5*100/8
-        - 2 oktas == 1.5*100/8 < val <= 2.5*100/8
-        - ...
-        - 7 oktas == 6.5*100/8 < val < 100
-        - 8 oktas == val=100
+        - 0 okta  == val = 0
+        - 1 okta  == 0 < val < 1.5*100/8
+        - 2 oktas == 1.5*100/8 <= val < 2.5*100/8
+        - 3 oktas == 2.5*100/8 <= val < 3.5*100/8
+        - 4 oktas == 3.5*100/8 <= val < 4.5*100/8
+        - 5 oktas == 4.5*100/8 <= val < 5.5*100/8
+        - 6 oktas == 5.5*100/8 <= val < 6.5*100/8
+        - 7 oktas == 6.5*100/8 <= val < 100
+        - 8 oktas == val = 100
 
     Reference:
         Boers, R., de Haij, M. J., Wauben, W. M. F., Baltink, H. K., van Ulft, L. H.,
@@ -52,7 +56,7 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
     """
 
     # A basic sanity check
-    if not np.all((val >= 0) * (val <= 100)):
+    if not np.all((val >= 0) & (val <= 100)):
         raise AmpycloudError(f"I need 0<=val<=100, but I got: {val}")
 
     # If I did not receive a numpy array, build one to be efficient afterwards ...
@@ -60,19 +64,26 @@ def perc2okta(val: Union[int, float, np.ndarray]) -> np.ndarray:
         val = np.array([val])
 
     # Prepare the out array with floats for now. We will round things later on.
-    out = np.full_like(val, -1.0, dtype=float)
+    # 0% is already correctly handled by this default value.
+    out = np.zeros_like(val, dtype=float)
 
-    # Deal with the edge cases first
-    out[(val == 0)] = 0
-    out[(val == 100)] = 8
+    # "Regular" values, i.e. strictly between 0% and 100%.
+    is_regular = (val > 0) & (val < 100)
 
-    # Now deal with the other cases
-    out[out == -1] = val[out == -1] / (100 / 8)
-    # Now we round/floor/ceil as required, remembering that the 1 and 7 okta bins are special.
-    out[out < 1] = np.ceil(out[out < 1])
-    out[out > 7] = np.floor(out[out > 7])
-    # Everything else, we just round as usual
-    out = np.round(out)
+    # Deal with the only other edge case: exactly 100%.
+    out[val == 100] = 8
+
+    # For the regular values, first get the "raw" fractional okta ...
+    out[is_regular] = val[is_regular] / (100 / 8)
+    # ... then round it "half up" (e.g. 1.5 -> 2), since each okta bin's lower bound is
+    # inclusive and its upper bound is exclusive.
+    rounded = np.floor(out[is_regular] + 0.5)
+    # The 1 okta and 7 okta bins are wider than the others: any regular value that would
+    # otherwise round to 0 or 8 must be clamped back to 1, resp. 7 (0 and 8 are reserved for
+    # the exact 0% and 100% edge cases only).
+    rounded[rounded == 0] = 1
+    rounded[rounded == 8] = 7
+    out[is_regular] = rounded
 
     # Return ints, to make it clear that we do not work with fractional oktas
     return out.astype(int)
