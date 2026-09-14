@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2024 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the BSD-3-Clause license.
 
@@ -24,7 +24,7 @@ from .errors import AmpycloudError, AmpycloudWarning
 from .logger import log_func_call
 from .utils.mocker import canonical_demo_data
 from .utils import utils
-from .data import CeiloChunk
+from .ceilo_data import CeiloChunk
 from . import dynamic
 
 # Instantiate the module logger
@@ -32,8 +32,8 @@ logger = logging.getLogger(__name__)
 
 
 @log_func_call(logger)
-def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
-    """ Create a local copy of a specific ampycloud parameter file.
+def copy_prm_file(save_loc: str = "./", which: str = "defaults") -> None:
+    """Create a local copy of a specific ampycloud parameter file.
 
     Args:
         save_loc (str, optional): location to save the YML file to. Defaults to './'.
@@ -59,22 +59,22 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
     given_path = Path(save_loc)
     # I won't create stuff for the users. ampycloud is not that nice.
     if not given_path.exists():
-        raise AmpycloudError('save_loc does not appear to exist !')
+        raise AmpycloudError("save_loc does not appear to exist !")
     if not given_path.is_dir():
-        raise AmpycloudError('save_loc does not appear to be a directory !')
+        raise AmpycloudError("save_loc does not appear to be a directory !")
 
     # Next, let's look at all the parameter files available ...
-    ref_loc = Path(__file__).resolve().parent / 'prms'
-    ref_files = [item.name for item in ref_loc.glob('*.yml')]
+    ref_loc = Path(__file__).resolve().parent / "prms"
+    ref_files = [item.name for item in ref_loc.glob("*.yml")]
 
     # Log this info, in case users want to know which ones exist.
-    logger.info('Available parameter files: %s', ref_files)
+    logger.info("Available parameter files: %s", ref_files)
 
-    if (fname := f'ampycloud_{which}_prms.yml') not in ref_files:
-        raise AmpycloudError(f'Parameter file {fname} not found.')
+    if (fname := f"ampycloud_{which}_prms.yml") not in ref_files:
+        raise AmpycloudError(f"Parameter file {fname} not found.")
 
     if (given_path / fname).exists():
-        raise AmpycloudError(f'File {fname} already exists at save_loc={given_path}')
+        raise AmpycloudError(f"File {fname} already exists at save_loc={given_path}")
 
     # All looks good, let's copy the file
     copy(ref_loc / fname, given_path / fname)
@@ -82,7 +82,7 @@ def copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None:
 
 @log_func_call(logger)
 def set_prms(pth: Union[str, Path]) -> None:
-    """ Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
+    """Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
 
     Args:
         pth (str|Path): path+filename to a YAML parameter file for ampycloud.
@@ -112,18 +112,20 @@ def set_prms(pth: Union[str, Path]) -> None:
         pth = Path(pth)
 
     if not isinstance(pth, Path):
-        raise AmpycloudError(f'pth should of type str or pathlib.Path, not {type(pth)}')
+        raise AmpycloudError(f"pth should of type str or pathlib.Path, not {type(pth)}")
     if not pth.exists():
-        raise AmpycloudError(f'I cannot find {pth}')
+        raise AmpycloudError(f"I cannot find {pth}")
     if not pth.is_file():
-        raise AmpycloudError(f'{pth} is not a file !')
-    if (suf := pth.suffix) != '.yml':
-        warnings.warn(f'Hum ... I was expecting a .yml file, but got {suf} instead.' +
-                      ' Are you sure this is ok ?', AmpycloudWarning)
+        raise AmpycloudError(f"{pth} is not a file !")
+    if (suf := pth.suffix) != ".yml":
+        warnings.warn(
+            f"Hum ... I was expecting a .yml file, but got {suf} instead." + " Are you sure this is ok ?",
+            AmpycloudWarning,
+        )
 
     # Extract all the parameters
-    logger.info('Opening (user) parameter file: %s', pth)
-    yaml = YAML(typ='safe')
+    logger.info("Opening (user) parameter file: %s", pth)
+    yaml = YAML(typ="safe")
     user_prms = yaml.load(pth)
 
     # Now, assign the new prms
@@ -132,7 +134,7 @@ def set_prms(pth: Union[str, Path]) -> None:
 
 @log_func_call(logger)
 def reset_prms(which: Union[str, list, None] = None) -> None:
-    """ Reset the ampycloud dynamic=scientific parameters to their default values.
+    """Reset the ampycloud dynamic=scientific parameters to their default values.
 
     Args:
         which (str|list, optional): (list of) names of parameters to reset specifically.
@@ -164,15 +166,19 @@ def reset_prms(which: Union[str, list, None] = None) -> None:
 
     for prm in which:
         if prm not in default_prms.keys():
-            raise AmpycloudError(f'Unknown parameter name: {prm}')
+            raise AmpycloudError(f"Unknown parameter name: {prm}")
 
         dynamic.AMPYCLOUD_PRMS[prm] = default_prms[prm]
 
 
 @log_func_call(logger)
-def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, None] = None,
-        ref_dt: Union[str, datetime, None] = None) -> CeiloChunk:
-    """ Runs the ampycloud algorithm on a given dataset.
+def run(
+    data: pd.DataFrame,
+    prms: Union[dict, None] = None,
+    geoloc: Union[str, None] = None,
+    ref_dt: Union[str, datetime, None] = None,
+) -> CeiloChunk:
+    """Runs the ampycloud algorithm on a given dataset.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
@@ -186,7 +192,7 @@ def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, N
             is specified, it will be turned almost immediately to str via ``str(ref_dt)``.
 
     Returns:
-        :py:class:`.data.CeiloChunk`: the data chunk with all the processing outcome bundled
+        :py:class:`.ceilo_data.CeiloChunk`: the data chunk with all the processing outcome bundled
         cleanly.
 
     All that is required to run the ampycloud algorithm is a properly
@@ -206,7 +212,7 @@ def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, N
         between different measurements. Essentially, each *measurement* (which may be comprised of
         several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do
         so may result in incorrect estimations of the cloud layer densities. See
-        :py:attr:`.data.CeiloChunk.max_hits_per_layer` for more details.
+        :py:attr:`.ceilo_data.CeiloChunk.max_hits_per_layer` for more details.
 
 
     All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`
@@ -238,11 +244,11 @@ def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, N
             prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}
 
 
-    The :py:class:`.data.CeiloChunk` instance returned by this function contains all the information
+    The :py:class:`.ceilo_data.CeiloChunk` instance returned by this function contains all the information
     associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
-    info. Its method :py:meth:`.data.CeiloChunk.metar_msg` provides direct access to the resulting
+    info. Its method :py:meth:`.ceilo_data.CeiloChunk.metar_msg` provides direct access to the resulting
     METAR-like message. Users that require the height, okta amount, and/or exact sky coverage
-    fraction of layers can get them via the :py:attr:`.data.CeiloChunk.layers` class property.
+    fraction of layers can get them via the :py:attr:`.ceilo_data.CeiloChunk.layers` class property.
 
     Example:
 
@@ -270,7 +276,7 @@ def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, N
     """
 
     starttime = datetime.now()
-    logger.info('Starting an ampycloud run at %s', starttime)
+    logger.info("Starting an ampycloud run at %s", starttime)
 
     # If the user gave me a datetime, convert this to str before proceeding
     if not isinstance(ref_dt, str) and ref_dt is not None:
@@ -287,14 +293,14 @@ def run(data: pd.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, N
     # ... and the layering.
     chunk.find_layers()
 
-    logger.info('End of the ampycloud run in %.1f s', (datetime.now()-starttime).total_seconds())
+    logger.info("End of the ampycloud run in %.1f s", (datetime.now() - starttime).total_seconds())
 
     return chunk
 
 
 @log_func_call(logger)
 def metar(data: pd.DataFrame) -> str:
-    """ Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
+    """Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
 
     Args:
         data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.
@@ -321,16 +327,16 @@ def metar(data: pd.DataFrame) -> str:
     chunk = run(data)
 
     # Then, return the METAR message
-    return chunk.metar_msg(which='layers')
+    return chunk.metar_msg(which="layers")
 
 
 @log_func_call(logger)
 def demo() -> tuple:
-    """ Run the ampycloud algorithm on a demonstration dataset.
+    """Run the ampycloud algorithm on a demonstration dataset.
 
     Returns:
-        :py:class:`pandas.DataFrame`, :py:class:`.data.CeiloChunk`: the mock dataset used for the
-        demonstration, and the :py:class:`.data.CeiloChunk` instance.
+        :py:class:`pandas.DataFrame`, :py:class:`.ceilo_data.CeiloChunk`: the mock dataset used for the
+        demonstration, and the :py:class:`.ceilo_data.CeiloChunk` instance.
 
     """
 
@@ -339,6 +345,6 @@ def demo() -> tuple:
     assert isinstance(mock_data, pd.DataFrame)
 
     # Run the ampycloud algorithm
-    chunk = run(mock_data, geoloc='ampycloud demo', ref_dt=str(datetime.now()))
+    chunk = run(mock_data, geoloc="ampycloud demo", ref_dt=str(datetime.now()))
 
     return mock_data, chunk

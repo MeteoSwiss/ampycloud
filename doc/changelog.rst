@@ -10,5 +10,5 @@ Changelog
 The ampycloud changelog (reproduced below) is stored in the
 `code repository <https://github.com/MeteoSwiss/ampycloud>`_ on Github.
 
-.. literalinclude:: ../../CHANGELOG
+.. literalinclude:: ../CHANGELOG
     :language: none

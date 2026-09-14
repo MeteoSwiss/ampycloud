@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -17,7 +17,7 @@ from ampycloud.fluffer import get_fluffiness
 
 
 def test_get_fluffiness():
-    """ Test the fluffiness routine """
+    """Test the fluffiness routine"""
 
     # Fluffiness for a single point should be 0
     pts = np.array([[1, 2]])

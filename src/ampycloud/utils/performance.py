@@ -1,5 +1,5 @@
 """
-Copyright (c) 2021-2022 MeteoSwiss, contributors listed in AUTHORS.
+Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
 
 Distributed under the terms of the 3-Clause BSD License.
 
@@ -23,7 +23,7 @@ logger = logging.getLogger(__name__)
 
 @log_func_call(logger)
 def get_speed_benchmark(niter: int = 10) -> tuple:
-    """ This function will run and time :py:func:`ampycloud.core.demo` to assess the code's
+    """This function will run and time :py:func:`ampycloud.core.demo` to assess the code's
     performance on a given machine.
 
     For now, this is a rather dumb and uninspired way to do it. If the need ever arises, this
@@ -42,12 +42,11 @@ def get_speed_benchmark(niter: int = 10) -> tuple:
     for _ in range(niter):
         start = datetime.now()
         _, _ = demo()
-        dts += [(datetime.now()-start).total_seconds()]
+        dts += [(datetime.now() - start).total_seconds()]
 
-    logger.info('ampycloud demo() exec-time from %i runs:', niter)
-    logger.info('    mean [std]: %.2fs [%.2fs]', np.mean(dts), np.std(dts))
-    logger.info('    median [min; max]: %.2f [%.2fs; %.2fs]',
-                np.median(dts), np.min(dts), np.max(dts))
+    logger.info("ampycloud demo() exec-time from %i runs:", niter)
+    logger.info("    mean [std]: %.2fs [%.2fs]", np.mean(dts), np.std(dts))
+    logger.info("    median [min; max]: %.2f [%.2fs; %.2fs]", np.median(dts), np.min(dts), np.max(dts))
 
     # Compute some statistics
     return niter, np.mean(dts), np.std(dts), np.median(dts), np.min(dts), np.max(dts)
