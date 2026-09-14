@@ -1,0 +1,950 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ampycloud.core &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=871d9eb4"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ampycloud/core/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'v2.2.0';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ampycloud.data" href="../data/index.html" />
+    <link rel="prev" title="ampycloud.cluster" href="../cluster/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="v2.2.0" />
+    <meta name="docbuild:last-update" content="14.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="../../index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">ampycloud</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ceilo_data/index.html">ampycloud.ceilo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cluster/index.html">ampycloud.cluster</a></li>
+<li class="toctree-l2 current active"><a class="current reference internal" href="#">ampycloud.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">ampycloud.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamic/index.html">ampycloud.dynamic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../errors/index.html">ampycloud.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fluffer/index.html">ampycloud.fluffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardcoded/index.html">ampycloud.hardcoded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../icao/index.html">ampycloud.icao</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer/index.html">ampycloud.layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logger/index.html">ampycloud.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metarize/index.html">ampycloud.metarize</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../plots/index.html">ampycloud.plots</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../plots/core/index.html">ampycloud.plots.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plots/diagnostics/index.html">ampycloud.plots.diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plots/hardcoded/index.html">ampycloud.plots.hardcoded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plots/secondary/index.html">ampycloud.plots.secondary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../plots/tools/index.html">ampycloud.plots.tools</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../scaler/index.html">ampycloud.scaler</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">ampycloud.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/mocker/index.html">ampycloud.utils.mocker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/performance/index.html">ampycloud.utils.performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/utils/index.html">ampycloud.utils.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../version/index.html">ampycloud.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../wmo/index.html">ampycloud.wmo</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.core</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ampycloud.core">
+<span id="ampycloud-core"></span><h1>ampycloud.core<a class="headerlink" href="#module-ampycloud.core" title="Link to this heading">#</a></h1>
+<p>Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the BSD-3-Clause license.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<p>Module contains: core ampycloud routines. All fcts meant to be used by users directly are here.</p>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.core.logger" title="ampycloud.core.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.core.copy_prm_file" title="ampycloud.core.copy_prm_file"><code class="xref py py-obj docutils literal notranslate"><span class="pre">copy_prm_file</span></code></a>(→ None)</p></td>
+<td><p>Create a local copy of a specific ampycloud parameter file.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ampycloud.core.set_prms" title="ampycloud.core.set_prms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_prms</span></code></a>(→ None)</p></td>
+<td><p>Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.core.reset_prms" title="ampycloud.core.reset_prms"><code class="xref py py-obj docutils literal notranslate"><span class="pre">reset_prms</span></code></a>(→ None)</p></td>
+<td><p>Reset the ampycloud dynamic=scientific parameters to their default values.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-obj docutils literal notranslate"><span class="pre">run</span></code></a>(→ ampycloud.ceilo_data.CeiloChunk)</p></td>
+<td><p>Runs the ampycloud algorithm on a given dataset.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.core.metar" title="ampycloud.core.metar"><code class="xref py py-obj docutils literal notranslate"><span class="pre">metar</span></code></a>(→ str)</p></td>
+<td><p>Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ampycloud.core.demo" title="ampycloud.core.demo"><code class="xref py py-obj docutils literal notranslate"><span class="pre">demo</span></code></a>(→ tuple)</p></td>
+<td><p>Run the ampycloud algorithm on a demonstration dataset.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="module-contents">
+<h2>Module Contents<a class="headerlink" href="#module-contents" title="Link to this heading">#</a></h2>
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.core.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.logger" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.copy_prm_file">
+<span class="sig-name descname"><span class="pre">copy_prm_file</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">save_loc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'./'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'defaults'</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#copy_prm_file"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.copy_prm_file" title="Link to this definition">#</a></dt>
+<dd><p>Create a local copy of a specific ampycloud parameter file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>save_loc</strong> (<em>str, optional</em>) – location to save the YML file to. Defaults to ‘./’.</p></li>
+<li><p><strong>which</strong> (<em>str, optional</em>) – name of the parameter file to copy. Defaults to ‘defaults’.</p></li>
+</ul>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">copy_prm_file</span><span class="p">(</span><span class="n">save_loc</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'default'</span><span class="p">)</span>
+</pre></div>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>There is also a high-level entry point that allows users to get a local copy of the
+ampycloud parameter files directly from the command line:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="n">ampycloud_copy_prm_file</span> <span class="o">-</span><span class="n">which</span><span class="o">=</span><span class="n">default</span>
+</pre></div>
+</div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.set_prms">
+<span class="sig-name descname"><span class="pre">set_prms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pth</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">pathlib.Path</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#set_prms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.set_prms" title="Link to this definition">#</a></dt>
+<dd><p>Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pth</strong> (<em>str|Path</em>) – path+filename to a YAML parameter file for ampycloud.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>It is recommended to first get a copy of the default ampycloud parameter file
+using <a class="reference internal" href="#ampycloud.core.copy_prm_file" title="ampycloud.core.copy_prm_file"><code class="xref py py-func docutils literal notranslate"><span class="pre">copy_prm_file()</span></code></a>, and edit its content as required.</p>
+<p>Doing so should ensure full compliance with the default structure of
+<a class="reference internal" href="../dynamic/index.html#ampycloud.dynamic.AMPYCLOUD_PRMS" title="ampycloud.dynamic.AMPYCLOUD_PRMS"><code class="xref py py-data docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS</span></code></a>.</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>This is NOT a thread-safe way of setting parameters. If you plan on running concurrent
+ampycloud evaluations, parameters should be fed directly to <a class="reference internal" href="#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code></a>.</p>
+</div>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">copy_prm_file</span><span class="p">(</span><span class="n">save_loc</span><span class="o">=</span><span class="s1">'.'</span><span class="p">,</span> <span class="n">which</span><span class="o">=</span><span class="s1">'default'</span><span class="p">)</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">set_prms</span><span class="p">(</span><span class="s1">'./ampycloud_default_prms.yml'</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.reset_prms">
+<span class="sig-name descname"><span class="pre">reset_prms</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">which</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#reset_prms"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.reset_prms" title="Link to this definition">#</a></dt>
+<dd><p>Reset the ampycloud dynamic=scientific parameters to their default values.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>which</strong> (<em>str|list, optional</em>) – (list of) names of parameters to reset specifically.
+If not set (by default), all parameters will be reset.</p>
+</dd>
+</dl>
+<p class="rubric">Example</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">dynamic</span>
+
+<span class="c1"># Change a parameter</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="p">[</span><span class="s1">'MAX_HOLES_OKTA8'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="c1"># Reset them</span>
+<span class="n">ampycloud</span><span class="o">.</span><span class="n">reset_prms</span><span class="p">()</span>
+<span class="nb">print</span><span class="p">(</span><span class="s1">'Back to the default value:'</span><span class="p">,</span> <span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="p">[</span><span class="s1">'MAX_HOLES_OKTA8'</span><span class="p">])</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.run">
+<span class="sig-name descname"><span class="pre">run</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">datetime.datetime</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><span class="pre">ampycloud.ceilo_data.CeiloChunk</span></a></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#run"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.run" title="Link to this definition">#</a></dt>
+<dd><p>Runs the ampycloud algorithm on a given dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p></li>
+<li><p><strong>prms</strong> (<em>dict, optional</em>) – a (nested) dict of parameters to adjust for this specific run.
+This is meant as a thread-safe way of adjusting parameters for different runs. Any
+unspecified parameter will be taken from <code class="xref py py-data docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS</span></code> at init time.</p></li>
+<li><p><strong>geoloc</strong> (<em>str, optional</em>) – the name of the geographic location where the data was taken.
+Defaults to None.</p></li>
+<li><p><strong>ref_dt</strong> (<em>str|datetime.datetime, optional</em>) – reference date and time of the observations,
+corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance
+is specified, it will be turned almost immediately to str via <code class="docutils literal notranslate"><span class="pre">str(ref_dt)</span></code>.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk</span></code></a> – the data chunk with all the processing outcome bundled
+cleanly.</p>
+</dd>
+</dl>
+<p>All that is required to run the ampycloud algorithm is a properly
+<a class="reference external" href="https://meteoswiss.github.io/ampycloud/running.html#the-input-data">formatted dataset</a>.
+At the moment, specifying <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code> serves no purpose other than to enhance
+plots (should they be created). There is no special requirements for <code class="docutils literal notranslate"><span class="pre">geoloc</span></code> and <code class="docutils literal notranslate"><span class="pre">ref_dt</span></code>:
+as long as they are strings, you can set them to whatever you please.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
+to the user to adjust the Vertical Visibility hit height (and/or ignore some of them, for
+example) prior to feeding them to ampycloud, so that it can be used as a cloud hit.</p>
+</div>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>ampycloud uses the <code class="docutils literal notranslate"><span class="pre">dt</span></code> and <code class="docutils literal notranslate"><span class="pre">ceilo</span></code> values to decide if two hits are simultaenous, or
+not. It is thus important that the values of <code class="docutils literal notranslate"><span class="pre">dt</span></code> be sufficiently precise to distinguish
+between different measurements. Essentially, each <em>measurement</em> (which may be comprised of
+several hits) should be associated to a unique <code class="docutils literal notranslate"><span class="pre">(ceilo;</span> <span class="pre">dt)</span></code> set of values. Failure to do
+so may result in incorrect estimations of the cloud layer densities. See
+<a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk.max_hits_per_layer" title="ampycloud.ceilo_data.CeiloChunk.max_hits_per_layer"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk.max_hits_per_layer</span></code></a> for more details.</p>
+</div>
+<p>All the scientific parameters of the algorithm are set dynamically in the <a class="reference internal" href="../dynamic/index.html#module-ampycloud.dynamic" title="ampycloud.dynamic"><code class="xref py py-mod docutils literal notranslate"><span class="pre">dynamic</span></code></a>
+module. From within a Python session all these parameters can be changed directly. For example,
+to change the Minimum Sector Altitude (to be specified in ft aal), one would do:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud</span><span class="w"> </span><span class="kn">import</span> <span class="n">dynamic</span>
+<span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="p">[</span><span class="s1">'MSA'</span><span class="p">]</span> <span class="o">=</span> <span class="mi">5000</span>
+</pre></div>
+</div>
+<p>Alternatively, the scientific parameters can also be defined and fed to ampycloud via a YAML
+file. See <a class="reference internal" href="#ampycloud.core.set_prms" title="ampycloud.core.set_prms"><code class="xref py py-func docutils literal notranslate"><span class="pre">set_prms()</span></code></a> for details.</p>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>By default, the function <a class="reference internal" href="#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code></a> will use the parameter values set in
+<code class="xref py py-data docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS</span></code>, which is not thread safe. Users interested to run
+<strong>multiple concurrent ampycloud calculations with distinct sets of parameters within the
+same Python session</strong> are thus urged to feed the required parameters directly to
+<a class="reference internal" href="#ampycloud.core.run" title="ampycloud.core.run"><code class="xref py py-func docutils literal notranslate"><span class="pre">run()</span></code></a> via the <code class="docutils literal notranslate"><span class="pre">prms</span></code> keyword argument, which expects a (nested) dictionnary
+with keys compatible with <code class="xref py py-data docutils literal notranslate"><span class="pre">dynamic.AMPYCLOUD_PRMS</span></code>.</p>
+<p>Examples:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="c1"># Define only the parameters that are non-default. To adjust the MSA, use:</span>
+<span class="n">prms</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'MSA'</span><span class="p">:</span> <span class="mi">10000</span><span class="p">}</span>
+
+<span class="c1"># Or to adjust some other algorithm parameters:</span>
+<span class="n">prms</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'LAYERING_PRMS'</span><span class="p">:{</span><span class="s1">'gmm_kwargs'</span><span class="p">:{</span><span class="s1">'scores'</span><span class="p">:</span> <span class="s1">'BIC'</span><span class="p">},</span> <span class="s1">'min_prob'</span><span class="p">:</span> <span class="mf">1.0</span><span class="p">}}</span>
+</pre></div>
+</div>
+</div>
+<p>The <a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk</span></code></a> instance returned by this function contains all the information
+associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
+info. Its method <code class="xref py py-meth docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk.metar_msg()</span></code> provides direct access to the resulting
+METAR-like message. Users that require the height, okta amount, and/or exact sky coverage
+fraction of layers can get them via the <a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk.layers" title="ampycloud.ceilo_data.CeiloChunk.layers"><code class="xref py py-attr docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk.layers</span></code></a> class property.</p>
+<p class="rubric">Example</p>
+<p>In the following example, we create the canonical mock dataset of ampycloud, run
+the algorithm on it, and fetch the resulting METAR-like message:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">mocker</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal.</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">prms</span><span class="o">=</span><span class="p">{</span><span class="s1">'MSA'</span><span class="p">:</span><span class="mi">10000</span><span class="p">},</span>
+                      <span class="n">geoloc</span><span class="o">=</span><span class="s1">'Mock data'</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Get the resulting METAR message</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">metar_msg</span><span class="p">())</span>
+
+<span class="c1"># Display the full information available for the layers found</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">chunk</span><span class="o">.</span><span class="n">layers</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.metar">
+<span class="sig-name descname"><span class="pre">metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#metar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.metar" title="Link to this definition">#</a></dt>
+<dd><p>Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>data</strong> (<em>pd.DataFrame</em>) – the data to be processed, as a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>str</em> – the METAR-like message.</p>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">mocker</span>
+
+<span class="c1"># Generate the canonical demo dataset for ampycloud</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Compute the METAR message</span>
+<span class="n">msg</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">metar</span><span class="p">(</span><span class="n">mock_data</span><span class="p">)</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.core.demo">
+<span class="sig-name descname"><span class="pre">demo</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/core.html#demo"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.core.demo" title="Link to this definition">#</a></dt>
+<dd><p>Run the ampycloud algorithm on a demonstration dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code>, <a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk</span></code></a> – the mock dataset used for the
+demonstration, and the <a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><code class="xref py py-class docutils literal notranslate"><span class="pre">ceilo_data.CeiloChunk</span></code></a> instance.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../cluster/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ampycloud.cluster</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="../data/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ampycloud.data</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#module-contents">Module Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.copy_prm_file"><code class="docutils literal notranslate"><span class="pre">copy_prm_file()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.set_prms"><code class="docutils literal notranslate"><span class="pre">set_prms()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.reset_prms"><code class="docutils literal notranslate"><span class="pre">reset_prms()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.run"><code class="docutils literal notranslate"><span class="pre">run()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.metar"><code class="docutils literal notranslate"><span class="pre">metar()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.core.demo"><code class="docutils literal notranslate"><span class="pre">demo()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: v2.2.0-dbe1149</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 14.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

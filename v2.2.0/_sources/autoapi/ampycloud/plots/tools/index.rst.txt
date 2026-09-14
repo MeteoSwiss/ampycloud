@@ -1,0 +1,114 @@
+ampycloud.plots.tools
+=====================
+
+.. py:module:: ampycloud.plots.tools
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: tools for plots
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.plots.tools.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.plots.tools.style_pth
+   ampycloud.plots.tools.valid_styles
+   ampycloud.plots.tools.set_mplstyle
+   ampycloud.plots.tools.texify
+   ampycloud.plots.tools.get_scaling_kwargs
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: style_pth() -> pathlib.Path
+
+   Returns the Path to the ampycloud plotting styles.
+
+
+.. py:function:: valid_styles() -> list
+
+   Returns the list of valid plotting styles.
+
+
+.. py:function:: set_mplstyle(func: Callable) -> Callable
+
+   Intended to be used as a decorator around plotting functions, to set the plotting style.
+
+   :returns: *Callable* -- the decorator.
+
+   By defaults, the ``base`` ampycloud style will be enabled. Motivated users can tweak it further
+   by setting the ``MPL_STYLE`` entry of :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` to:
+
+       - ``latex``: to enable the use of a system-wide LaTeX engine, and the Computer Modern font.
+       - ``metsymb``: to enable the use of a system-wide LaTeX engine, the Computer Modern font,
+         and the ``metsymb`` LaTeX package to display proper okta symbols.
+
+   .. important::
+
+      The ``metsymb`` LaTeX package is NOT included with ampycloud, and must be installed
+      separately. It is available at: https://github.com/MeteoSwiss/metsymb
+
+   .. caution::
+
+      Specifying the ``latex`` or ``metsymb`` style requires a working system-wide LaTeX
+      installation. In particular, the following LaTeX packages must be installed:
+      
+         - ``cmbright``
+         - ``amsmath``
+         - ``amssymb``
+         - ``relsize``
+         - ``metsymb`` (only if the ``MPL_STYLE`` entry of
+           :py:data:`ampycloud.dynamic.AMPYCLOUD_PRMS` was set to ``'metsymb'``)
+
+   .. todo:: See https://github.com/MeteoSwiss/ampycloud/issues/18
+
+
+.. py:function:: texify(msg: str) -> str
+
+   Small utility function that TeX-ifies a string to make it LaTeX robust if warranted by the
+   current rcParams settings.
+
+   :Parameters: **msg** (*str*) -- message to clean-up
+
+   :returns: *str* -- the robust string.
+
+
+.. py:function:: get_scaling_kwargs(data: numpy.ndarray, mode: str, kwargs: dict) -> tuple
+
+   Utility function to extract the **actual, deterministic** parameters required to scale the
+   data, given a set of user-defined parameters.
+
+   :Parameters: * **data** (*pd.Series*) -- the data that was originally scaled by the user.
+                * **mode** (*str*) -- the name of the scaling used by the user. Must be any mode supported by
+                  :py:func:`ampycloud.scaler.convert_kwargs` (e.g. ``shift-and-scale``, ``minmax-scale``,
+                  ``step-scale``).
+                * **kwargs** (*dict*) -- the scaling parameter set by the user.
+
+   :returns: *tuple* -- (scale_kwargs, descale_kwargs), the two dict with parameters for the forward/backward
+             scaling.
+
+   This is a utility function to aid in the drawing of secondary axis that require to derive the
+   "reverse scaling function".
+
+
+

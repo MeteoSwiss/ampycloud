@@ -1,0 +1,241 @@
+ampycloud.core
+==============
+
+.. py:module:: ampycloud.core
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the BSD-3-Clause license.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: core ampycloud routines. All fcts meant to be used by users directly are here.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.core.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.core.copy_prm_file
+   ampycloud.core.set_prms
+   ampycloud.core.reset_prms
+   ampycloud.core.run
+   ampycloud.core.metar
+   ampycloud.core.demo
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: copy_prm_file(save_loc: str = './', which: str = 'defaults') -> None
+
+   Create a local copy of a specific ampycloud parameter file.
+
+   :Parameters: * **save_loc** (*str, optional*) -- location to save the YML file to. Defaults to './'.
+                * **which** (*str, optional*) -- name of the parameter file to copy. Defaults to 'defaults'.
+
+   .. rubric:: Example
+
+   ::
+
+       import ampycloud
+       ampycloud.copy_prm_file(save_loc='.', which='default')
+
+   .. note::
+
+       There is also a high-level entry point that allows users to get a local copy of the
+       ampycloud parameter files directly from the command line:
+       ::
+
+           ampycloud_copy_prm_file -which=default
+
+
+
+.. py:function:: set_prms(pth: Union[str, pathlib.Path]) -> None
+
+   Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.
+
+   :Parameters: **pth** (*str|Path*) -- path+filename to a YAML parameter file for ampycloud.
+
+   .. note::
+       It is recommended to first get a copy of the default ampycloud parameter file
+       using :py:func:`.copy_prm_file`, and edit its content as required.
+
+       Doing so should ensure full compliance with the default structure of
+       :py:data:`.dynamic.AMPYCLOUD_PRMS`.
+
+   .. warning::
+       This is NOT a thread-safe way of setting parameters. If you plan on running concurrent
+       ampycloud evaluations, parameters should be fed directly to :py:func:`.run`.
+
+   .. rubric:: Example
+
+   ::
+
+       import ampycloud
+       ampycloud.copy_prm_file(save_loc='.', which='default')
+       ampycloud.set_prms('./ampycloud_default_prms.yml')
+
+
+.. py:function:: reset_prms(which: Union[str, list, None] = None) -> None
+
+   Reset the ampycloud dynamic=scientific parameters to their default values.
+
+   :Parameters: **which** (*str|list, optional*) -- (list of) names of parameters to reset specifically.
+                If not set (by default), all parameters will be reset.
+
+   .. rubric:: Example
+
+   ::
+
+       import ampycloud
+       from ampycloud import dynamic
+
+       # Change a parameter
+       dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = 0
+       # Reset them
+       ampycloud.reset_prms()
+       print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'])
+
+
+.. py:function:: run(data: pandas.DataFrame, prms: Union[dict, None] = None, geoloc: Union[str, None] = None, ref_dt: Union[str, datetime.datetime, None] = None) -> ampycloud.ceilo_data.CeiloChunk
+
+   Runs the ampycloud algorithm on a given dataset.
+
+   :Parameters: * **data** (*pd.DataFrame*) -- the data to be processed, as a :py:class:`pandas.DataFrame`.
+                * **prms** (*dict, optional*) -- a (nested) dict of parameters to adjust for this specific run.
+                  This is meant as a thread-safe way of adjusting parameters for different runs. Any
+                  unspecified parameter will be taken from :py:data:`dynamic.AMPYCLOUD_PRMS` at init time.
+                * **geoloc** (*str, optional*) -- the name of the geographic location where the data was taken.
+                  Defaults to None.
+                * **ref_dt** (*str|datetime.datetime, optional*) -- reference date and time of the observations,
+                  corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance
+                  is specified, it will be turned almost immediately to str via ``str(ref_dt)``.
+
+   :returns: :py:class:`.ceilo_data.CeiloChunk` -- the data chunk with all the processing outcome bundled
+             cleanly.
+
+   All that is required to run the ampycloud algorithm is a properly
+   `formatted dataset <https://meteoswiss.github.io/ampycloud/running.html#the-input-data>`__.
+   At the moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance
+   plots (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``:
+   as long as they are strings, you can set them to whatever you please.
+
+   .. important ::
+       ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up
+       to the user to adjust the Vertical Visibility hit height (and/or ignore some of them, for
+       example) prior to feeding them to ampycloud, so that it can be used as a cloud hit.
+
+   .. important::
+       ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits are simultaenous, or
+       not. It is thus important that the values of ``dt`` be sufficiently precise to distinguish
+       between different measurements. Essentially, each *measurement* (which may be comprised of
+       several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do
+       so may result in incorrect estimations of the cloud layer densities. See
+       :py:attr:`.ceilo_data.CeiloChunk.max_hits_per_layer` for more details.
+
+
+   All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`
+   module. From within a Python session all these parameters can be changed directly. For example,
+   to change the Minimum Sector Altitude (to be specified in ft aal), one would do:
+   ::
+
+       from ampycloud import dynamic
+       dynamic.AMPYCLOUD_PRMS['MSA'] = 5000
+
+   Alternatively, the scientific parameters can also be defined and fed to ampycloud via a YAML
+   file. See :py:func:`.set_prms()` for details.
+
+   .. caution::
+
+      By default, the function :py:func:`.run` will use the parameter values set in
+      :py:data:`dynamic.AMPYCLOUD_PRMS`, which is not thread safe. Users interested to run
+      **multiple concurrent ampycloud calculations with distinct sets of parameters within the
+      same Python session** are thus urged to feed the required parameters directly to
+      :py:func:`.run()` via the ``prms`` keyword argument, which expects a (nested) dictionnary
+      with keys compatible with :py:data:`dynamic.AMPYCLOUD_PRMS`.
+      
+      Examples:
+      ::
+      
+          # Define only the parameters that are non-default. To adjust the MSA, use:
+          prms = {'MSA': 10000}
+      
+          # Or to adjust some other algorithm parameters:
+          prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}
+
+   The :py:class:`.ceilo_data.CeiloChunk` instance returned by this function contains all the information
+   associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering
+   info. Its method :py:meth:`.ceilo_data.CeiloChunk.metar_msg` provides direct access to the resulting
+   METAR-like message. Users that require the height, okta amount, and/or exact sky coverage
+   fraction of layers can get them via the :py:attr:`.ceilo_data.CeiloChunk.layers` class property.
+
+   .. rubric:: Example
+
+   In the following example, we create the canonical mock dataset of ampycloud, run
+   the algorithm on it, and fetch the resulting METAR-like message:
+   ::
+
+       from datetime import datetime
+       import ampycloud
+       from ampycloud.utils import mocker
+
+       # Generate the canonical demo dataset for ampycloud
+       mock_data = mocker.canonical_demo_data()
+
+       # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal.
+       chunk = ampycloud.run(mock_data, prms={'MSA':10000},
+                             geoloc='Mock data', ref_dt=datetime.now())
+
+       # Get the resulting METAR message
+       print(chunk.metar_msg())
+
+       # Display the full information available for the layers found
+       print(chunk.layers)
+
+
+.. py:function:: metar(data: pandas.DataFrame) -> str
+
+   Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.
+
+   :Parameters: **data** (*pd.DataFrame*) -- the data to be processed, as a :py:class:`pandas.DataFrame`.
+
+   :returns: *str* -- the METAR-like message.
+
+   Example:
+   ::
+
+       import ampycloud
+       from ampycloud.utils import mocker
+
+       # Generate the canonical demo dataset for ampycloud
+       mock_data = mocker.canonical_demo_data()
+
+       # Compute the METAR message
+       msg = ampycloud.metar(mock_data)
+       print(msg)
+
+
+
+.. py:function:: demo() -> tuple
+
+   Run the ampycloud algorithm on a demonstration dataset.
+
+   :returns: :py:class:`pandas.DataFrame`, :py:class:`.ceilo_data.CeiloChunk` -- the mock dataset used for the
+             demonstration, and the :py:class:`.ceilo_data.CeiloChunk` instance.
+
+

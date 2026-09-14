@@ -1,0 +1,175 @@
+ampycloud.plots.diagnostics
+===========================
+
+.. py:module:: ampycloud.plots.diagnostics
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: class for the diagnostic plots
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.plots.diagnostics.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ampycloud.plots.diagnostics.DiagnosticPlot
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: DiagnosticPlot(chunk: ampycloud.ceilo_data.CeiloChunk)
+
+   Class used to create diagnostic plots.
+
+
+   .. py:method:: setup_fig() -> tuple
+      :staticmethod:
+
+
+      Setups a diagnsotic plot figure.
+
+      :returns: *fig, axs* -- the matplotlib figure, and the axes stored in a list.
+
+
+
+   .. py:method:: new_fig() -> None
+
+      Assign the fig attribute.
+
+
+
+   .. py:method:: show_hits_only(show_ceilos: bool = False) -> None
+
+      Shows the ceilometer hits alone.
+
+      :Parameters: **show_ceilos** (*bool, optional*) -- whether to distinguish between the different ceilos,
+                   or not.
+
+      .. important:: This will clear the plot first !
+
+
+
+   .. py:method:: show_slices() -> None
+
+      Show the slice data.
+
+
+
+   .. py:method:: show_groups(show_points: bool = False) -> None
+
+      Show the group data.
+
+      :Parameters: **show_points** (*bool, optional*) -- whether to actually draw the groups, or simply add the
+                   info about them. Defaults to False.
+
+
+
+   .. py:method:: show_layers() -> None
+
+      Show the layer data.
+
+
+
+   .. py:method:: add_vv_legend() -> None
+
+      Adds a legend about the VV hits.
+
+
+
+   .. py:method:: add_ceilo_count() -> None
+
+      Adds the number of ceilometer present in the data.
+
+
+
+   .. py:method:: add_max_hits() -> None
+
+      Adds the max_hit_per_layer info.
+
+
+
+   .. py:method:: add_geoloc_and_ref_dt() -> None
+
+      Adds info about the chunk geoloc and reference date & time.
+
+
+
+   .. py:method:: add_ref_metar(name: Union[str, None], metar: Union[str, None]) -> None
+
+      Display a reference METAR, for example from human observers, different code, etc ...
+
+      :Parameters: * **name** (*str*) -- the name of the reference, e.g. 'Human Observers'.
+                   * **metar** (*str*) -- the METAR code.
+
+
+
+   .. py:method:: add_metar() -> None
+
+      Display the ampycloud METAR message.
+
+
+
+   .. py:method:: format_primary_axes() -> None
+
+      Deals with the main plot axes
+
+
+
+   .. py:method:: format_slice_axes() -> None
+
+      Format the duplicate axes related to the slicing part.
+
+
+
+   .. py:method:: format_group_axes() -> None
+
+      Format the duplicate axes related to the grouping part.
+
+      TODO: add secondary axis for the height rescaling as well. See #91.
+
+
+
+
+   .. py:method:: save(fn_out: str, fmts: Union[list, None] = None) -> None
+
+      Saves the plot to file.
+
+      :Parameters: * **fn_out** (*str*) -- file name out.
+                   * **fmts** (*list or str, optional*) -- list of formats to export the plot to.
+                     Defaults to None == 'pdf'.
+
+
+
+   .. py:method:: show() -> None
+
+      Shows the plot
+
+
+
+   .. py:method:: close_fig() -> None
+
+      Close the figure to free the memory.
+
+      If you need to re-create them, start by generating the figure with the `.new_fig()` method.
+
+
+

@@ -1,0 +1,45 @@
+ampycloud.logger
+================
+
+.. py:module:: ampycloud.logger
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: logging utilities
+
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.logger.log_func_call
+
+
+Module Contents
+---------------
+
+.. py:function:: log_func_call(logger: logging.Logger) -> Callable
+
+   Intended as a decorator to log function calls.
+
+   :Parameters: **logger** (*logging.Logger*) -- a logger to feed info to.
+
+   The first part of the message containing the function name is at the 'INFO' level.
+   The second part of the message containing the argument values is at the 'DEBUG' level.
+
+   .. note::
+
+      Adapted from the similar dvas function, which itself was adapted from
+      `this post <https://stackoverflow.com/questions/218616>`__ on SO,
+      in particular the reply from Kfir Eisner and Peter Mortensen.
+      See also `this <https://docs.python.org/3/library/inspect.html#inspect.BoundArguments>`__.
+
+
