@@ -5,67 +5,96 @@ Distributed under the terms of the 3-Clause BSD License.
 
 SPDX-License-Identifier: BSD-3-Clause
 
-Module content: tests for the wmo module
+Module content: tests for the wmo module. Check perc2okta consistency with
+    Boers, R., de Haij, M. J., Wauben, W. M. F., Baltink, H. K., van Ulft, L. H.,
+    Savenije, M., and Long, C. N. (2010), Optimized fractional cloudiness determination
+    from five ground-based remote sensing techniques, J. Geophys. Res., 115, D24116,
+    `doi:10.1029/2010JD014661 <https://doi.org/10.1029/2010JD014661>`_.
 """
 
-import numpy as np
 import pytest
+from numpy import array, ndarray
 
 from ampycloud.errors import AmpycloudError
 from ampycloud.wmo import perc2okta, height2code
 
 
-def test_perc2okta():
-    """Test the perc2okta function. Check consistency with
-        Boers, R., de Haij, M. J., Wauben, W. M. F., Baltink, H. K., van Ulft, L. H.,
-        Savenije, M., and Long, C. N. (2010), Optimized fractional cloudiness determination
-        from five ground-based remote sensing techniques, J. Geophys. Res., 115, D24116,
-        `doi:10.1029/2010JD014661 <https://doi.org/10.1029/2010JD014661>`_.
-    """
+@pytest.mark.parametrize(
+    "val,expected_okta",
+    [
+        pytest.param(0, 0, id="exact boundary 0"),
+        pytest.param(1e-9, 1, id="just above 0"),
+        pytest.param(18.75 - 1e-9, 1, id="just below 18.75"),
+        pytest.param(31.25 - 1e-9, 2, id="just below 31.25"),
+        pytest.param(43.75 - 1e-9, 3, id="just below 43.75"),
+        pytest.param(56.25 - 1e-9, 4, id="just below 56.25"),
+        pytest.param(68.75 - 1e-9, 5, id="just below 68.75"),
+        pytest.param(81.25 - 1e-9, 6, id="just below 81.25"),
+        pytest.param(100 - 1e-9, 7, id="just below 100"),
+        pytest.param(18.75, 2, id="exact boundary 18.75"),
+        pytest.param(31.25, 3, id="exact boundary 31.25"),
+        pytest.param(43.75, 4, id="exact boundary 43.75"),
+        pytest.param(56.25, 5, id="exact boundary 56.25"),
+        pytest.param(68.75, 6, id="exact boundary 68.75"),
+        pytest.param(81.25, 7, id="exact boundary 81.25"),
+        pytest.param(100, 8, id="exact boundary 100"),
+    ],
+)
+def test_perc2okta_scalar(val: float, expected_okta: int):
+    """Test perc2okta() for scalar inputs"""
 
-    # perc2okta always returns a ndarray, even for scalar input.
-    assert isinstance(perc2okta(43), np.ndarray)
+    # when
+    out = perc2okta(val)
 
-    # The two exact edge cases.
-    assert np.all(perc2okta(0) == np.array([0]))
-    assert np.all(perc2okta(100) == np.array([8]))
+    # then
+    assert isinstance(out, ndarray)
+    assert out.item() == expected_okta
 
-    # A simple scalar case.
-    assert np.all(perc2okta(2) == np.array([1]))
 
-    # One "typical" value per okta bin.
-    vals = np.array([0, 10, 20, 35, 45, 60, 70, 85, 100])
-    okta = np.array([0, 1, 2, 3, 4, 5, 6, 7, 8])
-    assert np.all(perc2okta(vals) == okta)
+@pytest.mark.parametrize(
+    "vals,okta",
+    [
+        pytest.param([0, 10, 20, 35, 45, 60, 70, 85, 100], [0, 1, 2, 3, 4, 5, 6, 7, 8], id="typical values"),
+        pytest.param([6.15, 24.94, 37.51, 50.03, 62.56, 75.18, 95.07], [1, 2, 3, 4, 5, 6, 7], id="realistic samples"),
+    ],
+)
+def test_perc2okta_array(vals: list[float], okta: list[int]):
+    """Test that perc2okta() is properly vectorized"""
 
-    # The exact bin boundaries: each bin is [lower, upper), i.e. the lower bound belongs to
-    # the bin, while the upper bound belongs to the *next* bin.
-    bounds = np.array([0, 18.75, 31.25, 43.75, 56.25, 68.75, 81.25, 100])
-    okta = np.array([0, 2, 3, 4, 5, 6, 7, 8])
-    assert np.all(perc2okta(bounds) == okta)
+    # when
+    result = perc2okta(array(vals))
 
-    # A value just *below* each upper bound should still belong to the lower okta bin.
-    just_below = bounds - 1e-9
-    just_below[0] = 1e-9  # val=0 is the special case: there is no "just below" 0.
-    okta_below = np.array([1, 1, 2, 3, 4, 5, 6, 7])
-    assert np.all(perc2okta(just_below) == okta_below)
+    # then
+    assert (result == array(okta)).all()
 
-    # Sample values drawn from within each bin (mimicking realistic sensor readings).
-    samples = np.array([6.15, 24.94, 37.51, 50.03, 62.56, 75.18, 95.07])
-    okta_samples = np.array([1, 2, 3, 4, 5, 6, 7])
-    assert np.all(perc2okta(samples) == okta_samples)
 
-    # Out-of-range values must raise an AmpycloudError.
+@pytest.mark.parametrize(
+    "val",
+    [
+        pytest.param(-1, id="below 0"),
+        pytest.param(101, id="above 100"),
+        pytest.param(-0.0001, id="just below 0"),
+        pytest.param(100.0001, id="just above 100"),
+    ],
+)
+def test_perc2okta_invalid(val: float):
+    """Test that out-of-range values raise an AmpycloudError."""
+
     with pytest.raises(AmpycloudError):
-        perc2okta(-1)
-    with pytest.raises(AmpycloudError):
-        perc2okta(101)
+        perc2okta(val)
 
 
-def test_height2code():
-    """Test the alt2code function, inculding the descaling mode."""
+@pytest.mark.parametrize(
+    "val,expected_code",
+    [
+        pytest.param(99.9, "000", id="floor below 100ft"),
+        pytest.param(100, "001", id="floor at 100ft"),
+        pytest.param(5555, "055", id="floor below 10'000ft"),
+        pytest.param(12345, "120", id="floor above 10'000ft"),
+    ],
+)
+def test_height2code(val: float, expected_code: str):
+    """Test the height2code function, including the descaling mode above 10'000ft."""
 
-    assert height2code(99.9) == "000"
-    assert height2code(100) == "001"
-    assert height2code(5555) == "055"
-    assert height2code(12345) == "120"
+    code = height2code(val)
+    assert code == expected_code
