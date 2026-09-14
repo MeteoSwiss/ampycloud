@@ -30,6 +30,7 @@ Closes #ISSUE_ID or References #ISSUE_ID
 - [ ] New code is compatible with the 3-Clause BSD license.
 - [ ] No sensitive data or secrets are exposed
 - [ ] CHANGELOG has been updated.
+- [ ] doc/_static/switcher_config.json has been updated with the new documentation URL for the release
 - [ ] docs have been updated
 - [ ] code authors have been updated in CITATION.cff.
 - [ ] Copyright years in module docstrings have been updated.
