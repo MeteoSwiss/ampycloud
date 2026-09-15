@@ -6,6 +6,8 @@ This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.htm
 ## [v2.2.1]
 ### Added:
  - [pjuda, 2026-09-14] Fix perc2okta function for consistency with referenced publication
+### Fixed:
+ - [srethore, 2026-09-15] Fix link to the published documentation.
 
 ## [v2.2.0]
 ### Added:

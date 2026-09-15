@@ -3,5 +3,30 @@
     "name": "dev (unstable)",
     "version": "dev",
     "url": "/ampycloud/"
+  },
+  {
+    "name": "2.2.1 (stable)",
+    "version": "2.2.1",
+    "url": "/ampycloud/2.2.1/"
+  },
+  {
+    "version": "2.2.0",
+    "url": "/ampycloud/2.2.0/"
+  },
+  {
+    "version": "2.1.1",
+    "url": "/ampycloud/2.1.1/"
+  },
+  {
+    "version": "2.1.0",
+    "url": "/ampycloud/2.1.0/"
+  },
+  {
+    "version": "2.0.0",
+    "url": "/ampycloud/2.0.0/"
+  },
+  {
+    "version": "1.0.0",
+    "url": "/ampycloud/1.0.0/"
   }
 ]
