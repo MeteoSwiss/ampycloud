@@ -1,0 +1,103 @@
+ampycloud.utils.mocker
+======================
+
+.. py:module:: ampycloud.utils.mocker
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: tools to create mock datasets
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.utils.mocker.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.utils.mocker.flat_layer
+   ampycloud.utils.mocker.sin_layer
+   ampycloud.utils.mocker.mock_layers
+   ampycloud.utils.mocker.canonical_demo_data
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: flat_layer(dts: numpy.ndarray, height: float, height_std: float, sky_cov_frac: float) -> pandas.DataFrame
+
+   Generates a mock, flat, Gaussian cloud layer around a given height.
+
+   :Parameters: * **dts** (*np.array of float*) -- time deltas, in s, for the simulated ceilometer hits.
+                * **height** (*float*) -- layer mean height, in ft above aerodrome level (aal).
+                * **height_std** (*float*) -- layer height standard deviation, in ft.
+                * **sky_cov_frac** (*float*) -- Sky coverage fraction. Random hits will be set to NaN to
+                  reach this value. Must be 0 <= x <= 1.
+
+   :returns: :py:class:`pandas.DataFrame` -- the simulated layer with columns ['dt', 'height'].
+
+
+.. py:function:: sin_layer(dts: numpy.ndarray, height: float, height_std: float, sky_cov_frac: float, period: Union[int, float], amplitude: Union[int, float]) -> pandas.DataFrame
+
+   Generates a sinusoidal cloud layer.
+
+   :Parameters: * **dts** (*np.array of float*) -- time deltas, in s, for the simulated ceilometer hits.
+                * **height** (*float*) -- layer mean height, in ft above aerodrome level (aal).
+                * **height_std** (*float*) -- layer height standard deviation, in ft.
+                * **sky_cov_frac** (*float, optional*) -- Sky coverage fraction. Random hits will be set to NaN to
+                  reach this value. Must be 0 <= x <= 1.
+                * **period** (*int|float*) -- period of the sine-wave, in s.
+                * **amplitude** (*int|float*) -- amplitude of the sine-wave, in ft.
+
+   :returns: :py:class:`pandas.DataFrame` -- the simulated layer with columns ['height', 'dt'].
+
+
+.. py:function:: mock_layers(n_ceilos: int, lookback_time: float, hit_gap: float, layer_prms: list) -> pandas.DataFrame
+
+   Generate a mock set of cloud layers for a specified number of ceilometers.
+
+   :Parameters: * **n_ceilos** (*int*) -- number of ceilometers to simulate.
+                * **lookback_time** (*float*) -- length of the time interval, in s.
+                * **hit_gap** (*float*) -- number of seconds between ceilometer measurements.
+                * **layer_prms** (*list of dict*) -- list of layer parameters, provided as a dict for each layer.
+                  Each dict should specify all the parameters required to generate a
+                  :py:func:`.sin_layer` (with the exception of ``dts`` that will be computed directly
+                  from ``lookback_time`` and ``hit_gap``):
+                  ::
+
+                      {'height':1000, 'height_std': 100, 'sky_cov_frac': 1,
+                      'period': 100, 'amplitude': 0}
+
+   :returns: :py:class:`pandas.DataFrame` -- a pandas DataFrame with the mock data, ready to be fed to
+             ampycloud. Columns ['ceilo', 'dt', 'height', 'type'] correspond to 1) ceilo names, 2) time
+             deltas in s, 3) hit heights in ft aal, and 4) hit type.
+
+   .. todo::
+
+      - add the possibility to set some VV hits in the mix
+      - all of this could be done much more professionally with classes ...
+
+
+.. py:function:: canonical_demo_data() -> pandas.DataFrame
+
+   This function creates the canonical ampycloud demonstration dataset, that can be used to
+   illustrate the full behavior of the algorithm.
+
+   :returns: :py:class:`pandas.DataFrame` -- the canonical mock dataset with properly-formatted columns.
+
+

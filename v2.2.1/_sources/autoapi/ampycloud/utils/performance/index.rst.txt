@@ -1,0 +1,51 @@
+ampycloud.utils.performance
+===========================
+
+.. py:module:: ampycloud.utils.performance
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: tools to assess the performance of ampycloud
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.utils.performance.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.utils.performance.get_speed_benchmark
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: get_speed_benchmark(niter: int = 10) -> tuple
+
+   This function will run and time :py:func:`ampycloud.core.demo` to assess the code's
+   performance on a given machine.
+
+   For now, this is a rather dumb and uninspired way to do it. If the need ever arises, this
+   could certainly be done better, and (for example) also with a finer step resolution to see
+   which step (slicing, grouping, layering) is the slowest, and also separate the generation of
+   the mock dataset from its processing.
+
+   :returns: *int, float, float, float, float, float* -- niter, mean, std, median, min, max, all in s.
+
+
