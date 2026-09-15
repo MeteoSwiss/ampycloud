@@ -1,0 +1,145 @@
+ampycloud.scaler
+================
+
+.. py:module:: ampycloud.scaler
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: data scaling tools
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.scaler.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.scaler.shift_and_scale
+   ampycloud.scaler.minmax_scale
+   ampycloud.scaler.minrange2minmax
+   ampycloud.scaler.step_scale
+   ampycloud.scaler.convert_kwargs
+   ampycloud.scaler.apply_scaling
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: shift_and_scale(vals: numpy.ndarray, shift: Union[int, float, None] = None, scale: Union[int, float] = 1, mode: str = 'do') -> numpy.ndarray
+
+   Shift (by a constant) and scale (by a constant) the data.
+
+   :Parameters: * **vals** (*ndarray*) -- values to (un-)shift-and-scale.
+                * **shift** (*int|float, optional*) -- amount to shift the data by. If not specified, it will be set
+                  to ``max(vals)``.
+                * **scale** (*int|float, optional*) -- the scaling value. Defaults to 1.
+                * **mode** (*str, optional*) -- whether to 'do' or 'undo' the shift-and-scale.
+
+   :returns: *np.ndarray* -- the (un-)shifted-and-scaled array.
+
+   This function converts x to (x-shift)/scale if ``mode='do'``, and to x * scale + shift if
+   ``mode='undo'``.
+
+
+
+.. py:function:: minmax_scale(vals: numpy.ndarray, min_val: Union[float, int, None] = None, max_val: Union[float, int, None] = None, mode: str = 'do') -> numpy.ndarray
+
+   Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum
+       interval range.
+
+   :Parameters: * **vals** (*ndarray*) -- values to (un-)minmax-scale.
+                * **mode** (*str, optional*) -- whether to 'scale' or 'descale', i.e. undo the scaling.
+                * **min_val** (*int|float, optional*) -- value to be mapped to 0. If not set, will be ``min(vals)``.
+                  Defaults to None.
+                * **max_val** (*int|float, optional*) -- value to be mapped to 1. If not set, will be ``max(vals)``.
+                  Defaults to None.
+
+   :returns: *ndarray* -- The (un-)minmax-scaled array.
+
+
+.. py:function:: minrange2minmax(vals: numpy.ndarray, min_range: Union[int, float] = 0) -> tuple
+
+   Transform a minimum range into a pair of min/max values.
+
+   :Parameters: * **vals** (*np.ndarray*) -- values to assess.
+                * **min_range** (*int|float, optional*) -- mininum range to meet. Defaults to 0.
+
+   :returns: *tuple* -- the min and max values of the data range of at least min_range in size.
+
+   Essentially, if max(vals)-min(vals) >= min_range, this function returns
+   ``[min(vals), max(vals)]``. Else, it returns ``[val_mid-min_range/2, val_mid+min_range/2]``,
+   with ```val_mid=(max(vals)+min(vals))/2``.
+
+
+
+.. py:function:: step_scale(vals: numpy.ndarray, steps: list, scales: list, mode: str = 'do') -> numpy.ndarray
+
+   Scales values step-wise, with different constants bewteen specific steps.
+
+   :Parameters: * **vals** (*ndarray*) -- values to scale.
+                * **steps** (*list, optional*) -- the step **edges**. E.g. [8000, 14000].
+                * **scales** (*list, optional*) -- the scaling values (=dividers) for each step.
+                  E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.
+                * **mode** (*str, optional*) -- whether to 'do' or 'undo' the scaling.
+
+   :returns: *ndarray* -- (un-)step-scaled values
+
+   Values are divided by scales[i] between steps[i-1:i].
+   Anything outside the range of steps is divided by scales[0] or scale[-1].
+
+   Note that this function ensures that each step is properly offseted to ensure that the
+   scaled data is continuous (no gaps and no overlapping steps) !
+
+
+
+.. py:function:: convert_kwargs(vals: numpy.ndarray, fct: str, **kwargs: Any) -> dict
+
+   Converts the user-input keywords such that they can be fed to the underlying scaling
+   functions.
+
+   :Parameters: * **vals** (*np.ndarray*) -- the values to be processed.
+                * **fct** (*str*) -- the scaling mode, e.g. 'shift-and-scale', etc ....
+                * **\*\*kwargs** -- dict of keyword arguments to be converted, if warranted.
+
+   :returns: *dict* -- the data-adjusted set of kwargs.
+
+   .. note::
+
+      This function was first introduced to accomodate the creation of a secondary axis on the
+      ampycloud diagnostic plots. It is a buffer that allows to separate "user" scaling
+      keywords from the "deterministic" scaling keywords required to get a specific scaling, no
+      matter the underlying dataset (as is required for plotting a secondary axis).
+      
+      Essentially, this function allows to feed either "user" or "deterministic" keywords to
+      :py:func:`.apply_scaling`, such that the former will be turned into the latter, and the
+      latter will remain untouched.
+
+
+.. py:function:: apply_scaling(vals: numpy.ndarray, fct: Union[str, None] = None, **kwargs: Any) -> numpy.ndarray
+
+   Umbrella scaling routine, that gathers all the individual ones under a single entry point.
+
+   :Parameters: * **vals** (*ndarray*) -- values to scale.
+                * **fct** (*str, optional*) -- name of the scaling function to use. Can be one of
+                  ['shift-and-scale', 'minmax-scale', or 'step-scale']. Defaults to None = do nothing.
+                * **\*\*kwargs** -- keyword arguments that will be fed to the underlying scaling function.
+
+   :returns: *ndarray* -- the scaled values.
+
+

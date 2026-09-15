@@ -1,0 +1,180 @@
+ampycloud.utils.utils
+=====================
+
+.. py:module:: ampycloud.utils.utils
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2022-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: generic utilities
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.utils.utils.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.utils.utils.check_data_consistency
+   ampycloud.utils.utils.tmp_seed
+   ampycloud.utils.utils.adjust_nested_dict
+   ampycloud.utils.utils.calc_base_height
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: check_data_consistency(pdf: pandas.DataFrame, req_cols: Union[dict, None] = None) -> pandas.DataFrame
+
+   Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements
+   of ampycloud.
+
+   :Parameters: * **pdf** (*pd.DataFrame*) -- the data to check.
+                * **req_cols** (*dict*) -- A dictionary in which keys correspond to the required columns, and their
+                  value are the column type. Defaults to None = the ampycloud requirements.
+
+   :returns: *pd.DataFrame* -- the data, possibly cleaned-up of superfluous columns, and with corrected
+             dtypes.
+
+   This function will raise an :py:class:`ampycloud.errors.AmpycloudError` and/or
+   an :py:class:`ampycloud.errors.AmpycloudWarning` if it identifies very bad and/or very weird
+   things in ``pdf``.
+
+   Specifically, the input ``pdf`` must be a :py:class:`pandas.DataFrame` with the following
+   column names/types (formally defined in :py:data:`ampycloud.hardcoded.REQ_DATA_COLS`):
+   ::
+
+       'ceilo'/pd.StringDtype(), 'dt'/float, 'height'/float, 'type'/int
+
+   The ``ceilo`` column contains the names/ids of the ceilometers as ``pd.StringDtype()``.
+   See the pandas
+   `documentation <https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html>`__
+   for more info about this type.
+
+   The ``dt`` column contains time deltas, in seconds, between a given ceilometer
+   observation and ``ref_dt`` (i.e. ``obs_time-ref_dt``). Ideally, ``ref_dt`` would be the issuing
+   time of the METAR message, such that ``dt`` values are negative, with the smallest one
+   corresponding to the oldest measurement.
+
+   The ``height`` column contains the cloud base hit heights reported by the ceilometers, in ft
+   above aerodrome level.
+
+   The ``type`` column contains integers that correspond to the hit *sequence id*. If a given
+   ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,
+   cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements would be ``1``,
+   ``2``, ``3``, etc ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud
+   plots as a vertical Visibility (VV) hit, **but it will not be treated any differently than any
+   other regular hit**. Type ``0`` corresponds to no (cloud) detection, in which case the
+   corresponding hit height should be a NaN.
+
+   .. important::
+
+      A **non-detection** corresponds to a valid measurement with a ``dt`` value, a ``type 0``,
+      and ``NaN`` as the height. It should not be confused with a **non-observation**,
+      when no data was acquired at all !
+
+   If it all sounds confusing, it is possible to obtain an example of the required data format
+   from the :py:func:`.utils.mocker.canonical_demo_data` routine of the package, like so::
+
+       from ampycloud.utils import mocker
+       mock_data = mocker.canonical_demo_data()
+
+   As mentionned above, it is also possible to verify if a given :py:class:`pandas.DataFrame` is
+   meeting the ampycloud requirements ahead of time via
+   :py:func:`ampycloud.utils.utils.check_data_consistency`::
+
+       from ampycloud.utils.utils import check_data_consistency
+       checked_pdf = check_data_consistency(pdf)
+
+   This will raise an :py:class:`ampycloud.errors.AmpycloudError` if:
+
+       * ``pdf`` is not a :py:class:`pandas.DataFrame`.
+       * ``pdf`` is missing a required column.
+       * ``pdf`` has a length of 0.
+       * ``pdf`` has duplicated rows.
+       * any time step for any ceilometer corresponds to both a type 0 (no hit) and not 0 (some
+         hit)
+       * any time step for any ceilometer corresponds to both a type -1 (VV hit) and not -1 (some
+         hit/no hit)
+
+   The latter check implies that ampycloud cannot be fed a VV hit in parallel to a cloud base hit.
+   Should a specific ceilometer return VV hits in parallel to cloud base hits, it is up to the user
+   to decide whether to feed one or the other.
+
+   In addition, this will raise an :py:class:`ampycloud.errors.AmpycloudWarning` if:
+
+       * any of ``pdf`` column type is not as expected. Note that in this case, the code will try
+         to correct the type on the fly.
+       * ``pdf`` has any superfluous columns. In this case, the code will drop them automatically.
+       * Any hit height is negative.
+       * Any ``type 0`` hit has a non-NaN height.
+       * Any ``type 1`` hit has a NaN height.
+       * Any ``type 2`` hit does not have a coincident ``type 1`` hit.
+       * Any ``type 3`` hit does not have a coincident ``type 2`` hit.
+
+
+
+.. py:function:: tmp_seed(seed: int) -> Iterator[None]
+
+   Temporarily reset the :py:func:`numpy.random.seed` value.
+
+   Adapted from the reply of Paul Panzer on `SO <https://stackoverflow.com/questions/49555991/>`__.
+
+   Example:
+   ::
+
+       with temp_seed(42):
+           np.random.random(1)
+
+
+
+.. py:function:: adjust_nested_dict(ref_dict: dict, new_dict: dict, lvls: Union[list, None] = None) -> dict
+
+   Update a given (nested) dictionnary given a second (possibly incomplete) one.
+
+   :Parameters: * **ref_dict** (*dict*) -- reference dict of dict (of dict of dict ...).
+                * **new_dict** (*dict*) -- values to update as a dict (of dict or dict of dict ...)
+                * **lvls** (*list of str, optional*) -- names of the keys of the parent nested dict layers, used
+                  for reporting useful errors. This is used by the function itself when it calls itself.
+                  There is no need for the user to set this to anything at first. Defaults to None.
+
+   :returns: *dict* -- the updated dict (of dict of dict of dict ...)
+
+   .. note::
+
+      Inspired from the reply of Alex Martelli and Alex Telon on
+      `SO <https://stackoverflow.com/questions/3232943/>`_.
+
+
+.. py:function:: calc_base_height(vals: numpy.ndarray, lookback_perc: int, height_perc: int) -> float
+
+   Calculate the layer base height.
+
+   :Parameters: * **vals** (*npt.ArrayLike*) -- Ceilometer hits of a given layer. Must be a flat
+                  array/ Series of scalars and ordered in time, most recent entries last.
+                * **lookback_perc** (*int*) -- Percentage of points to take into account. 100% would
+                  correspond to all points, 50% to the recent half, etc.
+                * **height_perc** (*int*) -- Percentage of points that should be neglected when calculating
+                  the base height. Base height will be the minimum of the remaining points.
+
+   :returns: *float* -- The layer base height.
+
+   :raises AmpycloudError: Raised if the array passed to the n_largest percentile calculation
+       is empty.
+
+

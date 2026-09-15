@@ -1,0 +1,1036 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ampycloud.metarize &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=dc61d3bd"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ampycloud/metarize';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="dev" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../ampycloud.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.metarize</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ampycloud.metarize</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</span>
+
+<span class="sd">Distributed under the terms of the 3-Clause BSD License.</span>
+
+<span class="sd">SPDX-License-Identifier: BSD-3-Clause</span>
+
+<span class="sd">Module contains: the metarization logic for CeiloChunk, i.e. turning slices/groups/layers into</span>
+<span class="sd">METAR-like sky coverage information.</span>
+<span class="sd">"""</span>
+
+<span class="c1"># Import from Python</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span><span class="p">,</span> <span class="n">Callable</span><span class="p">,</span> <span class="n">Optional</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Import from this package</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmpycloudError</span><span class="p">,</span> <span class="n">AmpycloudWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_func_call</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">wmo</span><span class="p">,</span> <span class="n">icao</span><span class="p">,</span> <span class="n">fluffer</span>
+
+<span class="c1"># Instantiate the module logger</span>
+<div class="viewcode-block" id="logger">
+<a class="viewcode-back" href="../../autoapi/ampycloud/metarize/index.html#ampycloud.metarize.logger">[docs]</a>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<div class="viewcode-block" id="MetarizeMixin">
+<a class="viewcode-back" href="../../autoapi/ampycloud/metarize/index.html#ampycloud.metarize.MetarizeMixin">[docs]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">MetarizeMixin</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Mixin gathering the CeiloChunk methods in charge of turning slices/groups/layers into</span>
+<span class="sd">    METAR-like sky coverage information."""</span>
+
+    <span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+        <span class="c1"># Attributes/methods expected from the class. Read-only attributes are declared as properties to match</span>
+        <span class="c1"># the property definitions found in AbstractChunk/CeiloChunk.</span>
+        <span class="nd">@property</span>
+<div class="viewcode-block" id="MetarizeMixin.data">
+<a class="viewcode-back" href="../../autoapi/ampycloud/metarize/index.html#ampycloud.metarize.MetarizeMixin.data">[docs]</a>
+        <span class="k">def</span><span class="w"> </span><span class="nf">data</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span> <span class="o">...</span></div>
+
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">prms</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span> <span class="o">...</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">msa</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Optional</span><span class="p">[</span><span class="nb">float</span><span class="p">]:</span> <span class="o">...</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">ceilos</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">:</span> <span class="o">...</span>
+
+        <span class="nd">@property</span>
+        <span class="k">def</span><span class="w"> </span><span class="nf">max_hits_per_layer</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span> <span class="o">...</span>
+
+        <span class="n">_layers</span><span class="p">:</span> <span class="n">Optional</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">]</span>
+        <span class="n">_clouds_above_msa_buffer</span><span class="p">:</span> <span class="nb">bool</span>
+        <span class="c1"># Declared as a Callable attribute (rather than a `def`) so pylint doesn't treat this</span>
+        <span class="c1"># TYPE_CHECKING-only stub as a real, argument-unused, no-return implementation.</span>
+        <span class="n">_calculate_base_height_for_selection</span><span class="p">:</span> <span class="n">Callable</span><span class="p">[[</span><span class="s2">"pd.Series[bool]"</span><span class="p">],</span> <span class="nb">float</span><span class="p">]</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_get_cluster_ids</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Get the original IDs of slices, groups or layers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str): 'slice', 'group' or 'array'</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            The original IDs</span>
+
+<span class="sd">        """</span>
+        <span class="c1"># What are the original sli/gro/lay ids ?</span>
+        <span class="n">cids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">which</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_id"</span><span class="p">])</span>
+
+        <span class="c1"># For the moment, happily ignore anything that was not assigned to a sli-gro-lay</span>
+        <span class="c1"># WARNING: *if* the chosen clustering approach changes, one may need to start keeping track</span>
+        <span class="c1"># of hits that do not get assigned to a sli/gro/lay.</span>
+        <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">delete</span><span class="p">(</span><span class="n">cids</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">where</span><span class="p">(</span><span class="n">cids</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">))</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_setup_sligrolay_pdf</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"slices"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">]:</span>
+<span class="w">        </span><span class="sd">"""Setup a data frame for slices, groups or layers and keep track of IDs.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str): One of 'slices', 'groups', 'layers'</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: A mostly empty data frame to store slices, groups or layers.</span>
+<span class="sd">            npt.ArrayLike: The values of the original IDs as given by the clustering/ gmm</span>
+<span class="sd">                algorithms.</span>
+
+<span class="sd">        Raises:</span>
+<span class="sd">            AmpycloudError: If which is not in ['slices', 'groups', 'layers']</span>
+
+<span class="sd">        """</span>
+        <span class="c1"># What values am I interested in ?</span>
+        <span class="n">cols</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="s2">"n_hits"</span><span class="p">,</span>  <span class="c1"># Duplicate-corrected number of hits</span>
+            <span class="s2">"perc"</span><span class="p">,</span>  <span class="c1"># Duplicate-corrected hit percentage (in %)</span>
+            <span class="s2">"okta"</span><span class="p">,</span>  <span class="c1"># Corresponding okta value</span>
+            <span class="s2">"height_base"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer base height</span>
+            <span class="s2">"height_mean"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer mean height</span>
+            <span class="s2">"height_std"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer height std</span>
+            <span class="s2">"height_min"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer min height</span>
+            <span class="s2">"height_max"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer max height</span>
+            <span class="s2">"thickness"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer thickness</span>
+            <span class="s2">"fluffiness"</span><span class="p">,</span>  <span class="c1"># Slice/Group/Layer fluffiness</span>
+            <span class="s2">"code"</span><span class="p">,</span>  <span class="c1"># METAR code</span>
+            <span class="s2">"significant"</span><span class="p">,</span>  <span class="c1"># bool, whether this is a slice/group/layer that should be reported</span>
+            <span class="s2">"cluster_id"</span><span class="p">,</span>  <span class="c1"># Original id of the slice/group/layer set by the clustering algo</span>
+        <span class="p">]</span>
+
+        <span class="c1"># We want to raise early if 'which' is unknown.</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="ow">not</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"slices"</span><span class="p">,</span> <span class="s2">"groups"</span><span class="p">,</span> <span class="s2">"layers"</span><span class="p">]:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span>
+                <span class="sa">f</span><span class="s2">"Trying to initialize a data frame for </span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">, "</span>
+                <span class="s1">'which is unknown. Keyword arg "which" must be one of'</span>
+                <span class="s1">'"slices", "groups" or "layers"'</span>
+            <span class="p">)</span>
+
+        <span class="c1"># If I am looking at the slices, also keep track of whether they are isolated, or not.</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">"slices"</span><span class="p">:</span>
+            <span class="n">cols</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"isolated"</span><span class="p">]</span>
+
+        <span class="c1"># If I am looking at the groups, also keep track of how many sub-components they have</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">"groups"</span><span class="p">:</span>
+            <span class="n">cols</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"ncomp"</span><span class="p">]</span>
+
+        <span class="c1"># How many slices/groups/layers are there ?</span>
+        <span class="n">n_ind</span> <span class="o">=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"n_</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="c1"># If we have None sli/gro/lay found, it means that they weren't computed yet.</span>
+        <span class="c1"># Be unforgiving and raise an error.</span>
+        <span class="c1"># Note: this is NOT the same as finding 0 sli/gro/lay, in which case n_ind would be 0.</span>
+        <span class="k">if</span> <span class="n">n_ind</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No </span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> found. Have they been computed ?"</span><span class="p">)</span>
+
+        <span class="c1"># Prepare a pandas DataFrame to store all the info</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="nb">range</span><span class="p">(</span><span class="n">n_ind</span><span class="p">),</span> <span class="n">columns</span><span class="o">=</span><span class="n">cols</span><span class="p">)</span>
+
+        <span class="n">cluster_ids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_get_cluster_ids</span><span class="p">(</span><span class="n">which</span><span class="p">)</span>
+
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cluster_ids</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">"groups"</span><span class="p">:</span>
+                <span class="c1"># Here, check if the layering was already done ... in which case one should NOT</span>
+                <span class="c1"># be metarizing clusters ! This is one of those places where it is assumed that</span>
+                <span class="c1"># the layering step comes *after* the grouping step.</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_layers</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+                    <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span>
+                        <span class="s2">"Layering already done."</span>
+                        <span class="s2">" If you metarize your groups now, you will loose the"</span>
+                        <span class="s2">" layering information !"</span>
+                    <span class="p">)</span>
+                <span class="c1"># If all is as expected, then set the number of sub-components to -1 for now, until</span>
+                <span class="c1"># the layering step decides otherwise (possibly).</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="s2">"ncomp"</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">1</span>
+            <span class="c1"># Keep track of the original sli/gro/lay id</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="s2">"cluster_id"</span><span class="p">]</span> <span class="o">=</span> <span class="n">cid</span>
+
+        <span class="k">return</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">cluster_ids</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_cloud_amount</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pdf</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">cluster_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Calculate cloud amount for a given slice, group or layer.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str): One of 'slices', 'groups' or 'layers'</span>
+<span class="sd">            pdf (pd.DataFrame): A data frame with slices/ groups/ layers.</span>
+<span class="sd">            cluster_ids (npt.ArrayLike): the original IDs of the slices/ groups/</span>
+<span class="sd">                layers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: The input data frame with results in the okta column.</span>
+
+<span class="sd">        Results are written to the "okta" column of the DF.</span>
+
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cluster_ids</span><span class="p">):</span>
+            <span class="c1"># Which hits are in this sli/gro/lay ?</span>
+            <span class="n">in_sligrolay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">which</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cid</span>
+            <span class="c1"># Compute the number of hits of this slice/group/layer for each ceilometer,</span>
+            <span class="c1"># removing any duplicates.</span>
+            <span class="c1"># I.e. if hit from layers 2 &amp; 3 from ceilo 1 belong to this sli/gro/lay, count them as</span>
+            <span class="c1"># one hit only.</span>
+            <span class="c1"># **BUT** if two hits occur at the same time between ceilo 1 and ceilo 2, count them</span>
+            <span class="c1"># both ! This is to be consistent with the theoretical max hit number per cloud layer,</span>
+            <span class="c1"># which assume a max of 1 hit/ceilo/time step.</span>
+            <span class="n">hits_per_ceilo</span> <span class="o">=</span> <span class="p">[</span>
+                <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">in_sligrolay</span> <span class="o">*</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"ceilo"</span><span class="p">]</span> <span class="o">==</span> <span class="n">ceilo</span><span class="p">)][</span><span class="s2">"dt"</span><span class="p">]))</span> <span class="k">for</span> <span class="n">ceilo</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">ceilos</span>
+            <span class="p">]</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"n_hits"</span><span class="p">)]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">hits_per_ceilo</span><span class="p">)</span>
+            <span class="c1"># Transform this into a percentage</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"perc"</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"n_hits"</span><span class="p">)]</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">max_hits_per_layer</span> <span class="o">*</span> <span class="mi">100</span>
+            <span class="p">)</span>
+            <span class="c1"># Compute the corresponding okta level, not fogetting to account for possible buffers</span>
+            <span class="c1"># for the 0 and 8 okta bins.</span>
+            <span class="k">if</span> <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"n_hits"</span><span class="p">)]</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span><span class="s2">"MAX_HITS_OKTA0"</span><span class="p">]:</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"okta"</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="k">elif</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">max_hits_per_layer</span> <span class="o">-</span> <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"n_hits"</span><span class="p">)])</span> <span class="o">&lt;=</span> <span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span>
+                <span class="s2">"MAX_HOLES_OKTA8"</span>
+            <span class="p">]:</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"okta"</span><span class="p">)]</span> <span class="o">=</span> <span class="mi">8</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"okta"</span><span class="p">)]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span>
+                    <span class="n">wmo</span><span class="o">.</span><span class="n">perc2okta</span><span class="p">(</span><span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"perc"</span><span class="p">)])[</span><span class="mi">0</span><span class="p">]</span>
+                <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pdf</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_add_sligrolay_information</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pdf</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">cluster_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Add statistical properties to slices/ groups/ layers .</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str): One of "slices", "groups" or "layers".</span>
+<span class="sd">            pdf (pd.DataFrame): The data frame holding slices/ groups/ layers.</span>
+<span class="sd">            cluster_ids (npt.ArrayLike): The original ids of the slices/</span>
+<span class="sd">                groups/ layers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: with additional results in the columns height_min,</span>
+<span class="sd">                height_mean, height_max, height_std, thickness, fluffiness.</span>
+
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cluster_ids</span><span class="p">):</span>
+            <span class="c1"># Which hits are in this sli/gro/lay ?</span>
+            <span class="n">in_sligrolay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">which</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cid</span>
+            <span class="c1"># Measure the mean height and associated std of the layer</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_mean"</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_sligrolay</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">]</span><span class="o">.</span><span class="n">mean</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_std"</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_sligrolay</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">]</span><span class="o">.</span><span class="n">std</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="c1"># Let's also keep track of the min, max, thickness, and fluffiness values</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_min"</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_sligrolay</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_max"</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_sligrolay</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">(</span><span class="n">skipna</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"thickness"</span><span class="p">)]</span> <span class="o">=</span> <span class="p">(</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_max"</span><span class="p">)]</span> <span class="o">-</span> <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_min"</span><span class="p">)]</span>
+            <span class="p">)</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"fluffiness"</span><span class="p">)],</span> <span class="n">_</span> <span class="o">=</span> <span class="n">fluffer</span><span class="o">.</span><span class="n">get_fluffiness</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">in_sligrolay</span><span class="p">,</span> <span class="p">[</span><span class="s2">"dt"</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">]]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="o">**</span><span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span><span class="s2">"LOWESS"</span><span class="p">]</span>
+            <span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">pdf</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_calculate_sligrolay_base_height</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">pdf</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">cluster_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Calculate base height for all slices/ groups/ layers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str): One of slices/ groups/ layers.</span>
+<span class="sd">            pdf (pd.DataFrame): DF holding slices/ groups/ layers.</span>
+<span class="sd">            cluster_ids (npt.ArrayLike): Original IDs of slices/ groups/ layers.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pd.DataFrame: with calculatio results in column height_base</span>
+
+<span class="sd">        """</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">cid</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cluster_ids</span><span class="p">):</span>
+            <span class="c1"># Which hits are in this sli/gro/lay ?</span>
+            <span class="n">in_sligrolay</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="n">which</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="s2">"_id"</span><span class="p">]</span> <span class="o">==</span> <span class="n">cid</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span><span class="s2">"EXCLUDE_FOR_BASE_HEIGHT_CALC"</span><span class="p">]</span> <span class="o">!=</span> <span class="p">[]:</span>
+                <span class="n">in_sligrolay_filtered</span> <span class="o">=</span> <span class="n">in_sligrolay</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">data</span><span class="p">[</span><span class="s2">"ceilo"</span><span class="p">]</span><span class="o">.</span><span class="n">apply</span><span class="p">(</span>
+                    <span class="k">lambda</span> <span class="n">x</span><span class="p">:</span> <span class="n">x</span> <span class="ow">not</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span><span class="s2">"EXCLUDE_FOR_BASE_HEIGHT_CALC"</span><span class="p">]</span>
+                <span class="p">)</span>
+                <span class="c1"># We require a minimum of hits by the filtered ceilos that belong to the layer</span>
+                <span class="c1"># of interest. Otherwise fall back to using all ceilos for the calculation.</span>
+                <span class="k">if</span> <span class="n">in_sligrolay_filtered</span><span class="o">.</span><span class="n">sum</span><span class="p">()</span> <span class="o">&gt;</span> <span class="bp">self</span><span class="o">.</span><span class="n">prms</span><span class="p">[</span><span class="s2">"MAX_HITS_OKTA0"</span><span class="p">]:</span>
+                    <span class="n">in_sligrolay</span> <span class="o">=</span> <span class="n">in_sligrolay_filtered</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+                        <span class="s2">"Not enough data after filtering to calculate cloud base height, "</span>
+                        <span class="sa">f</span><span class="s2">"will fall back to use all data in group/ slice/ layer </span><span class="si">{</span><span class="n">cid</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span>
+                        <span class="n">AmpycloudWarning</span><span class="p">,</span>
+                    <span class="p">)</span>
+            <span class="c1"># Compute the base height</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_base"</span><span class="p">)]</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_base_height_for_selection</span><span class="p">(</span><span class="n">in_sligrolay</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">pdf</span>
+
+    <span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="MetarizeMixin.metarize">
+<a class="viewcode-back" href="../../autoapi/ampycloud/metarize/index.html#ampycloud.metarize.MetarizeMixin.metarize">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metarize</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"slices"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Assembles a :py:class:`pandas.DataFrame` of slice/group/layer METAR properties of</span>
+<span class="sd">        interest.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str, optional): whether to process 'slices', 'groups', or 'layers'.</span>
+<span class="sd">                Defaults to 'slices'.</span>
+
+<span class="sd">        The :py:class:`pandas.DataFrame` generated by this method is subsequently available via the</span>
+<span class="sd">        the appropriate class property :py:attr:`.CeiloChunk.slices`, :py:attr:`.CeiloChunk.groups`,</span>
+<span class="sd">        or :py:attr:`.CeiloChunk.layers`, depending on the value of the argument ``which``.</span>
+
+<span class="sd">        The slice/group/layer parameters computed/derived by this method include:</span>
+
+<span class="sd">            * ``n_hits (int)``: duplicate-corrected number of hits</span>
+<span class="sd">            * ``perc (float)``: sky coverage percentage (between 0-100)</span>
+<span class="sd">            * ``okta (int)``: okta count</span>
+<span class="sd">            * ``height_base (float)``: base height</span>
+<span class="sd">            * ``height_mean (float)``: mean height</span>
+<span class="sd">            * ``height_std (float)``: height standard deviation</span>
+<span class="sd">            * ``height_min (float)``: minimum height</span>
+<span class="sd">            * ``height_max (float)``: maximum height</span>
+<span class="sd">            * ``thickness (float)``: thickness</span>
+<span class="sd">            * ``fluffiness (float)``: fluffiness (expressed in height units, i.e. ft)</span>
+<span class="sd">            * ``code (str)``: METAR-like code</span>
+<span class="sd">            * ``significant (bool)``: whether the layer is significant according to the ICAO rules.</span>
+<span class="sd">              See :py:func:`.icao.significant_cloud` for details.</span>
+<span class="sd">            * ``cluster_id (int)``: an ampycloud-internal identification number</span>
+<span class="sd">            * ``isolated (bool)``: isolation status (for slices only)</span>
+<span class="sd">            * ``ncomp (int)``: the number of subcomponents (for groups only)</span>
+
+<span class="sd">        Important:</span>
+<span class="sd">            The value of ``n_hits`` is corrected for duplicate hits, to ensure a correct estimation</span>
+<span class="sd">            of the sky coverage fraction. Essentially, two (or more) *simultaneous hits from the</span>
+<span class="sd">            same ceilometer* are counted as one only. In other words, if a Type ``1`` and ``2`` hits</span>
+<span class="sd">            **from the same ceilometer, at the same observation time** are included in a given</span>
+<span class="sd">            slice/group/layer, they are counted as one hit only. This is a direct consequence of the</span>
+<span class="sd">            fact that clouds have a single base height at any given time [*citation needed*].</span>
+
+<span class="sd">        Note:</span>
+<span class="sd">            The metarize function is modularized in private submethods defined above.</span>
+
+<span class="sd">        """</span>
+
+        <span class="c1"># setup pd.DataFrame to store slices/ groups/ layers</span>
+        <span class="n">pdf</span><span class="p">,</span> <span class="n">cids</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_setup_sligrolay_pdf</span><span class="p">(</span><span class="n">which</span><span class="p">)</span>
+
+        <span class="c1"># calculate cloud amount in okta</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_cloud_amount</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">cids</span><span class="p">)</span>
+
+        <span class="c1"># calculate slice/ group/ layer base height</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_calculate_sligrolay_base_height</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">cids</span><span class="p">)</span>
+
+        <span class="c1"># collect some more information, including fluffiness</span>
+        <span class="n">pdf</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">_add_sligrolay_information</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="n">pdf</span><span class="p">,</span> <span class="n">cids</span><span class="p">)</span>
+
+        <span class="c1"># Then loop through all of the layers/ groups/ slices and add METAR codes</span>
+        <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">cids</span><span class="p">):</span>
+            <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"code"</span><span class="p">)]</span> <span class="o">=</span> <span class="n">wmo</span><span class="o">.</span><span class="n">okta2code</span><span class="p">(</span>
+                <span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"okta"</span><span class="p">)]</span>
+            <span class="p">)</span> <span class="o">+</span> <span class="n">wmo</span><span class="o">.</span><span class="n">height2code</span><span class="p">(</span><span class="n">pdf</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">ind</span><span class="p">,</span> <span class="n">pdf</span><span class="o">.</span><span class="n">columns</span><span class="o">.</span><span class="n">get_loc</span><span class="p">(</span><span class="s2">"height_base"</span><span class="p">)])</span>
+
+        <span class="c1"># Set the proper column types</span>
+        <span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"n_hits"</span><span class="p">,</span> <span class="s2">"okta"</span><span class="p">,</span> <span class="s2">"cluster_id"</span><span class="p">]:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span>
+            <span class="s2">"perc"</span><span class="p">,</span>
+            <span class="s2">"height_base"</span><span class="p">,</span>
+            <span class="s2">"height_mean"</span><span class="p">,</span>
+            <span class="s2">"height_std"</span><span class="p">,</span>
+            <span class="s2">"height_min"</span><span class="p">,</span>
+            <span class="s2">"height_max"</span><span class="p">,</span>
+            <span class="s2">"thickness"</span><span class="p">,</span>
+            <span class="s2">"fluffiness"</span><span class="p">,</span>
+        <span class="p">]:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">float</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"code"</span><span class="p">]:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">str</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">cname</span> <span class="ow">in</span> <span class="p">[</span><span class="s2">"significant"</span><span class="p">]:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="n">cname</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">"slices"</span><span class="p">:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="s2">"isolated"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="s2">"isolated"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">bool</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">which</span> <span class="o">==</span> <span class="s2">"groups"</span><span class="p">:</span>
+            <span class="n">pdf</span><span class="p">[</span><span class="s2">"ncomp"</span><span class="p">]</span> <span class="o">=</span> <span class="n">pdf</span><span class="p">[</span><span class="s2">"ncomp"</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="nb">int</span><span class="p">)</span>
+
+        <span class="c1"># Sort the table as a function of the base height of the sli/gro/lay.</span>
+        <span class="c1"># This is why having the 'cluster_id' info is useful (so I remember which they are).</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="s2">"height_base"</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Reset the index, 'cause I only need the one.</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">drop</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+        <span class="c1"># Almost done ... I just need to figure out which levels are significant.</span>
+        <span class="n">pdf</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">"significant"</span><span class="p">]</span> <span class="o">=</span> <span class="n">icao</span><span class="o">.</span><span class="n">significant_cloud</span><span class="p">(</span><span class="n">pdf</span><span class="p">[</span><span class="s2">"okta"</span><span class="p">]</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+
+        <span class="c1"># Finally, assign the outcome where it belongs.</span>
+        <span class="nb">setattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"_</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">pdf</span><span class="p">)</span></div>
+
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">_ncd_or_nsc</span><span class="p">(</span><span class="bp">self</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Return the METAR code for No Cloud Detected / No Significant Cloud.</span>
+<span class="sd">        Decision based on the attribute self._clouds_above_msa_buffer.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: 'NCD' or 'NSC'</span>
+
+<span class="sd">        """</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">_clouds_above_msa_buffer</span><span class="p">:</span>
+            <span class="k">return</span> <span class="s2">"NSC"</span>
+        <span class="k">return</span> <span class="s2">"NCD"</span>
+
+<div class="viewcode-block" id="MetarizeMixin.metar_msg">
+<a class="viewcode-back" href="../../autoapi/ampycloud/metarize/index.html#ampycloud.metarize.MetarizeMixin.metar_msg">[docs]</a>
+    <span class="k">def</span><span class="w"> </span><span class="nf">metar_msg</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"layers"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">"""Construct a METAR-like message for the identified cloud slices, groups, or layers.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            which (str, optional): whether to look at 'slices', 'groups', or 'layers'. Defaults to</span>
+<span class="sd">                'layers'.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            str: the METAR-like message.</span>
+
+<span class="sd">        Important:</span>
+<span class="sd">            The ICAO's cloud layer selection rules applicable to METARs will be applied to create</span>
+<span class="sd">            the resulting ``str`` ! See :py:func:`.icao.significant_cloud` for details.</span>
+
+<span class="sd">        .. Caution::</span>
+<span class="sd">            The Minimum Sector Altitude values set when</span>
+<span class="sd">            the :py:class:`.CeiloChunk` instance **was initialized** will be applied ! If in doubt,</span>
+<span class="sd">            the values used by this method are those set in the (parent) class</span>
+<span class="sd">            attribute :py:attr:`.AbstractChunk.msa`</span>
+
+<span class="sd">        """</span>
+
+        <span class="c1"># Deal with the MSA: set it to infinity if None was specified</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">msa</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">msa_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">msa_val</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">msa</span>
+
+        <span class="c1"># Some sanity checks to begin with</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">sligrolay</span> <span class="o">:=</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">which</span><span class="p">))</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"No </span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2"> information found. Have they been computed ?"</span><span class="p">)</span>
+
+        <span class="c1"># Deal with the 0 layer situation</span>
+        <span class="k">if</span> <span class="nb">getattr</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="sa">f</span><span class="s2">"n_</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ncd_or_nsc</span><span class="p">()</span>
+
+        <span class="c1"># Deal with the situation where layers have been found ...</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">sligrolay</span><span class="p">[</span><span class="s2">"code"</span><span class="p">]</span>
+        <span class="c1"># What layers are significant *AND* below the MSA ?</span>
+        <span class="n">report</span> <span class="o">=</span> <span class="n">sligrolay</span><span class="p">[</span><span class="s2">"significant"</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">sligrolay</span><span class="p">[</span><span class="s2">"height_base"</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">msa_val</span><span class="p">)</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="n">sligrolay</span><span class="p">[</span><span class="s2">"code"</span><span class="p">][</span><span class="n">report</span><span class="p">]</span>
+        <span class="n">msg</span> <span class="o">=</span> <span class="s2">" "</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">msg</span><span class="o">.</span><span class="n">to_list</span><span class="p">())</span>
+
+        <span class="c1"># Here, deal with the situations when all clouds are above the MSA</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># first check if any significant clouds are in the interval [MSA, MSA+MSA_HIT_BUFFER]</span>
+            <span class="n">sligrolay_in_buffer</span> <span class="o">=</span> <span class="n">sligrolay</span><span class="p">[</span><span class="s2">"significant"</span><span class="p">]</span> <span class="o">*</span> <span class="p">(</span><span class="n">sligrolay</span><span class="p">[</span><span class="s2">"height_base"</span><span class="p">]</span> <span class="o">&gt;=</span> <span class="n">msa_val</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">sligrolay_in_buffer</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+                <span class="k">return</span> <span class="s2">"NSC"</span>  <span class="c1"># and return a NSC as it implies that the cloud is above the MSA</span>
+            <span class="k">return</span> <span class="bp">self</span><span class="o">.</span><span class="n">_ncd_or_nsc</span><span class="p">()</span>  <span class="c1"># else, check for CBH above MSA + MSA_HIT_BUFFER</span>
+
+        <span class="k">return</span> <span class="n">msg</span></div>
+</div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: dev-cfd3a6f</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,924 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ampycloud.utils.utils &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=dc61d3bd"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ampycloud/utils/utils';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="dev" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../../ampycloud.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.utils.utils</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ampycloud.utils.utils</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Copyright (c) 2022-2026 MeteoSwiss, contributors listed in AUTHORS.</span>
+
+<span class="sd">Distributed under the terms of the 3-Clause BSD License.</span>
+
+<span class="sd">SPDX-License-Identifier: BSD-3-Clause</span>
+
+<span class="sd">Module contains: generic utilities</span>
+<span class="sd">"""</span>
+
+<span class="c1"># Import from Python</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Iterator</span><span class="p">,</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">contextlib</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+
+<span class="c1"># Import from this package</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmpycloudError</span><span class="p">,</span> <span class="n">AmpycloudWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_func_call</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">..</span><span class="w"> </span><span class="kn">import</span> <span class="n">hardcoded</span>
+
+<span class="c1"># Instantiate the module logger</span>
+<div class="viewcode-block" id="logger">
+<a class="viewcode-back" href="../../../autoapi/ampycloud/utils/utils/index.html#ampycloud.utils.utils.logger">[docs]</a>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_required_columns</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">req_cols</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Makes sure all the required columns are present in data, with the correct dtype, fixing</span>
+<span class="sd">    the dtype in place if warranted."""</span>
+
+    <span class="k">for</span> <span class="n">col</span><span class="p">,</span> <span class="n">type_req</span> <span class="ow">in</span> <span class="n">req_cols</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="c1"># If the required column is missing, raise an Exception.</span>
+        <span class="k">if</span> <span class="n">col</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s2"> is missing from the input data."</span><span class="p">)</span>
+        <span class="c1"># If the column has the wrong data type, complain as well.</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">type_in</span> <span class="o">:=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">dtype</span><span class="p">)</span> <span class="o">!=</span> <span class="n">type_req</span><span class="p">:</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s1">'Column </span><span class="si">{</span><span class="n">col</span><span class="si">}</span><span class="s1"> has type "</span><span class="si">{</span><span class="n">type_in</span><span class="si">}</span><span class="s1">" instead of "</span><span class="si">{</span><span class="n">type_req</span><span class="si">}</span><span class="s1">".'</span><span class="p">,</span> <span class="n">AmpycloudWarning</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Adjusting the dtype of column </span><span class="si">%s</span><span class="s2"> from </span><span class="si">%s</span><span class="s2"> to </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">type_in</span><span class="p">,</span> <span class="n">type_req</span><span class="p">)</span>
+            <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">col</span><span class="p">]</span><span class="o">.</span><span class="n">astype</span><span class="p">(</span><span class="n">type_req</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_drop_superfluous_columns</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">req_cols</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Drops, in place, any column of data that is not required by ampycloud."""</span>
+
+    <span class="k">for</span> <span class="n">key</span> <span class="ow">in</span> <span class="n">data</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">req_cols</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Column </span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s2"> is not required by ampycloud."</span><span class="p">,</span> <span class="n">AmpycloudWarning</span><span class="p">)</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="s2">"Dropping the superfluous </span><span class="si">%s</span><span class="s2"> column from the input data."</span><span class="p">,</span> <span class="n">key</span><span class="p">)</span>
+            <span class="n">data</span><span class="o">.</span><span class="n">drop</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">axis</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_type_consistency</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Checks that no timestep/ceilo pair has both a hit and a non-detection/VV hit."""</span>
+
+    <span class="c1"># Check for inconsistencies</span>
+    <span class="c1"># 1 - A non-detection should not be coincident with a detection</span>
+    <span class="c1"># 2 - A VV hit should not be coincident with a hit or a non-detection</span>
+    <span class="k">for</span> <span class="n">hit_type</span> <span class="ow">in</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span><span class="p">]:</span>
+        <span class="n">nodets</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">==</span> <span class="n">hit_type</span><span class="p">][[</span><span class="s2">"dt"</span><span class="p">,</span> <span class="s2">"ceilo"</span><span class="p">]]</span>
+        <span class="n">dets</span> <span class="o">=</span> <span class="n">data</span><span class="p">[</span><span class="n">data</span><span class="p">[</span><span class="s2">"type"</span><span class="p">]</span> <span class="o">!=</span> <span class="n">hit_type</span><span class="p">][[</span><span class="s2">"dt"</span><span class="p">,</span> <span class="s2">"ceilo"</span><span class="p">]]</span>
+        <span class="n">merged</span> <span class="o">=</span> <span class="n">dets</span><span class="o">.</span><span class="n">merge</span><span class="p">(</span><span class="n">nodets</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s2">"inner"</span><span class="p">,</span> <span class="n">on</span><span class="o">=</span><span class="p">[</span><span class="s2">"dt"</span><span class="p">,</span> <span class="s2">"ceilo"</span><span class="p">])</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">merged</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span>
+                <span class="s2">"Inconsistent input data "</span>
+                <span class="sa">f</span><span class="s2">"(simultaneous type </span><span class="si">{</span><span class="n">hit_type</span><span class="si">}</span><span class="s2"> and !</span><span class="si">{</span><span class="n">hit_type</span><span class="si">}</span><span class="s2">):</span><span class="se">\n</span><span class="s2">"</span>
+                <span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">merged</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span>
+            <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_heights</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""A brief sanity check of the heights. We do not issue Errors, since the code can cope</span>
+<span class="sd">    with those elements: we simply raise Warnings."""</span>
+
+    <span class="n">msgs</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[:,</span> <span class="s2">"height"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"Some hit heights are negative ?!"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">0</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">])):</span>
+        <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"Some type=0 hits have non-NaNs height values ?!"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"height"</span><span class="p">])):</span>
+        <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"Some type=1 hits have NaNs height values ?!"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"dt"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">1</span><span class="p">,</span> <span class="s2">"dt"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)):</span>
+        <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"Some type=2 hits have no coincident type=1 hits ?!"</span><span class="p">]</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">3</span><span class="p">,</span> <span class="s2">"dt"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">,</span> <span class="n">data</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">data</span><span class="o">.</span><span class="n">type</span> <span class="o">==</span> <span class="mi">2</span><span class="p">,</span> <span class="s2">"dt"</span><span class="p">]</span><span class="o">.</span><span class="n">values</span><span class="p">)):</span>
+        <span class="n">msgs</span> <span class="o">+=</span> <span class="p">[</span><span class="s2">"Some type=3 hits have no coincident type=2 hits ?!"</span><span class="p">]</span>
+
+    <span class="c1"># Now save all those messages to the log, and raise Warnings as well.</span>
+    <span class="k">for</span> <span class="n">msg</span> <span class="ow">in</span> <span class="n">msgs</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="n">msg</span><span class="p">,</span> <span class="n">AmpycloudWarning</span><span class="p">)</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span><span class="n">msg</span><span class="p">)</span>
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="check_data_consistency">
+<a class="viewcode-back" href="../../../running.html#ampycloud.utils.utils.check_data_consistency">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">check_data_consistency</span><span class="p">(</span><span class="n">pdf</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span> <span class="n">req_cols</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Assesses whether a given :py:class:`pandas.DataFrame` is compatible with the requirements</span>
+<span class="sd">    of ampycloud.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pdf (pd.DataFrame): the data to check.</span>
+<span class="sd">        req_cols (dict): A dictionary in which keys correspond to the required columns, and their</span>
+<span class="sd">            value are the column type. Defaults to None = the ampycloud requirements.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        pd.DataFrame: the data, possibly cleaned-up of superfluous columns, and with corrected</span>
+<span class="sd">        dtypes.</span>
+
+
+<span class="sd">    This function will raise an :py:class:`ampycloud.errors.AmpycloudError` and/or</span>
+<span class="sd">    an :py:class:`ampycloud.errors.AmpycloudWarning` if it identifies very bad and/or very weird</span>
+<span class="sd">    things in ``pdf``.</span>
+
+<span class="sd">    Specifically, the input ``pdf`` must be a :py:class:`pandas.DataFrame` with the following</span>
+<span class="sd">    column names/types (formally defined in :py:data:`ampycloud.hardcoded.REQ_DATA_COLS`):</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        'ceilo'/pd.StringDtype(), 'dt'/float, 'height'/float, 'type'/int</span>
+
+<span class="sd">    The ``ceilo`` column contains the names/ids of the ceilometers as ``pd.StringDtype()``.</span>
+<span class="sd">    See the pandas</span>
+<span class="sd">    `documentation &lt;https://pandas.pydata.org/docs/reference/api/pandas.StringDtype.html&gt;`__</span>
+<span class="sd">    for more info about this type.</span>
+
+<span class="sd">    The ``dt`` column contains time deltas, in seconds, between a given ceilometer</span>
+<span class="sd">    observation and ``ref_dt`` (i.e. ``obs_time-ref_dt``). Ideally, ``ref_dt`` would be the issuing</span>
+<span class="sd">    time of the METAR message, such that ``dt`` values are negative, with the smallest one</span>
+<span class="sd">    corresponding to the oldest measurement.</span>
+
+<span class="sd">    The ``height`` column contains the cloud base hit heights reported by the ceilometers, in ft</span>
+<span class="sd">    above aerodrome level.</span>
+
+<span class="sd">    The ``type`` column contains integers that correspond to the hit *sequence id*. If a given</span>
+<span class="sd">    ceilometer is reporting multiple hits for a given timestep (corresponding to a cloud level 1,</span>
+<span class="sd">    cloud level 2, cloud level 3, etc ...), the ``type`` of these measurements would be ``1``,</span>
+<span class="sd">    ``2``, ``3``, etc ... Any data point with a ``type`` of ``-1`` will be flagged in the ampycloud</span>
+<span class="sd">    plots as a vertical Visibility (VV) hit, **but it will not be treated any differently than any</span>
+<span class="sd">    other regular hit**. Type ``0`` corresponds to no (cloud) detection, in which case the</span>
+<span class="sd">    corresponding hit height should be a NaN.</span>
+
+<span class="sd">    Important:</span>
+<span class="sd">        A **non-detection** corresponds to a valid measurement with a ``dt`` value, a ``type 0``,</span>
+<span class="sd">        and ``NaN`` as the height. It should not be confused with a **non-observation**,</span>
+<span class="sd">        when no data was acquired at all !</span>
+
+<span class="sd">    If it all sounds confusing, it is possible to obtain an example of the required data format</span>
+<span class="sd">    from the :py:func:`.utils.mocker.canonical_demo_data` routine of the package, like so::</span>
+
+<span class="sd">        from ampycloud.utils import mocker</span>
+<span class="sd">        mock_data = mocker.canonical_demo_data()</span>
+
+<span class="sd">    As mentionned above, it is also possible to verify if a given :py:class:`pandas.DataFrame` is</span>
+<span class="sd">    meeting the ampycloud requirements ahead of time via</span>
+<span class="sd">    :py:func:`ampycloud.utils.utils.check_data_consistency`::</span>
+
+<span class="sd">        from ampycloud.utils.utils import check_data_consistency</span>
+<span class="sd">        checked_pdf = check_data_consistency(pdf)</span>
+
+<span class="sd">    This will raise an :py:class:`ampycloud.errors.AmpycloudError` if:</span>
+
+<span class="sd">        * ``pdf`` is not a :py:class:`pandas.DataFrame`.</span>
+<span class="sd">        * ``pdf`` is missing a required column.</span>
+<span class="sd">        * ``pdf`` has a length of 0.</span>
+<span class="sd">        * ``pdf`` has duplicated rows.</span>
+<span class="sd">        * any time step for any ceilometer corresponds to both a type 0 (no hit) and not 0 (some</span>
+<span class="sd">          hit)</span>
+<span class="sd">        * any time step for any ceilometer corresponds to both a type -1 (VV hit) and not -1 (some</span>
+<span class="sd">          hit/no hit)</span>
+
+<span class="sd">    The latter check implies that ampycloud cannot be fed a VV hit in parallel to a cloud base hit.</span>
+<span class="sd">    Should a specific ceilometer return VV hits in parallel to cloud base hits, it is up to the user</span>
+<span class="sd">    to decide whether to feed one or the other.</span>
+
+<span class="sd">    In addition, this will raise an :py:class:`ampycloud.errors.AmpycloudWarning` if:</span>
+
+<span class="sd">        * any of ``pdf`` column type is not as expected. Note that in this case, the code will try</span>
+<span class="sd">          to correct the type on the fly.</span>
+<span class="sd">        * ``pdf`` has any superfluous columns. In this case, the code will drop them automatically.</span>
+<span class="sd">        * Any hit height is negative.</span>
+<span class="sd">        * Any ``type 0`` hit has a non-NaN height.</span>
+<span class="sd">        * Any ``type 1`` hit has a NaN height.</span>
+<span class="sd">        * Any ``type 2`` hit does not have a coincident ``type 1`` hit.</span>
+<span class="sd">        * Any ``type 3`` hit does not have a coincident ``type 2`` hit.</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Begin by making a deep copy of the data to avoid messing with the user stuff</span>
+    <span class="n">data</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">pdf</span><span class="p">)</span>
+
+    <span class="c1"># Deal with the None default value for the columns</span>
+    <span class="k">if</span> <span class="n">req_cols</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">req_cols</span> <span class="o">=</span> <span class="n">hardcoded</span><span class="o">.</span><span class="n">REQ_DATA_COLS</span>
+
+    <span class="c1"># First things first, make sure I was fed a pandas DataFrame</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"I was expecting data as a pandas DataFrame,"</span> <span class="o">+</span> <span class="sa">f</span><span class="s2">" not: </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">data</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Make sure the dataframe is not empty.</span>
+    <span class="c1"># Note: an empty dataframe = no measurements. This is NOT the same as "measuring" clear sky</span>
+    <span class="c1"># conditions, which would result in NaNs.</span>
+    <span class="c1"># If I have no measurements, I cannot issue a AutoMETAR. It would make no sense.</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">data</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"len(data) is 0. I can't work with no data !"</span><span class="p">)</span>
+
+    <span class="c1"># Check that all the required columns are present in the data, with the correct format</span>
+    <span class="n">_check_required_columns</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">req_cols</span><span class="p">)</span>
+
+    <span class="c1"># Drop any columns that I do not need for processing</span>
+    <span class="n">_drop_superfluous_columns</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">req_cols</span><span class="p">)</span>
+
+    <span class="c1"># Check for any duplicated entry, which would make no sense.</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">duplic</span> <span class="o">:=</span> <span class="n">data</span><span class="o">.</span><span class="n">duplicated</span><span class="p">())</span><span class="o">.</span><span class="n">any</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Duplicated hits in the input data:</span><span class="se">\n</span><span class="si">{</span><span class="n">data</span><span class="p">[</span><span class="n">duplic</span><span class="p">]</span><span class="o">.</span><span class="n">to_string</span><span class="p">(</span><span class="n">index</span><span class="o">=</span><span class="kc">False</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Check for inconsistencies</span>
+    <span class="n">_check_type_consistency</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># A brief sanity check of the heights</span>
+    <span class="n">_check_heights</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># All done</span>
+    <span class="k">return</span> <span class="n">data</span></div>
+
+
+
+<span class="nd">@contextlib</span><span class="o">.</span><span class="n">contextmanager</span>
+<div class="viewcode-block" id="tmp_seed">
+<a class="viewcode-back" href="../../../autoapi/ampycloud/utils/utils/index.html#ampycloud.utils.utils.tmp_seed">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">tmp_seed</span><span class="p">(</span><span class="n">seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">Iterator</span><span class="p">[</span><span class="kc">None</span><span class="p">]:</span>
+<span class="w">    </span><span class="sd">"""Temporarily reset the :py:func:`numpy.random.seed` value.</span>
+
+<span class="sd">    Adapted from the reply of Paul Panzer on `SO &lt;https://stackoverflow.com/questions/49555991/&gt;`__.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        with temp_seed(42):</span>
+<span class="sd">            np.random.random(1)</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Add a note in the logs about what is going on</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Setting a temporary np.random.seed with value </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span> <span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Get the current seed</span>
+    <span class="n">state</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">get_state</span><span class="p">()</span>
+
+    <span class="c1"># Reset it with the temporary one</span>
+    <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">seed</span><span class="p">(</span><span class="n">seed</span><span class="p">)</span>
+
+    <span class="c1"># Execute stuff, and reset the original seed once all is over.</span>
+    <span class="k">try</span><span class="p">:</span>
+        <span class="k">yield</span>
+    <span class="k">finally</span><span class="p">:</span>
+        <span class="n">np</span><span class="o">.</span><span class="n">random</span><span class="o">.</span><span class="n">set_state</span><span class="p">(</span><span class="n">state</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="adjust_nested_dict">
+<a class="viewcode-back" href="../../../autoapi/ampycloud/utils/utils/index.html#ampycloud.utils.utils.adjust_nested_dict">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">adjust_nested_dict</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">new_dict</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span> <span class="n">lvls</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Update a given (nested) dictionnary given a second (possibly incomplete) one.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        ref_dict (dict): reference dict of dict (of dict of dict ...).</span>
+<span class="sd">        new_dict (dict): values to update as a dict (of dict or dict of dict ...)</span>
+<span class="sd">        lvls (list of str, optional): names of the keys of the parent nested dict layers, used</span>
+<span class="sd">            for reporting useful errors. This is used by the function itself when it calls itself.</span>
+<span class="sd">            There is no need for the user to set this to anything at first. Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: the updated dict (of dict of dict of dict ...)</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        Inspired from the reply of Alex Martelli and Alex Telon on</span>
+<span class="sd">        `SO &lt;https://stackoverflow.com/questions/3232943/&gt;`_.</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">lvls</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">lvls</span> <span class="o">=</span> <span class="p">[]</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">new_dict</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="n">lvls</span> <span class="o">+=</span> <span class="p">[</span><span class="n">key</span><span class="p">]</span>
+        <span class="k">if</span> <span class="n">key</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ref_dict</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Key unknown (and thus ignored): </span><span class="si">{</span><span class="s1">'.'</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">lvls</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">,</span> <span class="n">AmpycloudWarning</span><span class="p">)</span>
+            <span class="k">continue</span>
+        <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">item</span><span class="p">,</span> <span class="nb">dict</span><span class="p">):</span>
+            <span class="n">ref_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">adjust_nested_dict</span><span class="p">(</span><span class="n">ref_dict</span><span class="p">[</span><span class="n">key</span><span class="p">],</span> <span class="n">item</span><span class="p">,</span> <span class="n">lvls</span><span class="o">=</span><span class="n">lvls</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ref_dict</span><span class="p">[</span><span class="n">key</span><span class="p">]</span> <span class="o">=</span> <span class="n">item</span>
+
+    <span class="k">return</span> <span class="n">ref_dict</span></div>
+
+
+
+<div class="viewcode-block" id="calc_base_height">
+<a class="viewcode-back" href="../../../autoapi/ampycloud/utils/utils/index.html#ampycloud.utils.utils.calc_base_height">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">calc_base_height</span><span class="p">(</span>
+    <span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">lookback_perc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+    <span class="n">height_perc</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">float</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Calculate the layer base height.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (npt.ArrayLike): Ceilometer hits of a given layer. Must be a flat</span>
+<span class="sd">            array/ Series of scalars and ordered in time, most recent entries last.</span>
+<span class="sd">        lookback_perc (int): Percentage of points to take into account. 100% would</span>
+<span class="sd">            correspond to all points, 50% to the recent half, etc.</span>
+<span class="sd">        height_perc (int): Percentage of points that should be neglected when calculating</span>
+<span class="sd">            the base height. Base height will be the minimum of the remaining points.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        float: The layer base height.</span>
+
+<span class="sd">    Raises:</span>
+<span class="sd">        AmpycloudError: Raised if the array passed to the n_largest percentile calculation</span>
+<span class="sd">            is empty.</span>
+
+<span class="sd">    """</span>
+    <span class="n">n_latest_elements</span> <span class="o">=</span> <span class="n">vals</span><span class="p">[</span><span class="o">-</span><span class="nb">int</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">*</span> <span class="n">lookback_perc</span> <span class="o">/</span> <span class="mi">100</span><span class="p">)</span> <span class="p">:]</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">n_latest_elements</span><span class="p">)</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span>
+            <span class="s2">"Cloud base calculation got an empty array. "</span>
+            <span class="sa">f</span><span class="s2">"Maybe check lookback percentage ? (currently set to </span><span class="si">{</span><span class="n">lookback_perc</span><span class="si">}</span><span class="s2">)"</span>
+        <span class="p">)</span>
+    <span class="k">return</span> <span class="n">np</span><span class="o">.</span><span class="n">percentile</span><span class="p">(</span><span class="n">n_latest_elements</span><span class="p">,</span> <span class="n">height_perc</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: dev-cfd3a6f</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

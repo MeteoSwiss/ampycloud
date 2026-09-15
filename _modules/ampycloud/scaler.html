@@ -1,0 +1,913 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ampycloud.scaler &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=dc61d3bd"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ampycloud/scaler';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="dev" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../ampycloud.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.scaler</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ampycloud.scaler</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</span>
+
+<span class="sd">Distributed under the terms of the 3-Clause BSD License.</span>
+
+<span class="sd">SPDX-License-Identifier: BSD-3-Clause</span>
+
+<span class="sd">Module contains: data scaling tools</span>
+<span class="sd">"""</span>
+
+<span class="c1"># Import from Python</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span><span class="p">,</span> <span class="n">Any</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+
+<span class="c1"># Import from ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmpycloudError</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_func_call</span>
+
+<span class="c1"># Instantiate the module logger</span>
+<div class="viewcode-block" id="logger">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.logger">[docs]</a>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="shift_and_scale">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.shift_and_scale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">shift_and_scale</span><span class="p">(</span>
+    <span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">shift</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">scale</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"do"</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Shift (by a constant) and scale (by a constant) the data.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (ndarray): values to (un-)shift-and-scale.</span>
+<span class="sd">        shift (int|float, optional): amount to shift the data by. If not specified, it will be set</span>
+<span class="sd">            to ``max(vals)``.</span>
+<span class="sd">        scale (int|float, optional): the scaling value. Defaults to 1.</span>
+<span class="sd">        mode (str, optional): whether to 'do' or 'undo' the shift-and-scale.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        np.ndarray: the (un-)shifted-and-scaled array.</span>
+
+<span class="sd">    This function converts x to (x-shift)/scale if ``mode='do'``, and to x * scale + shift if</span>
+<span class="sd">    ``mode='undo'``.</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Let's deal with None shift ... this is important to ensure that the ampycloud algorithm</span>
+    <span class="c1"># always deals with the respective time separation between measurements, when doing the</span>
+    <span class="c1"># clustering.</span>
+    <span class="k">if</span> <span class="n">shift</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">shift</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+
+    <span class="c1"># Implement the scaling routine</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"do"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">shift</span><span class="p">)</span> <span class="o">/</span> <span class="n">scale</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"undo"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vals</span> <span class="o">*</span> <span class="n">scale</span> <span class="o">+</span> <span class="n">shift</span>
+
+    <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mode unknown: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="minmax_scale">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.minmax_scale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">minmax_scale</span><span class="p">(</span>
+    <span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">min_val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">max_val</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="nb">int</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"do"</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Rescale the data onto a [0, 1] interval, possibly forcing a specific and/or minimum</span>
+<span class="sd">        interval range.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (ndarray): values to (un-)minmax-scale.</span>
+<span class="sd">        mode (str, optional): whether to 'scale' or 'descale', i.e. undo the scaling.</span>
+<span class="sd">        min_val (int|float, optional): value to be mapped to 0. If not set, will be ``min(vals)``.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        max_val (int|float, optional): value to be mapped to 1. If not set, will be ``max(vals)``.</span>
+<span class="sd">            Defaults to None.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: The (un-)minmax-scaled array.</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Compute the "default" edges if warranted</span>
+    <span class="k">if</span> <span class="n">min_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">min_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">max_val</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">max_val</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"do"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">vals</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span> <span class="o">/</span> <span class="p">(</span><span class="n">max_val</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"undo"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vals</span> <span class="o">*</span> <span class="p">(</span><span class="n">max_val</span> <span class="o">-</span> <span class="n">min_val</span><span class="p">)</span> <span class="o">+</span> <span class="n">min_val</span>
+
+    <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mode unknown: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="minrange2minmax">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.minrange2minmax">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">minrange2minmax</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">min_range</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Transform a minimum range into a pair of min/max values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (np.ndarray): values to assess.</span>
+<span class="sd">        min_range (int|float, optional): mininum range to meet. Defaults to 0.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        tuple: the min and max values of the data range of at least min_range in size.</span>
+
+<span class="sd">    Essentially, if max(vals)-min(vals) &gt;= min_range, this function returns</span>
+<span class="sd">    ``[min(vals), max(vals)]``. Else, it returns ``[val_mid-min_range/2, val_mid+min_range/2]``,</span>
+<span class="sd">    with ```val_mid=(max(vals)+min(vals))/2``.</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">val_range</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">val_range</span> <span class="o">&gt;=</span> <span class="n">min_range</span><span class="p">:</span>
+        <span class="k">return</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals</span><span class="p">),</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span>
+
+    <span class="c1"># Compute the middle of the data</span>
+    <span class="n">val_mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmin</span><span class="p">(</span><span class="n">vals</span><span class="p">))</span> <span class="o">/</span> <span class="mi">2</span>
+
+    <span class="c1"># Build a symetric range around it</span>
+    <span class="k">return</span> <span class="p">(</span><span class="n">val_mid</span> <span class="o">-</span> <span class="n">min_range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">,</span> <span class="n">val_mid</span> <span class="o">+</span> <span class="n">min_range</span> <span class="o">/</span> <span class="mi">2</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="step_scale">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.step_scale">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">step_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">steps</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">scales</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"do"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Scales values step-wise, with different constants bewteen specific steps.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (ndarray): values to scale.</span>
+<span class="sd">        steps (list, optional): the step **edges**. E.g. [8000, 14000].</span>
+<span class="sd">        scales (list, optional): the scaling values (=dividers) for each step.</span>
+<span class="sd">            E.g. [100, 500, 1000]. Must have len(scales) = len(steps)+1.</span>
+<span class="sd">        mode (str, optional): whether to 'do' or 'undo' the scaling.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: (un-)step-scaled values</span>
+
+<span class="sd">    Values are divided by scales[i] between steps[i-1:i].</span>
+<span class="sd">    Anything outside the range of steps is divided by scales[0] or scale[-1].</span>
+
+<span class="sd">    Note that this function ensures that each step is properly offseted to ensure that the</span>
+<span class="sd">    scaled data is continuous (no gaps and no overlapping steps) !</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Some sanity checks</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">scales</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"Steps and scales have incompatible lengths."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">any</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"Steps should be ordered from smallest to largest !"</span><span class="p">)</span>
+
+    <span class="c1"># What is the offset of each bin ?</span>
+    <span class="n">offsets</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">steps</span>
+
+    <span class="c1"># Get the bin edges for the scale mode</span>
+    <span class="n">edges_in</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">+</span> <span class="n">steps</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+    <span class="c1"># Idem for the descale mode ... this is more complex because of the continuity requirement</span>
+    <span class="n">edges_out</span> <span class="o">=</span> <span class="p">[</span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">scales</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">/</span> <span class="n">scales</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])[:</span><span class="n">ind</span><span class="p">])</span> <span class="k">for</span> <span class="n">ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">))]</span>
+    <span class="n">edges_out</span> <span class="o">=</span> <span class="p">[</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span> <span class="o">+</span> <span class="n">edges_out</span> <span class="o">+</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]</span>
+
+    <span class="c1"># Prepare the output</span>
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full_like</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">float</span><span class="p">)</span>
+
+    <span class="c1"># Start scaling things, one step after another</span>
+    <span class="k">for</span> <span class="n">sid</span><span class="p">,</span> <span class="n">sval</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">scales</span><span class="p">):</span>
+        <span class="c1"># What is this specific step offset (to ensure continuity between steps) ?</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">cont_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">steps</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">/</span> <span class="n">scales</span><span class="p">[</span><span class="mi">0</span><span class="p">]]),</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">steps</span><span class="p">)</span> <span class="o">/</span> <span class="n">scales</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]))</span>
+            <span class="n">cont_corr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cont_corr</span><span class="p">[:</span><span class="n">sid</span><span class="p">])</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">cont_corr</span> <span class="o">=</span> <span class="mi">0</span>  <span class="c1"># Special case for when I have a single scaling for the entire interval</span>
+
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"do"</span><span class="p">:</span>
+            <span class="c1"># Which values belong to that step ?</span>
+            <span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">edges_in</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">vals</span><span class="p">)</span> <span class="o">*</span> <span class="p">(</span><span class="n">vals</span> <span class="o">&lt;</span> <span class="n">edges_in</span><span class="p">[</span><span class="n">sid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># Apply the scaling</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">-</span> <span class="n">offsets</span><span class="p">[</span><span class="n">sid</span><span class="p">])</span> <span class="o">/</span> <span class="n">sval</span> <span class="o">+</span> <span class="n">cont_corr</span>
+
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"undo"</span><span class="p">:</span>
+            <span class="c1"># Which value belongs to that step ?</span>
+            <span class="n">cond</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span> <span class="o">&gt;=</span> <span class="n">edges_out</span><span class="p">[</span><span class="n">sid</span><span class="p">])</span> <span class="o">*</span> <span class="p">(</span><span class="n">vals</span> <span class="o">&lt;</span> <span class="n">edges_out</span><span class="p">[</span><span class="n">sid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">])</span>
+            <span class="c1"># Apply the descaling</span>
+            <span class="n">out</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">vals</span><span class="p">[</span><span class="n">cond</span><span class="p">]</span> <span class="o">-</span> <span class="n">cont_corr</span><span class="p">)</span> <span class="o">*</span> <span class="n">sval</span> <span class="o">+</span> <span class="n">offsets</span><span class="p">[</span><span class="n">sid</span><span class="p">]</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mode unknown: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_kwargs_shift_and_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Handles the 'shift-and-scale' case for :py:func:`.convert_kwargs`."""</span>
+
+    <span class="c1"># In this case, the only data I may need to derive from the data is the shift.</span>
+    <span class="k">if</span> <span class="s2">"shift"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="c1"># Already set - do nothing</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
+
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"mode"</span><span class="p">,</span> <span class="s2">"do"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"do"</span><span class="p">:</span>
+        <span class="n">kwargs</span><span class="p">[</span><span class="s2">"shift"</span><span class="p">]</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">nanmax</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"undo"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"I cannot get `shift` from the shift-and-scaled data !"</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"mode unknown: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">kwargs</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_convert_kwargs_minmax_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Handles the 'minmax-scale' case for :py:func:`.convert_kwargs`."""</span>
+
+    <span class="c1"># In this case, the challenge lies with identifying min_val and max_val, knowing that the</span>
+    <span class="c1"># user may specify a min_range value.</span>
+    <span class="k">if</span> <span class="s2">"min_val"</span> <span class="ow">in</span> <span class="n">kwargs</span> <span class="ow">and</span> <span class="s2">"max_val"</span> <span class="ow">in</span> <span class="n">kwargs</span><span class="p">:</span>
+        <span class="c1"># Already specified ... do  nothing</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
+
+    <span class="n">mode</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="s2">"mode"</span><span class="p">,</span> <span class="s2">"do"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"undo"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"I cannot get `min_val` and `max_val` from minmax-scaled data !"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">!=</span> <span class="s2">"do"</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Mode unknown: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="n">min_range</span> <span class="o">=</span> <span class="n">kwargs</span><span class="o">.</span><span class="n">pop</span><span class="p">(</span><span class="s2">"min_range"</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+    <span class="p">(</span><span class="n">kwargs</span><span class="p">[</span><span class="s2">"min_val"</span><span class="p">],</span> <span class="n">kwargs</span><span class="p">[</span><span class="s2">"max_val"</span><span class="p">])</span> <span class="o">=</span> <span class="n">minrange2minmax</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">min_range</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">kwargs</span>
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="convert_kwargs">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.convert_kwargs">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">convert_kwargs</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">dict</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Converts the user-input keywords such that they can be fed to the underlying scaling</span>
+<span class="sd">    functions.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (np.ndarray): the values to be processed.</span>
+<span class="sd">        fct (str): the scaling mode, e.g. 'shift-and-scale', etc ....</span>
+<span class="sd">        **kwargs: dict of keyword arguments to be converted, if warranted.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        dict: the data-adjusted set of kwargs.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This function was first introduced to accomodate the creation of a secondary axis on the</span>
+<span class="sd">        ampycloud diagnostic plots. It is a buffer that allows to separate "user" scaling</span>
+<span class="sd">        keywords from the "deterministic" scaling keywords required to get a specific scaling, no</span>
+<span class="sd">        matter the underlying dataset (as is required for plotting a secondary axis).</span>
+
+<span class="sd">        Essentially, this function allows to feed either "user" or "deterministic" keywords to</span>
+<span class="sd">        :py:func:`.apply_scaling`, such that the former will be turned into the latter, and the</span>
+<span class="sd">        latter will remain untouched.</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"shift-and-scale"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_convert_kwargs_shift_and_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"minmax-scale"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">_convert_kwargs_minmax_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"step-scale"</span><span class="p">:</span>
+        <span class="c1"># Nothing to be done here</span>
+        <span class="k">return</span> <span class="n">kwargs</span>
+
+    <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scaling fct unknown: </span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="apply_scaling">
+<a class="viewcode-back" href="../../autoapi/ampycloud/scaler/index.html#ampycloud.scaler.apply_scaling">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">apply_scaling</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">fct</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="n">Any</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Umbrella scaling routine, that gathers all the individual ones under a single entry point.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (ndarray): values to scale.</span>
+<span class="sd">        fct (str, optional): name of the scaling function to use. Can be one of</span>
+<span class="sd">            ['shift-and-scale', 'minmax-scale', or 'step-scale']. Defaults to None = do nothing.</span>
+<span class="sd">        **kwargs: keyword arguments that will be fed to the underlying scaling function.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: the scaled values.</span>
+<span class="sd">    """</span>
+
+    <span class="c1"># If I was asked to do nothing, then do nothing ...</span>
+    <span class="k">if</span> <span class="n">fct</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">vals</span>
+
+    <span class="c1"># If I only get NaNs, return NaNs</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">all</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">isnan</span><span class="p">(</span><span class="n">vals</span><span class="p">)):</span>
+        <span class="k">return</span> <span class="n">vals</span>
+
+    <span class="c1"># Process the user-supplied kwargs into kwargs I can feed the functions.</span>
+    <span class="n">kwargs</span> <span class="o">=</span> <span class="n">convert_kwargs</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">fct</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"shift-and-scale"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">shift_and_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"minmax-scale"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">minmax_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">fct</span> <span class="o">==</span> <span class="s2">"step-scale"</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">step_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Scaling function name unknown: </span><span class="si">{</span><span class="n">fct</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: dev-cfd3a6f</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,929 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ampycloud.layer &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=dc61d3bd"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ampycloud/layer';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="dev" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../ampycloud.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.layer</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ampycloud.layer</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</span>
+
+<span class="sd">Distributed under the terms of the 3-CLause BSD License.</span>
+
+<span class="sd">SPDX-License-Identifier: BSD-3-Clause</span>
+
+<span class="sd">Module contains: layering tools</span>
+<span class="sd">"""</span>
+
+<span class="c1"># Import from Python</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">sklearn.mixture</span><span class="w"> </span><span class="kn">import</span> <span class="n">GaussianMixture</span>
+
+<span class="c1"># Import from this module</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmpycloudError</span><span class="p">,</span> <span class="n">AmpycloudWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_func_call</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.scaler</span><span class="w"> </span><span class="kn">import</span> <span class="n">minmax_scale</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+
+<span class="c1"># Instantiate the module logger</span>
+<div class="viewcode-block" id="logger">
+<a class="viewcode-back" href="../../autoapi/ampycloud/layer/index.html#ampycloud.layer.logger">[docs]</a>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="scores2nrl">
+<a class="viewcode-back" href="../../autoapi/ampycloud/layer/index.html#ampycloud.layer.scores2nrl">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">scores2nrl</span><span class="p">(</span><span class="n">abics</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Converts AIC or BIC scores into probabilities = normalized relative likelihood.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        abics (ndarray): scores.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        ndarray: probabilities of the different models.</span>
+
+<span class="sd">    Specifically, this function computes:</span>
+
+<span class="sd">    .. math::</span>
+
+<span class="sd">        p_i = \\frac{e^{-0.5(\\textrm{abics}_i-min(\\textrm{abics}))}}{\\sum_{i}e^{-0.5(\\textrm{abics}_i-min(</span>
+<span class="sd">        \\textrm{abics}))}}</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        The smaller the BIC/AIC scores, the better, but the higher the probabilities = normalized</span>
+<span class="sd">        relative likelihood, the better !</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">out</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="mf">0.5</span> <span class="o">*</span> <span class="p">(</span><span class="n">abics</span> <span class="o">-</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">abics</span><span class="p">)))</span>
+    <span class="n">out</span> <span class="o">/=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">out</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">out</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="best_gmm">
+<a class="viewcode-back" href="../../autoapi/ampycloud/layer/index.html#ampycloud.layer.best_gmm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">best_gmm</span><span class="p">(</span><span class="n">abics</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"delta"</span><span class="p">,</span> <span class="n">min_prob</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">,</span> <span class="n">delta_mul_gain</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">1.0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">int</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Identify which Gaussian Mixture Model is most appropriate given AIC or BIC scores.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        abics (ndarray): the AICs or BICs scores, ordered from simplest to most complex model.</span>
+<span class="sd">        mode (str, optional): one of ['delta', 'prob']. Defaults to 'delta'.</span>
+<span class="sd">        min_prob (float, optional): minimum model probability computed from the scores's relative</span>
+<span class="sd">            likelihood, below which the other models will be considered. Set it to 1 to select</span>
+<span class="sd">            the model with the lowest score, irrespective of its probability. Defaults to 1.</span>
+<span class="sd">            This has no effect unless mode='prob'.</span>
+<span class="sd">        delta_mul_gain (float, optional): a smaller score will only be considered "valid"</span>
+<span class="sd">            if it is smaller than delta_mul_gain*current_best_score. Defaults to 1.</span>
+<span class="sd">            This has no effect unless mode='delta'.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int: index of the "most appropriate" model.</span>
+
+<span class="sd">    Model selection can be based on:</span>
+
+<span class="sd">        1. the normalized relative likelihood values (see `scores2nrl()`) of the AIC or/and BIC</span>
+<span class="sd">        scores, or</span>
+<span class="sd">        2. the normalized absolute offsets between the AIC or BIC scores.</span>
+
+<span class="sd">    The mode defaults to 'delta', i.e. the normalized absolute offsets between the scores scores.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        The order of the scores **does matter** for this routine.</span>
+
+<span class="sd">        Starting with the first model as the "current best model", the model n will become the</span>
+<span class="sd">        "current best model" if:</span>
+
+<span class="sd">        - `mode='prob'`:</span>
+<span class="sd">          ::</span>
+
+<span class="sd">            prob(abics[current_best_model]) &lt; min_prob</span>
+<span class="sd">            AND</span>
+<span class="sd">            prob(abics[n]) &gt; prob(abics[current_best_model])</span>
+
+<span class="sd">        - `mode='delta'`:</span>
+<span class="sd">          ::</span>
+
+<span class="sd">            abics[n] &lt; delta_mul_gain * abics[current_best_model]</span>
+
+<span class="sd">        The default arguments of this function lead to selecting the number of components with the</span>
+<span class="sd">        smallest score.</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># How many models do I need to compare ?</span>
+    <span class="n">n_models</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">abics</span><span class="p">)</span>
+
+    <span class="c1"># Compute the relative probabilities of each model from the scores,</span>
+    <span class="c1"># i.e. compute the "relative likelihood" of each model, normalized by the sum of all relative</span>
+    <span class="c1"># likelihoods (if warranted)</span>
+    <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"prob"</span><span class="p">:</span>
+        <span class="n">nrl</span> <span class="o">=</span> <span class="n">scores2nrl</span><span class="p">(</span><span class="n">abics</span><span class="p">)</span>
+
+    <span class="c1"># Now figure out if more than one components hides in the data.</span>
+    <span class="c1"># This is not exact science, since ceilometer hits are not necessarily normally distributed.</span>
+    <span class="c1"># Hence, rather than blindly select the smallest AICS/BICS values to decide if we have more than</span>
+    <span class="c1"># 1 component, we start and stick with 1 component unless we notice a *significant* improvement</span>
+    <span class="c1"># in the probabilities OR scores.</span>
+    <span class="c1"># This is the whole reason for assessing models sequentially, and for asking users to feed</span>
+    <span class="c1"># scores from the most simple to the least simple model.</span>
+    <span class="n">best_model_ind</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">m_ind</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">n_models</span> <span class="o">-</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="c1"># Here, define if the new model is "better" following the user's wishes ...</span>
+        <span class="k">if</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"prob"</span><span class="p">:</span>
+            <span class="n">better</span> <span class="o">=</span> <span class="p">(</span><span class="n">nrl</span><span class="p">[</span><span class="n">best_model_ind</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">min_prob</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="n">nrl</span><span class="p">[</span><span class="n">m_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">nrl</span><span class="p">[</span><span class="n">best_model_ind</span><span class="p">])</span>
+        <span class="k">elif</span> <span class="n">mode</span> <span class="o">==</span> <span class="s2">"delta"</span><span class="p">:</span>
+            <span class="n">better</span> <span class="o">=</span> <span class="n">abics</span><span class="p">[</span><span class="n">m_ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="n">delta_mul_gain</span> <span class="o">*</span> <span class="n">abics</span><span class="p">[</span><span class="n">best_model_ind</span><span class="p">]</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown mode: </span><span class="si">{</span><span class="n">mode</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="c1"># If the requested conditions are met, then this next model is better !</span>
+        <span class="k">if</span> <span class="n">better</span><span class="p">:</span>
+            <span class="n">best_model_ind</span> <span class="o">=</span> <span class="n">m_ind</span> <span class="o">+</span> <span class="mi">1</span>
+
+    <span class="k">return</span> <span class="n">best_model_ind</span></div>
+
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_check_min_sep_vs_resolution</span><span class="p">(</span><span class="n">vals_orig</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">min_sep</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Warns if min_sep is too small compared to the data resolution, to flag a risk of</span>
+<span class="sd">    over-layering."""</span>
+
+    <span class="n">res_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">vals_orig</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals_orig</span><span class="p">))))</span>
+    <span class="n">res_orig</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">min</span><span class="p">(</span><span class="n">res_orig</span><span class="p">[</span><span class="n">res_orig</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">])</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"res_orig: </span><span class="si">%.2f</span><span class="s2">"</span><span class="p">,</span> <span class="n">res_orig</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="n">min_sep</span> <span class="o">&lt;</span> <span class="mi">5</span> <span class="o">*</span> <span class="n">res_orig</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"min_sep=</span><span class="si">{</span><span class="n">min_sep</span><span class="si">}</span><span class="s2"> is smaller than 5*res_orig=</span><span class="si">{</span><span class="mi">5</span><span class="w"> </span><span class="o">*</span><span class="w"> </span><span class="n">res_orig</span><span class="si">}</span><span class="s2">."</span>
+            <span class="o">+</span> <span class="s2">"This could lead to an over-layering for thin groups !"</span><span class="p">,</span>
+            <span class="n">AmpycloudWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fit_gmms</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ncomp</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fits a GaussianMixture model for each candidate number of components, and computes the</span>
+<span class="sd">    associated AIC/BIC scores."""</span>
+
+    <span class="n">models</span> <span class="o">=</span> <span class="p">{</span>
+        <span class="n">n_val</span><span class="p">:</span> <span class="n">GaussianMixture</span><span class="p">(</span><span class="n">n_val</span><span class="p">,</span> <span class="n">covariance_type</span><span class="o">=</span><span class="s2">"spherical"</span><span class="p">,</span> <span class="n">random_state</span><span class="o">=</span><span class="n">random_seed</span><span class="p">)</span><span class="o">.</span><span class="n">fit</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+        <span class="k">for</span> <span class="n">n_val</span> <span class="ow">in</span> <span class="n">ncomp</span>
+    <span class="p">}</span>
+
+    <span class="k">if</span> <span class="n">scores</span> <span class="o">==</span> <span class="s2">"AIC"</span><span class="p">:</span>
+        <span class="n">abics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">aic</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+    <span class="k">elif</span> <span class="n">scores</span> <span class="o">==</span> <span class="s2">"BIC"</span><span class="p">:</span>
+        <span class="n">abics</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">array</span><span class="p">([</span><span class="n">model</span><span class="o">.</span><span class="n">bic</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="k">for</span> <span class="n">model</span> <span class="ow">in</span> <span class="n">models</span><span class="o">.</span><span class="n">values</span><span class="p">()])</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown scores: </span><span class="si">{</span><span class="n">scores</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Fix #119: at times, not all sub-layers may be populated by GaussianMixture.</span>
+    <span class="c1"># To avoid problems down the line, we shall boost the abics score of such cases to make sure</span>
+    <span class="c1"># they are NOT taken as the best model</span>
+    <span class="k">for</span> <span class="n">n_id</span><span class="p">,</span> <span class="n">n_val</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">ncomp</span><span class="p">):</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">n_eff</span> <span class="o">:=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">models</span><span class="p">[</span><span class="n">n_val</span><span class="p">]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vals</span><span class="p">))))</span> <span class="o">&lt;</span> <span class="n">n_val</span><span class="p">:</span>
+            <span class="n">logger</span><span class="o">.</span><span class="n">warning</span><span class="p">(</span>
+                <span class="s2">" </span><span class="si">%i</span><span class="s2"> out of </span><span class="si">%i</span><span class="s2"> sub-layers populated by GaussianMixture(</span><span class="si">%i</span><span class="s2">) - see #119. "</span>
+                <span class="s2">"Ruling out </span><span class="si">%i</span><span class="s2"> components as a possibility."</span><span class="p">,</span>
+                <span class="n">n_eff</span><span class="p">,</span>
+                <span class="n">n_val</span><span class="p">,</span>
+                <span class="n">n_val</span><span class="p">,</span>
+                <span class="n">n_val</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="n">abics</span><span class="p">[</span><span class="n">n_id</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="n">abics</span><span class="p">)</span> <span class="o">+</span> <span class="mi">1</span>  <span class="c1"># The larger the abics score, the worst the fit.</span>
+
+    <span class="k">return</span> <span class="n">models</span><span class="p">,</span> <span class="n">abics</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_merge_close_components</span><span class="p">(</span>
+    <span class="n">best_ids</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">best_ncomp</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">base_comp_heights</span><span class="p">:</span> <span class="nb">list</span><span class="p">,</span> <span class="n">min_sep</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Merges components whose base heights are closer together than min_sep."""</span>
+
+    <span class="n">comp_ids</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">argsort</span><span class="p">(</span><span class="n">base_comp_heights</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">ind</span><span class="p">,</span> <span class="n">delta</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">diff</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">base_comp_heights</span><span class="p">))):</span>
+        <span class="c1"># If the the delta is large enough, move on ...</span>
+        <span class="k">if</span> <span class="n">delta</span> <span class="o">&gt;=</span> <span class="n">min_sep</span><span class="p">:</span>
+            <span class="k">continue</span>
+
+        <span class="c1"># Else, I have two components that are "too close" from each other. Let's merge them by</span>
+        <span class="c1"># re-assigning the ids accordingly.</span>
+        <span class="n">best_ids</span><span class="p">[</span><span class="n">best_ids</span> <span class="o">==</span> <span class="n">comp_ids</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]]</span> <span class="o">=</span> <span class="n">comp_ids</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+        <span class="n">comp_ids</span><span class="p">[</span><span class="n">ind</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">comp_ids</span><span class="p">[</span><span class="n">ind</span><span class="p">]</span>
+
+        <span class="c1"># Decrease the number of valid ids</span>
+        <span class="n">best_ncomp</span> <span class="o">-=</span> <span class="mi">1</span>
+
+    <span class="c1"># Brief sanity check, to make sure I did not mess up</span>
+    <span class="k">assert</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">best_ids</span><span class="p">))</span> <span class="o">==</span> <span class="n">best_ncomp</span><span class="p">,</span> <span class="s2">"Something very bad happened here ..."</span>
+
+    <span class="k">return</span> <span class="n">best_ids</span><span class="p">,</span> <span class="n">best_ncomp</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_fit_and_select_best_gmm</span><span class="p">(</span><span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span> <span class="n">ncomp_max</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="n">scores</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Fits GMMs for 1 to ncomp_max components, and selects the best one."""</span>
+
+    <span class="n">ncomp</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">ncomp_max</span><span class="p">,</span> <span class="n">ncomp_max</span><span class="p">,</span> <span class="n">dtype</span><span class="o">=</span><span class="nb">int</span><span class="p">)</span>
+    <span class="n">models</span><span class="p">,</span> <span class="n">abics</span> <span class="o">=</span> <span class="n">_fit_gmms</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">ncomp</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">)</span>
+
+    <span class="n">best_model_ind</span> <span class="o">=</span> <span class="n">best_gmm</span><span class="p">(</span><span class="n">abics</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+    <span class="n">best_ncomp</span> <span class="o">=</span> <span class="n">ncomp</span><span class="p">[</span><span class="n">best_model_ind</span><span class="p">]</span>
+    <span class="n">best_ids</span> <span class="o">=</span> <span class="n">models</span><span class="p">[</span><span class="n">ncomp</span><span class="p">[</span><span class="n">best_model_ind</span><span class="p">]]</span><span class="o">.</span><span class="n">predict</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">" </span><span class="si">%s</span><span class="s2"> scores: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">abics</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">" best_model_ind (raw): </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span> <span class="n">best_model_ind</span><span class="p">)</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">" best_ncomp (raw): </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span> <span class="n">best_ncomp</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">best_ncomp</span><span class="p">,</span> <span class="n">best_ids</span><span class="p">,</span> <span class="n">abics</span>
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="ncomp_from_gmm">
+<a class="viewcode-back" href="../../autoapi/ampycloud/layer/index.html#ampycloud.layer.ncomp_from_gmm">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">ncomp_from_gmm</span><span class="p">(</span>
+    <span class="n">vals</span><span class="p">:</span> <span class="n">np</span><span class="o">.</span><span class="n">ndarray</span><span class="p">,</span>
+    <span class="n">ncomp_max</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span>
+    <span class="n">min_sep</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">int</span><span class="p">,</span> <span class="nb">float</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span><span class="p">,</span>
+    <span class="n">layer_base_params</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">int</span><span class="p">],</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">scores</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"BIC"</span><span class="p">,</span>
+    <span class="n">rescale_0_to_x</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">float</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">random_seed</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">42</span><span class="p">,</span>
+    <span class="o">**</span><span class="n">kwargs</span><span class="p">:</span> <span class="nb">dict</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Runs a Gaussian Mixture Model on 1-D data, to determine if it contains 1, 2, or 3</span>
+<span class="sd">    components.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        vals (ndarray): the data to process. If ndarray is 1-D, it will be reshaped to 2-D via</span>
+<span class="sd">            .reshape(-1, 1).</span>
+<span class="sd">        ncomp_max (int, optional): maximum number of Gaussian components to assess. Defaults to 3.</span>
+<span class="sd">        min_sep (int|float, optional): minimum separation, in data unit,</span>
+<span class="sd">            required between the mean location of two Gaussian components to consider them distinct.</span>
+<span class="sd">            Defaults to 0. This is used in complement to any parameters fed to best_gmm(), that will</span>
+<span class="sd">            first decide how many components looks "best", at which point these may get merged</span>
+<span class="sd">            depending on min_sep. I.e. min_sep does not lead to re-running the GMM, it only merges</span>
+<span class="sd">            the identified layers if required.</span>
+<span class="sd">        layer_base_params: Defined ampycloud parameters.</span>
+<span class="sd">        scores (str, optional): either 'BIC' or 'AIC', to use Baysian Information Criterion or</span>
+<span class="sd">            Akaike Information criterion scores.</span>
+<span class="sd">        rescale_0_to_x (float, optional): if set, vals will be rescaled between 0 and this value</span>
+<span class="sd">            before running the Gaussian Mixture Modelling. Defaults to None = no rescaling.</span>
+<span class="sd">        random_seed (int, optional): used to reset **temporarily** the value of</span>
+<span class="sd">            :py:func:`numpy.random.seed` to ensure repeatable results. Defaults to 42, because it</span>
+<span class="sd">            is the Answer to the Ultimate Question of Life, the Universe, and Everything.</span>
+<span class="sd">        **kwargs (dict, optional): these will be fed to `best_gmm()`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        int, ndarray, ndarray: number of (likely) components, array of component ids to which</span>
+<span class="sd">        each hit most likely belongs, array of AIC/BIC scores.</span>
+
+<span class="sd">    The default values lead to selecting the number of components with the smallest BIC values.</span>
+
+<span class="sd">    Note:</span>
+<span class="sd">        This function was inspired from the "1-D Gaussian Mixture Model" example from astroML:</span>
+<span class="sd">        `&lt;https://www.astroml.org/book_figures/chapter4/fig_GMM_1D.html&gt;`_</span>
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">layer_base_params</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">layer_base_params</span> <span class="o">=</span> <span class="p">{</span><span class="s2">"lookback_perc"</span><span class="p">:</span> <span class="mi">100</span><span class="p">,</span> <span class="s2">"height_perc"</span><span class="p">:</span> <span class="mi">5</span><span class="p">}</span>
+
+    <span class="c1"># If I get a 1-D array, deal with it.</span>
+    <span class="k">if</span> <span class="n">np</span><span class="o">.</span><span class="n">ndim</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">vals</span><span class="o">.</span><span class="n">reshape</span><span class="p">(</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+    <span class="c1"># Keep track of the original values</span>
+    <span class="n">vals_orig</span> <span class="o">=</span> <span class="n">copy</span><span class="o">.</span><span class="n">deepcopy</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span>
+
+    <span class="c1"># If all the points are the same, I should not bother doing anything ...</span>
+    <span class="n">n_unique</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">unique</span><span class="p">(</span><span class="n">vals_orig</span><span class="p">))</span>
+    <span class="k">if</span> <span class="n">n_unique</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"Skipping the GMM computation: all the values are the same."</span><span class="p">)</span>
+        <span class="k">return</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">vals_orig</span><span class="p">)),</span> <span class="kc">None</span><span class="p">)</span>
+    <span class="k">if</span> <span class="n">n_unique</span> <span class="o">&lt;</span> <span class="n">ncomp_max</span><span class="p">:</span>
+        <span class="n">ncomp_max</span> <span class="o">=</span> <span class="n">n_unique</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Restricting ncomp_max to the max number of individual values: </span><span class="si">{</span><span class="n">ncomp_max</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># Is min_sep sufficiently large, given the data resolution ? If not, we we end up with some</span>
+    <span class="c1"># over-layering.</span>
+    <span class="n">_check_min_sep_vs_resolution</span><span class="p">(</span><span class="n">vals_orig</span><span class="p">,</span> <span class="n">min_sep</span><span class="p">)</span>
+
+    <span class="c1"># Rescale the data if warranted</span>
+    <span class="k">if</span> <span class="n">rescale_0_to_x</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">vals</span> <span class="o">=</span> <span class="n">minmax_scale</span><span class="p">(</span><span class="n">vals</span><span class="p">)</span> <span class="o">*</span> <span class="n">rescale_0_to_x</span>
+
+    <span class="c1"># Fit GMMs for 1 to ncomp_max components, and select the best one</span>
+    <span class="n">best_ncomp</span><span class="p">,</span> <span class="n">best_ids</span><span class="p">,</span> <span class="n">abics</span> <span class="o">=</span> <span class="n">_fit_and_select_best_gmm</span><span class="p">(</span><span class="n">vals</span><span class="p">,</span> <span class="n">ncomp_max</span><span class="p">,</span> <span class="n">scores</span><span class="p">,</span> <span class="n">random_seed</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
+
+    <span class="c1"># If I found only one component, I can stop here</span>
+    <span class="k">if</span> <span class="n">best_ncomp</span> <span class="o">==</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">return</span> <span class="n">best_ncomp</span><span class="p">,</span> <span class="n">best_ids</span><span class="p">,</span> <span class="n">abics</span>
+
+    <span class="c1"># If I found more than one component, let's make sure that they are sufficiently far apart.</span>
+    <span class="c1"># First, let's compute the component base height</span>
+    <span class="n">base_comp_heights</span> <span class="o">=</span> <span class="p">[</span>
+        <span class="n">utils</span><span class="o">.</span><span class="n">calc_base_height</span><span class="p">(</span>
+            <span class="n">vals_orig</span><span class="p">[</span><span class="n">best_ids</span> <span class="o">==</span> <span class="n">i</span><span class="p">]</span><span class="o">.</span><span class="n">flatten</span><span class="p">(),</span> <span class="n">layer_base_params</span><span class="p">[</span><span class="s2">"lookback_perc"</span><span class="p">],</span> <span class="n">layer_base_params</span><span class="p">[</span><span class="s2">"height_perc"</span><span class="p">]</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">best_ncomp</span><span class="p">)</span>
+    <span class="p">]</span>
+
+    <span class="c1"># These may not be ordered, so let's keep track of the indices, and merge those that are not</span>
+    <span class="c1"># sufficiently far apart.</span>
+    <span class="n">best_ids</span><span class="p">,</span> <span class="n">best_ncomp</span> <span class="o">=</span> <span class="n">_merge_close_components</span><span class="p">(</span><span class="n">best_ids</span><span class="p">,</span> <span class="n">best_ncomp</span><span class="p">,</span> <span class="n">base_comp_heights</span><span class="p">,</span> <span class="n">min_sep</span><span class="p">)</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">debug</span><span class="p">(</span><span class="s2">"best_ncomp (final): </span><span class="si">%i</span><span class="s2">"</span><span class="p">,</span> <span class="n">best_ncomp</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">best_ncomp</span><span class="p">,</span> <span class="n">best_ids</span><span class="p">,</span> <span class="n">abics</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: dev-cfd3a6f</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

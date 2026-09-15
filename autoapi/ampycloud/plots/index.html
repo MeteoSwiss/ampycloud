@@ -1,0 +1,1219 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>ampycloud.plots &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../../_static/documentation_options.js?v=dc61d3bd"></script>
+    <script src="../../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'autoapi/ampycloud/plots/index';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = 'dev';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="ampycloud.plots.core" href="core/index.html" />
+    <link rel="prev" title="ampycloud.metarize" href="../metarize/index.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="dev" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="../../index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+    <button class="pst-navbar-icon sidebar-toggle secondary-toggle" aria-label="On this page">
+      <span class="fa-solid fa-outdent"></span>
+    </button>
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="../../index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+    <div class="sidebar-primary-items__start sidebar-primary__section">
+        <div class="sidebar-primary-item">
+<nav class="bd-docs-nav bd-links"
+     aria-label="Section Navigation">
+  <p class="bd-links__title" role="heading" aria-level="1">Section Navigation</p>
+  <div class="bd-toc-item navbar-nav"><ul class="current nav bd-sidenav">
+<li class="toctree-l1 current active has-children"><a class="reference internal" href="../index.html">ampycloud</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../ceilo_data/index.html">ampycloud.ceilo_data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../cluster/index.html">ampycloud.cluster</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../core/index.html">ampycloud.core</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../data/index.html">ampycloud.data</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../dynamic/index.html">ampycloud.dynamic</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../errors/index.html">ampycloud.errors</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../fluffer/index.html">ampycloud.fluffer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../hardcoded/index.html">ampycloud.hardcoded</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../icao/index.html">ampycloud.icao</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../layer/index.html">ampycloud.layer</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../logger/index.html">ampycloud.logger</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../metarize/index.html">ampycloud.metarize</a></li>
+<li class="toctree-l2 current active has-children"><a class="current reference internal" href="#">ampycloud.plots</a><details open="open"><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="core/index.html">ampycloud.plots.core</a></li>
+<li class="toctree-l3"><a class="reference internal" href="diagnostics/index.html">ampycloud.plots.diagnostics</a></li>
+<li class="toctree-l3"><a class="reference internal" href="hardcoded/index.html">ampycloud.plots.hardcoded</a></li>
+<li class="toctree-l3"><a class="reference internal" href="secondary/index.html">ampycloud.plots.secondary</a></li>
+<li class="toctree-l3"><a class="reference internal" href="tools/index.html">ampycloud.plots.tools</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../scaler/index.html">ampycloud.scaler</a></li>
+<li class="toctree-l2 has-children"><a class="reference internal" href="../utils/index.html">ampycloud.utils</a><details><summary><span class="toctree-toggle" role="presentation"><i class="fa-solid fa-chevron-down"></i></span></summary><ul>
+<li class="toctree-l3"><a class="reference internal" href="../utils/mocker/index.html">ampycloud.utils.mocker</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/performance/index.html">ampycloud.utils.performance</a></li>
+<li class="toctree-l3"><a class="reference internal" href="../utils/utils/index.html">ampycloud.utils.utils</a></li>
+</ul>
+</details></li>
+<li class="toctree-l2"><a class="reference internal" href="../version/index.html">ampycloud.version</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../wmo/index.html">ampycloud.wmo</a></li>
+</ul>
+</details></li>
+</ul>
+</div>
+</nav></div>
+    </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../../index.html" class="nav-link">API Reference</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.plots</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="module-ampycloud.plots">
+<span id="ampycloud-plots"></span><h1>ampycloud.plots<a class="headerlink" href="#module-ampycloud.plots" title="Link to this heading">#</a></h1>
+<p>Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</p>
+<p>Distributed under the terms of the 3-Clause BSD License.</p>
+<p>SPDX-License-Identifier: BSD-3-Clause</p>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Link to this heading">#</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="core/index.html">ampycloud.plots.core</a></li>
+<li class="toctree-l1"><a class="reference internal" href="diagnostics/index.html">ampycloud.plots.diagnostics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="hardcoded/index.html">ampycloud.plots.hardcoded</a></li>
+<li class="toctree-l1"><a class="reference internal" href="secondary/index.html">ampycloud.plots.secondary</a></li>
+<li class="toctree-l1"><a class="reference internal" href="tools/index.html">ampycloud.plots.tools</a></li>
+</ul>
+</div>
+</section>
+<section id="attributes">
+<h2>Attributes<a class="headerlink" href="#attributes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.plots.logger" title="ampycloud.plots.logger"><code class="xref py py-obj docutils literal notranslate"><span class="pre">logger</span></code></a></p></td>
+<td><p></p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="classes">
+<h2>Classes<a class="headerlink" href="#classes" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.plots.CeiloChunk" title="ampycloud.plots.CeiloChunk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">CeiloChunk</span></code></a></p></td>
+<td><p>Child class for timeseries of Ceilometers hits, referred to as data 'chunks'.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ampycloud.plots.DiagnosticPlot" title="ampycloud.plots.DiagnosticPlot"><code class="xref py py-obj docutils literal notranslate"><span class="pre">DiagnosticPlot</span></code></a></p></td>
+<td><p>Class used to create diagnostic plots.</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="functions">
+<h2>Functions<a class="headerlink" href="#functions" title="Link to this heading">#</a></h2>
+<div class="pst-scrollable-table-container"><table class="autosummary longtable table autosummary">
+<tbody>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.plots.log_func_call" title="ampycloud.plots.log_func_call"><code class="xref py py-obj docutils literal notranslate"><span class="pre">log_func_call</span></code></a>(→ Callable)</p></td>
+<td><p>Intended as a decorator to log function calls.</p></td>
+</tr>
+<tr class="row-even"><td><p><a class="reference internal" href="#ampycloud.plots.set_mplstyle" title="ampycloud.plots.set_mplstyle"><code class="xref py py-obj docutils literal notranslate"><span class="pre">set_mplstyle</span></code></a>(→ Callable)</p></td>
+<td><p>Intended to be used as a decorator around plotting functions, to set the plotting style.</p></td>
+</tr>
+<tr class="row-odd"><td><p><a class="reference internal" href="#ampycloud.plots.diagnostic" title="ampycloud.plots.diagnostic"><code class="xref py py-obj docutils literal notranslate"><span class="pre">diagnostic</span></code></a>(→ None)</p></td>
+<td><p>A function to create the ampycloud diagnostic plot all the way to the layering step</p></td>
+</tr>
+</tbody>
+</table>
+</div>
+</section>
+<section id="package-contents">
+<h2>Package Contents<a class="headerlink" href="#package-contents" title="Link to this heading">#</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">CeiloChunk</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">pandas.DataFrame</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">prms</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">geoloc</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_dt</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ampycloud/ceilo_data.html#CeiloChunk"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.CeiloChunk" title="Link to this definition">#</a></dt>
+<dd><p>Bases: <a class="reference internal" href="../data/index.html#ampycloud.data.AbstractChunk" title="ampycloud.data.AbstractChunk"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ampycloud.data.AbstractChunk</span></code></a>, <a class="reference internal" href="../metarize/index.html#ampycloud.metarize.MetarizeMixin" title="ampycloud.metarize.MetarizeMixin"><code class="xref py py-obj docutils literal notranslate"><span class="pre">ampycloud.metarize.MetarizeMixin</span></code></a></p>
+<p>Child class for timeseries of Ceilometers hits, referred to as data ‘chunks’.</p>
+<p>This class essentially gathers all the data and processing methods under one roof.</p>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Some of these methods are actually intended to be used in order … Some safety mechanisms
+have been put in place to ensure this actually happens, but still …</p>
+<p>You’ve been warned.</p>
+</div>
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.data_rescaled">
+<span class="sig-name descname"><span class="pre">data_rescaled</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">dt_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_mode</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">dt_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">height_kwargs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">dict</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">pandas.DataFrame</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/ceilo_data.html#CeiloChunk.data_rescaled"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.CeiloChunk.data_rescaled" title="Link to this definition">#</a></dt>
+<dd><p>Returns a copy of the data, rescaled according to the provided parameters.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>dt_mode</strong> (<em>str, optional</em>) – scaling rule for the time deltas. Defaults to None.</p></li>
+<li><p><strong>height_mode</strong> (<em>str, optional</em>) – scaling rule for the heights. Defaults to None.</p></li>
+<li><p><strong>dt_kwargs</strong> (<em>dict, optional</em>) – dict of arguments to be fed to the chosen dt scaling
+routine. Defaults to None.</p></li>
+<li><p><strong>height_kwargs</strong> (<em>dict, optinal</em>) – dict of arguments to be fed to the chosen height scaling
+routine. Defaults to None.</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><em>pd.DataFrame</em> – a copy of the data, rescaled.</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The kwargs approach was inspired by the reply from Jonathan Eunice on
+<a class="reference external" href="https://stackoverflow.com/questions/26534134">SO</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.ceilos">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">ceilos</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">list</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.ceilos" title="Link to this definition">#</a></dt>
+<dd><p>The list of all ceilometers included in the data chunk.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>list of str</em> – the list of ceilo names.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.max_hits_per_layer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">max_hits_per_layer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.max_hits_per_layer" title="Link to this definition">#</a></dt>
+<dd><p>The maximum number of ceilometer hits possible for a given layer, given the chunk data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em> – the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
+the <strong>average</strong> max number of hits per ceilometer per layer (remember: not all
+ceilometers may have the same number of timestamps over the chunk time period !).</p>
+</dd>
+</dl>
+<p>This is the total number of <strong>unique</strong> timesteps from all ceilometers considered.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>This value assumes that a layer can contain only 1 hit per ceilometer per timestep,
+i.e. 2 simultaneous hits from a given ceilometer can <strong>never</strong> belong to the same cloud
+layer.</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.find_slices">
+<span class="sig-name descname"><span class="pre">find_slices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/ceilo_data.html#CeiloChunk.find_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.CeiloChunk.find_slices" title="Link to this definition">#</a></dt>
+<dd><p>Identify general height slices in the chunk data. Intended as the first stage towards
+the identification of cloud layers.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The “parameters” of this function are all set in self.prms[‘SLICING_PRMS’].</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.find_groups">
+<span class="sig-name descname"><span class="pre">find_groups</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/ceilo_data.html#CeiloChunk.find_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.CeiloChunk.find_groups" title="Link to this definition">#</a></dt>
+<dd><p>Identifies groups of coherent hits accross overlapping slices. Intended as the second
+stage towards the identification of cloud layers.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The “parameters” of this function are all set in self.prms[‘GROUPING_PRMS’].</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.find_layers">
+<span class="sig-name descname"><span class="pre">find_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/ceilo_data.html#CeiloChunk.find_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.CeiloChunk.find_layers" title="Link to this definition">#</a></dt>
+<dd><p>Identifies individual layers from a list of groups, splitting these in 2 or 3
+(if warranted) <em>significant</em> cloud sub-layers. Intended as the third stage towards the
+identification of cloud layers.</p>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The “parameters” of this function are set in self.prms[‘LAYERING_PRMS’].</p>
+</div>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.n_slices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_slices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.n_slices" title="Link to this definition">#</a></dt>
+<dd><p>Returns the number of slices identified in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em> – the number of slices</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.slices">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">slices</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.slices" title="Link to this definition">#</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with information regarding the different slices
+identified by the slicing step.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.n_groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.n_groups" title="Link to this definition">#</a></dt>
+<dd><p>Returns the number of groups identified in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em> – the number of groups</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.groups">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">groups</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.groups" title="Link to this definition">#</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with information regarding the different groups
+identified by the grouping algorithm.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.n_layers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">n_layers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">None</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">int</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.n_layers" title="Link to this definition">#</a></dt>
+<dd><p>Returns the number of layers identified in the data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>int</em> – the number of layers.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.layers">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">layers</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">pandas.DataFrame</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.layers" title="Link to this definition">#</a></dt>
+<dd><p>Returns a <code class="xref py py-class docutils literal notranslate"><span class="pre">pandas.DataFrame</span></code> with information regarding the different layers
+identified by the layering algorithm.</p>
+</dd></dl>
+
+<dl class="py property">
+<dt class="sig sig-object py" id="ampycloud.plots.CeiloChunk.clouds_above_msa_buffer">
+<em class="property"><span class="pre">property</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clouds_above_msa_buffer</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">bool</span></em><a class="headerlink" href="#ampycloud.plots.CeiloChunk.clouds_above_msa_buffer" title="Link to this definition">#</a></dt>
+<dd><p>Returns whether a number of hits exceeding the threshold for 1 okta is detected above
+MSA + MSA_HIT_BUFFER.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>bool</em> – whether high clouds were detected.</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.log_func_call">
+<span class="sig-name descname"><span class="pre">log_func_call</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">logger</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">logging.Logger</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/logger.html#log_func_call"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.log_func_call" title="Link to this definition">#</a></dt>
+<dd><p>Intended as a decorator to log function calls.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>logger</strong> (<em>logging.Logger</em>) – a logger to feed info to.</p>
+</dd>
+</dl>
+<p>The first part of the message containing the function name is at the ‘INFO’ level.
+The second part of the message containing the argument values is at the ‘DEBUG’ level.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Adapted from the similar dvas function, which itself was adapted from
+<a class="reference external" href="https://stackoverflow.com/questions/218616">this post</a> on SO,
+in particular the reply from Kfir Eisner and Peter Mortensen.
+See also <a class="reference external" href="https://docs.python.org/3/library/inspect.html#inspect.BoundArguments">this</a>.</p>
+</div>
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">DiagnosticPlot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><span class="pre">ampycloud.ceilo_data.CeiloChunk</span></a></span></em><span class="sig-paren">)</span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot" title="Link to this definition">#</a></dt>
+<dd><p>Class used to create diagnostic plots.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.setup_fig">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">setup_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">tuple</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.setup_fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.setup_fig" title="Link to this definition">#</a></dt>
+<dd><p>Setups a diagnsotic plot figure.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>fig, axs</em> – the matplotlib figure, and the axes stored in a list.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.new_fig">
+<span class="sig-name descname"><span class="pre">new_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.new_fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.new_fig" title="Link to this definition">#</a></dt>
+<dd><p>Assign the fig attribute.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.show_hits_only">
+<span class="sig-name descname"><span class="pre">show_hits_only</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.show_hits_only"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.show_hits_only" title="Link to this definition">#</a></dt>
+<dd><p>Shows the ceilometer hits alone.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>show_ceilos</strong> (<em>bool, optional</em>) – whether to distinguish between the different ceilos,
+or not.</p>
+</dd>
+</dl>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>This will clear the plot first !</p>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.show_slices">
+<span class="sig-name descname"><span class="pre">show_slices</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.show_slices"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.show_slices" title="Link to this definition">#</a></dt>
+<dd><p>Show the slice data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.show_groups">
+<span class="sig-name descname"><span class="pre">show_groups</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">show_points</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.show_groups"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.show_groups" title="Link to this definition">#</a></dt>
+<dd><p>Show the group data.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>show_points</strong> (<em>bool, optional</em>) – whether to actually draw the groups, or simply add the
+info about them. Defaults to False.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.show_layers">
+<span class="sig-name descname"><span class="pre">show_layers</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.show_layers"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.show_layers" title="Link to this definition">#</a></dt>
+<dd><p>Show the layer data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_vv_legend">
+<span class="sig-name descname"><span class="pre">add_vv_legend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_vv_legend"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_vv_legend" title="Link to this definition">#</a></dt>
+<dd><p>Adds a legend about the VV hits.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_ceilo_count">
+<span class="sig-name descname"><span class="pre">add_ceilo_count</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_ceilo_count"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_ceilo_count" title="Link to this definition">#</a></dt>
+<dd><p>Adds the number of ceilometer present in the data.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_max_hits">
+<span class="sig-name descname"><span class="pre">add_max_hits</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_max_hits"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_max_hits" title="Link to this definition">#</a></dt>
+<dd><p>Adds the max_hit_per_layer info.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_geoloc_and_ref_dt">
+<span class="sig-name descname"><span class="pre">add_geoloc_and_ref_dt</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_geoloc_and_ref_dt"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_geoloc_and_ref_dt" title="Link to this definition">#</a></dt>
+<dd><p>Adds info about the chunk geoloc and reference date &amp; time.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_ref_metar">
+<span class="sig-name descname"><span class="pre">add_ref_metar</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_ref_metar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_ref_metar" title="Link to this definition">#</a></dt>
+<dd><p>Display a reference METAR, for example from human observers, different code, etc …</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>name</strong> (<em>str</em>) – the name of the reference, e.g. ‘Human Observers’.</p></li>
+<li><p><strong>metar</strong> (<em>str</em>) – the METAR code.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.add_metar">
+<span class="sig-name descname"><span class="pre">add_metar</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.add_metar"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.add_metar" title="Link to this definition">#</a></dt>
+<dd><p>Display the ampycloud METAR message.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.format_primary_axes">
+<span class="sig-name descname"><span class="pre">format_primary_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.format_primary_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.format_primary_axes" title="Link to this definition">#</a></dt>
+<dd><p>Deals with the main plot axes</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.format_slice_axes">
+<span class="sig-name descname"><span class="pre">format_slice_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.format_slice_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.format_slice_axes" title="Link to this definition">#</a></dt>
+<dd><p>Format the duplicate axes related to the slicing part.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.format_group_axes">
+<span class="sig-name descname"><span class="pre">format_group_axes</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.format_group_axes"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.format_group_axes" title="Link to this definition">#</a></dt>
+<dd><p>Format the duplicate axes related to the grouping part.</p>
+<p>TODO: add secondary axis for the height rescaling as well. See #91.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">fn_out</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.save" title="Link to this definition">#</a></dt>
+<dd><p>Saves the plot to file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>fn_out</strong> (<em>str</em>) – file name out.</p></li>
+<li><p><strong>fmts</strong> (<em>list or str, optional</em>) – list of formats to export the plot to.
+Defaults to None == ‘pdf’.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.show">
+<span class="sig-name descname"><span class="pre">show</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.show"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.show" title="Link to this definition">#</a></dt>
+<dd><p>Shows the plot</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="ampycloud.plots.DiagnosticPlot.close_fig">
+<span class="sig-name descname"><span class="pre">close_fig</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/diagnostics.html#DiagnosticPlot.close_fig"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.DiagnosticPlot.close_fig" title="Link to this definition">#</a></dt>
+<dd><p>Close the figure to free the memory.</p>
+<p>If you need to re-create them, start by generating the figure with the <cite>.new_fig()</cite> method.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.set_mplstyle">
+<span class="sig-name descname"><span class="pre">set_mplstyle</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">Callable</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Callable</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/tools.html#set_mplstyle"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.set_mplstyle" title="Link to this definition">#</a></dt>
+<dd><p>Intended to be used as a decorator around plotting functions, to set the plotting style.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><em>Callable</em> – the decorator.</p>
+</dd>
+</dl>
+<p>By defaults, the <code class="docutils literal notranslate"><span class="pre">base</span></code> ampycloud style will be enabled. Motivated users can tweak it further
+by setting the <code class="docutils literal notranslate"><span class="pre">MPL_STYLE</span></code> entry of <a class="reference internal" href="../dynamic/index.html#ampycloud.dynamic.AMPYCLOUD_PRMS" title="ampycloud.dynamic.AMPYCLOUD_PRMS"><code class="xref py py-data docutils literal notranslate"><span class="pre">ampycloud.dynamic.AMPYCLOUD_PRMS</span></code></a> to:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">latex</span></code>: to enable the use of a system-wide LaTeX engine, and the Computer Modern font.</p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metsymb</span></code>: to enable the use of a system-wide LaTeX engine, the Computer Modern font,
+and the <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> LaTeX package to display proper okta symbols.</p></li>
+</ul>
+</div></blockquote>
+<div class="admonition important">
+<p class="admonition-title">Important</p>
+<p>The <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> LaTeX package is NOT included with ampycloud, and must be installed
+separately. It is available at: <a class="github reference external" href="https://github.com/MeteoSwiss/metsymb">MeteoSwiss/metsymb</a></p>
+</div>
+<div class="admonition caution">
+<p class="admonition-title">Caution</p>
+<p>Specifying the <code class="docutils literal notranslate"><span class="pre">latex</span></code> or <code class="docutils literal notranslate"><span class="pre">metsymb</span></code> style requires a working system-wide LaTeX
+installation. In particular, the following LaTeX packages must be installed:</p>
+<blockquote>
+<div><ul class="simple">
+<li><p><code class="docutils literal notranslate"><span class="pre">cmbright</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">amsmath</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">amssymb</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">relsize</span></code></p></li>
+<li><p><code class="docutils literal notranslate"><span class="pre">metsymb</span></code> (only if the <code class="docutils literal notranslate"><span class="pre">MPL_STYLE</span></code> entry of
+<a class="reference internal" href="../dynamic/index.html#ampycloud.dynamic.AMPYCLOUD_PRMS" title="ampycloud.dynamic.AMPYCLOUD_PRMS"><code class="xref py py-data docutils literal notranslate"><span class="pre">ampycloud.dynamic.AMPYCLOUD_PRMS</span></code></a> was set to <code class="docutils literal notranslate"><span class="pre">'metsymb'</span></code>)</p></li>
+</ul>
+</div></blockquote>
+</div>
+<div class="admonition-todo admonition" id="id1">
+<p class="admonition-title">Todo</p>
+<p>See <a class="github reference external" href="https://github.com/MeteoSwiss/ampycloud/issues/18">MeteoSwiss/ampycloud#18</a></p>
+</div>
+</dd></dl>
+
+<dl class="py data">
+<dt class="sig sig-object py" id="ampycloud.plots.logger">
+<span class="sig-name descname"><span class="pre">logger</span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/core.html#logger"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.logger" title="Link to this definition">#</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="ampycloud.plots.diagnostic">
+<span class="sig-name descname"><span class="pre">diagnostic</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">chunk</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="../ceilo_data/index.html#ampycloud.ceilo_data.CeiloChunk" title="ampycloud.ceilo_data.CeiloChunk"><span class="pre">ampycloud.ceilo_data.CeiloChunk</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">upto</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'layers'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_ceilos</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">ref_metar_origin</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">bool</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_stem</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">save_fmts</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><span class="pre">list</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">str</span><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><span class="pre">None</span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="reference internal" href="../../../_modules/ampycloud/plots/core.html#diagnostic"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#ampycloud.plots.diagnostic" title="Link to this definition">#</a></dt>
+<dd><p>A function to create the ampycloud diagnostic plot all the way to the layering step
+(included). This is the ultimate ampycloud plot that shows it all (or not - you choose !).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>chunk</strong> (<em>CeiloChunk</em>) – the CeiloChunk to look at.</p></li>
+<li><p><strong>upto</strong> (<em>str, optional</em>) – up to which algorithm steps to plot. Can be one of
+[‘raw_data’, ‘slices’, ‘groups’, ‘layers’]. Defaults to ‘layers’.</p></li>
+<li><p><strong>show_ceilos</strong> (<em>bool, optional</em>) – if True, hits will be colored as a function of the
+responsible ceilometer. Defaults to False. No effects unless <code class="docutils literal notranslate"><span class="pre">upto='raw</span> <span class="pre">data'</span></code>.</p></li>
+<li><p><strong>ref_metar</strong> (<em>str, optional</em>) – reference METAR message. Defaults to None.</p></li>
+<li><p><strong>ref_metar_origin</strong> (<em>str, optional</em>) – name of the source of the reference METAR set with
+ref_metar. Defaults to None.</p></li>
+<li><p><strong>show</strong> (<em>bool, optional</em>) – will show the plot on the screen if True. Defaults to False.</p></li>
+<li><p><strong>save_stem</strong> (<em>str, optional</em>) – if set, will save the plot with this stem (which can include a
+path as well). Deafults to None.</p></li>
+<li><p><strong>save_fmts</strong> (<em>list|str, optional</em>) – a list of file formats to export the plot to. Defaults to
+None = [‘pdf’].</p></li>
+</ul>
+</dd>
+</dl>
+<p>Example:</p>
+<div class="highlight-python3 notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">mocker</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ampycloud.plots</span><span class="w"> </span><span class="kn">import</span> <span class="n">diagnostic</span>
+
+<span class="c1"># First create some mock data for the example</span>
+<span class="n">mock_data</span> <span class="o">=</span> <span class="n">mocker</span><span class="o">.</span><span class="n">canonical_demo_data</span><span class="p">()</span>
+
+<span class="c1"># Then run the ampycloud algorithm on it</span>
+<span class="n">chunk</span> <span class="o">=</span> <span class="n">ampycloud</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s1">'Mock data'</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">())</span>
+
+<span class="c1"># Create the full ampycloud diagnostic plot</span>
+<span class="n">diagnostic</span><span class="p">(</span><span class="n">chunk</span><span class="p">,</span> <span class="n">upto</span><span class="o">=</span><span class="s1">'layers'</span><span class="p">,</span> <span class="n">show</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+</section>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="../metarize/index.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">ampycloud.metarize</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="core/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">ampycloud.plots.core</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+                <dialog id="pst-secondary-sidebar-modal"></dialog>
+                <div id="pst-secondary-sidebar" class="bd-sidebar-secondary bd-toc"><div class="sidebar-secondary-items sidebar-secondary__inner">
+
+
+  <div class="sidebar-secondary-item">
+<div
+    id="pst-page-navigation-heading-2"
+    class="page-toc tocsection onthispage">
+    <i class="fa-solid fa-list"></i> On this page
+  </div>
+  <nav class="bd-toc-nav page-toc" aria-labelledby="pst-page-navigation-heading-2">
+    <ul class="visible nav section-nav flex-column">
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#submodules">Submodules</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#attributes">Attributes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#classes">Classes</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#functions">Functions</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#package-contents">Package Contents</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk"><code class="docutils literal notranslate"><span class="pre">CeiloChunk</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.data_rescaled"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.data_rescaled()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.ceilos"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.ceilos</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.max_hits_per_layer"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.max_hits_per_layer</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.find_slices"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.find_slices()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.find_groups"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.find_groups()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.find_layers"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.find_layers()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.n_slices"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.n_slices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.slices"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.slices</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.n_groups"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.n_groups</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.groups"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.groups</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.n_layers"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.n_layers</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.layers"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.layers</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.CeiloChunk.clouds_above_msa_buffer"><code class="docutils literal notranslate"><span class="pre">CeiloChunk.clouds_above_msa_buffer</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.log_func_call"><code class="docutils literal notranslate"><span class="pre">log_func_call()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot</span></code></a><ul class="nav section-nav flex-column">
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.setup_fig"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.setup_fig()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.new_fig"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.new_fig()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.show_hits_only"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.show_hits_only()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.show_slices"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.show_slices()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.show_groups"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.show_groups()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.show_layers"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.show_layers()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_vv_legend"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_vv_legend()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_ceilo_count"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_ceilo_count()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_max_hits"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_max_hits()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_geoloc_and_ref_dt"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_geoloc_and_ref_dt()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_ref_metar"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_ref_metar()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.add_metar"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.add_metar()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.format_primary_axes"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.format_primary_axes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.format_slice_axes"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.format_slice_axes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.format_group_axes"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.format_group_axes()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.save"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.save()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.show"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.show()</span></code></a></li>
+<li class="toc-h4 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.DiagnosticPlot.close_fig"><code class="docutils literal notranslate"><span class="pre">DiagnosticPlot.close_fig()</span></code></a></li>
+</ul>
+</li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.set_mplstyle"><code class="docutils literal notranslate"><span class="pre">set_mplstyle()</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.logger"><code class="docutils literal notranslate"><span class="pre">logger</span></code></a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#ampycloud.plots.diagnostic"><code class="docutils literal notranslate"><span class="pre">diagnostic()</span></code></a></li>
+</ul>
+</li>
+</ul>
+  </nav></div>
+
+</div></div>
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: dev-cfd3a6f</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>
