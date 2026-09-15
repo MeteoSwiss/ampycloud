@@ -1,0 +1,192 @@
+ampycloud.ceilo_data
+====================
+
+.. py:module:: ampycloud.ceilo_data
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: the CeiloChunk data class
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.ceilo_data.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ampycloud.ceilo_data.CeiloChunk
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: CeiloChunk(data: pandas.DataFrame, prms: Optional[dict] = None, geoloc: Optional[str] = None, ref_dt: Optional[str] = None)
+
+   Bases: :py:obj:`ampycloud.data.AbstractChunk`, :py:obj:`ampycloud.metarize.MetarizeMixin`
+
+
+   Child class for timeseries of Ceilometers hits, referred to as data 'chunks'.
+
+   This class essentially gathers all the data and processing methods under one roof.
+
+   .. warning::
+
+      Some of these methods are actually intended to be used in order ... Some safety mechanisms
+      have been put in place to ensure this actually happens, but still ...
+      
+      You've been warned.
+
+
+   .. py:method:: data_rescaled(dt_mode: Optional[str] = None, height_mode: Optional[str] = None, dt_kwargs: Optional[dict] = None, height_kwargs: Optional[dict] = None) -> pandas.DataFrame
+
+      Returns a copy of the data, rescaled according to the provided parameters.
+
+      :Parameters: * **dt_mode** (*str, optional*) -- scaling rule for the time deltas. Defaults to None.
+                   * **height_mode** (*str, optional*) -- scaling rule for the heights. Defaults to None.
+                   * **dt_kwargs** (*dict, optional*) -- dict of arguments to be fed to the chosen dt scaling
+                     routine. Defaults to None.
+                   * **height_kwargs** (*dict, optinal*) -- dict of arguments to be fed to the chosen height scaling
+                     routine. Defaults to None.
+
+      :returns: *pd.DataFrame* -- a copy of the data, rescaled.
+
+      .. note::
+
+         The kwargs approach was inspired by the reply from Jonathan Eunice on
+         `SO <https://stackoverflow.com/questions/26534134>`_.
+
+
+
+   .. py:property:: ceilos
+      :type: list
+
+
+      The list of all ceilometers included in the data chunk.
+
+      :returns: *list of str* -- the list of ceilo names.
+
+
+   .. py:property:: max_hits_per_layer
+      :type: int
+
+
+      The maximum number of ceilometer hits possible for a given layer, given the chunk data.
+
+      :returns: *int* -- the max number of ceilometer hit for a layer. Divide by len(self.ceilos) to get
+                the **average** max number of hits per ceilometer per layer (remember: not all
+                ceilometers may have the same number of timestamps over the chunk time period !).
+
+      This is the total number of **unique** timesteps from all ceilometers considered.
+
+      .. note::
+
+         This value assumes that a layer can contain only 1 hit per ceilometer per timestep,
+         i.e. 2 simultaneous hits from a given ceilometer can **never** belong to the same cloud
+         layer.
+
+
+   .. py:method:: find_slices() -> None
+
+      Identify general height slices in the chunk data. Intended as the first stage towards
+      the identification of cloud layers.
+
+      .. important:: The "parameters" of this function are all set in self.prms['SLICING_PRMS'].
+
+
+
+   .. py:method:: find_groups() -> None
+
+      Identifies groups of coherent hits accross overlapping slices. Intended as the second
+      stage towards the identification of cloud layers.
+
+      .. important:: The "parameters" of this function are all set in self.prms['GROUPING_PRMS'].
+
+
+
+   .. py:method:: find_layers() -> None
+
+      Identifies individual layers from a list of groups, splitting these in 2 or 3
+      (if warranted) *significant* cloud sub-layers. Intended as the third stage towards the
+      identification of cloud layers.
+
+      .. important:: The "parameters" of this function are set in self.prms['LAYERING_PRMS'].
+
+
+
+   .. py:property:: n_slices
+      :type: Union[None, int]
+
+
+      Returns the number of slices identified in the data.
+
+      :returns: *int* -- the number of slices
+
+
+   .. py:property:: slices
+      :type: pandas.DataFrame
+
+
+      Returns a :py:class:`pandas.DataFrame` with information regarding the different slices
+      identified by the slicing step.
+
+
+   .. py:property:: n_groups
+      :type: Union[None, int]
+
+
+      Returns the number of groups identified in the data.
+
+      :returns: *int* -- the number of groups
+
+
+   .. py:property:: groups
+      :type: pandas.DataFrame
+
+
+      Returns a :py:class:`pandas.DataFrame` with information regarding the different groups
+      identified by the grouping algorithm.
+
+
+   .. py:property:: n_layers
+      :type: Union[None, int]
+
+
+      Returns the number of layers identified in the data.
+
+      :returns: *int* -- the number of layers.
+
+
+   .. py:property:: layers
+      :type: pandas.DataFrame
+
+
+      Returns a :py:class:`pandas.DataFrame` with information regarding the different layers
+      identified by the layering algorithm.
+
+
+   .. py:property:: clouds_above_msa_buffer
+      :type: bool
+
+
+      Returns whether a number of hits exceeding the threshold for 1 okta is detected above
+      MSA + MSA_HIT_BUFFER.
+
+      :returns: *bool* -- whether high clouds were detected.
+
+

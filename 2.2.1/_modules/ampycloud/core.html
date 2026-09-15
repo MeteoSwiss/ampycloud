@@ -1,0 +1,961 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="../../" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>ampycloud.core &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="../../_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="../../_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="../../_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="../../_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="../../_static/documentation_options.js?v=86a99c50"></script>
+    <script src="../../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = '_modules/ampycloud/core';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '2.2.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.2.1" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="../../search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="../../index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="../../_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+        
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../changelog.html">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="../../autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="../../index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    
+    <li class="breadcrumb-item"><a href="../index.html" class="nav-link">Module code</a></li>
+    
+    
+    <li class="breadcrumb-item"><a href="../ampycloud.html" class="nav-link">ampycloud</a></li>
+    
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">ampycloud.core</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <h1>Source code for ampycloud.core</h1><div class="highlight"><pre>
+<span></span><span class="sd">"""</span>
+<span class="sd">Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.</span>
+
+<span class="sd">Distributed under the terms of the BSD-3-Clause license.</span>
+
+<span class="sd">SPDX-License-Identifier: BSD-3-Clause</span>
+
+<span class="sd">Module contains: core ampycloud routines. All fcts meant to be used by users directly are here.</span>
+
+<span class="sd">"""</span>
+
+<span class="c1"># Import from Python</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">warnings</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">logging</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">Union</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">pathlib</span><span class="w"> </span><span class="kn">import</span> <span class="n">Path</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">shutil</span><span class="w"> </span><span class="kn">import</span> <span class="n">copy</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">datetime</span><span class="w"> </span><span class="kn">import</span> <span class="n">datetime</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">pandas</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">pd</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">ruamel.yaml</span><span class="w"> </span><span class="kn">import</span> <span class="n">YAML</span>
+
+<span class="c1"># Import from ampycloud</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.errors</span><span class="w"> </span><span class="kn">import</span> <span class="n">AmpycloudError</span><span class="p">,</span> <span class="n">AmpycloudWarning</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.logger</span><span class="w"> </span><span class="kn">import</span> <span class="n">log_func_call</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils.mocker</span><span class="w"> </span><span class="kn">import</span> <span class="n">canonical_demo_data</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.utils</span><span class="w"> </span><span class="kn">import</span> <span class="n">utils</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.ceilo_data</span><span class="w"> </span><span class="kn">import</span> <span class="n">CeiloChunk</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.</span><span class="w"> </span><span class="kn">import</span> <span class="n">dynamic</span>
+
+<span class="c1"># Instantiate the module logger</span>
+<div class="viewcode-block" id="logger">
+<a class="viewcode-back" href="../../autoapi/ampycloud/core/index.html#ampycloud.core.logger">[docs]</a>
+<span class="n">logger</span> <span class="o">=</span> <span class="n">logging</span><span class="o">.</span><span class="n">getLogger</span><span class="p">(</span><span class="vm">__name__</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="copy_prm_file">
+<a class="viewcode-back" href="../../autoapi/ampycloud/index.html#ampycloud.core.copy_prm_file">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">copy_prm_file</span><span class="p">(</span><span class="n">save_loc</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"./"</span><span class="p">,</span> <span class="n">which</span><span class="p">:</span> <span class="nb">str</span> <span class="o">=</span> <span class="s2">"defaults"</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Create a local copy of a specific ampycloud parameter file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        save_loc (str, optional): location to save the YML file to. Defaults to './'.</span>
+<span class="sd">        which (str, optional): name of the parameter file to copy. Defaults to 'defaults'.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            import ampycloud</span>
+<span class="sd">            ampycloud.copy_prm_file(save_loc='.', which='default')</span>
+
+<span class="sd">    .. note::</span>
+
+<span class="sd">        There is also a high-level entry point that allows users to get a local copy of the</span>
+<span class="sd">        ampycloud parameter files directly from the command line:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            ampycloud_copy_prm_file -which=default</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># Let's take a look at the path I was given</span>
+    <span class="n">given_path</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">save_loc</span><span class="p">)</span>
+    <span class="c1"># I won't create stuff for the users. ampycloud is not that nice.</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">given_path</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"save_loc does not appear to exist !"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">given_path</span><span class="o">.</span><span class="n">is_dir</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="s2">"save_loc does not appear to be a directory !"</span><span class="p">)</span>
+
+    <span class="c1"># Next, let's look at all the parameter files available ...</span>
+    <span class="n">ref_loc</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="vm">__file__</span><span class="p">)</span><span class="o">.</span><span class="n">resolve</span><span class="p">()</span><span class="o">.</span><span class="n">parent</span> <span class="o">/</span> <span class="s2">"prms"</span>
+    <span class="n">ref_files</span> <span class="o">=</span> <span class="p">[</span><span class="n">item</span><span class="o">.</span><span class="n">name</span> <span class="k">for</span> <span class="n">item</span> <span class="ow">in</span> <span class="n">ref_loc</span><span class="o">.</span><span class="n">glob</span><span class="p">(</span><span class="s2">"*.yml"</span><span class="p">)]</span>
+
+    <span class="c1"># Log this info, in case users want to know which ones exist.</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Available parameter files: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">ref_files</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">fname</span> <span class="o">:=</span> <span class="sa">f</span><span class="s2">"ampycloud_</span><span class="si">{</span><span class="n">which</span><span class="si">}</span><span class="s2">_prms.yml"</span><span class="p">)</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">ref_files</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Parameter file </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> not found."</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="p">(</span><span class="n">given_path</span> <span class="o">/</span> <span class="n">fname</span><span class="p">)</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"File </span><span class="si">{</span><span class="n">fname</span><span class="si">}</span><span class="s2"> already exists at save_loc=</span><span class="si">{</span><span class="n">given_path</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+    <span class="c1"># All looks good, let's copy the file</span>
+    <span class="n">copy</span><span class="p">(</span><span class="n">ref_loc</span> <span class="o">/</span> <span class="n">fname</span><span class="p">,</span> <span class="n">given_path</span> <span class="o">/</span> <span class="n">fname</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="set_prms">
+<a class="viewcode-back" href="../../autoapi/ampycloud/index.html#ampycloud.core.set_prms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">set_prms</span><span class="p">(</span><span class="n">pth</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">Path</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Sets the dynamic=scientific ampycloud parameters from a suitable YAML file.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        pth (str|Path): path+filename to a YAML parameter file for ampycloud.</span>
+
+<span class="sd">    .. note::</span>
+<span class="sd">        It is recommended to first get a copy of the default ampycloud parameter file</span>
+<span class="sd">        using :py:func:`.copy_prm_file`, and edit its content as required.</span>
+
+<span class="sd">        Doing so should ensure full compliance with the default structure of</span>
+<span class="sd">        :py:data:`.dynamic.AMPYCLOUD_PRMS`.</span>
+
+<span class="sd">    .. warning::</span>
+<span class="sd">        This is NOT a thread-safe way of setting parameters. If you plan on running concurrent</span>
+<span class="sd">        ampycloud evaluations, parameters should be fed directly to :py:func:`.run`.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            import ampycloud</span>
+<span class="sd">            ampycloud.copy_prm_file(save_loc='.', which='default')</span>
+<span class="sd">            ampycloud.set_prms('./ampycloud_default_prms.yml')</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="nb">str</span><span class="p">):</span>
+        <span class="c1"># Be nice and try to convert this to a Path</span>
+        <span class="n">pth</span> <span class="o">=</span> <span class="n">Path</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span>
+
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">pth</span><span class="p">,</span> <span class="n">Path</span><span class="p">):</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"pth should of type str or pathlib.Path, not </span><span class="si">{</span><span class="nb">type</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pth</span><span class="o">.</span><span class="n">exists</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"I cannot find </span><span class="si">{</span><span class="n">pth</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">pth</span><span class="o">.</span><span class="n">is_file</span><span class="p">():</span>
+        <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"</span><span class="si">{</span><span class="n">pth</span><span class="si">}</span><span class="s2"> is not a file !"</span><span class="p">)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">suf</span> <span class="o">:=</span> <span class="n">pth</span><span class="o">.</span><span class="n">suffix</span><span class="p">)</span> <span class="o">!=</span> <span class="s2">".yml"</span><span class="p">:</span>
+        <span class="n">warnings</span><span class="o">.</span><span class="n">warn</span><span class="p">(</span>
+            <span class="sa">f</span><span class="s2">"Hum ... I was expecting a .yml file, but got </span><span class="si">{</span><span class="n">suf</span><span class="si">}</span><span class="s2"> instead."</span> <span class="o">+</span> <span class="s2">" Are you sure this is ok ?"</span><span class="p">,</span>
+            <span class="n">AmpycloudWarning</span><span class="p">,</span>
+        <span class="p">)</span>
+
+    <span class="c1"># Extract all the parameters</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Opening (user) parameter file: </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">pth</span><span class="p">)</span>
+    <span class="n">yaml</span> <span class="o">=</span> <span class="n">YAML</span><span class="p">(</span><span class="n">typ</span><span class="o">=</span><span class="s2">"safe"</span><span class="p">)</span>
+    <span class="n">user_prms</span> <span class="o">=</span> <span class="n">yaml</span><span class="o">.</span><span class="n">load</span><span class="p">(</span><span class="n">pth</span><span class="p">)</span>
+
+    <span class="c1"># Now, assign the new prms</span>
+    <span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span> <span class="o">=</span> <span class="n">utils</span><span class="o">.</span><span class="n">adjust_nested_dict</span><span class="p">(</span><span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="p">,</span> <span class="n">user_prms</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="reset_prms">
+<a class="viewcode-back" href="../../running.html#ampycloud.core.reset_prms">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">reset_prms</span><span class="p">(</span><span class="n">which</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">list</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="kc">None</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Reset the ampycloud dynamic=scientific parameters to their default values.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        which (str|list, optional): (list of) names of parameters to reset specifically.</span>
+<span class="sd">            If not set (by default), all parameters will be reset.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            import ampycloud</span>
+<span class="sd">            from ampycloud import dynamic</span>
+
+<span class="sd">            # Change a parameter</span>
+<span class="sd">            dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'] = 0</span>
+<span class="sd">            # Reset them</span>
+<span class="sd">            ampycloud.reset_prms()</span>
+<span class="sd">            print('Back to the default value:', dynamic.AMPYCLOUD_PRMS['MAX_HOLES_OKTA8'])</span>
+
+<span class="sd">    """</span>
+
+    <span class="k">if</span> <span class="n">which</span> <span class="ow">is</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span> <span class="o">=</span> <span class="n">dynamic</span><span class="o">.</span><span class="n">get_default_prms</span><span class="p">()</span>
+        <span class="k">return</span>
+
+    <span class="c1"># Ok, reset the parameters one at a time</span>
+    <span class="n">default_prms</span> <span class="o">=</span> <span class="n">dynamic</span><span class="o">.</span><span class="n">get_default_prms</span><span class="p">()</span>
+
+    <span class="c1"># Clean up which</span>
+    <span class="n">which</span> <span class="o">=</span> <span class="p">[</span><span class="n">which</span><span class="p">]</span> <span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">which</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="k">else</span> <span class="n">which</span>
+
+    <span class="k">for</span> <span class="n">prm</span> <span class="ow">in</span> <span class="n">which</span><span class="p">:</span>
+        <span class="k">if</span> <span class="n">prm</span> <span class="ow">not</span> <span class="ow">in</span> <span class="n">default_prms</span><span class="o">.</span><span class="n">keys</span><span class="p">():</span>
+            <span class="k">raise</span> <span class="n">AmpycloudError</span><span class="p">(</span><span class="sa">f</span><span class="s2">"Unknown parameter name: </span><span class="si">{</span><span class="n">prm</span><span class="si">}</span><span class="s2">"</span><span class="p">)</span>
+
+        <span class="n">dynamic</span><span class="o">.</span><span class="n">AMPYCLOUD_PRMS</span><span class="p">[</span><span class="n">prm</span><span class="p">]</span> <span class="o">=</span> <span class="n">default_prms</span><span class="p">[</span><span class="n">prm</span><span class="p">]</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="run">
+<a class="viewcode-back" href="../../running.html#ampycloud.core.run">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">run</span><span class="p">(</span>
+    <span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">,</span>
+    <span class="n">prms</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">dict</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">geoloc</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+    <span class="n">ref_dt</span><span class="p">:</span> <span class="n">Union</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="n">datetime</span><span class="p">,</span> <span class="kc">None</span><span class="p">]</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span>
+<span class="p">)</span> <span class="o">-&gt;</span> <span class="n">CeiloChunk</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Runs the ampycloud algorithm on a given dataset.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.</span>
+<span class="sd">        prms (dict, optional): a (nested) dict of parameters to adjust for this specific run.</span>
+<span class="sd">            This is meant as a thread-safe way of adjusting parameters for different runs. Any</span>
+<span class="sd">            unspecified parameter will be taken from :py:data:`dynamic.AMPYCLOUD_PRMS` at init time.</span>
+<span class="sd">        geoloc (str, optional): the name of the geographic location where the data was taken.</span>
+<span class="sd">            Defaults to None.</span>
+<span class="sd">        ref_dt (str|datetime.datetime, optional): reference date and time of the observations,</span>
+<span class="sd">            corresponding to Delta t = 0. Defaults to None. Note that if a datetime instance</span>
+<span class="sd">            is specified, it will be turned almost immediately to str via ``str(ref_dt)``.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :py:class:`.ceilo_data.CeiloChunk`: the data chunk with all the processing outcome bundled</span>
+<span class="sd">        cleanly.</span>
+
+<span class="sd">    All that is required to run the ampycloud algorithm is a properly</span>
+<span class="sd">    `formatted dataset &lt;https://meteoswiss.github.io/ampycloud/running.html#the-input-data&gt;`__.</span>
+<span class="sd">    At the moment, specifying ``geoloc`` and ``ref_dt`` serves no purpose other than to enhance</span>
+<span class="sd">    plots (should they be created). There is no special requirements for ``geoloc`` and ``ref_dt``:</span>
+<span class="sd">    as long as they are strings, you can set them to whatever you please.</span>
+
+<span class="sd">    .. important ::</span>
+<span class="sd">        ampycloud treats Vertical Visibility hits no differently than any other hit. Hence, it is up</span>
+<span class="sd">        to the user to adjust the Vertical Visibility hit height (and/or ignore some of them, for</span>
+<span class="sd">        example) prior to feeding them to ampycloud, so that it can be used as a cloud hit.</span>
+
+<span class="sd">    .. important::</span>
+<span class="sd">        ampycloud uses the ``dt`` and ``ceilo`` values to decide if two hits are simultaenous, or</span>
+<span class="sd">        not. It is thus important that the values of ``dt`` be sufficiently precise to distinguish</span>
+<span class="sd">        between different measurements. Essentially, each *measurement* (which may be comprised of</span>
+<span class="sd">        several hits) should be associated to a unique ``(ceilo; dt)`` set of values. Failure to do</span>
+<span class="sd">        so may result in incorrect estimations of the cloud layer densities. See</span>
+<span class="sd">        :py:attr:`.ceilo_data.CeiloChunk.max_hits_per_layer` for more details.</span>
+
+
+<span class="sd">    All the scientific parameters of the algorithm are set dynamically in the :py:mod:`.dynamic`</span>
+<span class="sd">    module. From within a Python session all these parameters can be changed directly. For example,</span>
+<span class="sd">    to change the Minimum Sector Altitude (to be specified in ft aal), one would do:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        from ampycloud import dynamic</span>
+<span class="sd">        dynamic.AMPYCLOUD_PRMS['MSA'] = 5000</span>
+
+<span class="sd">    Alternatively, the scientific parameters can also be defined and fed to ampycloud via a YAML</span>
+<span class="sd">    file. See :py:func:`.set_prms()` for details.</span>
+
+<span class="sd">    Caution:</span>
+<span class="sd">        By default, the function :py:func:`.run` will use the parameter values set in</span>
+<span class="sd">        :py:data:`dynamic.AMPYCLOUD_PRMS`, which is not thread safe. Users interested to run</span>
+<span class="sd">        **multiple concurrent ampycloud calculations with distinct sets of parameters within the</span>
+<span class="sd">        same Python session** are thus urged to feed the required parameters directly to</span>
+<span class="sd">        :py:func:`.run()` via the ``prms`` keyword argument, which expects a (nested) dictionnary</span>
+<span class="sd">        with keys compatible with :py:data:`dynamic.AMPYCLOUD_PRMS`.</span>
+
+<span class="sd">        Examples:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            # Define only the parameters that are non-default. To adjust the MSA, use:</span>
+<span class="sd">            prms = {'MSA': 10000}</span>
+
+<span class="sd">            # Or to adjust some other algorithm parameters:</span>
+<span class="sd">            prms = {'LAYERING_PRMS':{'gmm_kwargs':{'scores': 'BIC'}, 'min_prob': 1.0}}</span>
+
+
+<span class="sd">    The :py:class:`.ceilo_data.CeiloChunk` instance returned by this function contains all the information</span>
+<span class="sd">    associated to the ampycloud algorithm, inclduing the raw data and slicing/grouping/layering</span>
+<span class="sd">    info. Its method :py:meth:`.ceilo_data.CeiloChunk.metar_msg` provides direct access to the resulting</span>
+<span class="sd">    METAR-like message. Users that require the height, okta amount, and/or exact sky coverage</span>
+<span class="sd">    fraction of layers can get them via the :py:attr:`.ceilo_data.CeiloChunk.layers` class property.</span>
+
+<span class="sd">    Example:</span>
+
+<span class="sd">        In the following example, we create the canonical mock dataset of ampycloud, run</span>
+<span class="sd">        the algorithm on it, and fetch the resulting METAR-like message:</span>
+<span class="sd">        ::</span>
+
+<span class="sd">            from datetime import datetime</span>
+<span class="sd">            import ampycloud</span>
+<span class="sd">            from ampycloud.utils import mocker</span>
+
+<span class="sd">            # Generate the canonical demo dataset for ampycloud</span>
+<span class="sd">            mock_data = mocker.canonical_demo_data()</span>
+
+<span class="sd">            # Run the ampycloud algorithm on it, setting the MSA to 10'000 ft aal.</span>
+<span class="sd">            chunk = ampycloud.run(mock_data, prms={'MSA':10000},</span>
+<span class="sd">                                  geoloc='Mock data', ref_dt=datetime.now())</span>
+
+<span class="sd">            # Get the resulting METAR message</span>
+<span class="sd">            print(chunk.metar_msg())</span>
+
+<span class="sd">            # Display the full information available for the layers found</span>
+<span class="sd">            print(chunk.layers)</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">starttime</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span>
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"Starting an ampycloud run at </span><span class="si">%s</span><span class="s2">"</span><span class="p">,</span> <span class="n">starttime</span><span class="p">)</span>
+
+    <span class="c1"># If the user gave me a datetime, convert this to str before proceeding</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">ref_dt</span><span class="p">,</span> <span class="nb">str</span><span class="p">)</span> <span class="ow">and</span> <span class="n">ref_dt</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+        <span class="n">ref_dt</span> <span class="o">=</span> <span class="nb">str</span><span class="p">(</span><span class="n">ref_dt</span><span class="p">)</span>
+
+    <span class="c1"># First, let's create an CeiloChunk instance ...</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="n">CeiloChunk</span><span class="p">(</span><span class="n">data</span><span class="p">,</span> <span class="n">prms</span><span class="o">=</span><span class="n">prms</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="n">geoloc</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="n">ref_dt</span><span class="p">)</span>
+
+    <span class="c1"># Go through the ampycloud cascade:</span>
+    <span class="c1"># Run the slicing ...</span>
+    <span class="n">chunk</span><span class="o">.</span><span class="n">find_slices</span><span class="p">()</span>
+    <span class="c1"># ... then the grouping ...</span>
+    <span class="n">chunk</span><span class="o">.</span><span class="n">find_groups</span><span class="p">()</span>
+    <span class="c1"># ... and the layering.</span>
+    <span class="n">chunk</span><span class="o">.</span><span class="n">find_layers</span><span class="p">()</span>
+
+    <span class="n">logger</span><span class="o">.</span><span class="n">info</span><span class="p">(</span><span class="s2">"End of the ampycloud run in </span><span class="si">%.1f</span><span class="s2"> s"</span><span class="p">,</span> <span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()</span> <span class="o">-</span> <span class="n">starttime</span><span class="p">)</span><span class="o">.</span><span class="n">total_seconds</span><span class="p">())</span>
+
+    <span class="k">return</span> <span class="n">chunk</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="metar">
+<a class="viewcode-back" href="../../running.html#ampycloud.core.metar">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">metar</span><span class="p">(</span><span class="n">data</span><span class="p">:</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run the ampycloud algorithm on a dataset and extract a METAR report of the cloud layers.</span>
+
+<span class="sd">    Args:</span>
+<span class="sd">        data (pd.DataFrame): the data to be processed, as a :py:class:`pandas.DataFrame`.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        str: the METAR-like message.</span>
+
+<span class="sd">    Example:</span>
+<span class="sd">    ::</span>
+
+<span class="sd">        import ampycloud</span>
+<span class="sd">        from ampycloud.utils import mocker</span>
+
+<span class="sd">        # Generate the canonical demo dataset for ampycloud</span>
+<span class="sd">        mock_data = mocker.canonical_demo_data()</span>
+
+<span class="sd">        # Compute the METAR message</span>
+<span class="sd">        msg = ampycloud.metar(mock_data)</span>
+<span class="sd">        print(msg)</span>
+
+<span class="sd">    """</span>
+
+    <span class="c1"># First, run the ampycloud algorithm</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">data</span><span class="p">)</span>
+
+    <span class="c1"># Then, return the METAR message</span>
+    <span class="k">return</span> <span class="n">chunk</span><span class="o">.</span><span class="n">metar_msg</span><span class="p">(</span><span class="n">which</span><span class="o">=</span><span class="s2">"layers"</span><span class="p">)</span></div>
+
+
+
+<span class="nd">@log_func_call</span><span class="p">(</span><span class="n">logger</span><span class="p">)</span>
+<div class="viewcode-block" id="demo">
+<a class="viewcode-back" href="../../autoapi/ampycloud/index.html#ampycloud.core.demo">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">demo</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">"""Run the ampycloud algorithm on a demonstration dataset.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">        :py:class:`pandas.DataFrame`, :py:class:`.ceilo_data.CeiloChunk`: the mock dataset used for the</span>
+<span class="sd">        demonstration, and the :py:class:`.ceilo_data.CeiloChunk` instance.</span>
+
+<span class="sd">    """</span>
+
+    <span class="n">mock_data</span> <span class="o">=</span> <span class="n">canonical_demo_data</span><span class="p">()</span>
+
+    <span class="k">assert</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">)</span>
+
+    <span class="c1"># Run the ampycloud algorithm</span>
+    <span class="n">chunk</span> <span class="o">=</span> <span class="n">run</span><span class="p">(</span><span class="n">mock_data</span><span class="p">,</span> <span class="n">geoloc</span><span class="o">=</span><span class="s2">"ampycloud demo"</span><span class="p">,</span> <span class="n">ref_dt</span><span class="o">=</span><span class="nb">str</span><span class="p">(</span><span class="n">datetime</span><span class="o">.</span><span class="n">now</span><span class="p">()))</span>
+
+    <span class="k">return</span> <span class="n">mock_data</span><span class="p">,</span> <span class="n">chunk</span></div>
+
+</pre></div>
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="../../_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="../../_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: 2.2.1-7bcaf70</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

@@ -1,0 +1,61 @@
+ampycloud.fluffer
+=================
+
+.. py:module:: ampycloud.fluffer
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: fluffiness-related tools
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.fluffer.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.fluffer.get_fluffiness
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: get_fluffiness(pts: numpy.ndarray, **kwargs: Any) -> numpy.ndarray
+
+   Utility functions to compute the fluffiness of a set of ceilometer hits.
+
+   :Parameters: * **pts** (*ndarray*) -- 2D array of [dt, height] ceilometer hits. None must have NaNs heights.
+                * **\*\*kwargs** (*optional*) -- additional arguments to be fed to statsmodels.nonparameteric.lowess().
+
+   :returns: *float, ndarray* --
+
+             the fluffiness (in height units) and LOWESS-smoothed (dt, height) values
+                 (sorted).
+
+   The *fluffiness* is computed as `2 * mean(abs(y - lowess))`, where lowess is the smooth
+   LOWESS fit to the ceilometer hits.
+
+   The factor 2 stems from the fact that abs(y-lowess) corresponds to half(-ish) the slice
+   thickness, that needs to be doubled in order to use the fluffiness to rescale the slice onto the
+   0 - 1 range.
+
+   To avoid LOWESS warning, hits with identical x coordinates (= time steps) are being offset
+   by a small factor (1e-5).
+
+

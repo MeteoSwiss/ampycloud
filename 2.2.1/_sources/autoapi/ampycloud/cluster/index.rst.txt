@@ -1,0 +1,71 @@
+ampycloud.cluster
+=================
+
+.. py:module:: ampycloud.cluster
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: clustering tools
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.cluster.logger
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.cluster.agglomerative_cluster
+   ampycloud.cluster.clusterize
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:function:: agglomerative_cluster(data: numpy.ndarray, n_clusters: Union[int, None] = None, metric: str = 'euclidean', linkage: str = 'single', distance_threshold: Union[int, float] = 1) -> tuple
+
+   Function that wraps arround :py:class:`sklearn.cluster.AgglomerativeClustering`.
+
+   :Parameters: * **data** (*ndarray*) -- array of [x, y] pairs to run the clustering on.
+                * **n_clusters** (*int, optional*) -- see :py:class:`sklearn.cluster.AgglomerativeClustering`
+                  for details. Defaults to None.
+                * **metric** (*str, optional*) -- see :py:class:`sklearn.cluster.AgglomerativeClustering` for
+                  details. Defaults to 'euclidian'.
+                * **linkage** (*str, optional*) -- see :py:class:`sklearn.cluster.AgglomerativeClustering` for
+                  details. Defaults to 'single'.
+                * **distance_threshold** (*int|float, optional*) -- see
+                  :py:class:`sklearn.cluster.AgglomerativeClustering` for details. Defaults to 1.
+
+   :returns: *int, ndarray* -- number of clusters found, and corresponding clustering labels for each data
+             point.
+
+
+.. py:function:: clusterize(data: numpy.ndarray, algo: Union[str, None] = None, **kwargs: dict) -> Optional[tuple]
+
+   Umbrella clustering routine, that provides a single access point to the different clustering
+   algorithms.
+
+   :Parameters: * **data** (*ndarray*) -- array of [x, y] arrays to clusterize.
+                * **algo** (*str, optional*) -- clustering algorithm, that must be one of [None, 'agglomerative'].
+                  Defaults to None.
+                * **kwargs** (*dict, optional*) -- keyword arguments to be fed to the underlying clustering function.
+
+   :returns: *int, ndarray* -- the number of clusters identified, and the associated labels for each data
+             point.
+
+

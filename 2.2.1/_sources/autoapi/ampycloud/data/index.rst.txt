@@ -1,0 +1,92 @@
+ampycloud.data
+==============
+
+.. py:module:: ampycloud.data
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: data classes
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.data.logger
+
+
+Classes
+-------
+
+.. autoapisummary::
+
+   ampycloud.data.AbstractChunk
+
+
+Module Contents
+---------------
+
+.. py:data:: logger
+
+.. py:class:: AbstractChunk(data: pandas.DataFrame, prms: Optional[dict] = None, geoloc: Optional[str] = None, ref_dt: Optional[str] = None)
+
+   Bases: :py:obj:`abc.ABC`
+
+
+   Abstract parent class for data chunk classes.
+
+
+   .. py:attribute:: DATA_COLS
+
+
+   .. py:property:: msa
+      :type: float
+
+
+      The Minimum Sector Altitude set when initializing this specific instance, in ft aal.
+
+
+   .. py:property:: msa_hit_buffer
+      :type: float
+
+
+      The Minimum Sector Altitude hit buffer set when initializing this specific instance,
+      in ft.
+
+
+   .. py:property:: data
+      :type: pandas.DataFrame
+
+
+      The data of the chunk, as a pandas DataFrame.
+
+
+   .. py:property:: geoloc
+      :type: Union[str, None]
+
+
+      The name of the geographic location of the observations.
+
+
+   .. py:property:: ref_dt
+      :type: Union[str, None]
+
+
+      The reference date and time for the data, i.e. Delta t = 0.
+
+
+   .. py:property:: prms
+      :type: dict
+
+
+      The dictionnary of ampycloud parameters set at the init of this class instance.
+
+

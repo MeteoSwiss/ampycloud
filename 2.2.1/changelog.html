@@ -1,0 +1,775 @@
+
+<!DOCTYPE html>
+
+
+<html lang="en" data-content_root="./" >
+
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+    <title>Changelog &#8212; ampycloud</title>
+  
+  
+  
+  <script data-cfasync="false">
+    document.documentElement.dataset.mode = localStorage.getItem("mode") || "";
+    document.documentElement.dataset.theme = localStorage.getItem("theme") || "";
+  </script>
+  <!--
+    this give us a css class that will be invisible only if js is disabled
+  -->
+  <noscript>
+    <style>
+      .pst-js-only { display: none !important; }
+
+    </style>
+  </noscript>
+  
+  <!-- Loaded before other Sphinx assets -->
+  <link href="_static/styles/theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+<link href="_static/styles/pydata-sphinx-theme.css?digest=8878045cc6db502f8baf" rel="stylesheet" />
+
+    <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=03e43079" />
+    <link rel="stylesheet" type="text/css" href="_static/graphviz.css?v=4ae1632d" />
+  
+  <!-- So that users can add custom icons -->
+  <script src="_static/scripts/fontawesome.js?digest=8878045cc6db502f8baf"></script>
+  <!-- Pre-loaded scripts that we'll load fully later -->
+  <link rel="preload" as="script" href="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf" />
+<link rel="preload" as="script" href="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf" />
+
+    <script src="_static/documentation_options.js?v=86a99c50"></script>
+    <script src="_static/doctools.js?v=9bcbadda"></script>
+    <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'changelog';</script>
+    <script>
+        DOCUMENTATION_OPTIONS.theme_version = '0.16.1';
+        DOCUMENTATION_OPTIONS.theme_switcher_json_url = '../_static/switcher_config.json';
+        DOCUMENTATION_OPTIONS.theme_switcher_version_match = '2.2.1';
+        DOCUMENTATION_OPTIONS.show_version_warning_banner =
+            false;
+        </script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="API Reference" href="autoapi/index.html" />
+    <link rel="prev" title="Scientific changes since v2.0.0" href="changes.html" />
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <meta name="docsearch:language" content="en"/>
+  <meta name="docsearch:version" content="2.2.1" />
+    <meta name="docbuild:last-update" content="15.09.2026"/>
+  </head>
+  
+  
+  <body data-bs-spy="scroll" data-bs-target=".bd-toc-nav" data-offset="180" data-bs-root-margin="0px 0px -60%" data-default-mode="">
+
+  
+  
+  <div id="pst-skip-link" class="skip-link d-print-none"><a href="#main-content">Skip to main content</a></div>
+  
+  <div id="pst-scroll-pixel-helper"></div>
+  
+  <button type="button" class="btn rounded-pill" id="pst-back-to-top">
+    <i class="fa-solid fa-arrow-up"></i>Back to top</button>
+
+  
+  <dialog id="pst-search-dialog">
+    
+<form class="bd-search d-flex align-items-center"
+      action="search.html"
+      method="get">
+  <i class="fa-solid fa-magnifying-glass"></i>
+  <input type="search"
+         class="form-control"
+         name="q"
+         placeholder="Search the docs ..."
+         aria-label="Search the docs ..."
+         autocomplete="off"
+         autocorrect="off"
+         autocapitalize="off"
+         spellcheck="false"/>
+  <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd>K</kbd></span>
+</form>
+  </dialog>
+
+  <div class="pst-async-banner-revealer d-none">
+  <aside id="bd-header-version-warning" class="d-none d-print-none" aria-label="Version warning"></aside>
+</div>
+
+  
+    <header class="bd-header navbar navbar-expand-lg bd-navbar d-print-none">
+<div class="bd-header__inner bd-page-width">
+  <button class="pst-navbar-icon sidebar-toggle primary-toggle" aria-label="Site navigation">
+    <span class="fa-solid fa-bars"></span>
+  </button>
+  
+  
+  <div class="col-lg-3 navbar-header-items__start">
+    
+      <div class="navbar-item">
+
+  
+    
+  
+
+<a class="navbar-brand logo" href="index.html">
+  
+  
+  
+  
+  
+    
+    
+      
+    
+    
+    <img src="_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-light" alt=""/>
+    <img src="_static/app-icon_meteoswiss_rounded_rgb.png" class="logo__image only-dark pst-js-only" alt=""/>
+  
+  
+    <p class="title logo__title">ampycloud</p>
+  
+</a></div>
+    
+  </div>
+  
+  <div class="col-lg-9 navbar-header-items">
+    
+    <div class="me-auto navbar-header-items__center">
+      
+        <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+            <li class="nav-item dropdown">
+                <button class="btn dropdown-toggle nav-item" type="button"
+                data-bs-toggle="dropdown" aria-expanded="false"
+                aria-controls="pst-nav-more-links">
+                    More
+                </button>
+                <ul id="pst-nav-more-links" class="dropdown-menu">
+                    
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class=" current active">
+  <a class="nav-link dropdown-item nav-internal" href="#">
+    Changelog
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class=" ">
+  <a class="nav-link dropdown-item nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+                </ul>
+            </li>
+            
+  </ul>
+</nav></div>
+      
+    </div>
+    
+    
+    <div class="navbar-header-items__end">
+      
+        <div class="navbar-item navbar-persistent--container">
+          
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+        </div>
+      
+      
+        <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+      
+        <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-2"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-2"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-2"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-2">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+      
+    </div>
+    
+  </div>
+  
+  
+    <div class="navbar-persistent--mobile">
+
+<button class="btn search-button-field search-button__button pst-js-only" title="Search" aria-label="Search" data-bs-placement="bottom" data-bs-toggle="tooltip">
+ <i class="fa-solid fa-magnifying-glass"></i>
+ <span class="search-button__default-text">Search</span>
+ <span class="search-button__kbd-shortcut"><kbd class="kbd-shortcut__modifier">Ctrl</kbd>+<kbd class="kbd-shortcut__modifier">K</kbd></span>
+</button>
+    </div>
+  
+
+  
+</div>
+
+    </header>
+  
+
+  <div class="bd-container">
+    <div class="bd-container__inner bd-page-width">
+      
+      
+      
+      <dialog id="pst-primary-sidebar-modal"></dialog>
+      <div id="pst-primary-sidebar" class="bd-sidebar-primary bd-sidebar hide-on-wide">
+        
+
+  
+  <div class="sidebar-header-items sidebar-primary__section">
+    
+    
+      <div class="sidebar-header-items__center">
+        
+          
+          
+            <div class="navbar-item">
+<nav>
+  <ul class="bd-navbar-elements navbar-nav">
+    
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="index.html">
+    Home
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="installation.html">
+    Installation
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="running.html">
+    Using ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="parameters.html">
+    The ampycloud scientific parameters
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="troubleshooting.html">
+    Troubleshooting
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="acknowledge.html">
+    Acknowledging ampycloud
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="license.html">
+    License & Copyright
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="changes.html">
+    Scientific changes since v2.0.0
+  </a>
+</li>
+
+
+<li class="nav-item current active">
+  <a class="nav-link nav-internal" href="#">
+    Changelog
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud/blob/develop/CONTRIBUTING.md">
+    Contributing
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-external" href="https://github.com/MeteoSwiss/ampycloud">
+    Github repository
+  </a>
+</li>
+
+
+<li class="nav-item ">
+  <a class="nav-link nav-internal" href="autoapi/index.html">
+    API Reference
+  </a>
+</li>
+
+  </ul>
+</nav></div>
+          
+        
+      </div>
+    
+    
+    
+      <div class="sidebar-header-items__end">
+        
+          <div class="navbar-item">
+
+<button class="btn btn-sm nav-link pst-navbar-icon theme-switch-button pst-js-only" aria-label="Color mode" data-bs-title="Color mode"  data-bs-placement="bottom" data-bs-toggle="tooltip">
+  <i class="theme-switch fa-solid fa-sun                fa-lg" data-mode="light" title="Light"></i>
+  <i class="theme-switch fa-solid fa-moon               fa-lg" data-mode="dark"  title="Dark"></i>
+  <i class="theme-switch fa-solid fa-circle-half-stroke fa-lg" data-mode="auto"  title="System Settings"></i>
+</button></div>
+        
+          <div class="navbar-item">
+<div class="version-switcher__container dropdown pst-js-only">
+  <button id="pst-version-switcher-button-3"
+    type="button"
+    class="version-switcher__button btn btn-sm dropdown-toggle"
+    data-bs-toggle="dropdown"
+    aria-haspopup="listbox"
+    aria-controls="pst-version-switcher-list-3"
+    aria-label="Version switcher list"
+  >
+    Choose version  <!-- this text may get changed later by javascript -->
+    <span class="caret"></span>
+  </button>
+  <div id="pst-version-switcher-list-3"
+    class="version-switcher__menu dropdown-menu list-group-flush py-0"
+    role="listbox" aria-labelledby="pst-version-switcher-button-3">
+    <!-- dropdown will be populated by javascript on page load -->
+  </div>
+</div></div>
+        
+      </div>
+    
+  </div>
+  
+  
+  <div class="sidebar-primary-items__end sidebar-primary__section">
+      <div class="sidebar-primary-item">
+<div id="ethical-ad-placement"
+      class="flat"
+      data-ea-publisher="readthedocs"
+      data-ea-type="readthedocs-sidebar"
+      data-ea-manual="true">
+</div></div>
+  </div>
+
+
+      </div>
+      
+      <main id="main-content" class="bd-main" role="main">
+        
+        
+          <div class="bd-content">
+            <div class="bd-article-container">
+              
+              <div class="bd-header-article d-print-none">
+<div class="header-article-items header-article__inner">
+  
+    <div class="header-article-items__start">
+      
+        <div class="header-article-item">
+
+<nav aria-label="Breadcrumb" class="d-print-none">
+  <ul class="bd-breadcrumbs">
+    
+    <li class="breadcrumb-item breadcrumb-home">
+      <a href="index.html" class="nav-link" aria-label="Home">
+        <i class="fa-solid fa-home"></i>
+      </a>
+    </li>
+    <li class="breadcrumb-item active" aria-current="page"><span class="ellipsis">Changelog</span></li>
+  </ul>
+</nav>
+</div>
+      
+    </div>
+  
+  
+</div>
+</div>
+              
+              
+              
+                
+<div id="searchbox"></div>
+                <article class="bd-article">
+                  
+  <section id="changelog">
+<span id="id1"></span><h1>Changelog<a class="headerlink" href="#changelog" title="Link to this heading">#</a></h1>
+<p><a class="reference external" href="https://github.com/MeteoSwiss/ampycloud"><img alt="last-commit" src="https://img.shields.io/github/last-commit/MeteoSwiss/ampycloud.svg?colorB=e6c000" /></a> <a class="reference external" href="https://github.com/MeteoSwiss/ampycloud/issues"><img alt="issues" src="https://img.shields.io/github/issues/MeteoSwiss/ampycloud.svg?colorB=b4001e" /></a></p>
+<p>The ampycloud changelog (reproduced below) is stored in the
+<a class="reference external" href="https://github.com/MeteoSwiss/ampycloud">code repository</a> on Github.</p>
+<div class="highlight-none notranslate"><div class="highlight"><pre><span></span>All notable changes to ampycloud will be documented in this file.
+
+The format is inspired from [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
+This project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+
+## [v2.2.1]
+### Added:
+ - [pjuda, 2026-09-14] Fix perc2okta function for consistency with referenced publication
+### Fixed:
+ - [srethore, 2026-09-15] Fix link to the published documentation.
+
+## [v2.2.0]
+### Added:
+ - [srethore, 2026-09-01] Refactor pypi action using trusted publishing
+ and apply Open Source MCH template to the whole project.
+
+## [v2.1.1]
+### Fixed:
+ - [regDaniel, 2024-09-19] Require statsmodels &gt;= v0.14.3, where incompatibility with scipy is fixed
+ - [regDaniel, 2024-09-04] Inconsitencies in contribution guidelines, authorship declaration and citation file.
+
+## [v2.1.0]
+### Added:
+ - [regDaniel, 2024-08-28] Feature to calculate cloud base height with a subset of instruments only
+### Fixed:
+ - [regDaniel, 2024-08-28] Incompatibility of scipy and statsmodels
+
+## [v2.0.0]
+### Added:
+ - [fpavogt, 2024-06-26] Add ability to trigger weekly tests manually.
+ - [fpavogt, 2024-04-16] Improve input data consistency check (fix #116).
+ - [regDaniel, 2024-04-09] Add flag for clouds above (MSA + MSA_HIT_BUFFER) and allow for NSC in METAR message.
+ - [fpavogt, 2024-03-26] Add option to reset only a single parameter.
+### Fixed:
+ - [srethore, 2024-04-23] Fix static types issues.
+ - [regDaniel, 2024-04-23] Fix deprecated github actions worklflow file
+ - [fpavogt, 2024-04-17] Fix #119
+ - [regDaniel, 2024-04-09] Minor adaptions to better comply with PEP standards.
+ - [fpavogt, 2024-03-26] Use "height" in "ft aal" throughout.
+### Changed:
+ - [fpavogt, 2024-06-25] Add support for numpy &gt;2.0
+ - [fpavogt, 2024-04-28] Add a rogue point to the mock example.
+ - [fpavogt, 2024-03-25] Set the fluffiness boost to 2 (fixes #123).
+ - [fpavogt, 2024-03-23] Changed default mock dataset to be 900s long (instead of 2400s).
+
+## [v1.0.0]
+### Added:
+ - [regDaniel, 2023-11-09] Add minimum separation condition for grouping step.
+### Fixed:
+ - [regDaniel, 2023-11-09] Fix #107 (no more reporting of two layers at same height).
+### Changed:
+- [fpavogt, 2023-11-05] Updated version to 1.0.0 for first full release, incl. misc documentation changes.
+- [regDaniel, 2023-11-09] Changed min sep in layering from layer mean to layer base altitude.
+- [regDaniel, 2023-11-10] Refactoring (modularization) of metarize method.
+
+## [v0.6.0.dev0]
+### Added:
+ - [fpavogt, 2022-10-19] Add scipy to the list of required dependencies.
+ - [fpavogt, 2022-10-19] The metarize routine now also computes the "fluffiness" of cloud layers.
+ - [fpavogt, 2022-10-18] Add option to use a percentage of the most recent measurements to derive the base altitude.
+ - [fpavogt, 2022-10-18] Add 3 new scientific validation cases.
+### Fixed:
+ - [fpavogt, 2023-08-11] Fix #18 (all matplotlib params are now strictly set in context).
+ - [fpavogt, 2023-07-07] Fix #95 (pylint 3.0 deprecation of epylinter).
+ - [fpavogt, 2023-07-03] Fix #98 (pkg_resources -&gt; packaging in test_version.py).
+ - [fpavogt, 2022-10-18] Fix #84 and #85.
+### Changed:
+ - [fpavogt, 2023-07-26] Require layers to be at least 250ft appart before splitting a group.
+ - [fpavogt, 2023-07-13] Deployment of the new Issue form in YAML format (fixes #93).
+ - [fpavogt, 2023-07-07] Demo datasets are now stored as csv and not pkl (fixes #102).
+ - [fpavogt, 2022-12-16] Replace OKTA_LIM0 (OKTA_LIM8) with MIN_HITS_OKTA0 (MAX_HOLES_OKTA8) - fixes #92.
+ - [fpavogt, 2022-10-20] Remove superfluous parameters from the default set.
+ - [fpavogt, 2022-10-18] Fluffiness is now computed via LOWESS instead of a Convex Hull.
+ - [fpavogt, 2022-10-18] Base level is now defined as a percentile of the total number of points.
+ - [fpavogt, 2022-10-18] Enable multiple min_sep_vals for the LAYERING step.
+ - [fpavogt, 2022-10-18] Cleanup pylint and error messages.
+ - [fpavogt, 2022-10-18] Use min/max+padding to assess if slices are overlapping, instead of mean+std.
+ - [fpavogt, 2022-10-18] Default value of OKTA_LIM8 is changed from 98 to 99.
+
+## [v0.5.0.dev0]
+### Fixed:
+ - [fpavogt, 2022-07-08] Fix #78 and #79.
+
+## [v0.4.0.dev0]
+### Added:
+ - [fpavogt, 2022-02-27] Add new speed-check Action.
+ - [fpavogt, 2022-02-25] Add the `prms` keyword to set parameters for each run call in a thread-safe manner.
+### Fixed:
+ - [fpavogt, 2022-03-02] Fix #75.
+ - [fpavogt, 2022-02-25] Fix #71 and #25.
+### Removed:
+ - [fpavogt, 2022-02-25] Remove yaconfigobject dependency in favor of ruamel.yaml.
+### Security:
+
+## [v0.3.0.dev0]
+### Added:
+ - [fpavogt, 2022-01-27] Add tests for the .plots.secondary module.
+### Fixed:
+ - [fpavogt, 2022-01-27] Fix #66 and #67.
+ - [fpavogt, 2022-01-26] Fix #62, #63 and #64.
+### Changed:
+ - [fpavogt, 2022-02-01] Implement review feedback, including name change for `scaled` to `apply_scaling`.
+
+## [v0.2.1.dev0]
+### Fixed:
+ - [fpavogt, 2022-01-21] Fix #58.
+
+## [v0.2.0.dev1]
+### Fixed:
+ - [fpavogt, 2022-01-21] First pypi release.
+
+## [v0.2.0.dev0]
+### Added:
+ - [fpavogt, 2022-01-21] New CI Actions to automate the pypi releases.
+ - [fpavogt, 2022-01-17] Added new utils.utils.temp_seed() function to set random seed temporarily only.
+ - [fpavogt, 2022-01-13] New icao module, for easy/clean access to the significant_cloud() function.
+ - [fpavogt, 2022-01-13] Doc cleanup/improvement, and use of :py:func: (etc...) function to ease user navigation.
+### Fixed:
+ - [fpavogt, 2022-01-17] Fix #49 - mock cloud layers now have proper type values.
+ - [fpavogt, 2022-01-10] Fix issues #40 and #41.
+### Changed:
+ - [fpavogt, 2022-01-14] Fix #47.
+ - [fpavogt, 2022-01-10] Update copyright years.
+### Deprecated:
+### Removed:
+ - [fpavogt, 2022-01-14] ampycloud.core.synop(), and all synop references.
+### Security:
+
+## [v0.1.0]
+### Added:
+ - [fpavogt, 2021-12-21] Add tests to check real data for scientific stability (fixes #33).
+ - [fpavogt, 2021-12-17] Add CODE_OF_CONDUCT.md and auto-doc-publish action, incl. first doc release.
+ - [fpavogt, 2021-12-16] Add a new entry point for `copy_prm_file`, i.e. fix #26.
+ - [fpavogt, 2021-12-15] Add `msa` to `plots.diagnostic`, i.e. fix #22.
+ - [fpavogt, 2021-12-10] Add Minimum Sector Altitude to the metar_msg() method.
+ - [fpavogt, 2021-12-10] Add detailed examples to the core functions, and link them in the doc.
+ - [fpavogt, 2021-12-10] Add the performance module, and a dedicated high level entry point.
+ - [fpavogt, 2021-12-10] Improve plots with show, save, close methods, and tweak their look.
+ - [fpavogt, 2021-12-10] Add pytest ficture to let users feed 'MPL_STYLE' as a command line argument
+ - [fpavogt, 2021-12-09] Add the plots module.
+ - [fpavogt, 2021-12-08] Add the MANIFEST.in file, to include parameter and plot style files.
+ - [fpavogt, 2021-12-08] Add the data, dynamic, and core modules, and a new AmpycloudWarning class.
+ - [fpavogt, 2021-12-07] Add the wmo, scaler, layer, cluster, and utils.mocker modules.
+ - [fpavogt, 2021-12-07] Add the AmpycloudError class.
+ - [fpavogt, 2021-12-06] Setup logging tools, incl. custom decorator for fcts.
+ - [fpavogt, 2021-12-06] Setup docs, including instructions and a CI/CD "check" Action.
+ - [fpavogt, 2021-12-06] Initial Github upload, incl. CI/CD actions, package &amp; test infrastructure.
+### Fixed:
+ - [fpavogt, 2021-12-23] Fix warning when plotting empty chunks, and correctly handle single points.
+ - [fpavogt, 2021-12-20] Fix #30 and #31.
+ - [fpavogt, 2021-12-15] Fix bug in `CeiloChunk.metar_msg()` when all clouds are above the MSA.
+ - [fpavogt, 2021-12-12] Fix the format_slices() method of the DiagnosticPlot class.
+ - [fpavogt, 2021-12-09] Fix #5.
+ - [fpavogt, 2021-12-08] Fix #14.
+### Changed:
+ - [fpavogt, 2021-12-24] Small doc cleanup, and "release" of v0.1.0.
+ - [fpavogt, 2021-12-21] Add MSA and MSA_HIT_BUFFER parameters (fixes #34).
+ - [fpavgot, 2021-12-20] Implement feedback from @loforest.
+ - [fpavogt, 2021-12-17] Improve the handling of the optional requirements.
+ - [fpavogt, 2021-12-17] Minor fixes following reviews by loforest.
+ - [fpavogt, 2021-12-16] Change the approach of the dynamic module to exploit yaconfigobject (fixes #24).
+ - [fpavogt, 2021-12-08] Change `mock_layer` to return a pd.DataFrame instead of a np.ndarray.
+### Deprecated:
+### Removed:
+### Security:
+</pre></div>
+</div>
+</section>
+
+
+                </article>
+              
+              
+              
+              
+              
+                <footer class="prev-next-footer d-print-none">
+                  
+<div class="prev-next-area">
+    <a class="left-prev"
+       href="changes.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Scientific changes since v2.0.0</p>
+      </div>
+    </a>
+    <a class="right-next"
+       href="autoapi/index.html"
+       title="next page">
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">next</p>
+        <p class="prev-next-title">API Reference</p>
+      </div>
+      <i class="fa-solid fa-angle-right"></i>
+    </a>
+</div>
+                </footer>
+              
+            </div>
+            
+            
+              
+            
+          </div>
+          <footer class="bd-footer-content">
+            
+          </footer>
+        
+      </main>
+    </div>
+  </div>
+  
+  <!-- Scripts loaded after <body> so the DOM is not blocked -->
+  <script defer src="_static/scripts/bootstrap.js?digest=8878045cc6db502f8baf"></script>
+<script defer src="_static/scripts/pydata-sphinx-theme.js?digest=8878045cc6db502f8baf"></script>
+
+  <footer class="bd-footer">
+<div class="bd-footer__inner bd-page-width">
+  
+    <div class="footer-items__start">
+      
+        <div class="footer-item"><!-- This will display the version of the docs -->
+ampycloud, version: 2.2.1-7bcaf70</div>
+      
+        <div class="footer-item"><p class="last-updated">
+  Last updated on 15.09.2026.
+  <br/>
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="copyright">
+    
+      © Copyright 2021-2026, MeteoSwiss.
+      <br/>
+    
+  </p>
+</div>
+      
+    </div>
+  
+  
+  
+    <div class="footer-items__end">
+      
+        <div class="footer-item">
+<p class="theme-version">
+  <!-- # L10n: Setting the PST URL as an argument as this does not need to be localized -->
+  Built with the <a href="https://pydata-sphinx-theme.readthedocs.io/en/stable/index.html">PyData Sphinx Theme</a> 0.16.1.
+</p></div>
+      
+        <div class="footer-item">
+
+  <p class="sphinx-version">
+    Created using <a href="https://www.sphinx-doc.org/">Sphinx</a> 8.1.3.
+    <br/>
+  </p>
+</div>
+      
+    </div>
+  
+</div>
+
+  </footer>
+  </body>
+</html>

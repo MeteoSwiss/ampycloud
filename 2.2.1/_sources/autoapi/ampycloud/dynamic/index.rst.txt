@@ -1,0 +1,43 @@
+ampycloud.dynamic
+=================
+
+.. py:module:: ampycloud.dynamic
+
+.. autoapi-nested-parse::
+
+   Copyright (c) 2021-2026 MeteoSwiss, contributors listed in AUTHORS.
+
+   Distributed under the terms of the 3-Clause BSD License.
+
+   SPDX-License-Identifier: BSD-3-Clause
+
+   Module contains: dynamic (scientific) parameters, which can be altered during execution.
+
+
+
+Attributes
+----------
+
+.. autoapisummary::
+
+   ampycloud.dynamic.AMPYCLOUD_PRMS
+
+
+Functions
+---------
+
+.. autoapisummary::
+
+   ampycloud.dynamic.get_default_prms
+
+
+Module Contents
+---------------
+
+.. py:function:: get_default_prms() -> dict
+
+   Extract the default ampycloud parameters from the YAML configuration file.
+
+
+.. py:data:: AMPYCLOUD_PRMS
+
